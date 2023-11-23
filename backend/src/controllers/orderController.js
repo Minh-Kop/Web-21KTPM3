@@ -2,7 +2,7 @@ const moment = require('moment');
 
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const config = require('../config');
+const config = require('../config/config');
 const orderModel = require('../models/orderModel');
 const bookModel = require('../models/bookModel');
 const accountModel = require('../models/accountModel');

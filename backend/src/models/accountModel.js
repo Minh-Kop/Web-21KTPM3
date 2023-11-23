@@ -33,7 +33,7 @@ exports.getDetailedUser = async (userEntity) => {
 exports.createAccount = async ({
     email,
     phoneNumber,
-    fullName,
+    username,
     password,
     verified,
     token,
@@ -43,7 +43,7 @@ exports.createAccount = async ({
     const request = new sql.Request(pool);
     request.input('email', sql.NVarChar, email);
     request.input('phoneNumber', sql.Char, phoneNumber);
-    request.input('fullName', sql.NVarChar, fullName);
+    request.input('username', sql.NVarChar, username);
     request.input('password', sql.NVarChar, password);
     request.input('verified', sql.Bit, verified);
     request.input('token', sql.Char, token);

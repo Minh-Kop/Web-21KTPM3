@@ -1,16 +1,16 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     16/11/2023 11:37:05 am                       */
+/* Created on:     22/11/2023 11:42:06 pm                       */
 /*==============================================================*/
-USE master
-go
-if DB_ID('fabook') is not null
-	drop database fabook
-GO 
-CREATE DATABASE fabook
-GO
-USE fabook
-GO
+-- USE master
+-- go
+-- if DB_ID('fabook_db') is not null
+-- 	drop database fabook_db
+-- GO 
+-- CREATE DATABASE fabook_db
+-- GO
+-- USE fabook_db
+-- GO
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -641,13 +641,14 @@ go
 /*==============================================================*/
 create table BOOK (
    BOOK_ID              char(5)              not null,
-   CATE_ID              char(4)              not null,
+   CATE_ID              char(5)              not null,
    BOOK_NAME            varchar(100)         null,
    BOOK_PRICE           int                  null,
    DISCOUNTED_NUMBER    int                  null,
    BOOK_DISCOUNTED_PRICE int                  null,
    AVG_RATING           float                null,
    COUNT_RATINGS        int                  null,
+   STOCK                int                  null,
    ADDED_TIME           datetime             null,
    SOFT_DELETE          bit                  null,
    constraint PK_BOOK primary key nonclustered (BOOK_ID)
@@ -668,7 +669,6 @@ go
 create table BOOK_DETAIL (
    BOOK_ID              char(5)              not null,
    PUB_ID               char(5)              not null,
-   STOCK                int                  null,
    BOOK_FORMAT          varchar(50)          null,
    PUBLISHED_YEAR       int                  null,
    NUMBER_PAGE          int                  null,
@@ -758,8 +758,8 @@ go
 /* Table: CATEGORY                                              */
 /*==============================================================*/
 create table CATEGORY (
-   CATE_ID              char(4)              not null,
-   PARENT_ID            char(4)              null,
+   CATE_ID              char(5)              not null,
+   PARENT_ID            char(5)              null,
    CATE_NAME            varchar(50)          null,
    constraint PK_CATEGORY primary key nonclustered (CATE_ID)
 )

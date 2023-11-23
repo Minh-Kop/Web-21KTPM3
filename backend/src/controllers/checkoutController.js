@@ -1,6 +1,6 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const config = require('../config');
+const config = require('../config/config');
 
 const bookModel = require('../models/bookModel');
 const cartModel = require('../models/cartModel');

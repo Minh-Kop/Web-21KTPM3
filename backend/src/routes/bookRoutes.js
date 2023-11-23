@@ -2,7 +2,7 @@ const express = require('express');
 
 const bookController = require('../controllers/bookController');
 const authController = require('../controllers/authController');
-const config = require('../config');
+const config = require('../config/config');
 
 const router = express.Router();
 

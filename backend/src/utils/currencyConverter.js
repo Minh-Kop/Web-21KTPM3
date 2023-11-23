@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../config/config');
 
 exports.getRate = (toCurrency, fromCurrency = config.currency.VND) => {
     switch (toCurrency) {

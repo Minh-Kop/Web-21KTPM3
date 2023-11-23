@@ -2,15 +2,15 @@
 /* DBMS name:      Microsoft SQL Server 2008                    */
 /* Created on:     16/11/2023 11:14:13 am                       */
 /*==============================================================*/
-USE master
-go
-if DB_ID('bank') is not null
-	drop database bank
-GO 
-CREATE DATABASE bank
-GO
-USE bank
-GO
+-- USE master
+-- go
+-- if DB_ID('bank_db') is not null
+-- 	drop database bank_db
+-- GO 
+-- CREATE DATABASE bank_db
+-- GO
+-- USE bank_db
+-- GO
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')

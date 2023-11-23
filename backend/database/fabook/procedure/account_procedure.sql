@@ -1,4 +1,3 @@
-GO
 IF OBJECT_ID('sp_VerifyAccount') IS NOT NULL
 	DROP PROC sp_VerifyAccount
 GO
@@ -16,18 +15,6 @@ BEGIN TRANSACTION
 			RETURN -1
 		END
 
-		-- Check if this newest account's HPoint accumulated year is older than current year
-		DECLARE @year INT
-		select @year = SAVED_YEAR
-		from HPOINT_ACCUMULATION_YEAR
-		where EMAIL = @email
-		ORDER by SAVED_YEAR
-
-		IF @year < YEAR(GETDATE())
-		BEGIN
-			INSERT into HPOINT_ACCUMULATION_YEAR (EMAIL, SAVED_YEAR, HPOINT) VALUES (@email, YEAR(GETDATE()), 0)
-		END
-
 		-- Update verified status
 		UPDATE ACCOUNT set VERIFIED = 1 where TOKEN = @token
 	END TRY
@@ -41,14 +28,34 @@ COMMIT
 RETURN 1
 GO
 
+IF OBJECT_ID('f_CreateUserId') IS NOT NULL
+	DROP FUNCTION f_CreateUserId
 GO
+CREATE FUNCTION f_CreateUserId(
+    @abbreviation char(2)
+)
+returns CHAR(5)
+    BEGIN
+        DECLARE @i INT = 1
+        DECLARE @id char(5) = @abbreviation + '001'
+        WHILE(EXISTS(SELECT 1
+                    FROM ACCOUNT
+                    WHERE USERID = @id))
+        BEGIN
+            SET @i += 1
+            SET @id = @abbreviation + REPLICATE('0', 3 - LEN(@i)) + CAST(@i AS CHAR(3))
+        END
+        return @id
+    END
+GO
+
 IF OBJECT_ID('sp_CreateAccount') IS NOT NULL
 	DROP PROC sp_CreateAccount
 GO
 CREATE PROCEDURE sp_CreateAccount (
     @email NVARCHAR(100), 
     @phoneNumber CHAR(10), 
-    @fullName NVARCHAR(100), 
+    @username NVARCHAR(100), 
     @password NVARCHAR(100), 
     @verified bit, 
     @token char(64), 
@@ -71,14 +78,12 @@ BEGIN TRANSACTION
 			RETURN -2
 		END
 
-        declare @cartId char(10) = (select dbo.f_CreateCartId())
+        declare @userId char(5) = (select dbo.f_CreateUserId('UR'))
+        declare @cartId char(5) = (select dbo.f_CreateCartId('CT'))
 
-        INSERT into ACCOUNT (EMAIL, PHONE_NUMBER, FULLNAME, ENC_PWD, VERIFIED, TOKEN, HROLE) values 
-            (@email, @phoneNumber, @fullName, @password, @verified, @token, @role)
-        INSERT into ACCOUNT_DETAIL (EMAIL, TIER, HPOINT) VALUES (@email, 1, 0)
-        INSERT into HPOINT_ACCUMULATION_YEAR (EMAIL, SAVED_YEAR, HPOINT, ISRECEIVEDBIRTHDAYGIFT) VALUES 
-			(@email, YEAR(GETDATE()), 0, 0)
-        INSERT into CART (CART_ID, EMAIL, CART_COUNT, CART_TOTAL) values (@cartId, @email, 0, 0)
+        INSERT into ACCOUNT (USERID , EMAIL, PHONE_NUMBER, USERNAME, ENC_PWD, VERIFIED, TOKEN, HROLE) values 
+            (@userId, @email, @phoneNumber, @username, @password, @verified, @token, @role)
+        INSERT into CART (CART_ID, USERID, CART_COUNT, CART_TOTAL) values (@cartId, @userId, 0, 0)
 	END TRY
 
 	BEGIN CATCH
@@ -90,30 +95,27 @@ COMMIT
 RETURN 1
 GO
 
-GO
 IF OBJECT_ID('sp_GetDetailedAccount') IS NOT NULL
 	DROP PROC sp_GetDetailedAccount
 GO
 CREATE PROCEDURE sp_GetDetailedAccount (
-    @email NVARCHAR(100),
-    @year int
+	@userId CHAR(5)
 )
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-		if not exists(select 1 from ACCOUNT where EMAIL = @email)
+		if not exists(select 1 from ACCOUNT where USERID = @userId)
 		BEGIN
-			PRINT N'The email is not existed!'
+			PRINT N'This user is not existed!'
 			ROLLBACK  
 			RETURN -1
 		END
 
-        select [a].[EMAIL] as email, [a].[FULLNAME] as fullName, [a].[PHONE_NUMBER] as phoneNumber,
-            [a].[AVATAR_PATH] as avatarPath, [a].[AVATAR_FILENAME] as avatarFilename, [a].[HROLE] as role,
-            ad.GENDER as gender, ad.BIRTHDAY as birthday, ad.HPOINT as HPoint, ad.TIER as tier, hy.HPOINT accumulatedHPoint
-        from ACCOUNT a LEFT join ACCOUNT_DETAIL ad on a.EMAIL = ad.EMAIL
-            LEFT join HPOINT_ACCUMULATION_YEAR hy on hy.EMAIL = a.EMAIL
-        where a.EMAIL = @email and hy.SAVED_YEAR = @year
+        select a.USERID userId, a.USERNAME userName, [a].[EMAIL] as email, [a].[FULLNAME] as fullName, [a].[PHONE_NUMBER] as phoneNumber,
+            [a].[AVATAR_PATH] as avatarPath, [a].[HROLE] as role,
+            a.GENDER as gender, a.BIRTHDAY as birthday
+        from ACCOUNT a 
+        where a.USERID = @userId
 	END TRY
 
 	BEGIN CATCH

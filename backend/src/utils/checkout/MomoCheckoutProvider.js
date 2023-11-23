@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const config = require('../../config');
+const config = require('../../config/config');
 const { createHmacString, encryptBase64 } = require('../crypto');
 
 let partnerCode = config.MOMO_PARTNER_CODE;

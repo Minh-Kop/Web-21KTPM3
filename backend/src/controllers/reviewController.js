@@ -4,7 +4,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const orderModel = require('../models/orderModel');
 const reviewModel = require('../models/reviewModel');
-const config = require('../config');
+const config = require('../config/config');
 
 exports.createReview = catchAsync(async (req, res, next) => {
     const { bookId, orderId, rating, comment } = req.body;

@@ -3,15 +3,15 @@
         "ecmaVersion": 11,
         "sourceType": "module"
     },
-    "name": "hachiko-backend",
+    "name": "fabook-backend",
     "version": "1.0.0",
-    "description": "Coding API for Hachiko website",
+    "description": "Coding API for Fabook website",
     "main": "app.js",
     "scripts": {
-        "start": "node server.js",
-        "start:dev": "nodemon server.js",
-        "start:prod": "SET NODE_ENV=production&&nodemon server.js",
-        "debug": "ndb server.js"
+        "start": "node src/server.js",
+        "start:dev": "nodemon src/server.js",
+        "start:prod": "SET NODE_ENV=production&&nodemon src/server.js",
+        "debug": "ndb src/server.js"
     },
     "keywords": [],
     "author": "MinhKop",

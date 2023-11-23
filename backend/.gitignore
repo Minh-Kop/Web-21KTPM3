@@ -1,6 +1,5 @@
 # Test file
-test.js
-test.sql
+test*
 
 # Logs
 logs

@@ -1,7 +1,7 @@
 const openrouteservice = require('openrouteservice-js');
 const axios = require('axios');
 
-const config = require('../config');
+const config = require('../config/config');
 
 // const getCoordinate = async (address, ward, district, province) => {
 //     const Geocode = new openrouteservice.Geocode({

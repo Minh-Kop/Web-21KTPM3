@@ -13,7 +13,7 @@ const {
     createUploader,
     deleteCloudinaryImage,
 } = require('../utils/cloudinary');
-const config = require('../config');
+const config = require('../config/config');
 
 const getListCategoryId = async (categoryId) => {
     if (!categoryId) {

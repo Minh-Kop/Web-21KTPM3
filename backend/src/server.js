@@ -1,7 +1,7 @@
-const cron = require('node-cron');
+// const cron = require('node-cron');
 
-const config = require('./config');
-const tierModel = require('./models/tierModel');
+const config = require('./config/config');
+// const tierModel = require('./models/tierModel');
 
 process.on('uncaughtException', (err) => {
     console.log('UNCAUGHT EXCEPTION! Shutting down...');
@@ -17,23 +17,23 @@ const server = app.listen(port, async () => {
 });
 
 // Automatically run at a certain time
-const cronOptions = {
-    timezone: 'Asia/Ho_Chi_Minh',
-};
-cron.schedule(
-    '4 0 1 1 *',
-    async () => {
-        await tierModel.updateTier();
-    },
-    cronOptions,
-);
-cron.schedule(
-    '6 0 * * *',
-    async () => {
-        await tierModel.giveBirthdayGift();
-    },
-    cronOptions,
-);
+// const cronOptions = {
+//     timezone: 'Asia/Ho_Chi_Minh',
+// };
+// cron.schedule(
+//     '4 0 1 1 *',
+//     async () => {
+//         await tierModel.updateTier();
+//     },
+//     cronOptions,
+// );
+// cron.schedule(
+//     '6 0 * * *',
+//     async () => {
+//         await tierModel.giveBirthdayGift();
+//     },
+//     cronOptions,
+// );
 
 process.on('unhandledRejection', (err) => {
     console.log('UNHANDLER REJECTION! Shutting down...');

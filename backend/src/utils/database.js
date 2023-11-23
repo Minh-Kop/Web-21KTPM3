@@ -1,7 +1,7 @@
 // const sql = require('mssql/msnodesqlv8');
 const sql = require('mssql');
 
-const config = require('../config');
+const config = require('../config/config');
 
 exports.getConnectionPool = async () => {
     let pool = null;

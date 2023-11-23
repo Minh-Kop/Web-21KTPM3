@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const accountModel = require('../models/accountModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const config = require('../config');
+const config = require('../config/config');
 const {
     verifyPassword,
     encryptPassword,
@@ -14,7 +14,7 @@ const oauth2Client = require('../utils/oauth2');
 const { getVerifyEmail, createTransport } = require('../utils/nodemailer');
 
 exports.signUp = catchAsync(async (req, res, next) => {
-    const { email, phoneNumber, password, fullName } = req.body;
+    const { email, phoneNumber, password, username } = req.body;
 
     // Check for email duplicated
     const emailAccount = await accountModel.getByEmail(email);
@@ -38,13 +38,14 @@ exports.signUp = catchAsync(async (req, res, next) => {
     // Send each mail with different time to prevent the html being trimmed by Gmail
     const url = `${req.protocol}://${req.get('host')}/api/users`;
     const mailOption = getVerifyEmail(email, url, verifyToken);
-    await createTransport().sendMail(mailOption);
+    const transport = await createTransport();
+    await transport.sendMail(mailOption);
 
     // Create entity to insert to DB
     const entity = {
         email,
         phoneNumber,
-        fullName,
+        username,
         password: encryptedPassword,
         verified: 1,
         token: verifyToken,

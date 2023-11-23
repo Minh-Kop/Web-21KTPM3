@@ -4,7 +4,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
 const { createUploader } = require('../utils/cloudinary');
-const config = require('../config');
+const config = require('../config/config');
 const { encryptPassword } = require('../utils/crypto');
 
 const createAvatarName = async (req, file) => {

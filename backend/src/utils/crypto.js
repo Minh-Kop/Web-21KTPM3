@@ -1,5 +1,5 @@
 const CryptoJS = require('crypto-js');
-const config = require('../config');
+const config = require('../config/config');
 
 /**
  * Sign the message using secret key by HmacSHA256

@@ -2,7 +2,7 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 
-const config = require('../config');
+const config = require('../config/config');
 const AppError = require('./appError');
 
 cloudinary.config(config.COULDINARY_CONFIG);

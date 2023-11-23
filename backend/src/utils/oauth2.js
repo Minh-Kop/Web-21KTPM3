@@ -1,7 +1,7 @@
 const { OAuth2Client } = require('google-auth-library');
 // const { google } = require('googleapis');
 
-const config = require('../config');
+const config = require('../config/config');
 
 // const redirectUri = 'https://developers.google.com/oauthplayground';
 

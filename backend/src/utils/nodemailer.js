@@ -1,12 +1,11 @@
 const nodemailer = require('nodemailer');
 const moment = require('moment');
 
-const config = require('../config');
+const config = require('../config/config');
 const oauthClient = require('./oauth2');
 
-const accessToken = oauthClient.getAccessToken();
-
-const createTransport = () => {
+const createTransport = async () => {
+    const accessToken = await oauthClient.getAccessToken();
     return nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -16,34 +15,36 @@ const createTransport = () => {
             clientSecret: config.GOOGLE_CLIENT_SECRET,
             refreshToken: config.GOOGLE_REFRESH_TOKEN,
             accessToken: accessToken.token,
+            // accessToken,
         },
     });
 };
 
 const getVerifyEmail = (toEmail, url, verifyToken) => {
     return {
-        from: `Hachiko <${config.GMAIL_USERNAME}>`,
+        from: `Fabook <${config.GMAIL_USERNAME}>`,
         to: toEmail,
-        subject: '[Hachiko] Email verification',
+        subject: '[Fabook] Email verification',
         html: `
         <div style="
-            text-align: center; 
+            text-align: center;
             height: 256px;
             width: 512px;
-            background-color: hsl(125, 29%, 75%); 
-            padding: 2em; 
+            background-color: hsl(125, 29%, 75%);
+            padding: 2em;
             justify-content: center;"
         >
-            <h1>Hachiko Shop</h1>
+            <h1>Fabook Shop</h1>
             <h3>Thank you for registering</h3>
             <div>
                 <a href="${url}/verify/${verifyToken}">
                     <button style="
-                        font-weight: bold; 
-                        padding: 2em; 
-                        background-color: #18aeac; 
-                        color: #fff; 
-                        width: 512px; 
+                        cursor: pointer;
+                        font-weight: bold;
+                        padding: 2em;
+                        background-color: #18aeac;
+                        color: #fff;
+                        width: 512px;
                         border: none;"
                     >
                         Click here to activate your account
@@ -57,9 +58,9 @@ const getVerifyEmail = (toEmail, url, verifyToken) => {
 
 const getOrderEmail = (toEmail, orderId, variants, basicInfo) => {
     return {
-        from: `Hachiko <${config.GMAIL_USERNAME}>`,
+        from: `Fabook <${config.GMAIL_USERNAME}>`,
         to: toEmail,
-        subject: '[Hachiko] Placing order',
+        subject: '[Fabook] Placing order',
         html: `
         <div style="
             text-align: center; 
@@ -68,7 +69,7 @@ const getOrderEmail = (toEmail, orderId, variants, basicInfo) => {
             padding: 2em; 
             justify-content: center;"
         >
-            <h1>Hachiko Shop</h1>
+            <h1>Fabook Shop</h1>
             <h3>Thank you for placing order</h3>
             <div style="text-align: left; margin-bottom: 5px; width: full;">
                 <div>Your order has been placed with the following information:</div>

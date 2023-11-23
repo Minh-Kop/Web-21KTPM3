@@ -1,31 +1,32 @@
-use DB_hachiko
+use fabook_db
 
-go
 IF OBJECT_ID('f_CreateCartId') IS NOT NULL
 	DROP FUNCTION f_CreateCartId
 GO
-CREATE FUNCTION f_CreateCartId()
-returns CHAR(10)
+CREATE FUNCTION f_CreateCartId(
+    @abbreviation char(2)
+)
+returns CHAR(5)
     BEGIN
         DECLARE @i INT = 1
-        DECLARE @id char(10) = 'CR00000001'
+        DECLARE @id char(5) = @abbreviation + '001'
         WHILE(EXISTS(SELECT 1
                     FROM CART
                     WHERE CART_ID = @id))
         BEGIN
             SET @i += 1
-            SET @id = 'CR' + REPLICATE('0', 8 - LEN(@i)) + CAST(@i AS CHAR(8))
+            SET @id = @abbreviation + REPLICATE('0', 3 - LEN(@i)) + CAST(@i AS CHAR(3))
         END
         return @id
     END
-
 GO
+
 IF OBJECT_ID('sp_GetBookByCartId') IS NOT NULL
 	DROP PROC sp_GetBookByCartId
 GO
 CREATE PROCEDURE sp_GetBookByCartId (
-    @cartId char(10), 
-    @bookId CHAR(7)
+    @cartId char(5), 
+    @bookId CHAR(5)
 )
 AS
 BEGIN TRANSACTION
@@ -49,8 +50,8 @@ IF OBJECT_ID('sp_AddBookToCart') IS NOT NULL
 	DROP PROC sp_AddBookToCart
 GO
 CREATE PROCEDURE sp_AddBookToCart (
-    @cartId char(10), 
-    @bookId CHAR(7), 
+    @cartId char(5), 
+    @bookId CHAR(5), 
     @quantity int,
     @isClicked BIT
 )
@@ -91,7 +92,7 @@ IF OBJECT_ID('sp_UpdateCartQuantityCartTotal') IS NOT NULL
 	DROP PROC sp_UpdateCartQuantityCartTotal
 GO
 CREATE PROCEDURE sp_UpdateCartQuantityCartTotal (
-    @cartId char(10)
+    @cartId char(5)
 )
 AS
 BEGIN TRANSACTION
@@ -127,8 +128,8 @@ IF OBJECT_ID('sp_UpdateCart') IS NOT NULL
 	DROP PROC sp_UpdateCart
 GO
 CREATE PROCEDURE sp_UpdateCart (
-    @cartId char(10), 
-    @bookId CHAR(7), 
+    @cartId char(5), 
+    @bookId CHAR(5), 
     @quantity int,
     @isClicked BIT
 )
@@ -181,8 +182,8 @@ IF OBJECT_ID('sp_DeleteBookFromCart') IS NOT NULL
 	DROP PROC sp_DeleteBookFromCart
 GO
 CREATE PROCEDURE sp_DeleteBookFromCart (
-    @cartId char(10), 
-    @bookId CHAR(7)
+    @cartId char(5), 
+    @bookId CHAR(5)
 )
 AS
 BEGIN TRANSACTION
@@ -204,8 +205,8 @@ IF OBJECT_ID('sp_DeleteClickedBooksFromCart') IS NOT NULL
 	DROP PROC sp_DeleteClickedBooksFromCart
 GO
 CREATE PROCEDURE sp_DeleteClickedBooksFromCart (
-    @email NVARCHAR(100),
-    @orderId CHAR(7)
+    @userId CHAR(5),
+    @orderId CHAR(5)
 )
 AS
 BEGIN TRANSACTION
@@ -215,25 +216,16 @@ BEGIN TRANSACTION
         SET ORDER_DATE = GETDATE()
         WHERE ORDER_ID = @orderId
 
-        -- Update user's HPoint if he/she used
-        DECLARE @hPoint INT = (SELECT HPOINTS_REDEEMED from H_ORDER where ORDER_ID = @orderId)
-        IF @hPoint is NOT NULL
-        BEGIN
-            UPDATE ACCOUNT_DETAIL
-            set HPOINT = 0
-            where EMAIL = @email
-        END
-
         -- Delete user's vouchers
-        DELETE from USER_VOUCHER where EMAIL = @email and VOUCHER_ID IN (select uv.VOUCHER_ID 
-                                                                        from USER_VOUCHER uv join ORDER_VOUCHER ov on ov.VOUCHER_ID = uv.VOUCHER_ID 
-                                                                        where ORDER_ID = @orderId)
+        DELETE from USER_VOUCHER where USERID = @userId and VOUCHER_ID IN (select uv.VOUCHER_ID 
+                                                                            from USER_VOUCHER uv join ORDER_VOUCHER ov on ov.VOUCHER_ID = uv.VOUCHER_ID 
+                                                                            where ORDER_ID = @orderId)
 
         -- Delete each book in cart
-        DECLARE @cartId CHAR(10) = (select CART_ID from CART where EMAIL = @email)
+        DECLARE @cartId CHAR(5) = (select CART_ID from CART where USERID = @userId)
         WHILE EXISTS (select 1 from CART_DETAIL where CART_ID = @cartId and IS_CLICKED = 1)
         BEGIN
-            declare @bookId CHAR(7), @quantity INT
+            declare @bookId CHAR(5), @quantity INT
             SELECT @bookId = BOOK_ID, @quantity = CART_QUANTITY 
             from CART_DETAIL 
             where CART_ID = @cartId and IS_CLICKED = 1
