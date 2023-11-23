@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     22/11/2023 11:42:06 pm                       */
+/* Created on:     23/11/2023 5:46:42 pm                        */
 /*==============================================================*/
 -- USE master
 -- go
@@ -610,12 +610,12 @@ go
 /*==============================================================*/
 create table ACCOUNT (
    USERID               char(5)              not null,
-   USERNAME             varchar(50)          null,
-   EMAIL                varchar(100)         not null,
-   FULLNAME             varchar(50)          null,
+   USERNAME             nvarchar(50)          null,
+   EMAIL                nvarchar(100)         not null,
+   FULLNAME             nvarchar(50)          null,
    PHONE_NUMBER         char(10)             null,
-   ENC_PWD              varchar(300)         null,
-   AVATAR_PATH          varchar(500)         null,
+   ENC_PWD              nvarchar(300)         null,
+   AVATAR_PATH          nvarchar(500)         null,
    HROLE                int                  null,
    VERIFIED             bit                  null,
    TOKEN                char(64)             null,
@@ -631,7 +631,7 @@ go
 /*==============================================================*/
 create table AUTHOR (
    AUTHOR_ID            char(5)              not null,
-   AUTHOR_NAME          varchar(50)          null,
+   AUTHOR_NAME          nvarchar(50)          null,
    constraint PK_AUTHOR primary key nonclustered (AUTHOR_ID)
 )
 go
@@ -642,7 +642,7 @@ go
 create table BOOK (
    BOOK_ID              char(5)              not null,
    CATE_ID              char(5)              not null,
-   BOOK_NAME            varchar(100)         null,
+   BOOK_NAME            nvarchar(100)         null,
    BOOK_PRICE           int                  null,
    DISCOUNTED_NUMBER    int                  null,
    BOOK_DISCOUNTED_PRICE int                  null,
@@ -669,11 +669,12 @@ go
 create table BOOK_DETAIL (
    BOOK_ID              char(5)              not null,
    PUB_ID               char(5)              not null,
-   BOOK_FORMAT          varchar(50)          null,
+   BOOK_FORMAT          nvarchar(50)          null,
    PUBLISHED_YEAR       int                  null,
    NUMBER_PAGE          int                  null,
+   DIMENSIONS           nvarchar(30)          null,
    BOOK_WEIGHT          int                  null,
-   BOOK_DESC            varchar(2000)        null,
+   BOOK_DESC            nvarchar(2000)        null,
    constraint PK_BOOK_DETAIL primary key (BOOK_ID)
 )
 go
@@ -692,7 +693,7 @@ go
 create table BOOK_IMAGES (
    BOOK_ID              char(5)              not null,
    IMAGE_ID             int                  not null,
-   BOOK_PATH            varchar(500)         null,
+   BOOK_PATH            nvarchar(500)         null,
    constraint PK_BOOK_IMAGES primary key nonclustered (BOOK_ID, IMAGE_ID)
 )
 go
@@ -760,7 +761,7 @@ go
 create table CATEGORY (
    CATE_ID              char(5)              not null,
    PARENT_ID            char(5)              null,
-   CATE_NAME            varchar(50)          null,
+   CATE_NAME            nvarchar(50)          null,
    constraint PK_CATEGORY primary key nonclustered (CATE_ID)
 )
 go
@@ -779,7 +780,7 @@ go
 create table DISTRICT (
    DIST_ID              char(5)              not null,
    PROV_ID              char(5)              not null,
-   DIST_NAME            varchar(50)          null,
+   DIST_NAME            nvarchar(50)          null,
    constraint PK_DISTRICT primary key nonclustered (DIST_ID)
 )
 go
@@ -861,7 +862,7 @@ create table ORDER_REVIEW (
    ORDER_ID             char(5)              not null,
    BOOK_ID              char(5)              not null,
    RATING               int                  null,
-   REVIEW               varchar(800)         null,
+   REVIEW               nvarchar(800)         null,
    CREATED_TIME         datetime             null,
    constraint PK_ORDER_REVIEW primary key (ORDER_ID, BOOK_ID)
 )
@@ -933,7 +934,7 @@ go
 /*==============================================================*/
 create table PROVINCE (
    PROV_ID              char(5)              not null,
-   PROV_NAME            varchar(100)         null,
+   PROV_NAME            nvarchar(100)         null,
    constraint PK_PROVINCE primary key nonclustered (PROV_ID)
 )
 go
@@ -943,7 +944,7 @@ go
 /*==============================================================*/
 create table PUBLISHER (
    PUB_ID               char(5)              not null,
-   PUB_NAME             varchar(50)          null,
+   PUB_NAME             nvarchar(50)          null,
    constraint PK_PUBLISHER primary key nonclustered (PUB_ID)
 )
 go
@@ -957,9 +958,9 @@ create table SHIPPING_ADDRESS (
    DIST_ID              char(5)              not null,
    WARD_ID              char(5)              not null,
    PROV_ID              char(5)              not null,
-   DETAILED_ADDR        varchar(100)         null,
+   DETAILED_ADDR        nvarchar(100)         null,
    IS_DEFAULT           bit                  null,
-   RECEIVER_NAME        varchar(60)          null,
+   RECEIVER_NAME        nvarchar(60)          null,
    RECEIVER_PHONE       char(10)             null,
    LATITUDE             float                null,
    LONGITUDE            float                null,
@@ -1055,7 +1056,7 @@ go
 /*==============================================================*/
 create table VOUCHER_TYPE (
    VOUCHER_TYPE_ID      char(5)              not null,
-   VOUCHER_TYPE         varchar(100)         null,
+   VOUCHER_TYPE         nvarchar(100)         null,
    constraint PK_VOUCHER_TYPE primary key nonclustered (VOUCHER_TYPE_ID)
 )
 go
@@ -1066,7 +1067,7 @@ go
 create table WARD (
    WARD_ID              char(5)              not null,
    DIST_ID              char(5)              not null,
-   WARD_NAME            varchar(50)          null,
+   WARD_NAME            nvarchar(50)          null,
    constraint PK_WARD primary key nonclustered (WARD_ID)
 )
 go

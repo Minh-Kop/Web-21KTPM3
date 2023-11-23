@@ -64,9 +64,9 @@ go
 create table ACCOUNT (
    ACCOUNTID            char(5)              not null,
    BALANCE              float                null,
-   FULL_NAME            varchar(100)         null,
+   FULL_NAME            nvarchar(100)         null,
    CREATED_TIME         datetime             null,
-   ENC_PWD              varchar(300)         null,
+   ENC_PWD              nvarchar(300)         null,
    constraint PK_ACCOUNT primary key nonclustered (ACCOUNTID)
 )
 go
@@ -80,8 +80,8 @@ create table "TRANSACTION" (
    PAYEE                char(5)              not null,
    CHANGED_TIME         datetime             null,
    CHANGED_MONEY        int                  null,
-   CHANGED_REASON       varchar(100)         null,
-   TRANS_STATE          varchar(20)          null,
+   CHANGED_REASON       nvarchar(100)         null,
+   TRANS_STATE          nvarchar(20)          null,
    constraint PK_TRANSACTION primary key nonclustered (TRANSACTIONID)
 )
 go
