@@ -28,7 +28,7 @@ const createUploader = (folder, publicId) => {
     });
 
     const uploader = multer({
-        storage: storage,
+        storage,
         fileFilter: multerFilter,
     });
     return uploader;

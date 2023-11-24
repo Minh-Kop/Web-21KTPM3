@@ -25,7 +25,7 @@ BEGIN
     if UPDATE(ENC_PWD)
     BEGIN
         UPDATE ACCOUNT
-        SET PASSWORDCHANGEDAT = DATEADD(second, -1, GETDATE())
+        SET PASSWORD_CHANGED_AT = DATEADD(second, -1, GETDATE())
         FROM ACCOUNT a
         JOIN inserted i ON a.EMAIL = i.EMAIL;
     END

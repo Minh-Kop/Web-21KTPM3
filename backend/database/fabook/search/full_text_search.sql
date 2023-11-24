@@ -1,4 +1,4 @@
-USE DB_hachiko;
+USE fabook_db;
 GO
 DROP FULLTEXT INDEX ON book
 go

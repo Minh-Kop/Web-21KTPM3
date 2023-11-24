@@ -1,5 +1,5 @@
-use DB_hachiko
-go
+use fabook_db
+
 IF OBJECT_ID('f_CreateAuthorId') IS NOT NULL
 	DROP FUNCTION f_CreateAuthorId
 GO
@@ -17,8 +17,8 @@ returns CHAR(4)
         END
         return @id
     END
-
 GO
+
 IF OBJECT_ID('sp_CreateAuthor') IS NOT NULL
 	DROP PROC sp_CreateAuthor
 GO

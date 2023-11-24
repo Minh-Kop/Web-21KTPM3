@@ -19,7 +19,6 @@ const getListCategoryId = async (categoryId) => {
     if (!categoryId) {
         return null;
     }
-
     const category = await categoryModel.getAllCategory();
     const categoryTree = buildCategoryRoot(category);
     const selectedNode = searchCategoryTree(categoryTree, categoryId);
@@ -89,18 +88,23 @@ exports.getAllBooks = catchAsync(async (req, res, next) => {
         limit,
         offset,
     });
-    const books = resultBooks.map((item) => {
-        return {
-            bookId: item.BOOK_ID,
-            bookName: item.BOOK_NAME,
-            originalPrice: item.BOOK_PRICE,
-            discountedPrice: item.BOOK_DISCOUNTED_PRICE,
-            discountedNumber: item.DISCOUNTED_NUMBER,
-            avgRating: item.AVG_RATING,
-            countRating: item.COUNT_RATING,
-            image: item.BOOK_PATH,
-        };
-    });
+
+    const books = await Promise.all(
+        resultBooks.map(async (item) => {
+            const bookId = item.BOOK_ID;
+            const { image } = await bookModel.getCoverImage(bookId);
+            return {
+                bookId,
+                bookName: item.BOOK_NAME,
+                originalPrice: item.BOOK_PRICE,
+                discountedPrice: item.BOOK_DISCOUNTED_PRICE,
+                discountedNumber: item.DISCOUNTED_NUMBER,
+                avgRating: item.AVG_RATING,
+                countRating: item.COUNT_RATING,
+                image,
+            };
+        }),
+    );
 
     // SEND RESPONSE
     res.status(200).json({
@@ -118,11 +122,21 @@ exports.getRelatedBooks = catchAsync(async (req, res, next) => {
     limit = +limit || 12;
     const offset = (page - 1) * limit;
 
-    const books = await bookModel.getRelatedBooks({
+    let books = await bookModel.getRelatedBooks({
         bookId,
         limit,
         offset,
     });
+    books = await Promise.all(
+        books.map(async (book) => {
+            const { bookId: id } = book;
+            const { image } = await bookModel.getCoverImage(id);
+            return {
+                ...book,
+                image,
+            };
+        }),
+    );
 
     // SEND RESPONSE
     res.status(200).json({
@@ -139,10 +153,20 @@ exports.getNewestArrival = catchAsync(async (req, res, next) => {
     limit = +limit || 12;
     const offset = (page - 1) * limit;
 
-    const books = await bookModel.getNewestArrival({
+    let books = await bookModel.getNewestArrival({
         limit,
         offset,
     });
+    books = await Promise.all(
+        books.map(async (book) => {
+            const { bookId: id } = book;
+            const { image } = await bookModel.getCoverImage(id);
+            return {
+                ...book,
+                image,
+            };
+        }),
+    );
 
     // SEND RESPONSE
     res.status(200).json({
@@ -159,10 +183,20 @@ exports.getBestSeller = catchAsync(async (req, res, next) => {
     limit = +limit || 12;
     const offset = (page - 1) * limit;
 
-    const books = await bookModel.getBestSeller({
+    let books = await bookModel.getBestSeller({
         limit,
         offset,
     });
+    books = await Promise.all(
+        books.map(async (book) => {
+            const { bookId: id } = book;
+            const { image } = await bookModel.getCoverImage(id);
+            return {
+                ...book,
+                image,
+            };
+        }),
+    );
 
     // SEND RESPONSE
     res.status(200).json({
@@ -184,7 +218,6 @@ exports.getBook = catchAsync(async (req, res, next) => {
     const images = imageList.map((item) => ({
         id: item.IMAGE_ID,
         path: item.BOOK_PATH,
-        filename: item.BOOK_FILENAME,
     }));
 
     const category = await categoryModel.getAllCategory();
@@ -197,9 +230,7 @@ exports.getBook = catchAsync(async (req, res, next) => {
             bookId: returnedBook.BOOK_ID,
             bookName: returnedBook.BOOK_NAME,
             category: selectedBranch,
-            mainImage: returnedBook.BOOK_PATH,
-            mainImageFilename: returnedBook.BOOK_FILENAME,
-            otherImages: images,
+            images: images,
             originalPrice: returnedBook.BOOK_PRICE,
             discountedNumber: returnedBook.DISCOUNTED_NUMBER,
             discountedPrice: returnedBook.BOOK_DISCOUNTED_PRICE,
@@ -210,6 +241,7 @@ exports.getBook = catchAsync(async (req, res, next) => {
             publisher: returnedBook.PUB_NAME,
             publishedYear: returnedBook.PUBLISHED_YEAR,
             weight: returnedBook.BOOK_WEIGHT,
+            dimensions: returnedBook.DIMENSIONS.replace(/\?/g, '✖'),
             numberPage: returnedBook.NUMBER_PAGE,
             bookFormat: returnedBook.BOOK_FORMAT,
             description: returnedBook.BOOK_DESC,
@@ -228,6 +260,7 @@ exports.createBook = catchAsync(async (req, res, next) => {
         publisherId,
         publishedYear,
         weight,
+        dimensions,
         numberPage,
         bookFormat,
         description,
@@ -240,7 +273,7 @@ exports.createBook = catchAsync(async (req, res, next) => {
     }
     // Miss cover image
     if (!coverImage) {
-        Promise.all(
+        await Promise.all(
             images.map(async (el) => {
                 await deleteCloudinaryImage(el.filename);
             }),
@@ -249,7 +282,7 @@ exports.createBook = catchAsync(async (req, res, next) => {
     }
     // Miss sub image
     if (!images) {
-        deleteCloudinaryImage(coverImage[0].filename);
+        await deleteCloudinaryImage(coverImage[0].filename);
         return next(new AppError("Missing book's sub image!", 400));
     }
 
@@ -263,13 +296,14 @@ exports.createBook = catchAsync(async (req, res, next) => {
         !authorId ||
         !publisherId ||
         !weight ||
+        !dimensions ||
         !numberPage ||
         !bookFormat ||
         !description ||
         !publishedYear
     ) {
         await deleteCloudinaryImage(coverImage[0].filename);
-        Promise.all(
+        await Promise.all(
             images.map(async (el) => {
                 await deleteCloudinaryImage(el.filename);
             }),
@@ -289,7 +323,7 @@ exports.createBook = catchAsync(async (req, res, next) => {
     // Number < 0
     if (originalPrice < 0 || discountedNumber < 0 || stock < 0 || weight < 0) {
         await deleteCloudinaryImage(coverImage[0].filename);
-        Promise.all(
+        await Promise.all(
             images.map(async (el) => {
                 await deleteCloudinaryImage(el.filename);
             }),
@@ -298,17 +332,15 @@ exports.createBook = catchAsync(async (req, res, next) => {
     }
 
     // Limit some image properties
-    coverImage = {
-        path: coverImage[0].path,
-        filename: coverImage[0].filename,
-    };
     images = images.map((item) => ({
         path: item.path,
-        filename: item.filename,
     }));
+    images.unshift({
+        path: coverImage[0].path,
+    });
 
     // Create entity to insert to database
-    const bookEntity = {
+    const bookId = await bookModel.createBook({
         categoryId,
         bookName,
         originalPrice,
@@ -319,13 +351,13 @@ exports.createBook = catchAsync(async (req, res, next) => {
         publisherId,
         publishedYear,
         weight,
+        dimensions,
         numberPage,
         bookFormat,
         description,
-    };
-    const bookId = await bookModel.createBook(bookEntity);
+    });
 
-    // Insert sub images
+    // Insert images
     await bookModel.insertImages(bookId, images);
 
     res.status(200).json({

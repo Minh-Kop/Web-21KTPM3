@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     23/11/2023 5:46:42 pm                        */
+/* Created on:     23/11/2023 10:32:52 pm                       */
 /*==============================================================*/
 -- USE master
 -- go
@@ -641,7 +641,7 @@ go
 /*==============================================================*/
 create table BOOK (
    BOOK_ID              char(5)              not null,
-   CATE_ID              char(5)              not null,
+   CATE_ID              char(4)              not null,
    BOOK_NAME            nvarchar(100)         null,
    BOOK_PRICE           int                  null,
    DISCOUNTED_NUMBER    int                  null,
@@ -759,8 +759,8 @@ go
 /* Table: CATEGORY                                              */
 /*==============================================================*/
 create table CATEGORY (
-   CATE_ID              char(5)              not null,
-   PARENT_ID            char(5)              null,
+   CATE_ID              char(4)              not null,
+   PARENT_ID            char(4)              null,
    CATE_NAME            nvarchar(50)          null,
    constraint PK_CATEGORY primary key nonclustered (CATE_ID)
 )

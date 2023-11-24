@@ -10,23 +10,23 @@ exports.insertImages = async (bookId, images) => {
         `SELECT max(IMAGE_ID) as max_id from BOOK_IMAGES where BOOK_ID = '${bookId}'`,
     );
     if (maxId.recordset[0].max_id) {
-        maxId = maxId.recordset[0].max_id - 1;
+        maxId = maxId.recordset[0].max_id;
     } else {
         maxId = 0;
     }
 
-    let sqlString = `insert into BOOK_IMAGES (BOOK_ID, IMAGE_ID, BOOK_PATH, BOOK_FILENAME) values `;
+    let sqlString = `insert into BOOK_IMAGES (BOOK_ID, IMAGE_ID, BOOK_PATH) values `;
     for (let i = 0; i < images.length; i++) {
-        sqlString += `('${bookId}', ${i + maxId + 2}, '${images[i].path}', '${
-            images[i].filename
-        }')${i !== images.length - 1 ? ', ' : ''}`;
+        sqlString += `('${bookId}', ${maxId + 1 + i}, '${images[i].path}')${
+            i !== images.length - 1 ? ', ' : ''
+        }`;
     }
     const request2 = new sql.Request(pool);
     await request2.query(sqlString);
 };
 
-exports.deleteBookImage = async (imageFilename) => {
-    const sqlString = `delete from BOOK_IMAGES where BOOK_FILENAME = '${imageFilename}'`;
+exports.deleteBookImage = async (imagePath) => {
+    const sqlString = `delete from BOOK_IMAGES where BOOK_PATH = '${imagePath}'`;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
@@ -42,11 +42,19 @@ exports.getNewBookId = async () => {
 };
 
 exports.getBookImages = async (bookId) => {
-    const sqlString = `select IMAGE_ID, BOOK_PATH, BOOK_FILENAME from BOOK_IMAGES where BOOK_ID = '${bookId}'`;
+    const sqlString = `select IMAGE_ID, BOOK_PATH from BOOK_IMAGES where BOOK_ID = '${bookId}'`;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
     return result.recordset;
+};
+
+exports.getCoverImage = async (bookId) => {
+    const sqlString = `select BOOK_PATH image from BOOK_IMAGES where BOOK_ID = '${bookId}' and IMAGE_ID = 1`;
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(sqlString);
+    return result.recordset[0];
 };
 
 exports.getAllBooks = async ({
@@ -181,13 +189,13 @@ exports.createBook = async (bookEntity) => {
         categoryId,
         bookName,
         originalPrice,
-        coverImage,
         stock,
         discountedNumber,
         authorId,
         publisherId,
         publishedYear,
         weight,
+        dimensions,
         numberPage,
         bookFormat,
         description,
@@ -199,13 +207,12 @@ exports.createBook = async (bookEntity) => {
     request.input('categoryId', sql.Char, categoryId);
     request.input('bookName', sql.NVarChar, bookName);
     request.input('originalPrice', sql.Int, originalPrice);
-    request.input('imagePath', sql.NVarChar, coverImage.path);
-    request.input('imageFilename', sql.NVarChar, coverImage.filename);
     request.input('stock', sql.Int, stock);
     request.input('discountedNumber', sql.Int, discountedNumber);
     request.input('publisherId', sql.Char, publisherId);
     request.input('publishedYear', sql.Int, publishedYear);
     request.input('weight', sql.Int, weight);
+    request.input('dimensions', sql.NVarChar, dimensions);
     request.input('numberPage', sql.Int, numberPage);
     request.input('bookFormat', sql.NVarChar, bookFormat);
     request.input('description', sql.NVarChar, description);

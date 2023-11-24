@@ -60,8 +60,8 @@ const config = {
         secure: true,
     },
 
-    CLOUDINARY_PRODUCT_PATH: 'hachiko/product/',
-    CLOUDINARY_AVATAR_PATH: 'hachiko/avatar/',
+    CLOUDINARY_PRODUCT_PATH: 'fabook/products/',
+    CLOUDINARY_AVATAR_PATH: 'fabook/avatars/',
 
     JWT_EXP_TIME: 60 * 60,
     JWT_SECRET: process.env.JWT_SECRET,

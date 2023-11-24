@@ -1,4 +1,4 @@
-use DB_hachiko
+-- use fabook_db
 
 IF OBJECT_ID('f_GetSoldNumber') IS NOT NULL
 	DROP FUNCTION f_GetSoldNumber
@@ -20,16 +20,16 @@ IF OBJECT_ID('f_CreateBookId') IS NOT NULL
 	DROP FUNCTION f_CreateBookId
 GO
 CREATE FUNCTION f_CreateBookId()
-returns CHAR(7)
+returns CHAR(5)
     BEGIN
         DECLARE @i INT = 1
-        DECLARE @id char(7) = 'BK00001'
+        DECLARE @id char(5) = 'BK001'
         WHILE(EXISTS(SELECT 1
                     FROM BOOK
                     WHERE BOOK_ID = @id))
         BEGIN
             SET @i += 1
-            SET @id = 'BK' + REPLICATE('0', 5 - LEN(@i)) + CAST(@i AS CHAR(5))
+            SET @id = 'BK' + REPLICATE('0', 3 - LEN(@i)) + CAST(@i AS CHAR(3))
         END
         return @id
     END
@@ -42,25 +42,24 @@ CREATE proc sp_CreateBook (
 		@categoryId char(4),
         @bookName NVARCHAR(100),
         @originalPrice int,
-        @imagePath NVARCHAR(500),
-		@imageFilename NVARCHAR(100),
         @stock int,
         @discountedNumber int,
-        @publisherId char(7),
+        @publisherId char(5),
 		@publishedYear int,
         @weight int,
+        @dimensions NVARCHAR(30),
         @numberPage int,
         @bookFormat NVARCHAR(50),
         @description NVARCHAR(2000))
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-		DECLARE @bookId CHAR(7) = dbo.f_CreateBookId()
+		DECLARE @bookId CHAR(5) = dbo.f_CreateBookId()
 		
-		INSERT into BOOK (BOOK_ID, CATE_ID, BOOK_NAME, BOOK_PRICE, BOOK_PATH, BOOK_FILENAME, STOCK, DISCOUNTED_NUMBER, SOFT_DELETE) VALUES
-			(@bookId, @categoryId, @bookName, @originalPrice, @imagePath, @imageFilename, @stock, @discountedNumber, 0)
-		INSERT into BOOK_DETAIL (BOOK_ID, PUB_ID, BOOK_FORMAT, PUBLISHED_YEAR, NUMBER_PAGE, BOOK_WEIGHT, BOOK_DESC) VALUES
-			(@bookId, @publisherId, @bookFormat, @publishedYear, @numberPage, @weight, @description)
+		INSERT into BOOK (BOOK_ID, CATE_ID, BOOK_NAME, BOOK_PRICE, AVG_RATING, COUNT_RATINGS, STOCK, DISCOUNTED_NUMBER, ADDED_TIME, SOFT_DELETE) VALUES
+			(@bookId, @categoryId, @bookName, @originalPrice, 0, 0, @stock, @discountedNumber, GETDATE(), 0)
+		INSERT into BOOK_DETAIL (BOOK_ID, PUB_ID, BOOK_FORMAT, PUBLISHED_YEAR, NUMBER_PAGE, DIMENSIONS, BOOK_WEIGHT, BOOK_DESC) VALUES
+			(@bookId, @publisherId, @bookFormat, @publishedYear, @numberPage, @dimensions, @weight, @description)
 		
 		select @bookId as id
 	END TRY
@@ -90,10 +89,10 @@ BEGIN TRANSACTION
 			RETURN -1
 		END
 		
-		SELECT b.BOOK_ID 'bookId', b.BOOK_NAME 'bookName', b.BOOK_PATH 'image', b.BOOK_PRICE 'originalPrice', 
+		SELECT b.BOOK_ID 'bookId', b.BOOK_NAME 'bookName', b.BOOK_PRICE 'originalPrice', 
 			b.BOOK_DISCOUNTED_PRICE 'discountedPrice', cd.CART_PRICE 'cartPrice', b.STOCK 'stock', cd.CART_QUANTITY 'quantity',
 			cd.IS_CLICKED 'isClicked'
-		from CART_DETAIL cd LEFT join BOOK b on b.BOOK_ID = cd.BOOK_ID 
+		from CART_DETAIL cd LEFT join BOOK b on b.BOOK_ID = cd.BOOK_ID
 		where cd.CART_ID = @cartId and b.SOFT_DELETE = 0
 	END TRY
 
@@ -123,8 +122,7 @@ BEGIN TRANSACTION
 		where b.BOOK_ID = @bookId
 
 		SELECT b.BOOK_ID bookId, b.BOOK_NAME bookName, b.BOOK_PRICE originalPrice, b.BOOK_DISCOUNTED_PRICE discountedPrice,
-			b.DISCOUNTED_NUMBER discountedNumber, b.AVG_RATING avgRating, b.COUNT_RATING countRating, 
-			b.BOOK_PATH image
+			b.DISCOUNTED_NUMBER discountedNumber, b.AVG_RATING avgRating, b.COUNT_RATINGS countRating
 		from BOOK b join CATEGORY c on b.CATE_ID = c.CATE_ID
 		where (b.BOOK_ID <> @bookId) AND (c.CATE_ID = @cateId or c.PARENT_ID = @parentId)
 		ORDER by b.BOOK_DISCOUNTED_PRICE
@@ -151,8 +149,7 @@ AS
 BEGIN TRANSACTION
 	BEGIN TRY
 		SELECT b.BOOK_ID bookId, b.BOOK_NAME bookName, b.BOOK_PRICE originalPrice, b.BOOK_DISCOUNTED_PRICE discountedPrice,
-			b.DISCOUNTED_NUMBER discountedNumber, b.AVG_RATING avgRating, b.COUNT_RATING countRating, 
-			b.BOOK_PATH image
+			b.DISCOUNTED_NUMBER discountedNumber, b.AVG_RATING avgRating, b.COUNT_RATINGS countRating
 		from BOOK b
 		ORDER by b.ADDED_TIME DESC
 		OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
@@ -178,8 +175,7 @@ AS
 BEGIN TRANSACTION
 	BEGIN TRY
 		SELECT b.BOOK_ID bookId, b.BOOK_NAME bookName, b.BOOK_PRICE originalPrice, b.BOOK_DISCOUNTED_PRICE discountedPrice,
-			b.DISCOUNTED_NUMBER discountedNumber, b.AVG_RATING avgRating, b.COUNT_RATING countRating, 
-			b.BOOK_PATH image
+			b.DISCOUNTED_NUMBER discountedNumber, b.AVG_RATING avgRating, b.COUNT_RATINGS countRating
 		from BOOK b
 		where b.BOOK_ID IN (select od.BOOK_ID
 							from ORDER_DETAIL od join ORDER_STATE os on os.ORDER_ID = od.ORDER_ID
@@ -214,9 +210,9 @@ BEGIN TRANSACTION
 			RETURN -1
 		END
 		
-		select [b].[BOOK_ID], [b].[CATE_ID], [b].[BOOK_NAME], [b].[BOOK_PRICE], [b].[BOOK_PATH], b.BOOK_FILENAME, [b].[AVG_RATING], 
-			[b].[COUNT_RATING], [b].[STOCK], [b].[DISCOUNTED_NUMBER], [b].[BOOK_DISCOUNTED_PRICE],
-			p.PUB_NAME, [bd].[BOOK_FORMAT], [bd].[PUBLISHED_YEAR], [bd].[NUMBER_PAGE], [bd].[BOOK_WEIGHT], [bd].[BOOK_DESC],
+		select [b].[BOOK_ID], [b].[CATE_ID], [b].[BOOK_NAME], [b].[BOOK_PRICE], [b].[AVG_RATING], 
+			[b].[COUNT_RATINGS], [b].[STOCK], [b].[DISCOUNTED_NUMBER], [b].[BOOK_DISCOUNTED_PRICE],
+			p.PUB_NAME, [bd].[BOOK_FORMAT], [bd].[PUBLISHED_YEAR], [bd].[NUMBER_PAGE], bd.DIMENSIONS, [bd].[BOOK_WEIGHT], [bd].[BOOK_DESC],
 			dbo.f_GetSoldNumber(b.BOOK_ID) as 'Sold_number'
 		from BOOK b join BOOK_DETAIL bd on bd.BOOK_ID = b.BOOK_ID
 			join PUBLISHER p on p.PUB_ID = bd.PUB_ID
@@ -248,7 +244,7 @@ BEGIN TRANSACTION
             RETURN -1
         END
 		
-		SELECT od.BOOK_ID bookId, b.BOOK_NAME bookName, b.BOOK_PATH bookImage, b.BOOK_PRICE originalPrice,
+		SELECT od.BOOK_ID bookId, b.BOOK_NAME bookName, b.BOOK_PRICE originalPrice,
 			b.BOOK_DISCOUNTED_PRICE unitPrice, od.ORDER_QUANTITY amount
         from ORDER_DETAIL od join BOOK b on od.BOOK_ID = b.BOOK_ID
         where od.ORDER_ID = @orderId 
