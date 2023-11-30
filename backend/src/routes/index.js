@@ -3,6 +3,7 @@ const express = require('express');
 // const authController = require('../controllers/authController');
 const categoryRouter = require('./categoryRoutes');
 const bookRouter = require('./bookRoutes');
+const bookRouterUI = require('./bookRoutesUI');
 const userRouter = require('./userRoutes');
 // const cartRouter = require('./cartRoutes');
 // const voucherRouter = require('./voucherRoutes');
@@ -19,6 +20,7 @@ const router = express.Router();
 
 router.use('/api/category', categoryRouter);
 router.use('/api/books', bookRouter);
+router.use('/books', bookRouterUI);
 router.use('/api/users', userRouter);
 // router.use('/api/cart', authController.protect, cartRouter);
 // router.use('/api/voucher', authController.protect, voucherRouter);
