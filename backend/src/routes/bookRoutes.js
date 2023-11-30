@@ -40,6 +40,8 @@ router
     .patch(
         authController.protect,
         authController.restrictTo(config.role.ADMIN),
+        bookController.uploadBookImages,
+        bookController.updateBookImages,
         bookController.updateBook,
     )
     .delete(

@@ -24,6 +24,7 @@ const createUploader = (folder, publicId) => {
         params: {
             folder,
             public_id: publicId,
+            overwrite: true,
         },
     });
 

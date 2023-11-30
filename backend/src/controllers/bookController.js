@@ -386,7 +386,7 @@ exports.updateBookImages = catchAsync(async (req, res, next) => {
             subImages.length + uploadedSubImages.length >
             config.PRODUCT_IMAGE_NUMBER_LIMIT
         ) {
-            Promise.all(
+            await Promise.all(
                 uploadedSubImages.map(
                     async (el) => await deleteCloudinaryImage(el.filename),
                 ),
@@ -400,11 +400,7 @@ exports.updateBookImages = catchAsync(async (req, res, next) => {
         }
         await bookModel.insertImages(bookId, uploadedSubImages);
     }
-
-    res.status(200).json({
-        status: 'success',
-        bookId,
-    });
+    next();
 });
 
 exports.updateBook = catchAsync(async (req, res, next) => {
@@ -420,13 +416,15 @@ exports.updateBook = catchAsync(async (req, res, next) => {
         publisherId,
         publishedYear,
         weight,
+        dimensions,
         numberPage,
         bookFormat,
         description,
     } = req.body;
 
-    // Create entity to insert to database
-    const bookEntity = {
+    // Update to db
+    await bookModel.updateBook({
+        bookId,
         categoryId,
         bookName,
         originalPrice,
@@ -436,11 +434,11 @@ exports.updateBook = catchAsync(async (req, res, next) => {
         publisherId,
         publishedYear,
         weight,
+        dimensions,
         numberPage,
         bookFormat,
         description,
-    };
-    await bookModel.updateBook(bookId, bookEntity);
+    });
 
     res.status(200).json({
         status: 'success',
@@ -450,9 +448,9 @@ exports.updateBook = catchAsync(async (req, res, next) => {
 
 exports.deleteBookImage = catchAsync(async (req, res, next) => {
     const { bookId } = req.params;
-    const { imageFilename } = req.body;
+    const { imageFilename, imageId } = req.body;
 
-    await bookModel.deleteBookImage(imageFilename);
+    await bookModel.deleteBookImage({ bookId, imageId });
     const result = await deleteCloudinaryImage(imageFilename);
     if (!result) {
         return next(

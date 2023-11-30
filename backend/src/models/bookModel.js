@@ -25,8 +25,8 @@ exports.insertImages = async (bookId, images) => {
     await request2.query(sqlString);
 };
 
-exports.deleteBookImage = async (imagePath) => {
-    const sqlString = `delete from BOOK_IMAGES where BOOK_PATH = '${imagePath}'`;
+exports.deleteBookImage = async ({ bookId, imageId }) => {
+    const sqlString = `delete from BOOK_IMAGES where book_id = '${bookId}' and image_id = ${imageId}`;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
@@ -42,7 +42,7 @@ exports.getNewBookId = async () => {
 };
 
 exports.getBookImages = async (bookId) => {
-    const sqlString = `select IMAGE_ID, BOOK_PATH from BOOK_IMAGES where BOOK_ID = '${bookId}'`;
+    const sqlString = `select IMAGE_ID, BOOK_PATH from BOOK_IMAGES where BOOK_ID = '${bookId}' order by IMAGE_ID`;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
@@ -235,8 +235,9 @@ exports.createBook = async (bookEntity) => {
     return bookId;
 };
 
-exports.updateBook = async (bookId, bookEntity) => {
+exports.updateBook = async (bookEntity) => {
     const {
+        bookId,
         categoryId,
         bookName,
         originalPrice,
@@ -246,6 +247,7 @@ exports.updateBook = async (bookId, bookEntity) => {
         publisherId,
         publishedYear,
         weight,
+        dimensions,
         numberPage,
         bookFormat,
         description,
@@ -298,6 +300,10 @@ exports.updateBook = async (bookId, bookEntity) => {
     if (weight) {
         checkBookDetail = true;
         sqlStringBookDetail += `BOOK_WEIGHT = ${+weight},`;
+    }
+    if (dimensions) {
+        checkBookDetail = true;
+        sqlStringBookDetail += `dimensions = '${dimensions}',`;
     }
     if (numberPage) {
         checkBookDetail = true;
