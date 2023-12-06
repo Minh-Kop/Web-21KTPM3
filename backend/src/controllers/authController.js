@@ -71,14 +71,14 @@ exports.verify = catchAsync(async (req, res, next) => {
     return next(new AppError('Verification code is not found.', 400));
 });
 
-const signToken = (email) => {
-    return jwt.sign({ email }, config.JWT_SECRET, {
+const signToken = (userId) => {
+    return jwt.sign({ userId }, config.JWT_SECRET, {
         expiresIn: config.JWT_EXPIRES_IN,
     });
 };
 
 const createSendToken = (user, statusCode, req, res) => {
-    const token = signToken(user.email);
+    const token = signToken(user.userId);
 
     res.cookie('jwt', token, {
         maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
@@ -130,10 +130,10 @@ exports.login = catchAsync(async (req, res, next) => {
     }
 
     const returnAccount = {
+        userId: account.USERID,
         email: account.EMAIL,
         phoneNumber: account.PHONE_NUMBER,
         fullName: account.FULLNAME,
-        avatar: account.AVATAR_PATH,
         verified,
     };
 
@@ -197,7 +197,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
     // 3) Check if user still exists
-    let currentUser = await accountModel.getByEmail(decoded.email);
+    let currentUser = await accountModel.getByUserId(decoded.userId);
     if (!currentUser) {
         return next(
             new AppError(
@@ -208,12 +208,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
 
     currentUser = {
+        userId: currentUser.USERID,
         email: currentUser.EMAIL,
-        fullName: currentUser.FULLNAME,
+        username: currentUser.USERNAME,
         phoneNumber: currentUser.PHONE_NUMBER,
         password: currentUser.ENC_PWD,
-        avatarPath: currentUser.AVATAR_PATH,
-        avatarFilename: currentUser.AVATAR_FILENAME,
         passwordChangedAt: currentUser.PASSWORDCHANGEDAT,
         role: currentUser.HROLE,
     };

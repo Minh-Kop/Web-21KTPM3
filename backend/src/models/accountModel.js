@@ -3,6 +3,14 @@ const sql = require('mssql');
 
 const database = require('../utils/database');
 
+exports.getByUserId = async (userId) => {
+    const sqlString = `select * from ACCOUNT where userId = '${userId}'`;
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(sqlString);
+    return result.recordset[0];
+};
+
 exports.getByEmail = async (email) => {
     const sqlString = `select * from ACCOUNT where EMAIL = '${email}'`;
     const pool = await database.getConnectionPool();
