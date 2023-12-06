@@ -42,7 +42,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     await transport.sendMail(mailOption);
 
     // Create entity to insert to DB
-    const entity = {
+    await accountModel.createAccount({
         email,
         phoneNumber,
         username,
@@ -50,8 +50,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
         verified: 1,
         token: verifyToken,
         role: config.role.USER,
-    };
-    await accountModel.createAccount(entity);
+    });
 
     res.status(200).json({
         status: 'success',
