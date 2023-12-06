@@ -4,9 +4,9 @@ const bookModel = require('../models/bookModel');
 const cartModel = require('../models/cartModel');
 
 exports.getCart = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
-
-    const cartResult = await cartModel.getCartByEmail(email);
+    const { userId } = req.user;
+    const cartResult = await cartModel.getCartByUserId(userId);
+    
     const {
         CART_ID: cartId,
         CART_COUNT: cartCount,
@@ -27,10 +27,10 @@ exports.getCart = catchAsync(async (req, res, next) => {
 });
 
 exports.addBookToCart = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
     const { bookId, quantity, isClicked } = req.body;
 
-    const cartResult = await cartModel.getCartByEmail(email);
+    const cartResult = await cartModel.getCartByUserId(userId);
     const { CART_ID: cartId } = cartResult;
 
     const book = await bookModel.getBookById(bookId);
