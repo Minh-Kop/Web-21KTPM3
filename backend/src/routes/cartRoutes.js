@@ -1,14 +1,14 @@
 const express = require('express');
 
-const cart = require('../controllers/cartController');
+const cartController = require('../controllers/cartController');
 
 const router = express.Router();
 
-router.route('/').get(cart.getCart).post(cart.addBookToCart);
+router.route('/').get(cartController.getCart).post(cartController.addBookToCart);
 
 router
     .route('/:bookId')
-    .patch(cart.updateBookInCart)
-    .delete(cart.deleteBookFromCart);
+    .patch(cartController.updateBookInCart)
+    .delete(cartController.deleteBookFromCart);
 
 module.exports = router;
