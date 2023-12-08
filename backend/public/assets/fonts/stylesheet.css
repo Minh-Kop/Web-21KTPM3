@@ -33,3 +33,96 @@
     font-style: normal;
     font-display: swap;
 }
+
+/* 
+========= Hahmlet =========
+*/
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-ExtraBold.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-Black.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-Bold.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-ExtraLight.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-Medium.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-Light.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-Regular.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-SemiBold.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Hahmlet';
+    src:
+        url('Hahmlet/Hahmlet-Thin.woff2') format('woff2'),
+        url('Hahmlet/Hahmlet-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
