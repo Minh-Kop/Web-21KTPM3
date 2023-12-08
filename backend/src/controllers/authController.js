@@ -286,11 +286,13 @@ exports.restrictTo = (...roles) => {
 exports.getLoginPage = catchAsync(async (req, res, next) => {
     res.render('authentication/login', {
         title: 'Login',
+        mainCSS: () => 'empty',
     });
 });
 
 exports.getSignupPage = catchAsync(async (req, res, next) => {
     res.render('authentication/signup', {
         title: 'Sign up',
+        mainCSS: () => 'empty',
     });
 });

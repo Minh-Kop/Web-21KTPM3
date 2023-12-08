@@ -41,6 +41,7 @@ const sendErrorDev = (err, req, res) => {
     console.log('ERROR: ', err);
     return res.status(err.statusCode).render('error', {
         title: 'Error',
+        mainCSS: () => 'empty',
         statusCode: err.statusCode,
         description: err.message,
     });
