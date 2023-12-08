@@ -1,6 +1,7 @@
 const express = require('express');
 
 const authController = require('../controllers/authController');
+const authRoutes = require('./authRoutes');
 const categoryRouter = require('./categoryRoutes');
 const bookRouter = require('./bookRoutes');
 const bookRouterUI = require('./bookRoutesUI');
@@ -18,6 +19,7 @@ const cartRouter = require('./cartRoutes');
 
 const router = express.Router();
 
+router.use('/', authRoutes);
 router.use('/api/category', categoryRouter);
 router.use('/api/books', bookRouter);
 router.use('/books', bookRouterUI);

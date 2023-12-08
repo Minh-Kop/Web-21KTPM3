@@ -19,6 +19,14 @@ exports.getByEmail = async (email) => {
     return result.recordset[0];
 };
 
+exports.getByUsername = async (username) => {
+    const sqlString = `select * from ACCOUNT where username = '${username}'`;
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(sqlString);
+    return result.recordset[0];
+};
+
 exports.getByPhone = async (phoneNumber) => {
     const sqlString = `select * from ACCOUNT where PHONE_NUMBER = '${phoneNumber}'`;
     const pool = await database.getConnectionPool();
@@ -40,7 +48,6 @@ exports.getDetailedUser = async (userEntity) => {
 
 exports.createAccount = async ({
     email,
-    phoneNumber,
     username,
     password,
     verified,
@@ -50,7 +57,6 @@ exports.createAccount = async ({
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     request.input('email', sql.NVarChar, email);
-    request.input('phoneNumber', sql.Char, phoneNumber);
     request.input('username', sql.NVarChar, username);
     request.input('password', sql.NVarChar, password);
     request.input('verified', sql.Bit, verified);
