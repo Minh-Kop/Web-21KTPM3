@@ -40,8 +40,9 @@ const sendErrorDev = (err, req, res) => {
     // B) RENDERED WEBSITE
     console.log('ERROR: ', err);
     return res.status(err.statusCode).render('error', {
-        title: 'Something went wrong!',
-        message: err.message,
+        title: 'Error',
+        statusCode: err.statusCode,
+        description: err.message,
     });
 };
 
