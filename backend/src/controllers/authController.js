@@ -14,18 +14,18 @@ const oauth2Client = require('../utils/oauth2');
 const { getVerifyEmail, createTransport } = require('../utils/nodemailer');
 
 exports.signUp = catchAsync(async (req, res, next) => {
-    const { email, phoneNumber, password, username } = req.body;
+    const { email, password, username } = req.body;
+
+    // Check for username duplicated
+    const account = await accountModel.getByUsername(username);
+    if (account) {
+        return next(new AppError('Username already exists.', 400));
+    }
 
     // Check for email duplicated
     const emailAccount = await accountModel.getByEmail(email);
     if (emailAccount) {
         return next(new AppError('Email already exists.', 400));
-    }
-
-    // Check for phone number duplicated
-    const phoneNumberAccount = await accountModel.getByPhone(phoneNumber);
-    if (phoneNumberAccount) {
-        return next(new AppError('Phone number is already used.', 400));
     }
 
     // 256 bits which provides about 1e+77 possible different number
@@ -43,9 +43,8 @@ exports.signUp = catchAsync(async (req, res, next) => {
 
     // Create entity to insert to DB
     await accountModel.createAccount({
-        email,
-        phoneNumber,
         username,
+        email,
         password: encryptedPassword,
         verified: 1,
         token: verifyToken,
@@ -97,30 +96,30 @@ const createSendToken = (user, statusCode, req, res) => {
 };
 
 exports.login = catchAsync(async (req, res, next) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     // Check if email and password exist
-    if (!email || !password) {
+    if (!username || !password) {
         return next(
-            new AppError('Please provide both email and password!', 400),
+            new AppError('Please provide both username and password!', 400),
         );
     }
 
-    // Check for correct email
-    const account = await accountModel.getByEmail(email);
+    // Check for correct username
+    const account = await accountModel.getByUsername(username);
     if (!account) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Get the database password
     const encryptedPassword = account.ENC_PWD;
     if (!encryptedPassword) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Check the correctness of password
     if (!verifyPassword(password, encryptedPassword)) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Handle account not verified
@@ -283,3 +282,15 @@ exports.restrictTo = (...roles) => {
         next();
     };
 };
+
+exports.getLoginPage = catchAsync(async (req, res, next) => {
+    res.render('authentication/login', {
+        title: 'Login',
+    });
+});
+
+exports.getSignupPage = catchAsync(async (req, res, next) => {
+    res.render('authentication/signup', {
+        title: 'Sign up',
+    });
+});

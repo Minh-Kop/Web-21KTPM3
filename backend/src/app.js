@@ -1,18 +1,19 @@
-// const path = require('path');
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
+const expressHandlebars = require('express-handlebars');
 const rateLimit = require('express-rate-limit');
 // const helmet = require('helmet');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-// const session = require('express-session');
+// const session = require('express-session');const expressHandlebars = require('express-handlebars');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const router = require('./routes');
-// const config = require('./config');
+const hbs = require('./utils/handlebars')(expressHandlebars);
 
 // Start express app
 const app = express();
@@ -44,6 +45,14 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+// Serving static files
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Set up template engine
+app.engine('hbs', hbs.engine);
+app.set('views', path.join(__dirname, './views'));
+app.set('view engine', 'hbs');
+
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
@@ -70,13 +79,6 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(hpp());
-
-// Test middleware
-app.use((req, res, next) => {
-    req.requestTime = new Date().toISOString();
-    // console.log(req.cookies);
-    next();
-});
 
 // 2) ROUTES
 app.use(router);
