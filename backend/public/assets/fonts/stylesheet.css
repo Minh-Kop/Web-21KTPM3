@@ -1,0 +1,35 @@
+/* 
+========= Inika =========
+*/
+@font-face {
+    font-family: 'Inika';
+    src:
+        url('Inika/Inika-Bold.woff2') format('woff2'),
+        url('Inika/Inika-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inika';
+    src:
+        url('Inika/Inika.woff2') format('woff2'),
+        url('Inika/Inika.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* 
+========= Habibi =========
+*/
+@font-face {
+    font-family: 'Habibi';
+    src:
+        url('Habibi/Habibi-Regular.woff2') format('woff2'),
+        url('Habibi/Habibi-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
