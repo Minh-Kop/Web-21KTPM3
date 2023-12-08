@@ -114,6 +114,68 @@ exports.getAllBooks = catchAsync(async (req, res, next) => {
     });
 });
 
+const getAllBooksForRendering = async ({
+    categoryId,
+    priceRange,
+    publisherId,
+    bookFormat,
+    sortType,
+    limit,
+    page,
+}) => {
+    if (priceRange) {
+        priceRange = priceRange.split(',').map((el) => +el);
+    }
+    if (publisherId) {
+        publisherId = publisherId.split(',').map((el) => el.trim());
+    }
+    if (bookFormat) {
+        bookFormat = bookFormat.split(',').map((el) => el.trim());
+    }
+
+    page = +page || 1;
+    limit = +limit || 12;
+    const offset = (page - 1) * limit;
+
+    const categoryIdList = await getListCategoryId(categoryId);
+    const resultBooks = await bookModel.getAllBooks({
+        categoryIdList,
+        priceRange,
+        publisherId,
+        bookFormat,
+        sortType: sortType || 'BOOK_DISCOUNTED_PRICE',
+        limit,
+        offset,
+    });
+
+    const books = await Promise.all(
+        resultBooks.map(async (item) => {
+            const bookId = item.BOOK_ID;
+            const { image } = await bookModel.getCoverImage(bookId);
+            return {
+                bookId,
+                bookName: item.BOOK_NAME,
+                originalPrice: item.BOOK_PRICE,
+                discountedPrice: item.BOOK_DISCOUNTED_PRICE,
+                discountedNumber: item.DISCOUNTED_NUMBER,
+                avgRating: item.AVG_RATING,
+                countRating: item.COUNT_RATING,
+                image,
+            };
+        }),
+    );
+
+    return books;
+};
+
+exports.test = catchAsync(async (req, res, next) => {
+    const books = await getAllBooksForRendering({
+        categoryId: 'CA02',
+        page: 2,
+    });
+    console.log(books);
+});
+
 exports.getRelatedBooks = catchAsync(async (req, res, next) => {
     const { bookId } = req.params;
     let { limit, page } = req.query;
