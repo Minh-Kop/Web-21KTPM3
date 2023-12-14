@@ -18,6 +18,7 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         title: 'Category page',
         navbar: () => 'navbar',
         categories,
+        footer: () => 'footer',
     });
 });
 

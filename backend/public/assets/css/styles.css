@@ -9,16 +9,17 @@ body {
 
 /* Navbar */
 .nav {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     /* padding: 14px 44px; */
     padding: 14px 0px;
-
-    position: relative;
 }
 
-.nav__logo {
+.nav__logo,
+.footer__logo {
     text-decoration: none;
 
     color: #e85a4f;
@@ -162,6 +163,50 @@ body {
 
 .category-menu-dropdown__category--sub {
     color: #666;
+}
+
+/* Footer */
+.footer {
+    padding: 14px 0px;
+}
+
+.footer__logo {
+    font-size: 80px;
+}
+
+.footer__desc {
+    color: #fff;
+    /* font-size: 24px; */
+    font-weight: 400;
+}
+
+.footer__brand {
+    width: 30px;
+    height: 30px;
+}
+
+.footer__section__heading {
+    margin-bottom: 20px;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.footer__section__link {
+    display: block;
+    margin-bottom: 20px;
+    color: #fff;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.footer__section__link:hover {
+    color: d8c3a5;
+}
+
+.footer__contact {
+    color: #fff;
 }
 
 /* Login */
