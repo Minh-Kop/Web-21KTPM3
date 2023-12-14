@@ -28,6 +28,7 @@ const handleJWTExpiredError = () => {
 const sendErrorDev = (err, req, res) => {
     // A) API
     if (req.originalUrl.startsWith('/api')) {
+        console.log('Dev');
         return res.status(err.statusCode).json({
             status: err.status,
             error: err,
@@ -39,8 +40,10 @@ const sendErrorDev = (err, req, res) => {
     // B) RENDERED WEBSITE
     console.log('ERROR: ', err);
     return res.status(err.statusCode).render('error', {
-        title: 'Something went wrong!',
-        msg: err.message,
+        title: 'Error',
+        mainCSS: () => 'empty',
+        statusCode: err.statusCode,
+        description: err.message,
     });
 };
 
@@ -70,7 +73,7 @@ const sendErrorProd = (err, req, res) => {
     if (err.isOperational) {
         return res.status(err.statusCode).render('error', {
             title: 'Something went wrong!',
-            msg: err.message,
+            message: err.message,
         });
     }
 
@@ -81,7 +84,7 @@ const sendErrorProd = (err, req, res) => {
     // 2) Send generic message
     return res.status(err.statusCode).render('error', {
         title: 'Something went wrong!',
-        msg: 'Please try again later!',
+        message: 'Please try again later!',
     });
 };
 

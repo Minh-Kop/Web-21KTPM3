@@ -1,0 +1,57 @@
+<div class='login-page'>
+    <h1 class='login__heading'>
+        FABOOK - ONLINE BOOKSTORE
+    </h1>
+    <p class='login__info'>GET 20% OFF FOR TODAY</p>
+    <div class='d-flex justify-content-center'>
+        <form action='' class='login-form'>
+            <h1 class='login-form__heading'>
+                Login
+            </h1>
+
+            {{! Username }}
+            <div class='login-form__input-area'>
+                <label class='login-form__label' for='loginUsername'>
+                    Username
+                </label>
+                <input
+                    type='text'
+                    class='login-form__input'
+                    id='loginUsername'
+                    placeholder='Username'
+                />
+                <p class='form-error d-none'></p>
+            </div>
+
+            {{! Password }}
+            <div class='login-form__input-area'>
+                <label
+                    class='login-form__label'
+                    for='loginPassword'
+                >Password</label>
+                <input
+                    type='password'
+                    class='login-form__input'
+                    id='loginPassword'
+                    placeholder='Password'
+                />
+                <p class='form-error d-none'></p>
+            </div>
+
+            {{! Submit button }}
+            <button id="login" class='login-form__btn' type='submit'>
+                Login
+            </button>
+
+            {{! Register section }}
+            <div class='d-flex justify-content-between'>
+                <p class='register-info my-0'>Not a member yet?</p>
+                <a class="register-link" href='/signup'>Register now</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    
+</script>

@@ -14,18 +14,18 @@ const oauth2Client = require('../utils/oauth2');
 const { getVerifyEmail, createTransport } = require('../utils/nodemailer');
 
 exports.signUp = catchAsync(async (req, res, next) => {
-    const { email, phoneNumber, password, username } = req.body;
+    const { email, password, username } = req.body;
+
+    // Check for username duplicated
+    const account = await accountModel.getByUsername(username);
+    if (account) {
+        return next(new AppError('Username already exists.', 400));
+    }
 
     // Check for email duplicated
     const emailAccount = await accountModel.getByEmail(email);
     if (emailAccount) {
         return next(new AppError('Email already exists.', 400));
-    }
-
-    // Check for phone number duplicated
-    const phoneNumberAccount = await accountModel.getByPhone(phoneNumber);
-    if (phoneNumberAccount) {
-        return next(new AppError('Phone number is already used.', 400));
     }
 
     // 256 bits which provides about 1e+77 possible different number
@@ -42,16 +42,14 @@ exports.signUp = catchAsync(async (req, res, next) => {
     await transport.sendMail(mailOption);
 
     // Create entity to insert to DB
-    const entity = {
-        email,
-        phoneNumber,
+    await accountModel.createAccount({
         username,
+        email,
         password: encryptedPassword,
         verified: 1,
         token: verifyToken,
         role: config.role.USER,
-    };
-    await accountModel.createAccount(entity);
+    });
 
     res.status(200).json({
         status: 'success',
@@ -72,14 +70,14 @@ exports.verify = catchAsync(async (req, res, next) => {
     return next(new AppError('Verification code is not found.', 400));
 });
 
-const signToken = (email) => {
-    return jwt.sign({ email }, config.JWT_SECRET, {
+const signToken = (userId) => {
+    return jwt.sign({ userId }, config.JWT_SECRET, {
         expiresIn: config.JWT_EXPIRES_IN,
     });
 };
 
 const createSendToken = (user, statusCode, req, res) => {
-    const token = signToken(user.email);
+    const token = signToken(user.userId);
 
     res.cookie('jwt', token, {
         maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
@@ -98,30 +96,30 @@ const createSendToken = (user, statusCode, req, res) => {
 };
 
 exports.login = catchAsync(async (req, res, next) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     // Check if email and password exist
-    if (!email || !password) {
+    if (!username || !password) {
         return next(
-            new AppError('Please provide both email and password!', 400),
+            new AppError('Please provide both username and password!', 400),
         );
     }
 
-    // Check for correct email
-    const account = await accountModel.getByEmail(email);
+    // Check for correct username
+    const account = await accountModel.getByUsername(username);
     if (!account) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Get the database password
     const encryptedPassword = account.ENC_PWD;
     if (!encryptedPassword) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Check the correctness of password
     if (!verifyPassword(password, encryptedPassword)) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Handle account not verified
@@ -131,10 +129,10 @@ exports.login = catchAsync(async (req, res, next) => {
     }
 
     const returnAccount = {
+        userId: account.USERID,
         email: account.EMAIL,
         phoneNumber: account.PHONE_NUMBER,
         fullName: account.FULLNAME,
-        avatar: account.AVATAR_PATH,
         verified,
     };
 
@@ -198,7 +196,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
     // 3) Check if user still exists
-    let currentUser = await accountModel.getByEmail(decoded.email);
+    let currentUser = await accountModel.getByUserId(decoded.userId);
     if (!currentUser) {
         return next(
             new AppError(
@@ -209,12 +207,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
 
     currentUser = {
+        userId: currentUser.USERID,
         email: currentUser.EMAIL,
-        fullName: currentUser.FULLNAME,
+        username: currentUser.USERNAME,
         phoneNumber: currentUser.PHONE_NUMBER,
         password: currentUser.ENC_PWD,
-        avatarPath: currentUser.AVATAR_PATH,
-        avatarFilename: currentUser.AVATAR_FILENAME,
         passwordChangedAt: currentUser.PASSWORDCHANGEDAT,
         role: currentUser.HROLE,
     };
@@ -285,3 +282,17 @@ exports.restrictTo = (...roles) => {
         next();
     };
 };
+
+exports.getLoginPage = catchAsync(async (req, res, next) => {
+    res.render('authentication/login', {
+        title: 'Login',
+        mainCSS: () => 'empty',
+    });
+});
+
+exports.getSignupPage = catchAsync(async (req, res, next) => {
+    res.render('authentication/signup', {
+        title: 'Sign up',
+        mainCSS: () => 'empty',
+    });
+});

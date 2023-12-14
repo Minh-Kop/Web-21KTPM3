@@ -53,8 +53,7 @@ IF OBJECT_ID('sp_CreateAccount') IS NOT NULL
 	DROP PROC sp_CreateAccount
 GO
 CREATE PROCEDURE sp_CreateAccount (
-    @email NVARCHAR(100), 
-    @phoneNumber CHAR(10), 
+    @email NVARCHAR(100),
     @username NVARCHAR(100), 
     @password NVARCHAR(100), 
     @verified bit, 
@@ -70,19 +69,12 @@ BEGIN TRANSACTION
 			ROLLBACK  
 			RETURN -1
 		END
-		
-        if exists(select 1 from ACCOUNT where PHONE_NUMBER = @phoneNumber)
-		BEGIN
-			PRINT N'The phone is already used!'
-			ROLLBACK  
-			RETURN -2
-		END
 
         declare @userId char(5) = (select dbo.f_CreateUserId('UR'))
         declare @cartId char(5) = (select dbo.f_CreateCartId('CT'))
 
-        INSERT into ACCOUNT (USERID , EMAIL, PHONE_NUMBER, USERNAME, ENC_PWD, VERIFIED, TOKEN, HROLE) values 
-            (@userId, @email, @phoneNumber, @username, @password, @verified, @token, @role)
+        INSERT into ACCOUNT (USERID , EMAIL, USERNAME, ENC_PWD, VERIFIED, TOKEN, HROLE) values 
+            (@userId, @email, @username, @password, @verified, @token, @role)
         INSERT into CART (CART_ID, USERID, CART_COUNT, CART_TOTAL) values (@cartId, @userId, 0, 0)
 	END TRY
 

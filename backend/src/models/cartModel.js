@@ -2,13 +2,22 @@ const sql = require('mssql');
 
 const database = require('../utils/database');
 
-exports.getCartByEmail = async (email) => {
-    const sqlString = `select * from CART where EMAIL = '${email}'`;
+exports.getCartByUserId = async (userId) => {
+    const sqlString = `select * from CART where USERID = '${userId}'`;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
     return result.recordset[0];
 };
+
+
+// exports.getCartByEmail = async (email) => {
+//     const sqlString = `select * from CART where EMAIL = '${email}'`;
+//     const pool = await database.getConnectionPool();
+//     const request = new sql.Request(pool);
+//     const result = await request.query(sqlString);
+//     return result.recordset[0];
+// };
 
 exports.updateBookInCart = async ({ cartId, bookId, quantity, isClicked }) => {
     const pool = await database.getConnectionPool();

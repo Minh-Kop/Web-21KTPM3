@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+}
+
+/* Login */
+.login-page {
+    background-image: url('../img/book-banner.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.login__heading {
+    padding-top: 75px;
+    margin-left: 34px;
+    color: #e85a4f;
+    text-shadow: -10px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Habibi;
+    font-size: 80px;
+    font-weight: 400;
+}
+
+.login__info {
+    color: #e85a4f;
+    font-family: Inter;
+    font-size: 60px;
+    font-style: italic;
+    font-weight: 100;
+    text-align: right;
+    margin-right: 33px;
+}
+
+.login-form {
+    margin-top: 59px;
+    padding: 18px 24px 38px;
+    width: 480px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 1px solid #000;
+    background: #faf0e2;
+}
+
+.login-form__heading {
+    margin-bottom: 16px;
+    text-align: center;
+    color: #000;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Inika;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.login-form__input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+    margin-bottom: 41px;
+}
+
+.login-form__label,
+.form-error {
+    color: #000;
+    font-family: Inika;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.login-form__input {
+    height: 50px;
+    font-family: Inika;
+    font-size: 24px;
+    padding: 0 20px;
+    border-radius: 20px;
+    border: 0.5px solid #000;
+    background-color: transparent;
+}
+
+.form-error {
+    color: red;
+    position: absolute;
+    left: 0;
+    bottom: -36px;
+    margin-bottom: 0;
+}
+
+.login-form__btn {
+    border: none;
+    outline: none;
+
+    width: 100%;
+    padding: 9px 0;
+    margin-bottom: 21px;
+    border-radius: 20px;
+    background: #f98d50;
+    color: white;
+    font-family: Inika;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.login-form__btn:hover {
+    opacity: 0.8;
+}
+
+.register-info {
+    color: #000;
+    font-family: Inika;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.register-link {
+    color: #6469f0;
+    font-family: Inika;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+/* config swal2  */
+.swal2-confirm.swal2-styled {
+    border: none !important;
+    background-color: #f98d50 !important;
+}
+
+.swal2-confirm.swal2-styled:focus {
+    outline-color: #fff !important;
+}
