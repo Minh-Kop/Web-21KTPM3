@@ -1,0 +1,144 @@
+<div style='background: #d8c3a5;'>
+    <div class='container'>
+        <div class='nav'>
+            {{! Logo }}
+            <a class='nav__logo' href='#!'>Fabook</a>
+
+            {{! Search section }}
+            <div class='nav__search'>
+                <div class='nav__category'>
+                    Category
+                </div>
+                <input
+                    type='text'
+                    class='nav__search-input'
+                    placeholder='Nhập từ khóa'
+                />
+                <button class='nav__search-btn'>
+                    <svg
+                        class='search-icon'
+                        xmlns='http://www.w3.org/2000/svg'
+                        height='16'
+                        width='16'
+                        viewBox='0 0 512 512'
+                    >
+                        <path
+                            d='M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z'
+                            fill='currentColor'
+                        />
+                    </svg>
+                </button>
+            </div>
+
+            <div class='d-flex gap-4'>
+                {{! Cart }}
+                <div class='nav__cart'>
+                    <a href='#!' class='nav__link'>
+                        <img src='assets/img/cart.svg' alt='Cart' />
+                        <div class='nav__link-label'>
+                            Giỏ hàng
+                        </div>
+                    </a>
+                </div>
+
+                {{! Account }}
+                <div class='nav__cart'>
+                    <a href='#!' class='nav__link'>
+                        <img src='assets/img/account.svg' alt='Account' />
+                        <div class='nav__link-label'>
+                            Tài khoản
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class='category-menu-dropdown__padding d-none'>
+                <div class='category-menu-dropdown'>
+                    <div class='row'>
+                        <section class='col-3 pe-1 border-end border-2'>
+                            <h1 class='category-menu-dropdown__heading'>
+                                Danh mục sản phẩm
+                            </h1>
+                            {{#each categories}}
+                                <a
+                                    href='#!'
+                                    class='category-menu-dropdown__category'
+                                    data-cat-id='{{id}}'
+                                >
+                                    {{categoryName}}
+                                </a>
+                            {{/each}}
+                        </section>
+                        <section class='col-9 ps-3'>
+                            {{#each categories}}
+                                <div
+                                    class='category-menu-dropdown__detail {{#unless @first}}d-none{{/unless}}'
+                                    data-cat-id='{{id}}'
+                                >
+                                    <div class='d-flex align-items-center mb-3'>
+                                        <img
+                                            class='category-menu-dropdown__icon'
+                                            src='/assets/img/book_icon.svg'
+                                            alt='Book icon'
+                                        />
+                                        <h1
+                                            class='category-menu-dropdown__heading--2'
+                                        >
+                                            {{categoryName}}
+                                        </h1>
+                                    </div>
+                                    <div class='row'>
+                                        {{#each children}}
+                                            <div class='col-md-3'>
+                                                <a
+                                                    href='#!'
+                                                    class='category-menu-dropdown__heading--sub'
+                                                >
+                                                    {{categoryName}}
+                                                </a>
+                                                {{#each children}}
+                                                    <a
+                                                        href='#!'
+                                                        class='category-menu-dropdown__category--sub'
+                                                    >
+                                                        {{categoryName}}
+                                                    </a>
+                                                {{/each}}
+                                                <a
+                                                    class='category-menu-dropdown__category--sub-all'
+                                                    href='#!'
+                                                >
+                                                    Xem tất cả
+                                                </a>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    {{!-- Show/hide dropdown --}}
+    $('.nav__category').on('mouseenter', (e) => {
+        $('.category-menu-dropdown__padding').removeClass('d-none');
+    });
+
+    $('.nav__category, .category-menu-dropdown__padding').on('mouseleave', (e) => {
+        if (!$(e.relatedTarget).closest('.category-menu-dropdown__padding').length) {
+            $('.category-menu-dropdown__padding').addClass('d-none');
+        }
+    });
+
+    {{!-- Change category detail --}}
+    $('.category-menu-dropdown__category').on('mouseenter', (e) => { const
+    selectedCatId = $(e.target).data('cat-id'); const curDetail =
+    $('.category-menu-dropdown__detail:not(.d-none)'); const selectedDetail = $(
+    `.category-menu-dropdown__detail[data-cat-id="${selectedCatId}"]` ); if
+    (curDetail.data('cat-id') === selectedCatId) { return; }
+    curDetail.addClass('d-none'); selectedDetail.removeClass('d-none'); });
+</script>
