@@ -287,40 +287,77 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
     const limit = 5;
     const offset = (page - 1) * limit;
 
-    for (const i of cateLists) {
-        const catID = await getListCategoryId(i.id);
+    await Promise.all(
+        cateLists.map(async (i) => {
+            const catID = await getListCategoryId(i.id);
 
-        let a = {
-            categoryIdList: catID,
-            priceRange: null,
-            publisherId: null,
-            bookFormat: null,
-            sortType: 'BOOK_DISCOUNTED_PRICE',
-            limit: limit,
-            offset: offset,
-        };
+            let a = {
+                categoryIdList: catID,
+                priceRange: null,
+                publisherId: null,
+                bookFormat: null,
+                sortType: 'BOOK_DISCOUNTED_PRICE',
+                limit: limit,
+                offset: offset,
+            };
 
-        let resultBooks = await bookModel.getAllBooks(a);
+            let resultBooks = await bookModel.getAllBooks(a);
 
-        const books = await Promise.all(
-            resultBooks.map(async (item) => {
-                const bookId = item.BOOK_ID;
-                const { image } = await bookModel.getCoverImage(bookId);
-                return {
-                    bookId,
-                    bookName: item.BOOK_NAME,
-                    originalPrice: item.BOOK_PRICE,
-                    discountedPrice: item.BOOK_DISCOUNTED_PRICE,
-                    discountedNumber: item.DISCOUNTED_NUMBER,
-                    avgRating: item.AVG_RATING,
-                    countRating: item.COUNT_RATING,
-                    image,
-                };
-            }),
-        );
+            const books = await Promise.all(
+                resultBooks.map(async (item) => {
+                    const bookId = item.BOOK_ID;
+                    const { image } = await bookModel.getCoverImage(bookId);
+                    return {
+                        bookId,
+                        bookName: item.BOOK_NAME,
+                        originalPrice: item.BOOK_PRICE,
+                        discountedPrice: item.BOOK_DISCOUNTED_PRICE,
+                        discountedNumber: item.DISCOUNTED_NUMBER,
+                        avgRating: item.AVG_RATING,
+                        countRating: item.COUNT_RATING,
+                        image,
+                    };
+                }),
+            );
 
-        cateBooks.push({ catName: i.categoryName, booksList: books });
-    }
+            cateBooks.push({ catName: i.categoryName, booksList: books });
+        }),
+    );
+
+    //     for (const i of cateLists) {
+    //         const catID = await getListCategoryId(i.id);
+    //
+    //         let a = {
+    //             categoryIdList: catID,
+    //             priceRange: null,
+    //             publisherId: null,
+    //             bookFormat: null,
+    //             sortType: 'BOOK_DISCOUNTED_PRICE',
+    //             limit: limit,
+    //             offset: offset,
+    //         };
+    //
+    //         let resultBooks = await bookModel.getAllBooks(a);
+    //
+    //         const books = await Promise.all(
+    //             resultBooks.map(async (item) => {
+    //                 const bookId = item.BOOK_ID;
+    //                 const { image } = await bookModel.getCoverImage(bookId);
+    //                 return {
+    //                     bookId,
+    //                     bookName: item.BOOK_NAME,
+    //                     originalPrice: item.BOOK_PRICE,
+    //                     discountedPrice: item.BOOK_DISCOUNTED_PRICE,
+    //                     discountedNumber: item.DISCOUNTED_NUMBER,
+    //                     avgRating: item.AVG_RATING,
+    //                     countRating: item.COUNT_RATING,
+    //                     image,
+    //                 };
+    //             }),
+    //         );
+    //
+    //         cateBooks.push({ catName: i.categoryName, booksList: books });
+    //     }
 
     const nPage = 1;
     const nLimit = 5;
