@@ -188,15 +188,5 @@
 
         $(this).removeClass("btn-outline-dark").addClass("btn-outline-warning");
     });
-    Handlebars.registerHelper('times', function (n, block) {
-        let accum = block;
-        for (let i = 0; i < n; ++i) {
-            accum += accum;
-        }
-        return accum;
-    });
-    Handlebars.registerHelper('logMessage', function (message) {
-        console.log(message);
-    });
 
 </script>
