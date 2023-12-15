@@ -406,8 +406,8 @@ exports.getBook = catchAsync(async (req, res, next) => {
     const categoryTree = buildCategoryRoot(category);
     const selectedBranch = getParentBranch(categoryTree, returnedBook.CATE_ID);
 
-    res.status(200).json({
-        status: 'success',
+    res.render('product/product_detail', {
+        title: returnedBook.BOOK_NAME,
         book: {
             bookId: returnedBook.BOOK_ID,
             bookName: returnedBook.BOOK_NAME,
