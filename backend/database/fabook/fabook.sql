@@ -2,15 +2,15 @@
 /* DBMS name:      Microsoft SQL Server 2008                    */
 /* Created on:     23/11/2023 10:32:52 pm                       */
 /*==============================================================*/
--- USE master
--- go
--- if DB_ID('fabook_db') is not null
--- 	drop database fabook_db
--- GO 
--- CREATE DATABASE fabook_db
--- GO
--- USE fabook_db
--- GO
+USE master
+go
+if DB_ID('fabook_db') is not null
+	drop database fabook_db
+GO 
+CREATE DATABASE fabook_db
+GO
+USE fabook_db
+GO
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')

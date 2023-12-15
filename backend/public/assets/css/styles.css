@@ -2,6 +2,213 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Hahmlet', sans-serif;
+    background: #eae7dc;
+}
+
+/* Navbar */
+.nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    /* padding: 14px 44px; */
+    padding: 14px 0px;
+}
+
+.nav__logo,
+.footer__logo {
+    text-decoration: none;
+
+    color: #e85a4f;
+    font-family: Habibi;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.nav__search {
+    display: flex;
+    position: relative;
+}
+
+.nav__category {
+    display: inline-flex;
+    padding: 10px 15px;
+    justify-content: center;
+    align-items: center;
+
+    color: #fff;
+    font-family: Habibi;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+
+    border-radius: 10px 0px 0px 10px;
+    background: #e98074;
+
+    cursor: pointer;
+}
+
+.nav__search-input {
+    width: 40vw;
+    border: none;
+    padding: 0 84px 0 10px;
+    border-radius: 0 10px 10px 0;
+}
+
+.nav__search-input:focus {
+    outline: 2px solid #e85a4f;
+}
+
+.nav__search-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 4px;
+
+    outline: none;
+    border: none;
+
+    padding: 8px 30px;
+    border-radius: 10px;
+    background: #e98074;
+}
+
+.nav__search-btn:hover {
+    opacity: 70%;
+}
+
+.search-icon {
+    color: white;
+}
+
+.nav__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.nav__link-label {
+    font-size: 14px;
+    color: #7a7e7f;
+}
+
+.category-menu-dropdown__padding {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 100%;
+
+    padding-top: 4px;
+}
+
+.category-menu-dropdown {
+    padding: 24px 12px 16px;
+    border-radius: 10px;
+    background: white;
+
+    text-transform: capitalize;
+}
+
+.category-menu-dropdown__heading {
+    color: gray;
+    font-size: 22px;
+    padding-left: 10px;
+}
+
+.category-menu-dropdown__icon {
+    height: 27px;
+    width: 27px;
+    margin-right: 7px;
+}
+
+.category-menu-dropdown__heading--2 {
+    font-size: 22px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.category-menu-dropdown__category {
+    display: block;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+}
+
+.category-menu-dropdown__category:hover {
+    background-color: #f2f4f5;
+}
+
+.category-menu-dropdown__heading--sub {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+}
+
+.category-menu-dropdown__category--sub,
+.category-menu-dropdown__category--sub-all {
+    display: block;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.category-menu-dropdown__category--sub {
+    color: #666;
+}
+
+/* Footer */
+.footer {
+    padding: 14px 0px;
+}
+
+.footer__logo {
+    font-size: 80px;
+}
+
+.footer__desc {
+    color: #fff;
+    /* font-size: 24px; */
+    font-weight: 400;
+}
+
+.footer__brand {
+    width: 30px;
+    height: 30px;
+}
+
+.footer__section__heading {
+    margin-bottom: 20px;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.footer__section__link {
+    display: block;
+    margin-bottom: 20px;
+    color: #fff;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.footer__section__link:hover {
+    color: d8c3a5;
+}
+
+.footer__contact {
+    color: #fff;
+}
+
 /* Login */
 .login-page {
     background-image: url('../img/book-banner.png');
@@ -35,7 +242,7 @@
     padding: 18px 24px 38px;
     width: 480px;
     flex-shrink: 0;
-    border-radius: 20px;
+    border-radius: 10px;
     border: 1px solid #000;
     background: #faf0e2;
 }
@@ -72,8 +279,8 @@
     height: 50px;
     font-family: Inika;
     font-size: 24px;
-    padding: 0 20px;
-    border-radius: 20px;
+    padding: 0 10px;
+    border-radius: 10px;
     border: 0.5px solid #000;
     background-color: transparent;
 }
@@ -93,7 +300,7 @@
     width: 100%;
     padding: 9px 0;
     margin-bottom: 21px;
-    border-radius: 20px;
+    border-radius: 10px;
     background: #f98d50;
     color: white;
     font-family: Inika;

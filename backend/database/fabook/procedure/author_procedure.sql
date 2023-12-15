@@ -1,4 +1,4 @@
-use fabook_db
+-- use fabook_db
 
 IF OBJECT_ID('f_CreateAuthorId') IS NOT NULL
 	DROP FUNCTION f_CreateAuthorId
