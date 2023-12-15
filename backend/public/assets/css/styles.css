@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+:root {
+    --primary-color: #d8c3a5;
+}
+
 body {
     font-family: 'Hahmlet', sans-serif;
     background: #eae7dc;
@@ -165,6 +169,10 @@ body {
     color: #666;
 }
 
+.category-menu-dropdown__category--sub:hover {
+    color: var(--primary-color);
+}
+
 /* Footer */
 .footer {
     padding: 14px 0px;
@@ -202,7 +210,7 @@ body {
 }
 
 .footer__section__link:hover {
-    color: d8c3a5;
+    color: var(--primary-color);
 }
 
 .footer__contact {
