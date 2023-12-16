@@ -1,11 +1,12 @@
 <div class="text-center pb-3" style="background-color: #eae7dc">
     <div class='container text-center'>
         <nav aria-label='breadcrumb' style="--bs-breadcrumb-divider: '>'">
-            <ol class='breadcrumb'>
+            <ol class='breadcrumb my-1'>
                 {{breadcrumb book.category}}
             </ol>
         </nav>
     </div>
+
     <div class='container text-centerborder border border-success rounded' style='background-color: FFFFFF'>
         <div class='row gx-5'>
             <aside class='col-lg-6'>
@@ -36,7 +37,7 @@
                 </a>
             </aside>
             <main class='col-lg-6'>
-                <div class='ps-lg-3 mt-3'>
+                <div class='container ps-lg-3 mt-3'>
                     <h3 class='title text-dark fw-bold'>
                         {{book.bookName}}
                     </h3>
@@ -56,9 +57,9 @@
                         <span class='text text-warning'>({{book.countRating}} đánh giá)</span>
                     </div>
                     <div class='mb-3'>
-                        <span class='h5 text-danger'>{{book.discountedPrice}}đ</span>
-                        <span class='text-muted text-decoration-line-through'>{{book.originalPrice}}đ</span>
-                        <span class='btn btn-danger'>-{{book.discountedNumber}}%</span>
+                        <span class='fs-4 text-danger fw-bold'>{{book.discountedPrice}} VND</span>
+                        <span class='text-muted text-decoration-line-through'>{{book.originalPrice}} VND</span>
+                        <span class='badge bg-danger fw-bold'>-{{book.discountedNumber}}%</span>
                     </div>
 
                     <div class='form-group row mb-3'>
@@ -79,8 +80,31 @@
             </main>
         </div>
     </div>
+
     <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
-        <h5 class='mt-2'>Thông tin sản phẩm</h5>
+        <h5 class='mt-2 mb-3'>Sản phẩm liên quan</h5>
+        <div class="container row carousel slide" id="carouselExample">
+            
+            <div class="col-1 position-relative">
+                <button class="carousel-control-prev position-absolute top-50 start-50 translate-middle" type="button"
+                    data-bs-target="#related" data-bs-slide="prev">
+                    <span class="fa-solid fa-angle-left fa-2xl" style="color: #678cd0"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+            </div>
+            <div class="col-10">{{carousel book.relatedBooks}}</div>
+            <div class="col-1 position-relative">
+                <button class="carousel-control-next position-absolute top-50 start-50 translate-middle" type="button"
+                    data-bs-target="#related" data-bs-slide="next">
+                    <span class="fa-solid fa-angle-right fa-2xl" style="color: #678cd0"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
+        <h5 class='mt-2 mb-3'>Thông tin sản phẩm</h5>
         <div class='row'>
             <dd class='col-2 text-muted'>Tác giả:</dd>
             <dt class='col'>{{book.author}}</dt>
@@ -114,8 +138,9 @@
             {{book.description}}
         </p>
     </div>
+
     <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
-        <h5 class='mt-2'>Đánh giá sản phẩm</h5>
+        <h5 class='mt-2 mb-3'>Đánh giá sản phẩm</h5>
         <div class='container bg-warning-subtle border border-warning rounded'>
             <p class='fw-bold mb-0' style='color: #ff550d; font-size: 40'>
                 {{book.avgRating}} trên 5

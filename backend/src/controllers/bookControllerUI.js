@@ -396,6 +396,22 @@ exports.getBook = catchAsync(async (req, res, next) => {
         return next(new AppError('No book found with that ID!', 404));
     }
 
+    let page = 1;
+    let limit = 12;
+    const offset = (page - 1) * limit;
+
+    let books = await bookModel.getRelatedBooks({
+        bookId,
+        limit,
+        offset,
+    });
+    for (const book of books) {
+        let listImages = await bookModel.getBookImages(book.bookId);
+        book.images = listImages.map((item) => ({
+        id: item.IMAGE_ID,
+        path: item.BOOK_PATH,
+    }));
+    }
     const imageList = await bookModel.getBookImages(bookId);
     const images = imageList.map((item) => ({
         id: item.IMAGE_ID,
@@ -427,6 +443,7 @@ exports.getBook = catchAsync(async (req, res, next) => {
             numberPage: returnedBook.NUMBER_PAGE,
             bookFormat: returnedBook.BOOK_FORMAT,
             description: returnedBook.BOOK_DESC,
+            relatedBooks: books,
         },
     });
 });
