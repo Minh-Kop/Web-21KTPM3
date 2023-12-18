@@ -217,6 +217,81 @@ body {
     color: #fff;
 }
 
+/* Pagination */
+.custom-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-pagination ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding: 4px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.custom-pagination ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    color: #000;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+}
+
+.custom-pagination ul li.numb {
+    list-style: none;
+    height: 45px;
+    width: 45px;
+    margin: 0 1px;
+}
+
+.custom-pagination ul li.dots {
+    font-size: 18px;
+    padding: 0 5px;
+    cursor: default;
+}
+
+.custom-pagination ul li.btn {
+    padding: 0 5px;
+    color: #e98074;
+}
+
+.custom-pagination ul li:first-child {
+    margin-right: 1px;
+}
+
+.custom-pagination ul li:last-child {
+    margin-left: 1px;
+}
+
+.custom-pagination ul li.custom-pagination--disabled {
+    pointer-events: none;
+    color: #6f7373;
+    opacity: 0.5;
+}
+
+.custom-pagination li.active,
+.custom-pagination ul li.numb:hover,
+.custom-pagination ul li:first-child:hover,
+.custom-pagination ul li:last-child:hover {
+    color: #fff;
+    background: #efb5ae;
+}
+
+.custom-pagination li.active {
+    background: #e85a4f;
+}
+
 /* Login */
 .login-page {
     background-image: url('../img/book-banner.png');

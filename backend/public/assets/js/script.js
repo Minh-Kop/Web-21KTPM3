@@ -1,15 +1,3 @@
-$(document).ready(function () {
-    // Lấy chiều cao của navbar và footer
-    let navbarHeight = $('#navbar').outerHeight(true);
-    let footerHeight = $('#footer').outerHeight(true);
-
-    // Tính chiều cao của nội dung
-    let contentHeight = window.innerHeight - navbarHeight - footerHeight;
-
-    // Thiết lập chiều cao của nội dung
-    $('#error').outerHeight(contentHeight, true);
-});
-
 const checkValidation = (value, input, regex, message, flag = '') => {
     const formError = input.parent().find('.form-error');
     if (!value) {

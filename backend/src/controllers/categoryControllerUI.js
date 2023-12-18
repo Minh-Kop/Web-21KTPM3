@@ -19,6 +19,9 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         navbar: () => 'navbar',
         categories,
         footer: () => 'footer',
+        totalPages: 55,
+        page: 10,
+        link: '',
     });
 });
 
