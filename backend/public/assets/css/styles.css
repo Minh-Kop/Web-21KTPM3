@@ -5,6 +5,7 @@
 :root {
     --primary-color: #d8c3a5;
     --secondary-color: #e85a4f;
+    --category-font-color: #666;
 }
 
 body {
@@ -167,7 +168,7 @@ body {
 }
 
 .category-menu-dropdown__category--sub {
-    color: #666;
+    color: var(--category-font-color);
 }
 
 .category-menu-dropdown__category--sub:hover {

@@ -14,6 +14,25 @@ const config = {
 
     NO_TOKEN_URL: ['/auth', '/location', '/category', '/product'],
 
+    priceRanges: [
+        {
+            price: '0,150000',
+            title: '0đ - 150,000đ',
+        },
+        {
+            price: '150000,300000',
+            title: '150,000đ - 300,000đ',
+        },
+        {
+            price: '300000,450000',
+            title: '300,000đ - 450,000đ',
+        },
+        {
+            price: '450000,600000',
+            title: '450,000đ - 600,000đ',
+        },
+    ],
+
     role: {
         USER: 1,
         ADMIN: 2,

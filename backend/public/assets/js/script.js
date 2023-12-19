@@ -198,3 +198,20 @@ $('#logOut').on('click', async (e) => {
 
     location.assign('/login');
 });
+
+$('.category-section__list__link').click((e) => {
+    e.preventDefault();
+    let link = $(e.target).attr('href');
+    const selectedPrice = $("input[name='priceRadios']:checked").val();
+    const selectedPublisher = $("input[name='pubRadios']:checked").val();
+    link = `${link}&priceRange=${selectedPrice}&pubId=${selectedPublisher}`;
+    window.location = link;
+});
+
+$("input[name='priceRadios'], input[name='pubRadios']").on('change', () => {
+    const catId = $('.category-section__list').data('id');
+    const selectedPrice = $("input[name='priceRadios']:checked").val();
+    const selectedPublisher = $("input[name='pubRadios']:checked").val();
+    const link = `/category?catId=${catId}&priceRange=${selectedPrice}&pubId=${selectedPublisher}`;
+    window.location = link;
+});

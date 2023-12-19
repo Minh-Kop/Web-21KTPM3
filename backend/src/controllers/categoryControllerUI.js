@@ -1,5 +1,7 @@
 const categoryModel = require('../models/categoryModel');
+const publisherModel = require('../models/publisherModel');
 const { buildCategoryRoot, getCategoryBranch } = require('../utils/utils');
+const { priceRanges } = require('../config/config');
 const catchAsync = require('../utils/catchAsync');
 
 exports.get = catchAsync(async (req, res, next) => {
@@ -52,11 +54,12 @@ const stringtifyBranch = (branch, catId) => {
 };
 
 const getCategoryPage = catchAsync(async (req, res, next) => {
-    const { catId, page } = req.query;
+    const { catId, page, priceRange, pubId } = req.query;
 
     const category = await categoryModel.getAllCategory();
     const categoryTree = buildCategoryRoot(category);
     const selectedBranch = getCategoryBranch(categoryTree, catId);
+    const publisher = await publisherModel.getAll();
 
     const stringtifiedBranch = stringtifyBranch(selectedBranch, catId);
 
@@ -66,9 +69,12 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         stringtifiedBranch,
         catId,
         selectedBranch,
-        totalPages: 55,
+        publisher,
+        chosenPubId: pubId || 'all',
+        priceRanges,
+        priceRange: priceRange || 'all',
         page,
-        link: '',
+        totalPages: 55,
     });
 });
 
