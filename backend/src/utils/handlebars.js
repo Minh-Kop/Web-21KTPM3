@@ -1,5 +1,48 @@
 const Handlebars = require('handlebars');
 
+function createCategoryTree(catId, selectedBranch, options) {
+    const { isTerminationPoint } = options;
+    let html = '';
+
+    selectedBranch = Array.isArray(selectedBranch)
+        ? selectedBranch
+        : [selectedBranch];
+
+    selectedBranch.forEach((el) => {
+        const { isParentOfTerminationPoint } = el;
+        let isActive;
+
+        if (isParentOfTerminationPoint) {
+            isActive = 'parent-active';
+            options.isTerminationPoint = true;
+        } else if (catId === el.id) {
+            isActive = isTerminationPoint ? 'child-active' : 'active';
+        }
+
+        let childHtml = '';
+        if (el.children) {
+            childHtml = createCategoryTree(catId, el.children, options);
+        }
+
+        html += `
+            <li class='${isActive}'>
+                <a
+                    class='category-section__list__link'
+                    href='#!'
+                >
+                    ${el.categoryName}
+                </a>
+                ${childHtml}
+            </li>
+        `;
+    });
+
+    if (html !== '') {
+        html = `<ul class='category-section__list'>${html}</ul>`;
+    }
+    return html;
+}
+
 module.exports = (hbs) => {
     return hbs.create({
         extname: '.hbs',
@@ -83,7 +126,7 @@ module.exports = (hbs) => {
                                     (item) =>
                                         `<div class="col-3">
                                 <a href="/books/${item.bookId}">
-                                <img src="${item.images[0].path}" class="img-fluid" alt="book_image">
+                                <img src="${item.image}" class="img-fluid" alt="book_image">
                                 </a>
                                 <a class="fs-6" href="/books/${item.bookId}" style="text-decoration: none; color: black">${item.bookName}</a>
                                 <p class="fs-6 text-danger fw-bold mb-1">${item.originalPrice} VND</p>
@@ -106,6 +149,7 @@ module.exports = (hbs) => {
             </div>
         </div>`);
             },
+            createCategoryTree,
         },
     });
 };

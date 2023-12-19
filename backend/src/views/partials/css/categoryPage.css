@@ -1,0 +1,16 @@
+.parent-active > .category-section__list__link,
+.child-active > .category-section__list__link,
+.active > .category-section__list__link {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.active > .category-section__list__link,
+.child-active > .category-section__list__link {
+    color: var(--secondary-color);
+}
+
+.child-active > .category-section__list__link {
+    margin-bottom: 7px;
+}

@@ -3,10 +3,10 @@ const catchAsync = require('../utils/catchAsync');
 const shippingAddressModel = require('../models/shippingAddressModel');
 
 exports.getShippingAddresses = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
 
     const shippingAddresses =
-        await shippingAddressModel.getShippingAddressesByEmail(email);
+        await shippingAddressModel.getAllShippingAddressesByUserId(userId);
     res.status(200).json({
         status: 'success',
         length: shippingAddresses.length,
@@ -15,7 +15,7 @@ exports.getShippingAddresses = catchAsync(async (req, res, next) => {
 });
 
 exports.createShippingAddress = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
     const {
         provId,
         distId,
@@ -29,7 +29,7 @@ exports.createShippingAddress = catchAsync(async (req, res, next) => {
     } = req.body;
 
     const result = await shippingAddressModel.createShippingAddress({
-        email,
+        userId,
         address,
         wardId,
         distId,
@@ -49,7 +49,7 @@ exports.createShippingAddress = catchAsync(async (req, res, next) => {
 });
 
 exports.updateShippingAddress = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
     const { addrId } = req.params;
     const {
         provId,
@@ -64,7 +64,7 @@ exports.updateShippingAddress = catchAsync(async (req, res, next) => {
     } = req.body;
 
     const result = await shippingAddressModel.updateShippingAddress({
-        email,
+        userId,
         addrId,
         address,
         wardId,

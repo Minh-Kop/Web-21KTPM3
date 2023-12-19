@@ -16,7 +16,7 @@ router
         bookController.createBook,
     );
 
-router.get('/related/:bookId', bookController.getRelatedBooks);
+// router.get('/related/:bookId', bookController.getRelatedBooks);
 router.get('/newestArrival', bookController.getNewestArrival);
 router.get('/bestSeller', bookController.getBestSeller);
 
@@ -36,7 +36,7 @@ router
 
 router
     .route('/:bookId')
-    .get(bookController.getBook)
+    .get(bookController.getBookDetail)
     .patch(
         authController.protect,
         authController.restrictTo(config.role.ADMIN),
