@@ -12,7 +12,7 @@ const mainPage = require('../controllers/bookControllerUI');
 
 // const voucherRouter = require('./voucherRoutes');
 // const locationRouter = require('./locationRoutes');
-// const shippingAddressRouter = require('./shippingAddressRoutes');
+const shippingAddressRouter = require('./shippingAddressRoutes');
 // const checkoutRouter = require('./checkoutRoutes');
 // const paymentRouter = require('./paymentRoutes');
 // const orderRouter = require('./orderRoutes');
@@ -32,11 +32,11 @@ router.use('/api/cart', authController.protect, cartRouter);
 router.use('/mainPage', mainPage.renderMainPage);
 // router.use('/api/voucher', authController.protect, voucherRouter);
 // router.use('/api/location', locationRouter);
-// router.use(
-//     '/api/shippingAddress',
-//     authController.protect,
-//     shippingAddressRouter,
-// );
+router.use(
+    '/api/shippingAddress',
+    authController.protect,
+    shippingAddressRouter,
+);
 // router.use('/api/checkout', checkoutRouter);
 // router.use('/api/payment', paymentRouter);
 // router.use('/api/order', authController.protect, orderRouter);

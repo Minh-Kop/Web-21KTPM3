@@ -3,12 +3,14 @@ const sql = require('mssql');
 
 const database = require('../utils/database');
 
-exports.getShippingAddressesByEmail = async (email) => {
+exports.getAllShippingAddressesByUserId = async (userId) => {
     const pool = await database.getConnectionPool();
 
     const request = new sql.Request(pool);
-    request.input('email', sql.NVarChar, email);
-    const result = await request.execute('sp_GetAllUserShippingAddresses');
+    request.input('userId', sql.Char, userId);
+    const result = await request.execute(
+        'sp_GetAllUserShippingAddressesByUserId',
+    );
     return result.recordset;
 };
 
@@ -22,7 +24,7 @@ exports.getShippingAddressesById = async (id) => {
 
 exports.createShippingAddress = async (entity) => {
     const {
-        email,
+        userId,
         address,
         wardId,
         distId,
@@ -36,7 +38,7 @@ exports.createShippingAddress = async (entity) => {
     const pool = await database.getConnectionPool();
 
     const request = new sql.Request(pool);
-    request.input('email', sql.NVarChar, email);
+    request.input('userId', sql.NVarChar, userId);
     request.input('address', sql.NVarChar, address);
     request.input('wardId', sql.Char, wardId);
     request.input('distId', sql.Char, distId);
@@ -52,7 +54,7 @@ exports.createShippingAddress = async (entity) => {
 
 exports.updateShippingAddress = async (entity) => {
     const {
-        email,
+        userId,
         addrId,
         address,
         wardId,
@@ -68,7 +70,7 @@ exports.updateShippingAddress = async (entity) => {
 
     const request = new sql.Request(pool);
     request.input('addrId', sql.Char, addrId);
-    request.input('email', sql.NVarChar, email);
+    request.input('userId', sql.Char, userId);
     request.input('address', sql.NVarChar, address);
     request.input('wardId', sql.Char, wardId);
     request.input('distId', sql.Char, distId);
