@@ -114,6 +114,45 @@ exports.getAllBooks = catchAsync(async (req, res, next) => {
     });
 });
 
+const getBook = async (bookId) => {
+    const returnedBook = await bookModel.getBookById(bookId);
+
+    if (!returnedBook) {
+        return null;
+    }
+
+    const imageList = await bookModel.getBookImages(bookId);
+    const images = imageList.map((item) => ({
+        id: item.IMAGE_ID,
+        path: item.BOOK_PATH,
+    }));
+
+    const category = await categoryModel.getAllCategory();
+    const categoryTree = buildCategoryRoot(category);
+    const selectedBranch = getParentBranch(categoryTree, returnedBook.CATE_ID);
+
+    return {
+        bookId: returnedBook.BOOK_ID,
+        bookName: returnedBook.BOOK_NAME,
+        category: selectedBranch,
+        images: images,
+        originalPrice: returnedBook.BOOK_PRICE,
+        discountedNumber: returnedBook.DISCOUNTED_NUMBER,
+        discountedPrice: returnedBook.BOOK_DISCOUNTED_PRICE,
+        avgRating: returnedBook.AVG_RATING,
+        countRating: returnedBook.COUNT_RATING,
+        stock: returnedBook.STOCK,
+        author: returnedBook.author,
+        publisher: returnedBook.PUB_NAME,
+        publishedYear: returnedBook.PUBLISHED_YEAR,
+        weight: returnedBook.BOOK_WEIGHT,
+        dimensions: returnedBook.DIMENSIONS.replace(/\?/g, '✖'),
+        numberPage: returnedBook.NUMBER_PAGE,
+        bookFormat: returnedBook.BOOK_FORMAT,
+        description: returnedBook.BOOK_DESC,
+    };
+};
+
 const getAllBooksForRendering = async ({
     categoryId,
     priceRange,
@@ -176,10 +215,7 @@ exports.test = catchAsync(async (req, res, next) => {
     console.log(books);
 });
 
-exports.getRelatedBooks = catchAsync(async (req, res, next) => {
-    const { bookId } = req.params;
-    let { limit, page } = req.query;
-
+const getRelatedBooks = async ({ bookId, limit, page }) => {
     page = +page || 1;
     limit = +limit || 12;
     const offset = (page - 1) * limit;
@@ -200,13 +236,8 @@ exports.getRelatedBooks = catchAsync(async (req, res, next) => {
         }),
     );
 
-    // SEND RESPONSE
-    res.status(200).json({
-        status: 'success',
-        length: books.length,
-        books,
-    });
-});
+    return books;
+};
 
 exports.getNewestArrival = catchAsync(async (req, res, next) => {
     let { limit, page } = req.query;
@@ -388,62 +419,17 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getBook = catchAsync(async (req, res, next) => {
+exports.getBookDetail = catchAsync(async (req, res, next) => {
     const { bookId } = req.params;
-    const returnedBook = await bookModel.getBookById(bookId);
 
-    if (!returnedBook) {
-        return next(new AppError('No book found with that ID!', 404));
-    }
-
-    let page = 1;
-    let limit = 12;
-    const offset = (page - 1) * limit;
-
-    let books = await bookModel.getRelatedBooks({
-        bookId,
-        limit,
-        offset,
-    });
-    for (const book of books) {
-        let listImages = await bookModel.getBookImages(book.bookId);
-        book.images = listImages.map((item) => ({
-        id: item.IMAGE_ID,
-        path: item.BOOK_PATH,
-    }));
-    }
-    const imageList = await bookModel.getBookImages(bookId);
-    const images = imageList.map((item) => ({
-        id: item.IMAGE_ID,
-        path: item.BOOK_PATH,
-    }));
-
-    const category = await categoryModel.getAllCategory();
-    const categoryTree = buildCategoryRoot(category);
-    const selectedBranch = getParentBranch(categoryTree, returnedBook.CATE_ID);
+    const book = await getBook(bookId);
+    const relatedBooks = await getRelatedBooks({ bookId, page: 1, limit: 12 });
 
     res.render('product/product_detail', {
-        title: returnedBook.BOOK_NAME,
+        title: book.bookName,
         book: {
-            bookId: returnedBook.BOOK_ID,
-            bookName: returnedBook.BOOK_NAME,
-            category: selectedBranch,
-            images: images,
-            originalPrice: returnedBook.BOOK_PRICE,
-            discountedNumber: returnedBook.DISCOUNTED_NUMBER,
-            discountedPrice: returnedBook.BOOK_DISCOUNTED_PRICE,
-            avgRating: returnedBook.AVG_RATING,
-            countRating: returnedBook.COUNT_RATING,
-            stock: returnedBook.STOCK,
-            author: returnedBook.author,
-            publisher: returnedBook.PUB_NAME,
-            publishedYear: returnedBook.PUBLISHED_YEAR,
-            weight: returnedBook.BOOK_WEIGHT,
-            dimensions: returnedBook.DIMENSIONS.replace(/\?/g, '✖'),
-            numberPage: returnedBook.NUMBER_PAGE,
-            bookFormat: returnedBook.BOOK_FORMAT,
-            description: returnedBook.BOOK_DESC,
-            relatedBooks: books,
+            ...book,
+            relatedBooks,
         },
     });
 });
