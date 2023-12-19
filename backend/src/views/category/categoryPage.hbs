@@ -1,3 +1,42 @@
-<div class="container">
-    {{> pagination}}
+<div class='container'>
+    {{! Breadcrumb }}
+    <nav
+        class='my-2'
+        style="--bs-breadcrumb-divider: '>';"
+        aria-label='breadcrumb'
+    >
+        <ol class='breadcrumb'>
+            <li class='breadcrumb-item'><a
+                    class='category-page__breadcrumb'
+                    href='#!'
+                >Home</a></li>
+            {{#each stringtifiedBranch}}
+                <li
+                    class='breadcrumb-item {{#if @last}}active{{/if}}'
+                    aria-current='page'
+                >
+                    <a
+                        class='category-page__breadcrumb'
+                        href='#!'
+                    >{{categoryName}}</a>
+                </li>
+            {{/each}}
+        </ol>
+    </nav>
+
+    {{! Content }}
+    <div class='container row g-3'>
+        <div class='col-md-3 sidebar-section'>
+            {{!-- Category --}}
+            <section class='category-section'>
+                <h1 class='category-section__heading'>Nhóm sản phẩm</h1>
+                {{#createCategoryTree catId selectedBranch}}{{/createCategoryTree}}
+            </section>
+            
+        </div>
+        <div class='col-md-9'></div>
+    </div>
+    {{!-- {{> pagination}} --}}
 </div>
+
+{{> css/categoryPage.css}}
