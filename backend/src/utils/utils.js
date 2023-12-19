@@ -103,12 +103,67 @@ const getParentBranch = (rootList, categoryId) => {
 
     for (let i = 0; i < rootList.length; i++) {
         const { children, ...rest } = rootList[i];
-        if (rootList[i].id === categoryId) {
+        if (rest.id === categoryId) {
             return rest;
         }
         if (children) {
             const result = getParentBranch(children, categoryId);
             if (result) {
+                return {
+                    ...rest,
+                    children: result,
+                };
+            }
+        }
+    }
+    return null;
+};
+
+/**
+ *
+ * @param {*} rootList
+ * @param {*} categoryId
+ * @returns
+ */
+const getCategoryBranch = (rootList, categoryId) => {
+    if (!rootList) {
+        return null;
+    }
+
+    for (let i = 0; i < rootList.length; i++) {
+        const { children, ...rest } = rootList[i];
+        if (rest.id === categoryId) {
+            if (children) {
+                const otherChildren = children.map((el) => {
+                    // eslint-disable-next-line no-unused-vars
+                    const { children: nextChildren, ...otherInfos } = el;
+                    return otherInfos;
+                });
+                return {
+                    ...rest,
+                    children: otherChildren,
+                };
+            }
+            return { ...rest, isTerminationPoint: true };
+        }
+        if (children) {
+            const result = getCategoryBranch(children, categoryId);
+            if (result) {
+                const { isTerminationPoint } = result;
+
+                if (isTerminationPoint) {
+                    const otherChildren = children.map((el) => {
+                        // eslint-disable-next-line no-unused-vars
+                        const { children: nextChildren, ...otherInfos } = el;
+                        return otherInfos;
+                    });
+                    return {
+                        isParentOfTerminationPoint: true,
+                        ...rest,
+                        children: otherChildren,
+                    };
+                }
+
                 return {
                     ...rest,
                     children: result,
@@ -131,93 +186,11 @@ const removeUndefined = (obj) => {
     return newObj;
 };
 
-const vietnameseToEnglishMap = {
-    à: 'a',
-    á: 'a',
-    ả: 'a',
-    ạ: 'a',
-    ã: 'a',
-    ă: 'a',
-    ắ: 'a',
-    ằ: 'a',
-    ẳ: 'a',
-    ẵ: 'a',
-    ặ: 'a',
-    â: 'a',
-    ấ: 'a',
-    ầ: 'a',
-    ẩ: 'a',
-    ẫ: 'a',
-    ậ: 'a',
-    đ: 'd',
-    è: 'e',
-    é: 'e',
-    ẻ: 'e',
-    ẽ: 'e',
-    ẹ: 'e',
-    ê: 'e',
-    ế: 'e',
-    ề: 'e',
-    ể: 'e',
-    ễ: 'e',
-    ệ: 'e',
-    ì: 'i',
-    í: 'i',
-    ỉ: 'i',
-    ị: 'i',
-    ĩ: 'i',
-    ò: 'o',
-    ó: 'o',
-    ỏ: 'o',
-    ọ: 'o',
-    õ: 'o',
-    ô: 'o',
-    ố: 'o',
-    ồ: 'o',
-    ổ: 'o',
-    ỗ: 'o',
-    ộ: 'o',
-    ơ: 'o',
-    ớ: 'o',
-    ờ: 'o',
-    ở: 'o',
-    ỡ: 'o',
-    ợ: 'o',
-    ù: 'u',
-    ú: 'u',
-    ủ: 'u',
-    ụ: 'u',
-    ũ: 'u',
-    ư: 'u',
-    ứ: 'u',
-    ừ: 'u',
-    ử: 'u',
-    ữ: 'u',
-    ự: 'u',
-    ỳ: 'y',
-    ý: 'y',
-    ỷ: 'y',
-    ỵ: 'y',
-    ỹ: 'y',
-};
-
-/**
- * Convert Vietnamese string to English string
- *
- * @param {string} input The input string
- */
-const convertVietnameseToEnglish = (input) => {
-    input = input.toLowerCase();
-    return [...input]
-        .map((char) => vietnameseToEnglishMap[char] || char)
-        .join('');
-};
-
 module.exports = {
     buildCategoryRoot,
     searchCategoryTree,
     toListCategory,
     getParentBranch,
+    getCategoryBranch,
     removeUndefined,
-    convertVietnameseToEnglish,
 };

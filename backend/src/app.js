@@ -34,7 +34,7 @@ app.options('*', cors(corsOptions));
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
+    // app.use(morgan('dev'));
 }
 
 // Limit requests from same API
