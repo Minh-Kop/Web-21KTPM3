@@ -126,7 +126,7 @@ module.exports = (hbs) => {
                                     (item) =>
                                         `<div class="col-3">
                                 <a href="/books/${item.bookId}">
-                                <img src="${item.images[0].path}" class="img-fluid" alt="book_image">
+                                <img src="${item.image}" class="img-fluid" alt="book_image">
                                 </a>
                                 <a class="fs-6" href="/books/${item.bookId}" style="text-decoration: none; color: black">${item.bookName}</a>
                                 <p class="fs-6 text-danger fw-bold mb-1">${item.originalPrice} VND</p>
