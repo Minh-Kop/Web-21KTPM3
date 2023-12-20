@@ -33,6 +33,33 @@ const config = {
         },
     ],
 
+    sortList: [
+        {
+            value: 'book_discounted_price',
+            title: 'Giá bán',
+        },
+        {
+            value: 'avg_rating',
+            title: 'Rating trung bình',
+        },
+        {
+            value: 'discounted_number',
+            title: 'Chiết khấu',
+        },
+    ],
+
+    limitList: [
+        {
+            value: 12,
+        },
+        {
+            value: 24,
+        },
+        {
+            value: 48,
+        },
+    ],
+
     role: {
         USER: 1,
         ADMIN: 2,

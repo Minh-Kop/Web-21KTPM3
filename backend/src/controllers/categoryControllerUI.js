@@ -1,8 +1,8 @@
 const categoryModel = require('../models/categoryModel');
 const publisherModel = require('../models/publisherModel');
-const bookController = require('../controllers/bookControllerUI');
+const bookController = require('./bookControllerUI');
 const { buildCategoryRoot, getCategoryBranch } = require('../utils/utils');
-const { priceRanges } = require('../config/config');
+const { priceRanges, sortList, limitList } = require('../config/config');
 const catchAsync = require('../utils/catchAsync');
 
 exports.get = catchAsync(async (req, res, next) => {
@@ -55,17 +55,42 @@ const stringtifyBranch = (branch, catId) => {
 };
 
 const getCategoryPage = catchAsync(async (req, res, next) => {
-    const { catId, page, priceRange, pubId } = req.query;
+    const {
+        catId,
+        page: chosenPage,
+        priceRange,
+        pubId,
+        sortType: chosenSortType,
+        limit: chosenLimit,
+    } = req.query;
+    const page = +chosenPage || 1;
+    const limit = +chosenLimit || 24;
+    const sortType = chosenSortType || 'book_discounted_price';
+    const entity = {
+        categoryId: catId,
+        priceRange: priceRange === 'all' ? null : priceRange,
+        publisherId: pubId === 'all' ? null : pubId,
+        sortType,
+    };
 
     const category = await categoryModel.getAllCategory();
     const categoryTree = buildCategoryRoot(category);
     const selectedBranch = getCategoryBranch(categoryTree, catId);
     const publisher = await publisherModel.getAll();
+
     const books = await bookController.getAllBooks({
-        categoryId: catId,
+        ...entity,
         page,
-        priceRange,
+        limit,
     });
+    const totalNumber = await bookController.countBooks(entity);
+    const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
+
+    // Get URL
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('&page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+    // console.log({ indexOfPage, url, newUrl });
 
     const stringtifiedBranch = stringtifyBranch(selectedBranch, catId);
 
@@ -79,9 +104,14 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         chosenPubId: pubId || 'all',
         priceRanges,
         priceRange: priceRange || 'all',
+        sortList,
+        sortType,
+        limitList,
         books,
+        limit,
         page,
-        totalPages: 55,
+        totalPages,
+        link: newUrl,
     });
 });
 

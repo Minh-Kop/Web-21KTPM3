@@ -53,6 +53,35 @@ exports.uploadBookImages = bookImageUploader.fields([
     { name: 'images', maxCount: config.PRODUCT_IMAGE_NUMBER_LIMIT },
 ]);
 
+exports.countBooks = async ({
+    categoryId,
+    priceRange,
+    publisherId,
+    bookFormat,
+    sortType,
+}) => {
+    if (priceRange) {
+        priceRange = priceRange.split(',').map((el) => +el);
+    }
+    if (publisherId) {
+        publisherId = publisherId.split(',').map((el) => el.trim());
+    }
+    if (bookFormat) {
+        bookFormat = bookFormat.split(',').map((el) => el.trim());
+    }
+
+    const categoryIdList = await getListCategoryId(categoryId);
+    const countedNumber = await bookModel.countBooks({
+        categoryIdList,
+        priceRange,
+        publisherId,
+        bookFormat,
+        sortType: sortType || 'BOOK_DISCOUNTED_PRICE',
+    });
+
+    return countedNumber;
+};
+
 exports.getAllBooks = async ({
     categoryId,
     priceRange,

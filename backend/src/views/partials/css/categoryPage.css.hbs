@@ -79,7 +79,7 @@
     }
 
     .book-content__heading-link:hover,
-    .category-section__list__link:hover,
+    li:not(.active):not(.child-active) > .category-section__list__link:hover,
     .form-check-label:hover {
         color: var(--primary-color);
     }
@@ -110,7 +110,7 @@
 
     .book-section__discounted-cell {
         position: absolute;
-        right: 10px;
+        right: 5px;
         top: 5px;
 
         display: flex;

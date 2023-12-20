@@ -141,10 +141,14 @@
                             name='sortAttr'
                             class='form-select select-dropdown'
                         >
-                            <option selected value='book_discounted_price'>Giá
-                                bán</option>
-                            <option value='avg_rating'>Rating trung bình</option>
-                            <option value='discounted_number'>Chiết khấu</option>
+                            {{#each sortList }}
+                                <option
+                                    {{#eq value ../sortType}}selected{{/eq}} 
+                                    value='{{value}}'
+                                >
+                                    {{title}}
+                                </option>
+                            {{/each}}
                         </select>
                     </div>
 
@@ -157,9 +161,14 @@
                             class='form-select select-dropdown'
                             aria-label='Default select example'
                         >
-                            <option selected value='12'>12</option>
-                            <option value='24'>24</option>
-                            <option value='48'>48</option>
+                            {{#each limitList }}
+                                <option
+                                    {{#eq value ../limit}}selected{{/eq}} 
+                                    value='{{value}}'
+                                >
+                                    {{value}}
+                                </option>
+                            {{/each}}
                         </select>
                     </div>
                 </div>
