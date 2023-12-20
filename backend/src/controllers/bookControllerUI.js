@@ -53,17 +53,15 @@ exports.uploadBookImages = bookImageUploader.fields([
     { name: 'images', maxCount: config.PRODUCT_IMAGE_NUMBER_LIMIT },
 ]);
 
-exports.getAllBooks = catchAsync(async (req, res, next) => {
-    let {
-        categoryId,
-        priceRange,
-        publisherId,
-        bookFormat,
-        sortType,
-        limit,
-        page,
-    } = req.query;
-
+exports.getAllBooks = async ({
+    categoryId,
+    priceRange,
+    publisherId,
+    bookFormat,
+    sortType,
+    limit,
+    page,
+}) => {
     if (priceRange) {
         priceRange = priceRange.split(',').map((el) => +el);
     }
@@ -75,7 +73,7 @@ exports.getAllBooks = catchAsync(async (req, res, next) => {
     }
 
     page = +page || 1;
-    limit = +limit || 12;
+    limit = +limit || 24;
     const offset = (page - 1) * limit;
 
     const categoryIdList = await getListCategoryId(categoryId);
@@ -106,13 +104,8 @@ exports.getAllBooks = catchAsync(async (req, res, next) => {
         }),
     );
 
-    // SEND RESPONSE
-    res.status(200).json({
-        status: 'success',
-        length: books.length,
-        books,
-    });
-});
+    return books;
+};
 
 const getBook = async (bookId) => {
     const returnedBook = await bookModel.getBookById(bookId);

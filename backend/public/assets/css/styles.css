@@ -13,7 +13,24 @@ body {
     background: #eae7dc;
 }
 
-/* Navbar */
+a {
+    text-decoration: none;
+}
+
+/* Create ... when text overflows */
+.line-clamb {
+    display: -webkit-box;
+    -webkit-line-clamp: var(--line-clamb, 2);
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.break-all {
+    word-break: break-all;
+}
+
+/* ==================================== Navbar ==================================== */
 .nav {
     position: relative;
     display: flex;
@@ -229,8 +246,9 @@ body {
 .custom-pagination ul {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
+
     padding: 4px;
+    margin: 0;
     border-radius: 10px;
     background: #fff;
     box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
