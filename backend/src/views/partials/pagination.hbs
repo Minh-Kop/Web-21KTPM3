@@ -111,8 +111,6 @@
     };
 
     const goToPage = (link) => {
-        
-        console.log(link);
         window.location.assign(link);
     };
 
@@ -120,5 +118,7 @@
     const page = pagination.data('page');
     const totalPages = pagination.data('totalPages');
     const link = pagination.data('link');
+    
     pagination.html(createPagination(totalPages, page, link));
+    $('.custom-pagination li.active').prop( "onclick", null );
 </script>

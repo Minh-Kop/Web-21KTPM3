@@ -5,6 +5,7 @@
 :root {
     --primary-color: #d8c3a5;
     --secondary-color: #e85a4f;
+    --secondary-color--lighter: #e98074;
     --category-font-color: #666;
 }
 
@@ -70,7 +71,7 @@ a {
     line-height: normal;
 
     border-radius: 10px 0px 0px 10px;
-    background: #e98074;
+    background: var(--secondary-color--lighter);
 
     cursor: pointer;
 }
@@ -97,7 +98,7 @@ a {
 
     padding: 8px 30px;
     border-radius: 10px;
-    background: #e98074;
+    background: var(--secondary-color--lighter);
 }
 
 .nav__search-btn:hover {
@@ -126,12 +127,14 @@ a {
     top: 56px;
     left: 0;
     width: 100%;
+    z-index: 5;
 
     padding-top: 4px;
 }
 
 .category-menu-dropdown {
     padding: 24px 12px 16px;
+    border: 2px solid var(--secondary-color--lighter);
     border-radius: 10px;
     background: white;
 
@@ -283,7 +286,7 @@ a {
 
 .custom-pagination ul li.btn {
     padding: 0 5px;
-    color: #e98074;
+    color: var(--secondary-color--lighter);
 }
 
 .custom-pagination ul li:first-child {
@@ -301,15 +304,16 @@ a {
 }
 
 .custom-pagination li.active,
-.custom-pagination ul li.numb:hover,
-.custom-pagination ul li:first-child:hover,
-.custom-pagination ul li:last-child:hover {
+.custom-pagination ul li:not(.active).numb:hover,
+.custom-pagination ul li:not(.active):first-child:hover,
+.custom-pagination ul li:not(.active):last-child:hover {
     color: #fff;
     background: #efb5ae;
 }
 
 .custom-pagination li.active {
     background: var(--secondary-color);
+    cursor: default;
 }
 
 /* Login */

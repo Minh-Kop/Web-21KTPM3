@@ -90,7 +90,6 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
-    // console.log({ indexOfPage, url, newUrl });
 
     const stringtifiedBranch = stringtifyBranch(selectedBranch, catId);
 
