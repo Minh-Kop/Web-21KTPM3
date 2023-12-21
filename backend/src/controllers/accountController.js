@@ -9,8 +9,8 @@ const { encryptPassword } = require('../utils/crypto');
 
 const createAvatarName = async (req, file) => {
     if (file.fieldname === 'avatar') {
-        const { email } = req.user;
-        return `${email}`;
+        const { userId } = req.user;
+        return `${userId}`;
     }
 };
 
@@ -22,19 +22,14 @@ const avatarUploader = createUploader(
 exports.uploadAvatar = avatarUploader.fields([{ name: 'avatar', maxCount: 1 }]);
 
 exports.getMe = (req, res, next) => {
-    req.params.email = req.user.email;
+    req.params.userId = req.user.userId;
     next();
 };
 
 exports.getUser = catchAsync(async (req, res, next) => {
-    const { email } = req.params;
-    const { year } = req.query;
-    const userEntity = {
-        email,
-        year: +year || new Date().getFullYear(),
-    };
+    const { userId } = req.params;
 
-    const detailedUser = await accountModel.getDetailedUser(userEntity);
+    const detailedUser = await accountModel.getDetailedUser(userId);
 
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
@@ -58,62 +53,46 @@ exports.updateUser = catchAsync(async (req, res, next) => {
         );
     }
 
-    const { email } = req.params;
-    const { fullName, phoneNumber, birthday, gender, tier, role } = req.body;
-    const userEntity = {
-        email,
+    const { userId } = req.params;
+    const { fullName, phoneNumber, birthday, gender, role } = req.body;
+
+    await accountModel.updateAccount({
+        userId,
         fullName,
         phoneNumber,
         birthday,
         gender: +gender,
-        tier: +tier,
         role: +role,
-    };
-
-    await accountModel.updateAccount(userEntity);
-
-    res.status(200).json({
-        status: 'success',
-        email,
     });
+
+    res.status(204).json();
 });
 
 exports.updateAvatar = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
-    const { path: avatarPath, filename: avatarFilename } = req.files.avatar[0];
-    const userEntity = {
-        email,
+    const { userId } = req.user;
+    const { path: avatarPath } = req.files.avatar[0];
+
+    await accountModel.updateAccount({
+        userId,
         avatarPath,
-        avatarFilename,
-    };
-
-    await accountModel.updateAccount(userEntity);
-
-    res.status(200).json({
-        status: 'success',
-        email,
     });
+
+    res.status(204).json();
 });
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-    const { sortType } = req.query;
-    let { year, tier, limit, page } = req.query;
+    let { sortType, limit, page } = req.query;
 
-    year = +year || new Date().getFullYear();
-    tier = +tier;
+    sortType = sortType || 'userid';
     page = +page || 1;
     limit = +limit || 12;
     const offset = (page - 1) * limit;
 
-    const userEntity = {
-        year,
-        tier,
+    const users = await accountModel.getAllUsers({
         sortType,
         limit,
         offset,
-    };
-
-    const users = await accountModel.getAllUsers(userEntity);
+    });
 
     res.status(200).json({
         status: 'success',
