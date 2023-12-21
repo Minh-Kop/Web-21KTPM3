@@ -26,7 +26,7 @@ exports.getMe = (req, res, next) => {
     next();
 };
 
-exports.getUser = catchAsync(async (req, res, next) => {
+exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
 
     const detailedUser = await accountModel.getDetailedUser(userId);
@@ -36,6 +36,21 @@ exports.getUser = catchAsync(async (req, res, next) => {
         return next(new AppError('The account is no longer exist.', 404));
     }
 
+    res.render('account/user_account', {
+        title: detailedUser.recordset[0].userName,
+        user: detailedUser.recordset[0],
+    });
+});
+
+exports.getUser = catchAsync(async (req, res, next) => {
+    const { userId } = req.params;
+
+    const detailedUser = await accountModel.getDetailedUser(userId);
+
+    // Check if this user exists
+    if (detailedUser.returnValue === -1) {
+        return next(new AppError('The account is no longer exist.', 404));
+    }
     res.status(200).json({
         status: 'success',
         user: detailedUser.recordset[0],
@@ -43,6 +58,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
+    console.log(req);
     // Create error if user PATCHes password data
     if (req.body.password) {
         return next(
