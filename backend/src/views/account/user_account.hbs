@@ -20,42 +20,42 @@
     <div class="container col-9">
         <div class="container mt-3 border border-success rounded text-start" style="background-color: FFFFFF">
             <h5 class="mt-2 mb-3">Thông tin tài khoản</h5>
-            <form>
+            <form action="/api/users/updateMe" method="patch">
                 <div class="mb-3 row">
                     <label for="inputUsername" class="col-sm-2 col-form-label text-muted">Username*</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputUsername" name="username" value="{{userName}}" />
+                        <input type="text" class="form-control" id="inputUsername" name="username" value="{{user.userName}}" />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="inputName" class="col-sm-2 col-form-label text-muted">Họ tên*</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" name="name" value="{{fullName}}" />
+                        <input type="text" class="form-control" id="inputName" name="name" value="{{user.fullName}}" />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="inputTel" class="col-sm-2 col-form-label text-muted">Số điện thoại</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputTel" name="tel" value="{{phoneNumber}}" />
+                        <input type="text" class="form-control" id="inputTel" name="tel" value="{{user.phoneNumber}}" />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="inputEmail" class="col-sm-2 col-form-label text-muted">Email</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputEmail" name="email" value="{{email}}" />
+                        <input type="text" class="form-control" id="inputEmail" name="email" value="{{user.email}}" />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="inputGender" class="col-sm-2 col-form-label text-muted">Giới tính</label>
                     <div class="col-sm-10">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="male" id="flexRadioMale" {{#if gender}}checked{{/if}} />
+                            <input class="form-check-input" type="radio" name="male" id="flexRadioMale" {{#if user.gender}}checked{{/if}} />
                             <label class="form-check-label" for="flexRadioMale">
                                 Nam
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="female" id="flexRadioFemale" {{#if gender}}checked{{/if}}/>
+                            <input class="form-check-input" type="radio" name="female" id="flexRadioFemale" {{#if user.gender}}checked{{/if}}/>
                             <label class="form-check-label" for="flexRadioFemale">
                                 Nữ
                             </label>
@@ -65,7 +65,7 @@
                 <div class="mb-3 row">
                     <label for="inputDob" class="col-sm-2 col-form-label text-muted">Birthday</label>
                     <div class="col-sm-10">
-                        <input type="date" class="form-control" id="inputDob" name="dob" value="{{birthday}}" />
+                        <input type="date" class="form-control" id="inputDob" name="dob" value="{{user.birthday}}" />
                     </div>
                 </div>
                 <div class="text-center">
