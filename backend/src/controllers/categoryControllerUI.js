@@ -5,27 +5,11 @@ const { buildCategoryRoot, getCategoryBranch } = require('../utils/utils');
 const { priceRanges, sortList, limitList } = require('../config/config');
 const catchAsync = require('../utils/catchAsync');
 
-exports.get = catchAsync(async (req, res, next) => {
+const getCategoryTree = async () => {
     const result = await categoryModel.getAllCategory();
     const categories = buildCategoryRoot(result);
-    res.status(200).json({
-        status: 'success',
-        categories,
-    });
-});
-
-exports.getCategory = catchAsync(async (req, res, next) => {
-    const { catId } = req.params;
-
-    const category = await categoryModel.getAllCategory();
-    const categoryTree = buildCategoryRoot(category);
-    const selectedBranch = getCategoryBranch(categoryTree, catId);
-
-    res.status(200).json({
-        status: 'success',
-        branch: selectedBranch,
-    });
-});
+    return categories;
+};
 
 const stringtifyBranch = (branch, catId) => {
     if (Array.isArray(branch)) {
@@ -73,8 +57,7 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         sortType,
     };
 
-    const category = await categoryModel.getAllCategory();
-    const categoryTree = buildCategoryRoot(category);
+    const { categoryTree } = req;
     const selectedBranch = getCategoryBranch(categoryTree, catId);
     const publisher = await publisherModel.getAll();
 
@@ -95,7 +78,7 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
 
     res.render('category/categoryPage', {
         title: 'Category page',
-        categories: categoryTree,
+        categoryTree,
         stringtifiedBranch,
         catId,
         selectedBranch,
@@ -111,9 +94,12 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         page,
         totalPages,
         link: newUrl,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
     });
 });
 
 module.exports = {
+    getCategoryTree,
     getCategoryPage,
 };

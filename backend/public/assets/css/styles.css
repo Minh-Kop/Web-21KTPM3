@@ -195,7 +195,7 @@ a {
     color: var(--primary-color);
 }
 
-/* Footer */
+/* ==================================== Footer ==================================== */
 .footer {
     padding: 14px 0px;
 }
@@ -239,7 +239,7 @@ a {
     color: #fff;
 }
 
-/* Pagination */
+/* ==================================== Pagination ==================================== */
 .custom-pagination {
     display: flex;
     justify-content: center;
@@ -316,7 +316,7 @@ a {
     cursor: default;
 }
 
-/* Login */
+/* ==================================== Login ==================================== */
 .login-page {
     background-image: url('../img/book-banner.png');
     background-repeat: no-repeat;

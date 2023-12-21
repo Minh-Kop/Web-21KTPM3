@@ -12,6 +12,7 @@ const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
+const categoryController = require('./controllers/categoryControllerUI');
 const router = require('./routes');
 const hbs = require('./utils/handlebars')(expressHandlebars);
 
@@ -79,6 +80,13 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(hpp());
+
+// Create category tree
+app.use(async (req, res, next) => {
+    const categoryTree = await categoryController.getCategoryTree();
+    req.categoryTree = categoryTree;
+    next();
+});
 
 // 2) ROUTES
 app.use(router);
