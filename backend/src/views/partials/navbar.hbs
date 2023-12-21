@@ -62,7 +62,7 @@
                             </h1>
                             {{#each categories}}
                                 <a
-                                    href='#!'
+                                    href='/category?catId={{id}}'
                                     class='category-menu-dropdown__category'
                                     data-cat-id='{{id}}'
                                 >
@@ -92,14 +92,14 @@
                                         {{#each children}}
                                             <div class='col-md-3'>
                                                 <a
-                                                    href='#!'
+                                                    href='/category?catId={{id}}'
                                                     class='category-menu-dropdown__heading--sub'
                                                 >
                                                     {{categoryName}}
                                                 </a>
                                                 {{#each children}}
                                                     <a
-                                                        href='#!'
+                                                        href='/category?catId={{id}}'
                                                         class='category-menu-dropdown__category--sub'
                                                     >
                                                         {{categoryName}}
@@ -107,7 +107,7 @@
                                                 {{/each}}
                                                 <a
                                                     class='category-menu-dropdown__category--sub-all'
-                                                    href='#!'
+                                                    href='/category?catId={{id}}'
                                                 >
                                                     Xem tất cả
                                                 </a>

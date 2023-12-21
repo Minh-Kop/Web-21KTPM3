@@ -24,21 +24,34 @@ function createCategoryTree(catId, selectedBranch, options) {
             childHtml = createCategoryTree(catId, el.children, options);
         }
 
-        html += `
-            <li class='${isActive}'>
-                <a
-                    class='category-section__list__link'
-                    href='#!'
-                >
-                    ${el.categoryName}
-                </a>
-                ${childHtml}
-            </li>
-        `;
+        if (isActive === 'child-active' || isActive === 'active') {
+            html += `
+                <li class='${isActive}'>
+                    <span
+                        class='category-section__list__link'
+                    >
+                        ${el.categoryName}
+                    </span>
+                    ${childHtml}
+                </li>
+            `;
+        } else {
+            html += `
+                <li class='${isActive}'>
+                    <a
+                        class='category-section__list__link'
+                        href='/category?catId=${el.id}'
+                    >
+                        ${el.categoryName}
+                    </a>
+                    ${childHtml}
+                </li>
+            `;
+        }
     });
 
     if (html !== '') {
-        html = `<ul class='category-section__list'>${html}</ul>`;
+        html = `<ul data-id='${catId}' class='category-section__list'>${html}</ul>`;
     }
     return html;
 }
