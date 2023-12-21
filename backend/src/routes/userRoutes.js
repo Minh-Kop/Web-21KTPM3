@@ -36,7 +36,7 @@ router
     .post(accountController.createUser);
 
 router
-    .route('/:email')
+    .route('/:userId')
     .get(accountController.getUser)
     .patch(accountController.updateUser);
 
