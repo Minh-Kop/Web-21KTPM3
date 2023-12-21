@@ -50,6 +50,9 @@ module.exports = (hbs) => {
             eq(a, b, options) {
                 return a === b ? options.fn(this) : options.inverse(this);
             },
+            index(index) {
+                return index + 1;
+            },
             repeat(options) {
                 const start = options.hash.start || 1;
                 const end = options.hash.end || 1;
