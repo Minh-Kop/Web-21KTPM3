@@ -8,7 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-// const session = require('express-session');const expressHandlebars = require('express-handlebars');
+const session = require('express-session');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -60,20 +60,23 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // Parse cookie
-// app.use(
-//     session({
-//         name: 'jwt',
-//         secret: 'khoi',
-//         resave: false,
-//         saveUninitialized: false,
-//         cookie: {
-//             maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
-//             sameSite: 'none',
-//             secure: true,
-//             httpOnly: true,
-//         },
-//     }),
-// );
+app.use(
+    session({
+        name: 'session',
+        secret: 'khoi',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            // maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+            // sameSite: 'none',
+            secure: true,
+            httpOnly: true,
+        },
+    }),
+);
+
+// Set up passport
+require('./utils/passport')(app);
 
 // Data sanitization against XSS
 app.use(xss());

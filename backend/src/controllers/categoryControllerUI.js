@@ -40,13 +40,14 @@ const stringtifyBranch = (branch, catId) => {
 
 const getCategoryPage = catchAsync(async (req, res, next) => {
     const {
-        catId,
+        catId: chosenCatId,
         page: chosenPage,
         priceRange,
         pubId,
         sortType: chosenSortType,
         limit: chosenLimit,
     } = req.query;
+    const catId = chosenCatId || 'CA16';
     const page = +chosenPage || 1;
     const limit = +chosenLimit || 24;
     const sortType = chosenSortType || 'book_discounted_price';
@@ -56,6 +57,14 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         publisherId: pubId === 'all' ? null : pubId,
         sortType,
     };
+    //     let userId = null;
+    //
+    //     if (req.user) {
+    //         // eslint-disable-next-line prefer-destructuring
+    //         userId = req.user.userId;
+    //     }
+    const { user } = req;
+    console.log(user);
 
     const { categoryTree } = req;
     const selectedBranch = getCategoryBranch(categoryTree, catId);

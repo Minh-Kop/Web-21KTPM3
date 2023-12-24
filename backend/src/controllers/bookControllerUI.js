@@ -377,41 +377,6 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
         }),
     );
 
-    //     for (const i of cateLists) {
-    //         const catID = await getListCategoryId(i.id);
-    //
-    //         let a = {
-    //             categoryIdList: catID,
-    //             priceRange: null,
-    //             publisherId: null,
-    //             bookFormat: null,
-    //             sortType: 'BOOK_DISCOUNTED_PRICE',
-    //             limit: limit,
-    //             offset: offset,
-    //         };
-    //
-    //         let resultBooks = await bookModel.getAllBooks(a);
-    //
-    //         const books = await Promise.all(
-    //             resultBooks.map(async (item) => {
-    //                 const bookId = item.BOOK_ID;
-    //                 const { image } = await bookModel.getCoverImage(bookId);
-    //                 return {
-    //                     bookId,
-    //                     bookName: item.BOOK_NAME,
-    //                     originalPrice: item.BOOK_PRICE,
-    //                     discountedPrice: item.BOOK_DISCOUNTED_PRICE,
-    //                     discountedNumber: item.DISCOUNTED_NUMBER,
-    //                     avgRating: item.AVG_RATING,
-    //                     countRating: item.COUNT_RATING,
-    //                     image,
-    //                 };
-    //             }),
-    //         );
-    //
-    //         cateBooks.push({ catName: i.categoryName, booksList: books });
-    //     }
-
     const nPage = 1;
     const nLimit = 5;
     const noffset = (nPage - 1) * nLimit;
@@ -431,18 +396,22 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
         }),
     );
 
-    console.log(nBooks);
+    const { categoryTree } = req;
 
     res.render('mainPage/mainPage', {
         layout: 'main',
         categories: cateLists.slice(0, 5),
         cateBooks: cateBooks,
         newBooks: nBooks,
+        categoryTree,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
     });
 });
 
 exports.getBookDetail = catchAsync(async (req, res, next) => {
     const { bookId } = req.params;
+    const { categoryTree } = req;
 
     const book = await getBook(bookId);
     const relatedBooks = await getRelatedBooks({ bookId, page: 1, limit: 12 });
@@ -453,6 +422,9 @@ exports.getBookDetail = catchAsync(async (req, res, next) => {
             ...book,
             relatedBooks,
         },
+        categoryTree,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
     });
 });
 

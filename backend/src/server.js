@@ -1,7 +1,18 @@
-// const cron = require('node-cron');
+const fs = require('fs');
+const https = require('https');
+const path = require('path');
 
 const config = require('./config/config');
-// const tierModel = require('./models/tierModel');
+
+const port = config.PORT || 3001;
+const opts = {
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem'), {
+        encoding: 'utf-8',
+    }),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'), {
+        encoding: 'utf-8',
+    }),
+};
 
 process.on('uncaughtException', (err) => {
     console.log('UNCAUGHT EXCEPTION! Shutting down...');
@@ -11,29 +22,11 @@ process.on('uncaughtException', (err) => {
 
 const app = require('./app');
 
-const port = config.PORT || 3001;
-const server = app.listen(port, async () => {
+const server = https.createServer(opts, app);
+
+server.listen(port, async () => {
     console.log(`App is running on port ${port}...`);
 });
-
-// Automatically run at a certain time
-// const cronOptions = {
-//     timezone: 'Asia/Ho_Chi_Minh',
-// };
-// cron.schedule(
-//     '4 0 1 1 *',
-//     async () => {
-//         await tierModel.updateTier();
-//     },
-//     cronOptions,
-// );
-// cron.schedule(
-//     '6 0 * * *',
-//     async () => {
-//         await tierModel.giveBirthdayGift();
-//     },
-//     cronOptions,
-// );
 
 process.on('unhandledRejection', (err) => {
     console.log('UNHANDLER REJECTION! Shutting down...');

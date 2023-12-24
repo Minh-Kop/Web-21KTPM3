@@ -175,7 +175,7 @@ $('#login').on('click', async (e) => {
         return;
     }
 
-    location.assign(`/product`);
+    location.assign(`/category`);
 });
 
 $('#logOut').on('click', async (e) => {

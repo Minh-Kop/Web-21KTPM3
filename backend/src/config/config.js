@@ -39,11 +39,11 @@ const config = {
             title: 'Giá bán',
         },
         {
-            value: 'avg_rating',
+            value: '-avg_rating',
             title: 'Rating trung bình',
         },
         {
-            value: 'discounted_number',
+            value: '-discounted_number',
             title: 'Chiết khấu',
         },
     ],
