@@ -251,7 +251,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     // 3) If so, update the password
     const password = encryptPassword(req.body.password);
     const userEntity = {
-        email: user.email,
+        userId: user.userId,
         password,
     };
     await accountModel.updateAccount(userEntity);

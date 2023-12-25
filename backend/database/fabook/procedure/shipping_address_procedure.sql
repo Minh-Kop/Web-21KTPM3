@@ -116,15 +116,7 @@ GO
 CREATE PROCEDURE sp_UpdateShippingAddress (
     @addrId CHAR(10),
     @userId CHAR(5),
-    @address NVARCHAR(100),
-    @wardId char(8),
-    @distId char(6),
-    @provId char(4),
-    @fullName NVARCHAR(60),
-    @phoneNumber CHAR(10),
     @isDefault bit,
-    @lat float,
-    @lng float
 )
 AS
 BEGIN TRANSACTION

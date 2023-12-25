@@ -35,7 +35,11 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
     }
-
+    detailedUser.recordset[0].birthday = new Date(
+        detailedUser.recordset[0].birthday,
+    )
+        .toISOString()
+        .split('T')[0];
     res.render('account/user_account', {
         title: detailedUser.recordset[0].userName,
         user: detailedUser.recordset[0],
@@ -51,6 +55,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
     }
+
     res.status(200).json({
         status: 'success',
         user: detailedUser.recordset[0],
@@ -58,7 +63,6 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
-    console.log(req);
     // Create error if user PATCHes password data
     if (req.body.password) {
         return next(
