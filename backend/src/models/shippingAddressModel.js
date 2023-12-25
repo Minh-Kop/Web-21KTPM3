@@ -56,30 +56,14 @@ exports.updateShippingAddress = async (entity) => {
     const {
         userId,
         addrId,
-        address,
-        wardId,
-        distId,
-        provId,
-        fullName,
-        phoneNumber,
         isDefault,
-        lat,
-        lng,
     } = entity;
     const pool = await database.getConnectionPool();
 
     const request = new sql.Request(pool);
     request.input('addrId', sql.Char, addrId);
     request.input('userId', sql.Char, userId);
-    request.input('address', sql.NVarChar, address);
-    request.input('wardId', sql.Char, wardId);
-    request.input('distId', sql.Char, distId);
-    request.input('provId', sql.Char, provId);
-    request.input('fullName', sql.NVarChar, fullName);
-    request.input('phoneNumber', sql.Char, phoneNumber);
     request.input('isDefault', sql.Bit, isDefault);
-    request.input('lat', sql.Float, lat);
-    request.input('lng', sql.Float, lng);
     const result = await request.execute('sp_UpdateShippingAddress');
     return result.rowsAffected[0];
 };

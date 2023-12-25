@@ -14,6 +14,18 @@ exports.getShippingAddresses = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
+    const { userId } = req.user;
+
+    const shippingAddresses =
+        await shippingAddressModel.getAllShippingAddressesByUserId(userId);
+    res.render('account/address_list', {
+        length: shippingAddresses.length,
+        title: 'Sổ địa chỉ',
+        shippingAddresses,
+    });
+});
+
 exports.createShippingAddress = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const {
@@ -52,29 +64,17 @@ exports.updateShippingAddress = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const { addrId } = req.params;
     const {
-        provId,
-        distId,
-        wardId,
-        address,
-        fullName,
-        phoneNumber,
         isDefault,
-        lat,
-        lng,
     } = req.body;
-
+    console.log(req.body);
+    // console.log("Entered controller");
+    // console.log(userId);
+    // console.log(addrId);
+    // console.log(isDefault);
     const result = await shippingAddressModel.updateShippingAddress({
         userId,
         addrId,
-        address,
-        wardId,
-        distId,
-        provId,
-        fullName,
-        phoneNumber,
         isDefault,
-        lat,
-        lng,
     });
     if (result <= 0) {
         return next(new AppError('Shipping address not found.', 404));

@@ -88,7 +88,6 @@ exports.updateAccount = async ({
 
     let checkAccount = false;
     let sqlStringAccount = ``;
-
     // Create Account update string
     if (fullName) {
         checkAccount = true;

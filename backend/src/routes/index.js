@@ -15,7 +15,7 @@ const mainPage = require('../controllers/bookControllerUI');
 const shippingAddressRouter = require('./shippingAddressRoutes');
 // const checkoutRouter = require('./checkoutRoutes');
 // const paymentRouter = require('./paymentRoutes');
-// const orderRouter = require('./orderRoutes');
+ const orderRouter = require('./orderRoutes');
 // const reviewRouter = require('./reviewRoutes');
 // const searchRouter = require('./searchRoutes');
 // const pointRouter = require('./pointRoutes');
@@ -39,7 +39,7 @@ router.use(
 );
 // router.use('/api/checkout', checkoutRouter);
 // router.use('/api/payment', paymentRouter);
-// router.use('/api/order', authController.protect, orderRouter);
+ router.use('/api/order', authController.protect, orderRouter);
 // router.use('/api/review', reviewRouter);
 // router.use('/api/search', searchRouter);
 // router.use('/api/point', authController.protect, pointRouter);
