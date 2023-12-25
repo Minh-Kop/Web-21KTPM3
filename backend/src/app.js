@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const session = require('express-session');
 
+const { JWT_SECRET: secret } = require('./config/config');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const categoryController = require('./controllers/categoryControllerUI');
@@ -63,7 +64,7 @@ app.use(cookieParser());
 app.use(
     session({
         name: 'session',
-        secret: 'khoi',
+        secret,
         resave: false,
         saveUninitialized: false,
         cookie: {

@@ -4,6 +4,7 @@ const {
     searchCategoryTree,
     toListCategory,
     getParentBranch,
+    seperateThousandByDot,
 } = require('../utils/utils');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -132,6 +133,10 @@ exports.getAllBooks = async ({
             };
         }),
     );
+    books.forEach((book) => {
+        book.originalPrice = seperateThousandByDot(book.originalPrice);
+        book.discountedPrice = seperateThousandByDot(book.discountedPrice);
+    });
 
     return books;
 };

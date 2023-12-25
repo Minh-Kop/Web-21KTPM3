@@ -6,15 +6,25 @@ const crypto = require('./crypto');
 
 passport.serializeUser((user, done) => {
     // console.log('Serialize: ', user);
-    done(null, user.Username);
+    done(null, user.USERNAME);
 });
 
 passport.deserializeUser(async (username, done) => {
     // console.log('Deserialize: ', username);
-    // const account = await accountModels.getAccountByUsername(username);
     const account = await accountModel.getByUsername(username);
+    const returnedAccount = {
+        userId: account.USERID,
+        username: account.USERNAME,
+        email: account.EMAIL,
+        fullName: account.FULLNAME,
+        phoneNumber: account.PHONE_NUMBER,
+        avatarPath: account.AVATAR_PATH,
+        role: account.HROLE,
+        birthday: account.BIRTHDAY,
+        gender: account.GENDER,
+    };
     if (account) {
-        return done(null, account);
+        return done(null, returnedAccount);
     }
     done('Invalid');
 });
@@ -32,10 +42,8 @@ module.exports = (app) => {
 
                 // Check the correctness of password
                 if (crypto.verifyPassword(password, encryptedPassword)) {
-                    console.log('Verify');
                     return done(null, user);
                 }
-                console.log('Fail');
                 done('Invalid authentication', null);
             } catch (error) {
                 done(error);

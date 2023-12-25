@@ -39,19 +39,17 @@
             </div>
 
             {{! Submit button }}
-            <button id="login" class='login-form__btn' type='submit'>
+            <button id='login' class='login-form__btn' type='submit' data-next-url="{{nextUrl}}">
                 Login
             </button>
 
             {{! Register section }}
             <div class='d-flex justify-content-between'>
                 <p class='register-info my-0'>Not a member yet?</p>
-                <a class="register-link" href='/signup'>Register now</a>
+                <a class='register-link' href='/signup'>Register now</a>
             </div>
         </form>
     </div>
 </div>
 
-<script>
-    
-</script>
+<link rel='stylesheet' href='/assets/css/login.css' />

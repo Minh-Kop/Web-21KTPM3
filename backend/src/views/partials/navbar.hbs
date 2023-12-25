@@ -34,7 +34,7 @@
                 {{! Cart }}
                 <div class='nav__cart'>
                     <a href='#!' class='nav__link'>
-                        <img src='/assets/img/cart.svg' alt='Cart' />
+                        <img src='/assets/img/cart_icon.svg' alt='Cart' />
                         <div class='nav__link-label'>
                             Giỏ hàng
                         </div>
@@ -42,13 +42,48 @@
                 </div>
 
                 {{! Account }}
-                <div class='nav__cart'>
-                    <a href='#!' class='nav__link'>
-                        <img src='/assets/img/account.svg' alt='Account' />
-                        <div class='nav__link-label'>
-                            Tài khoản
+                <div class='nav__account'>
+                    {{#if isLoggedIn}}
+                        <a href='#!' class='nav__link'>
+                            <img class='nav__account_img' src='/assets/img/account_icon.svg' alt='Account' />
+                            <div class='nav__link-label'>
+                                {{username}}
+                            </div>
+                        </a>
+
+                        <div class="nav__account__dropdown--logged-in">
+                            <a href="#!" class="link">
+                                <img class="medal" src="/assets/img/badge_icon.svg" alt="">
+                                <div>
+                                    <div class="heading line-clamb break-all">{{username}}</div>
+                                    <p class="my-0">Thành viên Fabook</p>
+                                </div>
+                            </a>
+
+                            <a href="#!" class="link">
+                                <img class="icon" src="/assets/img/bill_icon.svg" alt="">
+                                <span>Đơn hàng của tôi</span>
+                            </a>
+
+                            <a id="logout" href="#!" class="link">
+                                <img class="icon" src="/assets/img/logout_icon.svg" alt="">
+                                <span>Đăng xuất</span>
+                            </a>
                         </div>
-                    </a>
+                    {{else}}
+                        <a href='#!' class='nav__link'>
+                            <img class='nav__account_img' src='/assets/img/account_icon.svg' alt='Account' />
+                            <div class='nav__link-label'>
+                                Tài khoản
+                            </div>
+                        </a>
+
+                        <div class="nav__account__dropdown">
+                            <a href="/login?nextUrl={{currentUrl}}" class="login">Đăng nhập</a>
+                            <a href="/signup?nextUrl={{currentUrl}}" class="signup">Đăng ký</a>
+                        </div>
+                    {{/if}}
+                    
                 </div>
             </div>
 
@@ -124,23 +159,5 @@
     </div>
 </div>
 
-<script>
-    {{!-- Show/hide dropdown --}}
-    $('.nav__category').on('mouseenter', (e) => {
-        $('.category-menu-dropdown__padding').removeClass('d-none');
-    });
-
-    $('.nav__category, .category-menu-dropdown__padding').on('mouseleave', (e) => {
-        if (!$(e.relatedTarget).closest('.category-menu-dropdown__padding').length) {
-            $('.category-menu-dropdown__padding').addClass('d-none');
-        }
-    });
-
-    {{!-- Change category detail --}}
-    $('.category-menu-dropdown__category').on('mouseenter', (e) => { const
-    selectedCatId = $(e.target).data('cat-id'); const curDetail =
-    $('.category-menu-dropdown__detail:not(.d-none)'); const selectedDetail = $(
-    `.category-menu-dropdown__detail[data-cat-id="${selectedCatId}"]` ); if
-    (curDetail.data('cat-id') === selectedCatId) { return; }
-    curDetail.addClass('d-none'); selectedDetail.removeClass('d-none'); });
-</script>
+<link rel='stylesheet' href='/assets/css/navbar.css' />
+<script src="/assets/js/navbar.js"></script>

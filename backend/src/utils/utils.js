@@ -186,6 +186,23 @@ const removeUndefined = (obj) => {
     return newObj;
 };
 
+const seperateThousandByDot = (number) => {
+    const numArr = [];
+    while (number) {
+        const remainder = number % 1000;
+        numArr.push(remainder.toString());
+        number = parseInt(number / 1000, 10);
+    }
+    return numArr.reduce((str, curNum, index) => {
+        curNum =
+            index === numArr.length - 1
+                ? curNum
+                : '0'.repeat(3 - curNum.length) + curNum;
+        str = !index ? `${curNum}` : `${curNum}.${str}`;
+        return str;
+    }, '');
+};
+
 module.exports = {
     buildCategoryRoot,
     searchCategoryTree,
@@ -193,4 +210,5 @@ module.exports = {
     getParentBranch,
     getCategoryBranch,
     removeUndefined,
+    seperateThousandByDot,
 };

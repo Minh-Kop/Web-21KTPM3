@@ -57,14 +57,9 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         publisherId: pubId === 'all' ? null : pubId,
         sortType,
     };
-    //     let userId = null;
-    //
-    //     if (req.user) {
-    //         // eslint-disable-next-line prefer-destructuring
-    //         userId = req.user.userId;
-    //     }
+
     const { user } = req;
-    console.log(user);
+    const isLoggedIn = req.isAuthenticated();
 
     const { categoryTree } = req;
     const selectedBranch = getCategoryBranch(categoryTree, catId);
@@ -75,6 +70,7 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         page,
         limit,
     });
+
     const totalNumber = await bookController.countBooks(entity);
     const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
 
@@ -105,6 +101,9 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         link: newUrl,
         navbar: () => 'navbar',
         footer: () => 'footer',
+        isLoggedIn,
+        ...user,
+        currentUrl: url,
     });
 });
 

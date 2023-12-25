@@ -162,7 +162,6 @@ $('#login').on('click', async (e) => {
     const apiUrl = '/api/users/login';
 
     const res = await fetch(apiUrl, requestOptions);
-    console.log(res.status);
 
     // If sign up fails
     if (!res.ok) {
@@ -175,7 +174,9 @@ $('#login').on('click', async (e) => {
         return;
     }
 
-    location.assign(`/category`);
+    const nextUrl = $(e.target).data('nextUrl');
+    console.log(nextUrl);
+    location.assign(nextUrl);
 });
 
 $('#logOut').on('click', async (e) => {
