@@ -10,15 +10,6 @@ exports.getCartByUserId = async (userId) => {
     return result.recordset[0];
 };
 
-
-// exports.getCartByEmail = async (email) => {
-//     const sqlString = `select * from CART where EMAIL = '${email}'`;
-//     const pool = await database.getConnectionPool();
-//     const request = new sql.Request(pool);
-//     const result = await request.query(sqlString);
-//     return result.recordset[0];
-// };
-
 exports.updateBookInCart = async ({ cartId, bookId, quantity, isClicked }) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
