@@ -22,7 +22,7 @@
                 />
                 <p class='form-error d-none'></p>
             </div>
-            
+
             {{! Email }}
             <div class='login-form__input-area'>
                 <label class='login-form__label' for='signUpEmail'>
@@ -51,13 +51,11 @@
                 />
                 <p class='form-error d-none'></p>
             </div>
-           
+
             {{! Re-enter password }}
             <div class='login-form__input-area'>
-                <label
-                    class='login-form__label'
-                    for='rePassword'
-                >Re enter password</label>
+                <label class='login-form__label' for='rePassword'>Re enter
+                    password</label>
                 <input
                     type='password'
                     class='login-form__input'
@@ -68,15 +66,17 @@
             </div>
 
             {{! Submit button }}
-            <button id="sign-up" class='login-form__btn' type='submit'>
+            <button id='sign-up' class='login-form__btn' type='submit'>
                 Register
             </button>
 
             {{! Register section }}
             <div class='d-flex justify-content-between'>
                 <p class='register-info my-0'>Are you a member?</p>
-                <a class="register-link" href='/login'>Login now</a>
+                <a class='register-link' href='/login'>Login now</a>
             </div>
         </form>
     </div>
 </div>
+
+<link rel='stylesheet' href='/assets/css/login.css' />

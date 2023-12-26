@@ -8,10 +8,12 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-// const session = require('express-session');const expressHandlebars = require('express-handlebars');
+const session = require('express-session');
 
+const { JWT_SECRET: secret } = require('./config/config');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
+const categoryController = require('./controllers/categoryControllerUI');
 const router = require('./routes');
 const hbs = require('./utils/handlebars')(expressHandlebars);
 
@@ -59,26 +61,36 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // Parse cookie
-// app.use(
-//     session({
-//         name: 'jwt',
-//         secret: 'khoi',
-//         resave: false,
-//         saveUninitialized: false,
-//         cookie: {
-//             maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
-//             sameSite: 'none',
-//             secure: true,
-//             httpOnly: true,
-//         },
-//     }),
-// );
+app.use(
+    session({
+        name: 'session',
+        secret,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            // maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+            // sameSite: 'none',
+            secure: true,
+            httpOnly: true,
+        },
+    }),
+);
+
+// Set up passport
+require('./utils/passport')(app);
 
 // Data sanitization against XSS
 app.use(xss());
 
 // Prevent parameter pollution
 app.use(hpp());
+
+// Create category tree
+app.use(async (req, res, next) => {
+    const categoryTree = await categoryController.getCategoryTree();
+    req.categoryTree = categoryTree;
+    next();
+});
 
 // 2) ROUTES
 app.use(router);
