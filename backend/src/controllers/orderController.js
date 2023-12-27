@@ -39,6 +39,38 @@ exports.getOrder = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getThisOrder = catchAsync(async (req, res, next) => {
+    const { orderId } = req.params;
+    const [
+        deliveryInformation,
+        tempOrderStates,
+        booksOrdered,
+        orderInformation,
+    ] = await orderModel.getDetailedOrder(orderId);
+
+    if (!deliveryInformation || !tempOrderStates.length) {
+        return next(new AppError('Order not found.', 404));
+    }
+
+    const orderStates = tempOrderStates.map((el) => ({
+        ...el,
+        createdTime: moment(el.createdTime)
+            .subtract(7, 'hours')
+            .format('DD/MM/YYYY HH:mm'),
+    }));
+
+    res.render('account/order_detail', {
+        title: orderId,
+        status: 'success',
+        data: {
+            deliveryInformation: deliveryInformation[0],
+            orderStates,
+            booksOrdered,
+            orderInformation: orderInformation[0],
+        },
+    });
+});
+
 exports.getMe = catchAsync(async (req, res, next) => {
     req.query.email = req.user.email;
     next();
@@ -69,8 +101,41 @@ exports.getUserOrders = catchAsync(async (req, res, next) => {
             };
         }),
     );
-
     res.status(200).json({
+        status: 'success',
+        ordersLength: orders.length,
+        orders,
+    });
+});
+
+exports.getMyOrders = catchAsync(async (req, res, next) => {
+    const { userId, orderState, limit: strLimit, page: strPage } = req.query;
+
+    const page = +strPage || 1;
+    const limit = +strLimit || 10;
+    const offset = (page - 1) * limit;
+
+    const returnedOrders = await orderModel.getUserOrders({
+        userId,
+        orderState,
+        limit,
+        offset,
+    });
+    const orders = await Promise.all(
+        returnedOrders.map(async (order) => {
+            const books = await bookModel.getBooksByOrderId(order.orderId);
+            return {
+                orderId: order.orderId,
+                orderState: order.orderState,
+                booksLength: books.length,
+                books,
+                ...order,
+            };
+        }),
+    );
+    console.log(orders);
+    res.render('account/order_list', {
+        title: 'Đơn hàng của tôi',
         status: 'success',
         ordersLength: orders.length,
         orders,
