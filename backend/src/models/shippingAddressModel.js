@@ -69,9 +69,13 @@ exports.updateShippingAddress = async (entity) => {
 };
 
 exports.deleteShippingAddress = async (addrId) => {
+    console.log('entered model');
+    console.log(addrId);
     const sqlString = `delete from SHIPPING_ADDRESS where ADDR_ID = '${addrId}'`;
+    console.log(sqlString);
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
+    console.log(result);
     return result.rowsAffected[0];
 };

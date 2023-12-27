@@ -13,7 +13,7 @@
                 <a href="/api/shippingAddress" style="text-decoration: none; color: #ff550d">Sổ địa chỉ</a>
             </li>
             <li class="list-group-item">
-                <a href="/api/order" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
+                <a href="/api/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
             </li>
         </ul>
     </div>
@@ -47,8 +47,9 @@
                     </td>
                     <td>{{phoneNumber}}</td>
                     <td>
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault{{index @index}}"
-                            {{#if isDefault}} checked {{/if}} data-id="{{addrId}}" value="1"/>
+                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                            id="flexRadioDefault{{index @index}}" {{#if isDefault}} checked {{/if}} data-id="{{addrId}}"
+                            value="1" />
                     </td>
                     <td>
                         <i class="fa-solid fa-pen-to-square update" data-toggle="modal" data-target="#editModal"
@@ -57,7 +58,7 @@
                             data-phone="{{phoneNumber}}" style="cursor: pointer"></i>
                     </td>
                     <td>
-                        <i class="fa-solid fa-trash delete" style="cursor: pointer"></i>
+                        <i class="fa-solid fa-trash delete" style="cursor: pointer" data-id="{{addrId}}"></i>
                     </td>
                 </tr>
                 {{/each}}
@@ -191,7 +192,7 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    $('#addModal').on('submit', function(){
+    $('#addModal').on('submit', function () {
         console.log('1');
     })
     $(".update").click(function (e) {
@@ -234,11 +235,28 @@
             })
             .then((result) => {
                 if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire({
-                        title: "Đã xóa!",
-                        text: "Địa chỉ đã xóa thành công",
-                        icon: "success",
+                    const addrId = $(this).data("id");
+                    $.ajax({
+                        type: 'DELETE',
+                        url: `/api/shippingAddress/${addrId}`,
+                        success: function (response) {
+                            // Handle success, e.g., show a success message
+                            swalWithBootstrapButtons.fire({
+                                title: "Đã xóa!",
+                                text: "Địa chỉ đã xóa thành công",
+                                icon: "success",
+                            });
+                        },
+                        error: function (error) {
+                            // Handle error, e.g., show an error message
+                            swalWithBootstrapButtons.fire({
+                                title: 'Xóa thất bại',
+                                //text: error.responseJSON.message,
+                                icon: "error",
+                            });
+                        }
                     });
+
                 } else if (
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
@@ -250,21 +268,35 @@
                 }
             });
     });
-    $(".form-check-input").click(function(e){
-        console.log("Clicked");
+    $(".form-check-input").click(function (e) {
         const addrId = $(this).data("id");
-        const address = {isDefault: $(this).val()}
+        const address = { isDefault: $(this).val() }
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success ms-3",
+                cancelButton: "btn btn-danger",
+            },
+            buttonsStyling: false,
+        });
         $.ajax({
             type: 'PATCH',
             url: `/api/shippingAddress/${addrId}`,
             data: address,
-            success: function(response) {
+            success: function (response) {
                 // Handle success, e.g., show a success message
-                console.log('Update successful', response);
+                swalWithBootstrapButtons.fire({
+                    title: "Cập nhật thành công!",
+                    text: "Địa chỉ mặc định đã thay đổi thành công!",
+                    icon: "success",
+                });
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle error, e.g., show an error message
-                console.error('Update failed', error);
+                swalWithBootstrapButtons.fire({
+                    title: 'Thay đổi thất bại',
+                    //text: error.responseJSON.message,
+                    icon: "error",
+                });
             }
         });
     })

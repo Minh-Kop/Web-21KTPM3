@@ -86,7 +86,7 @@ exports.updateShippingAddress = catchAsync(async (req, res, next) => {
 
 exports.deleteShippingAddress = catchAsync(async (req, res, next) => {
     const { addrId } = req.params;
-
+    console.log('entered');
     const result = await shippingAddressModel.deleteShippingAddress(addrId);
     if (result <= 0) {
         return next(new AppError('Shipping address not found.', 404));

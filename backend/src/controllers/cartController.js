@@ -84,17 +84,15 @@ exports.updateBookInCart = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const { bookId } = req.params;
     const { quantity, isClicked } = req.body;
-
     const cartResult = await cartModel.getCartByUserId(userId);
     const { CART_ID: cartId } = cartResult;
-
+    console.log(bookId, quantity, isClicked, cartId);
     const result = await cartModel.updateBookInCart({
         cartId,
         bookId,
         quantity,
         isClicked,
     });
-
     if (result === 1) {
         await cartModel.updateCartQuantityCartTotal(cartId);
         return res.status(200).json({
