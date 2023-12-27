@@ -100,14 +100,14 @@ $('#sign-up').on('click', async (e) => {
         const { message } = result;
         if (message === 'Username already exists.') {
             return Swal.fire({
-                title: 'Error!',
+                title: 'Error',
                 text: 'Username đã tồn tại!',
                 icon: 'error',
             });
         }
         if (message === 'Email already exists.') {
             return Swal.fire({
-                title: 'Error!',
+                title: 'Error',
                 text: 'Email đã tồn tại!',
                 icon: 'error',
             });
@@ -115,7 +115,7 @@ $('#sign-up').on('click', async (e) => {
     }
 
     Swal.fire({
-        title: 'Success!',
+        title: 'Success',
         text: 'Tạo tài khoản thành công!',
         icon: 'success',
         timer: 2000,
@@ -162,12 +162,11 @@ $('#login').on('click', async (e) => {
     const apiUrl = '/api/users/login';
 
     const res = await fetch(apiUrl, requestOptions);
-    console.log(res.status);
 
     // If sign up fails
     if (!res.ok) {
         Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Username hoặc mật khẩu chưa chính xác!',
             icon: 'error',
             allowOutsideClick: true,
@@ -175,12 +174,9 @@ $('#login').on('click', async (e) => {
         return;
     }
 
-    // Swal.fire({
-    //     title: 'Good job!',
-    //     text: 'You clicked the button!',
-    //     icon: 'success',
-    // });
-    location.assign(`/product`);
+    const nextUrl = $(e.target).data('nextUrl');
+    console.log(nextUrl);
+    location.assign(nextUrl);
 });
 
 $('#logOut').on('click', async (e) => {

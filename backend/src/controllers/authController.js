@@ -268,6 +268,19 @@ exports.logOut = (req, res) => {
     });
 };
 
+exports.logOutWebsite = async (req, res) => {
+    await new Promise((resolve, reject) => {
+        req.session.regenerate((err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+    res.json({ status: 1 });
+};
+
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
@@ -283,15 +296,24 @@ exports.restrictTo = (...roles) => {
 };
 
 exports.getLoginPage = catchAsync(async (req, res, next) => {
+    const fullUrl = req.originalUrl;
+    let nextUrl = fullUrl.substring(
+        fullUrl.indexOf('nextUrl=') + 'nextUrl='.length,
+    );
+    nextUrl = nextUrl || '/mainPage';
+
     res.render('authentication/login', {
         title: 'Login',
-        mainCSS: () => 'empty',
+        navbar: () => 'empty',
+        footer: () => 'empty',
+        nextUrl,
     });
 });
 
 exports.getSignupPage = catchAsync(async (req, res, next) => {
     res.render('authentication/signup', {
         title: 'Sign up',
-        mainCSS: () => 'empty',
+        navbar: () => 'empty',
+        footer: () => 'empty',
     });
 });
