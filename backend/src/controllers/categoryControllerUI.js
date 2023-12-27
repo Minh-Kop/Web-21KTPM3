@@ -11,7 +11,7 @@ const getCategoryTree = async () => {
     return categories;
 };
 
-const stringtifyBranch = (branch, catId) => {
+const stringifyBranch = (branch, catId) => {
     if (Array.isArray(branch)) {
         for (let i = 0; i < branch.length; i++) {
             const { id, categoryName } = branch[i];
@@ -30,7 +30,7 @@ const stringtifyBranch = (branch, catId) => {
     }
 
     if (children) {
-        const childrenBranch = stringtifyBranch(children, catId);
+        const childrenBranch = stringifyBranch(children, catId);
         if (childrenBranch) {
             arr.push(childrenBranch);
         }
@@ -40,14 +40,24 @@ const stringtifyBranch = (branch, catId) => {
 
 const getCategoryPage = catchAsync(async (req, res, next) => {
     const {
-        catId: chosenCatId,
+        catId,
         page: chosenPage,
         priceRange,
         pubId,
         sortType: chosenSortType,
         limit: chosenLimit,
     } = req.query;
-    const catId = chosenCatId || 'CA16';
+
+    // Redirect if doesn't have catId
+    if (!catId) {
+        return res.redirect('/category?catId=CA16');
+    }
+
+    // User information
+    const { user, cart } = req;
+    const isLoggedIn = req.isAuthenticated();
+
+    // Parameters to get books
     const page = +chosenPage || 1;
     const limit = +chosenLimit || 24;
     const sortType = chosenSortType || 'book_discounted_price';
@@ -58,11 +68,11 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         sortType,
     };
 
-    const { user } = req;
-    const isLoggedIn = req.isAuthenticated();
-
+    // Create category tree
     const { categoryTree } = req;
     const selectedBranch = getCategoryBranch(categoryTree, catId);
+    const stringifiedBranch = stringifyBranch(selectedBranch, catId);
+
     const publisher = await publisherModel.getAll();
 
     const books = await bookController.getAllBooks({
@@ -71,20 +81,18 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         limit,
     });
 
+    // Pagination
     const totalNumber = await bookController.countBooks(entity);
     const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
-
     // Get URL
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
 
-    const stringtifiedBranch = stringtifyBranch(selectedBranch, catId);
-
     res.render('category/categoryPage', {
         title: 'Category page',
         categoryTree,
-        stringtifiedBranch,
+        stringifiedBranch,
         catId,
         selectedBranch,
         publisher,
@@ -103,6 +111,7 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         footer: () => 'footer',
         isLoggedIn,
         ...user,
+        ...cart,
         currentUrl: url,
     });
 });

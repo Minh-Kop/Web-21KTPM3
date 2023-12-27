@@ -117,14 +117,15 @@ li:not(.active):not(.child-active) > .category-section__list__link:hover,
     justify-content: center;
     align-items: center;
 
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background-color: var(--secondary-color);
 }
 
 .book-section__discounted-number {
     font-size: 14px;
+    font-weight: bold;
     color: white;
 }
 

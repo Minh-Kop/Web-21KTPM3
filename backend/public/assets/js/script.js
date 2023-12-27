@@ -178,19 +178,3 @@ $('#login').on('click', async (e) => {
     console.log(nextUrl);
     location.assign(nextUrl);
 });
-
-$('#logOut').on('click', async (e) => {
-    e.preventDefault();
-    const requestOptions = {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-    const apiUrl = `/account/logout`;
-
-    const res = await fetch(apiUrl, requestOptions);
-    const { status } = await res.json();
-
-    location.assign('/login');
-});
