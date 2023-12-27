@@ -19,8 +19,10 @@ exports.getCart = async (userId) => {
             book.originalPrice = seperateThousandByDot(book.originalPrice);
             book.discountedPrice = seperateThousandByDot(book.discountedPrice);
             book.cartPrice = seperateThousandByDot(book.cartPrice);
+
             const { image } = await bookModel.getCoverImage(book.bookId);
             book.image = image;
+
             return book;
         }),
     );
@@ -87,7 +89,23 @@ exports.addBookToCart = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getCartPage = catchAsync(async (req, res, next) => {});
+exports.getCartPage = catchAsync(async (req, res, next) => {
+    // Information from pre-middleware
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    // console.log(cart);
+
+    res.render('cart/cart', {
+        title: 'Cart',
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        isLoggedIn,
+        ...user,
+        ...cart,
+        categoryTree,
+        currentUrl: req.originalUrl,
+    });
+});
 
 exports.updateBookInCart = catchAsync(async (req, res, next) => {
     const { userId } = req.user;

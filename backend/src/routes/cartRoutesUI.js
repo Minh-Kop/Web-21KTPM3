@@ -6,7 +6,7 @@ const router = express.Router();
 
 router
     .route('/')
-    .get(cartController.getCart)
+    .get(cartController.getCartPage)
     .post(cartController.addBookToCart);
 
 router

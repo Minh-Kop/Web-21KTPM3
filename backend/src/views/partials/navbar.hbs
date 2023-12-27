@@ -40,6 +40,12 @@
                         </div>
                     </a>
                     {{#if isLoggedIn}}
+                        {{#if cartCount}}
+                            <div class="cart-mini__quantity">
+                                {{cartCount}}
+                            </div>
+                        {{/if}}
+
                         <section class="nav__cart__dropdown">
                             <h1 class="nav__cart__dropdown__heading">Giỏ hàng ({{cartCount}})</h1>
                             <ul class="nav__cart__dropdown__book-list">

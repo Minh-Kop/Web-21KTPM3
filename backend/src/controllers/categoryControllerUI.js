@@ -53,8 +53,8 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         return res.redirect('/category?catId=CA16');
     }
 
-    // User information
-    const { user, cart } = req;
+    // Information from pre-middleware
+    const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
 
     // Parameters to get books
@@ -68,8 +68,7 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         sortType,
     };
 
-    // Create category tree
-    const { categoryTree } = req;
+    // Create category branch
     const selectedBranch = getCategoryBranch(categoryTree, catId);
     const stringifiedBranch = stringifyBranch(selectedBranch, catId);
 
