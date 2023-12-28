@@ -7,6 +7,7 @@
     --secondary-color: #e85a4f;
     --secondary-color--lighter: #e98074;
     --category-font-color: #666;
+    --light-gray-color: #f2f4f5;
 }
 
 body {
@@ -31,10 +32,10 @@ a {
     word-break: break-all;
 }
 
-/* Config swal2  */
+/* ==================================== Config swal2 ==================================== */
 .swal2-confirm.swal2-styled {
     border: none !important;
-    background-color: #f98d50 !important;
+    background-color: var(--secondary-color) !important;
 }
 
 .swal2-confirm.swal2-styled:focus {
@@ -160,4 +161,59 @@ a {
 .custom-pagination li.active {
     background: var(--secondary-color);
     cursor: default;
+}
+
+/* ==================================== Loading animation ==================================== */
+.loading {
+    position: fixed;
+    z-index: 99;
+    /* top: 50%;
+    left: 50%;
+    translate: -50% -50%; */
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+}
+
+.loading::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 5px solid;
+    border-color: var(--secondary-color) transparent;
+    border-radius: 50%;
+    animation: spinner 1s infinite;
+}
+
+.loading[data-text]::after {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    translate: -50%;
+
+    content: attr(data-text);
+    white-space: nowrap;
+    font-size: 18px;
+}
+
+@keyframes spinner {
+    0% {
+        rotate: 0;
+    }
+    50% {
+        rotate: 180deg;
+    }
+    100% {
+        rotate: 360deg;
+    }
+}
+
+/* ==================================== Background behind ==================================== */
+.background-behind {
+    position: fixed;
+    z-index: 98;
+    inset: 0;
+    background-color: whitesmoke;
+    opacity: 0.5;
 }

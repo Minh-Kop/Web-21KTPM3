@@ -311,6 +311,7 @@ exports.updateBook = async (bookEntity) => {
         numberPage,
         bookFormat,
         description,
+        softDelete,
     } = bookEntity;
 
     const pool = await database.getConnectionPool();
@@ -346,6 +347,10 @@ exports.updateBook = async (bookEntity) => {
     if (stock) {
         checkBook = true;
         sqlStringBook += `STOCK = ${+stock},`;
+    }
+    if (softDelete) {
+        checkBook = true;
+        sqlStringBook += `SOFT_DELETE = ${+softDelete},`;
     }
 
     // Create Book Detail update string

@@ -1,0 +1,173 @@
+<div class='container'>
+    {{! Title }}
+    <div class='cart-title'>
+        <h1 class='cart-heading'>Giỏ hàng</h1>
+        <span class='cart-mini-quantity'>({{cartCount}} sản phẩm)</span>
+    </div>
+
+    {{! Content }}
+    <div class='row gx-3 mb-5'>
+        <div class='col-sm-8'>
+            {{! Header }}
+            <div class='cart-list-header'>
+                <div class='radio-btn'>
+                    <input
+                        class='d-none'
+                        type='checkbox'
+                        name='checkboxAll'
+                        id='checkboxAll'
+                        value='all'
+                        {{#if isAllClicked}}checked{{/if}}
+                    />
+                    <label for='checkboxAll'></label>
+                </div>
+                <div id="chooseAll">Chọn tất cả ({{cartCount}} sản phẩm)</div>
+                <div>Số lượng</div>
+                <div>Thành tiền</div>
+                <div></div>
+            </div>
+
+            {{! Item list }}
+            <ul class='cart-list'>
+                {{#each cartBooks}}
+                    <li class='cart-item' data-book-id="{{bookId}}" data-quantity="{{quantity}}">
+                        {{! Radio button }}
+                        <div class='radio-btn'>
+                            <input
+                                class='d-none checkbox'
+                                type='checkbox'
+                                name='itemCheckbox'
+                                id='{{bookId}}'
+                                value='{{bookId}}'
+                                {{#if isClicked}}checked{{/if}}
+                            />
+                            <label for='{{bookId}}'></label>
+                        </div>
+
+                        {{! Item info }}
+                        <div class='cart-item__info'>
+                            <a href='/books/{{bookId}}'>
+                                <img
+                                    class='cart-item__img'
+                                    src='{{image}}'
+                                    alt=''
+                                />
+                            </a>
+                            <div class='cart-item__desc'>
+                                <h2 class='cart-item__title'>
+                                    <a
+                                        class='line-clamb'
+                                        href='/books/{{bookId}}'
+                                    >
+                                        {{bookName}}
+                                    </a>
+                                </h2>
+                                <div class='cart-item__price'>
+                                    <span class='cart-item__price--discounted'>
+                                        {{discountedPrice}}
+                                        VNĐ
+                                    </span>
+                                    <span class='cart-item__price--original'>
+                                        {{originalPrice}}
+                                        VNĐ
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{! Item quantity }}
+                        <div>
+                            <div class='quantity-box'>
+                                <button class='quantity-box__btn minus'>
+                                    <svg
+                                        class='quantity-box__btn__img'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        height='16'
+                                        width='14'
+                                        viewBox='0 0 448 512'
+                                    >
+                                        <path
+                                            fill='currentColor'
+                                            d='M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z'
+                                        />
+                                    </svg>
+                                </button>
+                                <span
+                                    class='quantity-box__quantity'
+                                >{{quantity}}</span>
+                                <button class='quantity-box__btn plus'>
+                                    <svg
+                                        class='quantity-box__btn__img'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        height='16'
+                                        width='14'
+                                        viewBox='0 0 448 512'
+                                    >
+                                        <path
+                                            fill='currentColor'
+                                            d='M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z'
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        {{! Item cart price }}
+                        <span class='cart-item__price--cart'>
+                            {{cartPrice}}
+                            VNĐ
+                        </span>
+
+                        {{! Delete button }}
+                        <div class='d-flex justify-content-center'>
+                            <button class='delete-btn'>
+                                <svg
+                                    class='delete-btn__icon'
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    height='16'
+                                    width='14'
+                                    viewBox='0 0 448 512'
+                                >
+                                    <path
+                                        fill='currentColor'
+                                        d='M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z'
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                    <div class='product-border'></div>
+                {{/each}}
+            </ul>
+        </div>
+        <div class='col-sm-4'>
+            <div class='total-cart-block'>
+                <div class='total-cart'>
+                    <div class='total-cart__header'>Thành tiền</div>
+                    <div class='total-cart__amount'>{{cartTotal}} VNĐ</div>
+                </div>
+                <div class='total-cart shipping d-none'>
+                    <div class='total-cart__header'>Phí vận chuyển (Giao hàng tiêu chuẩn)</div>
+                    <div class='total-cart__amount'>20.000 VNĐ</div>
+                </div>
+                <div class='product-border'></div>
+
+                <div class='final-total'>
+                    <div class='final-total__header'>Tổng Số Tiền (gồm VAT)</div>
+                    <div class='final-total__amount'>{{cartTotal}} VNĐ</div>
+                </div>
+
+                <div class='cart-checkout'>
+                    {{#eq cartTotal '0'}}
+                        <button disabled class='cart-checkout__btn'>Thanh toán</button>
+                    {{else}}
+                        <button class='cart-checkout__btn active'>Thanh toán</button>
+                    {{/eq}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel='stylesheet' href='/assets/css/cart.css' />
+<script src='/assets/js/cart.js'></script>
