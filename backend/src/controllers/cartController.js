@@ -2,6 +2,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const bookModel = require('../models/bookModel');
 const cartModel = require('../models/cartModel');
+const { seperateThousandByDot } = require('../utils/utils');
 
 exports.getCart = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
@@ -13,15 +14,27 @@ exports.getCart = catchAsync(async (req, res, next) => {
         CART_TOTAL: cartTotal,
     } = cartResult;
 
-    const books = await bookModel.getBooksByCartId(cartId);
+    let cartBooks = await bookModel.getBooksByCartId(cartId);
+    cartBooks = await Promise.all(
+        cartBooks.map(async (book) => {
+            book.originalPrice = seperateThousandByDot(book.originalPrice);
+            book.discountedPrice = seperateThousandByDot(book.discountedPrice);
+            book.cartPrice = seperateThousandByDot(book.cartPrice);
+
+            const { image } = await bookModel.getCoverImage(book.bookId);
+            book.image = image;
+
+            return book;
+        }),
+    );
 
     res.status(200).json({
         status: 'success',
         cart: {
             cartId,
             cartCount,
-            cartTotal,
-            books,
+            cartTotal: seperateThousandByDot(cartTotal),
+            cartBooks,
         },
     });
 });
@@ -104,6 +117,24 @@ exports.updateBookInCart = catchAsync(async (req, res, next) => {
     await cartModel.deleteFromCart(cartId, bookId);
     await cartModel.updateCartQuantityCartTotal(cartId);
     return next(new AppError(`This book is no longer existed.`, 404));
+});
+
+exports.updateAllBooksInCart = catchAsync(async (req, res, next) => {
+    const { userId } = req.user;
+    const { isClicked } = req.body;
+
+    const cartResult = await cartModel.getCartByUserId(userId);
+    const { CART_ID: cartId } = cartResult;
+
+    await cartModel.updateBooksInCart({
+        cartId,
+        isClicked,
+    });
+
+    await cartModel.updateCartQuantityCartTotal(cartId);
+    return res.status(200).json({
+        status: 'success',
+    });
 });
 
 exports.deleteBookFromCart = catchAsync(async (req, res, next) => {

@@ -6,7 +6,7 @@
     </div>
 
     {{! Content }}
-    <div class='row mb-5'>
+    <div class='row gx-3 mb-5'>
         <div class='col-sm-8'>
             {{! Header }}
             <div class='cart-list-header'>
@@ -17,19 +17,20 @@
                         name='checkboxAll'
                         id='checkboxAll'
                         value='all'
+                        {{#if isAllClicked}}checked{{/if}}
                     />
                     <label for='checkboxAll'></label>
                 </div>
-                <div>Chọn tất cả ({{cartCount}} sản phẩm)</div>
+                <div id="chooseAll">Chọn tất cả ({{cartCount}} sản phẩm)</div>
                 <div>Số lượng</div>
                 <div>Thành tiền</div>
                 <div></div>
             </div>
 
             {{! Item list }}
-            <div class='cart-list'>
+            <ul class='cart-list'>
                 {{#each cartBooks}}
-                    <div class='cart-item'>
+                    <li class='cart-item'>
                         {{! Radio button }}
                         <div class='radio-btn'>
                             <input
@@ -37,7 +38,8 @@
                                 type='checkbox'
                                 name='itemCheckbox'
                                 id='{{bookId}}'
-                                value='all'
+                                value='{{bookId}}'
+                                {{#if isClicked}}checked{{/if}}
                             />
                             <label for='{{bookId}}'></label>
                         </div>
@@ -56,7 +58,9 @@
                                     <a
                                         class='line-clamb'
                                         href='/books/{{bookId}}'
-                                    >{{bookName}}</a>
+                                    >
+                                        {{bookName}}
+                                    </a>
                                 </h2>
                                 <div class='cart-item__price'>
                                     <span class='cart-item__price--discounted'>
@@ -88,7 +92,9 @@
                                         />
                                     </svg>
                                 </button>
-                                <span class="quantity-box__quantity">{{quantity}}</span>
+                                <span
+                                    class='quantity-box__quantity'
+                                >{{quantity}}</span>
                                 <button class='quantity-box__btn'>
                                     <svg
                                         class='quantity-box__btn__img'
@@ -129,11 +135,37 @@
                                 </svg>
                             </button>
                         </div>
-                    </div>
+                    </li>
+                    <div class='product-border'></div>
                 {{/each}}
+            </ul>
+        </div>
+        <div class='col-sm-4'>
+            <div class='total-cart-block'>
+                <div class='total-cart'>
+                    <div class='total-cart__header'>Thành tiền</div>
+                    <div class='total-cart__amount'>{{cartTotal}} VNĐ</div>
+                </div>
+                <div class='total-cart shipping d-none'>
+                    <div class='total-cart__header'>Phí vận chuyển (Giao hàng tiêu chuẩn)</div>
+                    <div class='total-cart__amount'>20.000 VNĐ</div>
+                </div>
+                <div class='product-border'></div>
+
+                <div class='final-total'>
+                    <div class='final-total__header'>Tổng Số Tiền (gồm VAT)</div>
+                    <div class='final-total__amount'>{{cartTotal}} VNĐ</div>
+                </div>
+
+                <div class='cart-checkout'>
+                    {{#eq cartTotal '0'}}
+                        <button disabled class='cart-checkout__btn'>Thanh toán</button>
+                    {{else}}
+                        <button class='cart-checkout__btn active'>Thanh toán</button>
+                    {{/eq}}
+                </div>
             </div>
         </div>
-        <div class='col-sm-4'></div>
     </div>
 </div>
 

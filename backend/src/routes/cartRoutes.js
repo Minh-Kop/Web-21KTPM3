@@ -9,6 +9,8 @@ router
     .get(cartController.getCart)
     .post(cartController.addBookToCart);
 
+router.patch('/all', cartController.updateAllBooksInCart);
+
 router
     .route('/:bookId')
     .patch(cartController.updateBookInCart)

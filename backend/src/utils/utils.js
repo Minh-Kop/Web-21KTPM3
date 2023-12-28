@@ -187,6 +187,10 @@ const removeUndefined = (obj) => {
 };
 
 const seperateThousandByDot = (number) => {
+    if (number === 0) {
+        return '0';
+    }
+
     const numArr = [];
     while (number) {
         const remainder = number % 1000;

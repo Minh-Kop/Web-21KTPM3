@@ -93,7 +93,9 @@ exports.getCartPage = catchAsync(async (req, res, next) => {
     // Information from pre-middleware
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
-    // console.log(cart);
+    const isAllClicked = cart.cartBooks.every((el) => {
+        return el.isClicked === true;
+    });
 
     res.render('cart/cart', {
         title: 'Cart',
@@ -102,6 +104,7 @@ exports.getCartPage = catchAsync(async (req, res, next) => {
         isLoggedIn,
         ...user,
         ...cart,
+        isAllClicked,
         categoryTree,
         currentUrl: req.originalUrl,
     });

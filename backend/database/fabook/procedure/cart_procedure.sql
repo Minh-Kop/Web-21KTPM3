@@ -123,7 +123,6 @@ COMMIT
 RETURN 1
 GO
 
-GO
 IF OBJECT_ID('sp_UpdateCart') IS NOT NULL
 	DROP PROC sp_UpdateCart
 GO
@@ -165,6 +164,33 @@ BEGIN TRANSACTION
             UPDATE CART_DETAIL
             set IS_CLICKED = @isClicked
             where CART_ID = @cartId and BOOK_ID = @bookId
+        END
+	END TRY
+
+	BEGIN CATCH
+		PRINT N'Bị lỗi'
+		ROLLBACK  
+		RETURN 0
+	END CATCH
+COMMIT
+RETURN 1
+GO
+
+IF OBJECT_ID('sp_UpdateBooksInCart') IS NOT NULL
+	DROP PROC sp_UpdateBooksInCart
+GO
+CREATE PROCEDURE sp_UpdateBooksInCart (
+    @cartId char(5),
+    @isClicked BIT
+)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+        if @isClicked is NOT NULL
+        BEGIN
+            UPDATE CART_DETAIL
+            set IS_CLICKED = @isClicked
+            where CART_ID = @cartId
         END
 	END TRY
 

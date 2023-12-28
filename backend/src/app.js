@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const expressHandlebars = require('express-handlebars');
 const rateLimit = require('express-rate-limit');
 // const helmet = require('helmet');
@@ -96,6 +96,7 @@ app.use(async (req, res, next) => {
         const cart = await cartController.getCart(userId);
         req.cart = cart;
     }
+
     next();
 });
 

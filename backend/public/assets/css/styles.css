@@ -162,3 +162,58 @@ a {
     background: var(--secondary-color);
     cursor: default;
 }
+
+/* ==================================== Loading animation ==================================== */
+.loading {
+    position: fixed;
+    z-index: 99;
+    /* top: 50%;
+    left: 50%;
+    translate: -50% -50%; */
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+}
+
+.loading::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 5px solid;
+    border-color: var(--secondary-color) transparent;
+    border-radius: 50%;
+    animation: spinner 1s infinite;
+}
+
+.loading[data-text]::after {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    translate: -50%;
+
+    content: attr(data-text);
+    white-space: nowrap;
+    font-size: 18px;
+}
+
+@keyframes spinner {
+    0% {
+        rotate: 0;
+    }
+    50% {
+        rotate: 180deg;
+    }
+    100% {
+        rotate: 360deg;
+    }
+}
+
+/* ==================================== Background behind ==================================== */
+.background-behind {
+    position: fixed;
+    z-index: 98;
+    inset: 0;
+    background-color: whitesmoke;
+    opacity: 0.5;
+}
