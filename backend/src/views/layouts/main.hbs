@@ -138,14 +138,16 @@
 
     <body>
         {{! Navbar }}
-        {{!-- {{> navbar}} --}}
         {{> (navbar)}}
 
         {{! Content }}
         {{{body}}}
 
+        {{!-- Loading animation --}}
+        <div class="waiting loading d-none" data-text="Đang xử lý..."></div>
+        <div class="waiting background-behind d-none"></div>
+
         {{! Footer }}
-        {{!-- {{> footer}} --}}
         {{> (footer)}}
     </body>
 

@@ -93,7 +93,6 @@ $('#sign-up').on('click', async (e) => {
 
     const res = await fetch(apiUrl, requestOptions);
     const result = await res.json();
-    console.log(result);
 
     // If sign up fails
     if (!res.ok) {
@@ -175,6 +174,5 @@ $('#login').on('click', async (e) => {
     }
 
     const nextUrl = $(e.target).data('nextUrl');
-    console.log(nextUrl);
     location.assign(nextUrl);
 });

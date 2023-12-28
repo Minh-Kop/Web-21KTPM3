@@ -21,6 +21,15 @@ exports.updateBookInCart = async ({ cartId, bookId, quantity, isClicked }) => {
     return result.returnValue;
 };
 
+exports.updateBooksInCart = async ({ cartId, isClicked }) => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    request.input('cartId', sql.Char, cartId);
+    request.input('isClicked', sql.Bit, +isClicked);
+    const result = await request.execute('sp_UpdateBooksInCart');
+    return result.returnValue;
+};
+
 exports.addBookToCart = async ({ cartId, bookId, quantity, isClicked }) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
