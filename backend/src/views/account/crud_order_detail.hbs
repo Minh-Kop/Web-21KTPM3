@@ -53,26 +53,55 @@
     }
 </style>
 <div class='text-start px-4 row m-0 pb-3' style='background-color: #eae7dc'>
-    <div class='card col-2 mt-3 border  -success rounded h-100'>
-        <div class='card-header fw-bold text-danger fs-4'>
-            Tài khoản
-        </div>
-        <ul class='list-group list-group-flush'>
-            <li class='list-group-item'>
-                <a href='' style='text-decoration: none; color: black'>
-                    Thông tin tài khoản
-                </a>
-            </li>
-            <li class='list-group-item'>
-                <a href='' style='text-decoration: none; color: black'>Sổ địa
-                    chỉ</a>
-            </li>
-            <li class='list-group-item'>
-                <a href='' style='text-decoration: none; color: #ff550d'>Đơn
-                    hàng của tôi</a>
-            </li>
-        </ul>
-    </div>
+    <p class="fs-2 fw-bold" style="color:#E85A4F">Chi tiết đơn hàng</p>
+    <div class="card col-2 mt-3 border border-success rounded h-100 p-2 text-center">
+                <div class="card-header text-warning-emphasis fs-6" style="background-color: #D8C3A5; height: 230px;">
+                    <img src="{{avatarPath}}" alt="" class="img-thumbnail" />
+                    {{username}}
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a
+                            href="/api/users/me"
+                            class="fs-5"
+                            style="text-decoration: none; color: black">
+                            Sản phẩm
+                        </a>
+                    </li>
+                    <li class="list-group-item"  style="background-color: #E98074; ">
+                        <a
+                            href="/api/shippingAddress"
+                            class="fs-5"
+                            style="text-decoration: none; color: black"
+                            >Đơn hàng</a
+                        >
+                    </li>
+                    <li class="list-group-item">
+                        <a
+                            href="/api/order/me" 
+                            class="fs-5"
+                            style="text-decoration: none; color: #ffffff;"
+                            >Thống kê</a
+                        >
+                    </li>
+                    <li class="list-group-item">
+                        <a
+                            href="/api/shippingAddress"
+                            class="fs-5"
+                            style="text-decoration: none; color: black"
+                            >Tài khoản</a
+                        >
+                    </li>
+                    <li class="list-group-item">
+                        <a
+                            href="/api/shippingAddress"
+                            class="fs-5"
+                            style="text-decoration: none; color: black"
+                            >Danh mục</a
+                        >
+                    </li>
+                </ul>
+            </div>
     <div class='container col-9'>
         <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
             <h4 class='mt-2 mb-3'>CHI TIẾT ĐƠN HÀNG</h4>
