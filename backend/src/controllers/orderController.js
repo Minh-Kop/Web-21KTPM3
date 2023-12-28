@@ -48,6 +48,13 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
         orderInformation,
     ] = await orderModel.getDetailedOrder(orderId);
 
+    const { user, cart } = req;
+    const isLoggedIn = req.isAuthenticated();
+
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('&page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+
     if (!deliveryInformation || !tempOrderStates.length) {
         return next(new AppError('Order not found.', 404));
     }
@@ -68,6 +75,13 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
             booksOrdered,
             orderInformation: orderInformation[0],
         },
+        link: newUrl,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: url,
     });
 });
 
@@ -115,6 +129,13 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
     const limit = +strLimit || 10;
     const offset = (page - 1) * limit;
 
+    const { user, cart } = req;
+    const isLoggedIn = req.isAuthenticated();
+
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('&page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+
     const returnedOrders = await orderModel.getUserOrders({
         userId,
         orderState,
@@ -139,6 +160,13 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         status: 'success',
         ordersLength: orders.length,
         orders,
+        link: newUrl,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: url,
     });
 });
 

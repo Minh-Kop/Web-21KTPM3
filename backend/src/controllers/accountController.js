@@ -28,6 +28,8 @@ exports.getMe = (req, res, next) => {
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
+    const { user, cart } = req;
+    const isLoggedIn = req.isAuthenticated();
 
     const detailedUser = await accountModel.getDetailedUser(userId);
 
@@ -40,9 +42,21 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
     )
         .toISOString()
         .split('T')[0];
+    
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('&page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+    
     res.render('account/user_account', {
         title: detailedUser.recordset[0].userName,
         user: detailedUser.recordset[0],
+        link: newUrl,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: url,
     });
 });
 
@@ -56,7 +70,14 @@ exports.getUser = catchAsync(async (req, res, next) => {
         return next(new AppError('The account is no longer exist.', 404));
     }
 
-    res.status(200).json({
+    detailedUser.recordset[0].birthday = new Date(
+        detailedUser.recordset[0].birthday,
+    )
+        .toISOString()
+        .split('T')[0];
+
+    res.render('account/crud_user_detail', {
+        title: 'Chi tiết tài khoản',
         status: 'success',
         user: detailedUser.recordset[0],
     });
@@ -102,7 +123,7 @@ exports.updateAvatar = catchAsync(async (req, res, next) => {
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
     let { sortType, limit, page } = req.query;
-
+    const { user } = req;
     sortType = sortType || 'userid';
     page = +page || 1;
     limit = +limit || 12;
@@ -114,8 +135,10 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         offset,
     });
 
-    res.status(200).json({
+    res.render('account/crud_users_list', {
+        title: 'Danh sách tài khoản',
         status: 'success',
+        ...user,
         users,
     });
 });

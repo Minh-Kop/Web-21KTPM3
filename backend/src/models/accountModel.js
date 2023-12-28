@@ -141,7 +141,7 @@ exports.getAllUsers = async (userEntity) => {
     sqlString += ` OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`;
 
     sqlString = `
-        select a.USERID userId, [a].[EMAIL] as email, [a].[FULLNAME] as fullName, [a].[PHONE_NUMBER] as phoneNumber, [a].[AVATAR_PATH] as avatarPath, [a].[HROLE] as role, a.GENDER as gender, a.BIRTHDAY as birthday
+        select a.USERID userId, [a].USERNAME as username, [a].[EMAIL] as email, [a].[FULLNAME] as fullName, [a].[PHONE_NUMBER] as phoneNumber, [a].[AVATAR_PATH] as avatarPath, [a].[HROLE] as role, a.GENDER as gender, a.BIRTHDAY as birthday
         from ACCOUNT a ${sqlString}`;
 
     const pool = await database.getConnectionPool();
