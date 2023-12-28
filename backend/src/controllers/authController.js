@@ -240,6 +240,16 @@ exports.protect = catchAsync(async (req, res, next) => {
     next();
 });
 
+exports.protectPage = catchAsync(async (req, res, next) => {
+    const isLoggedIn = req.isAuthenticated();
+    if (isLoggedIn) {
+        next();
+    } else {
+        const nextUrl = req.originalUrl;
+        res.redirect(`/login?nextUrl=${nextUrl}`);
+    }
+});
+
 exports.updatePassword = catchAsync(async (req, res, next) => {
     // 1) Get user from collection
     const { user } = req;

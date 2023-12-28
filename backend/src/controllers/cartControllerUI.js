@@ -4,8 +4,7 @@ const bookModel = require('../models/bookModel');
 const cartModel = require('../models/cartModel');
 const { seperateThousandByDot } = require('../utils/utils');
 
-exports.getCart = catchAsync(async (req, res, next) => {
-    const { userId } = req.user;
+exports.getCart = async (userId) => {
     const cartResult = await cartModel.getCartByUserId(userId);
 
     const {
@@ -28,16 +27,13 @@ exports.getCart = catchAsync(async (req, res, next) => {
         }),
     );
 
-    res.status(200).json({
-        status: 'success',
-        cart: {
-            cartId,
-            cartCount,
-            cartTotal: seperateThousandByDot(cartTotal),
-            cartBooks,
-        },
-    });
-});
+    return {
+        cartId,
+        cartCount,
+        cartTotal: seperateThousandByDot(cartTotal),
+        cartBooks,
+    };
+};
 
 exports.addBookToCart = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
@@ -93,54 +89,51 @@ exports.addBookToCart = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getCartPage = catchAsync(async (req, res, next) => {
+    // Information from pre-middleware
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    const isAllClicked = cart.cartBooks.every((el) => {
+        return el.isClicked === true;
+    });
+
+    res.render('cart/cart', {
+        title: 'Cart',
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        isLoggedIn,
+        ...user,
+        ...cart,
+        isAllClicked,
+        categoryTree,
+        currentUrl: req.originalUrl,
+    });
+});
+
 exports.updateBookInCart = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const { bookId } = req.params;
     const { quantity, isClicked } = req.body;
+
     const cartResult = await cartModel.getCartByUserId(userId);
     const { CART_ID: cartId } = cartResult;
-    console.log(bookId, quantity, isClicked, cartId);
+
     const result = await cartModel.updateBookInCart({
         cartId,
         bookId,
         quantity,
         isClicked,
     });
+
     if (result === 1) {
         await cartModel.updateCartQuantityCartTotal(cartId);
         return res.status(200).json({
             status: 'success',
         });
     }
-    if (result === 0) {
-        return next(
-            new AppError(
-                `The quantity has exceeded the quantity in stock.`,
-                400,
-            ),
-        );
-    }
     await cartModel.deleteFromCart(cartId, bookId);
     await cartModel.updateCartQuantityCartTotal(cartId);
     return next(new AppError(`This book is no longer existed.`, 404));
-});
-
-exports.updateAllBooksInCart = catchAsync(async (req, res, next) => {
-    const { userId } = req.user;
-    const { isClicked } = req.body;
-
-    const cartResult = await cartModel.getCartByUserId(userId);
-    const { CART_ID: cartId } = cartResult;
-
-    await cartModel.updateBooksInCart({
-        cartId,
-        isClicked,
-    });
-
-    await cartModel.updateCartQuantityCartTotal(cartId);
-    return res.status(200).json({
-        status: 'success',
-    });
 });
 
 exports.deleteBookFromCart = catchAsync(async (req, res, next) => {

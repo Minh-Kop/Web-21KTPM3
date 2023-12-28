@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const expressHandlebars = require('express-handlebars');
 const rateLimit = require('express-rate-limit');
 // const helmet = require('helmet');
@@ -14,6 +14,7 @@ const { JWT_SECRET: secret } = require('./config/config');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const categoryController = require('./controllers/categoryControllerUI');
+const cartController = require('./controllers/cartControllerUI');
 const router = require('./routes');
 const hbs = require('./utils/handlebars')(expressHandlebars);
 
@@ -89,6 +90,13 @@ app.use(hpp());
 app.use(async (req, res, next) => {
     const categoryTree = await categoryController.getCategoryTree();
     req.categoryTree = categoryTree;
+
+    if (req.isAuthenticated()) {
+        const { userId } = req.user;
+        const cart = await cartController.getCart(userId);
+        req.cart = cart;
+    }
+
     next();
 });
 

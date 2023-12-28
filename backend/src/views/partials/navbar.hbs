@@ -33,12 +33,50 @@
             <div class='d-flex gap-4'>
                 {{! Cart }}
                 <div class='nav__cart'>
-                    <a href='#!' class='nav__link'>
+                    <a href='/cart' class='nav__link'>
                         <img src='/assets/img/cart_icon.svg' alt='Cart' />
                         <div class='nav__link-label'>
                             Giỏ hàng
                         </div>
                     </a>
+                    {{#if isLoggedIn}}
+                        {{#if cartCount}}
+                            <div class="cart-mini__quantity">
+                                {{cartCount}}
+                            </div>
+                        {{else}}
+                            <div class="cart-mini__quantity d-none">
+                                {{cartCount}}
+                            </div>
+                        {{/if}}
+
+                        <section class="nav__cart__dropdown">
+                            <h1 class="nav__cart__dropdown__heading">Giỏ hàng ({{cartCount}})</h1>
+                            <ul class="nav__cart__dropdown__book-list">
+                                {{#each cartBooks }}
+                                    <li class="nav__cart__dropdown__book-item">
+                                        <a class="nav__cart__dropdown__book-link" href="/books/{{bookId}}">
+                                            <img class="thumb" src="{{image}}" alt="">
+                                            <div class="info">
+                                                <h2 class="heading line-clamb">{{bookName}}</h2>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="price">{{discountedPrice}} VNĐ</span> 
+                                                    
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="12" viewBox="0 0 384 512"><path opacity="1" fill="currentColor" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+                                                    <span>{{quantity}}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+
+                            {{!-- Cart dropdown bottom --}}
+                            <div class="nav__cart__dropdown__bottom">
+                                <a class="cart-btn" href="/cart">Xem giỏ hàng</a>
+                            </div>
+                        </section>
+                    {{/if}}
                 </div>
 
                 {{! Account }}

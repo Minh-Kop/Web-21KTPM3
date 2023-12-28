@@ -1,15 +1,13 @@
 const express = require('express');
 
-const cartController = require('../controllers/cartController');
+const cartController = require('../controllers/cartControllerUI');
 
 const router = express.Router();
 
 router
     .route('/')
-    .get(cartController.getCart)
+    .get(cartController.getCartPage)
     .post(cartController.addBookToCart);
-
-router.patch('/all', cartController.updateAllBooksInCart);
 
 router
     .route('/:bookId')

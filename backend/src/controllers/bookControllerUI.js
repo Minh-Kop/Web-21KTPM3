@@ -119,10 +119,8 @@ exports.getAllBooks = async ({
 
     const books = await Promise.all(
         resultBooks.map(async (item) => {
-            const bookId = item.BOOK_ID;
-            const { image } = await bookModel.getCoverImage(bookId);
-            return {
-                bookId,
+            const book = {
+                bookId: item.BOOK_ID,
                 bookName: item.BOOK_NAME,
                 originalPrice: item.BOOK_PRICE,
                 discountedPrice: item.BOOK_DISCOUNTED_PRICE,
@@ -130,15 +128,16 @@ exports.getAllBooks = async ({
                 stock: item.STOCK,
                 avgRating: item.AVG_RATING,
                 countRating: item.COUNT_RATING,
-                image,
             };
+            book.originalPrice = seperateThousandByDot(book.originalPrice);
+            book.discountedPrice = seperateThousandByDot(book.discountedPrice);
+
+            const { image } = await bookModel.getCoverImage(book.bookId);
+            book.image = image;
+
+            return book;
         }),
     );
-    books.forEach((book) => {
-        book.originalPrice = seperateThousandByDot(book.originalPrice);
-        book.discountedPrice = seperateThousandByDot(book.discountedPrice);
-    });
-
     return books;
 };
 
