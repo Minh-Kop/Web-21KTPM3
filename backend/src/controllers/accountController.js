@@ -78,6 +78,8 @@ exports.getUser = catchAsync(async (req, res, next) => {
 
     res.render('account/crud_user_detail', {
         title: 'Chi tiết tài khoản',
+        navbar: () => 'empty',
+        footer: () => 'empty',
         status: 'success',
         user: detailedUser.recordset[0],
     });
@@ -138,6 +140,8 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     res.render('account/crud_users_list', {
         title: 'Danh sách tài khoản',
         status: 'success',
+        navbar: () => 'empty',
+        footer: () => 'empty',
         ...user,
         users,
     });

@@ -18,7 +18,7 @@
                 <a href="/api/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Đơn hàng</a>
             </li>
             <li class="list-group-item">
-                <a href="/api/order/me" class="fs-5" style="text-decoration: none; color: #ffffff">Thống kê</a>
+                <a href="/api/order/me" class="fs-5" style="text-decoration: none; color: black">Thống kê</a>
             </li>
             <li class="list-group-item" style="background-color: #e98074">
                 <a href="/api/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Tài khoản</a>
@@ -53,7 +53,7 @@
                             <img src="{{avatarPath}}"
                                 alt="" class="img-thumbnail" style="width: 100px; height: 100px" />
                         </td>
-                        <td>{{userName}}</td>
+                        <td>{{username}}</td>
                         <td>{{email}}</td>
                         <td>{{fullName}}</td>
                         <td>{{phoneNumber}}</td>
@@ -62,6 +62,11 @@
                         <td>{{role}}</td>
                         <td>
                             <i class="fa-solid fa-trash delete" style="cursor: pointer" data-id="{{userId}}"></i>
+                        </td>
+                        <td>
+                            <a href="/api/users/{{userId}}" style="color: black">
+                                <i class='fa-solid fa-circle-info' style='cursor: pointer'></i>
+                            </a>
                         </td>
                         {{/each}}
                     </tr>
