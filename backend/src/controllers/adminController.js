@@ -142,6 +142,22 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
             categoryName: 'Truyện Ngắn - Tản Văn',
         },
     ];
+
+    for (const i of fatherCategories) {
+        for (const j of i.children) {
+            if (j.id === book.CATE_ID) {
+                i.selected = true;
+                break;
+            }
+        }
+    }
+
+    for (const i of categories) {
+        if (i.id === book.CATE_ID) {
+            i.selected = true;
+            break;
+        }
+    }
     console.log(book);
 
     res.render('bookCRUD/updateBook', {

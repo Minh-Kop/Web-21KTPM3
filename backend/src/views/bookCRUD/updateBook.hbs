@@ -11,7 +11,7 @@
                     <div class="label">Danh mục cha:</div>
                     <select name="father-category" id="fCategory">
                         {{#each fCategories}}
-                        <option value="{{this.id}}">{{this.categoryName}}</option>
+                        <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -19,7 +19,7 @@
                     <div class="label">Danh mục</div>
                     <select name="category" id="category">
                         {{#each categories}}
-                        <option value="{{this.id}}">{{this.categoryName}}</option>
+                        <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
                     </select>
                 </div>
