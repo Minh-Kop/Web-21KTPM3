@@ -127,6 +127,7 @@ exports.getAllBooks = async ({
                 originalPrice: item.BOOK_PRICE,
                 discountedPrice: item.BOOK_DISCOUNTED_PRICE,
                 discountedNumber: item.DISCOUNTED_NUMBER,
+                stock: item.STOCK,
                 avgRating: item.AVG_RATING,
                 countRating: item.COUNT_RATING,
                 image,
@@ -327,20 +328,39 @@ exports.getBestSeller = catchAsync(async (req, res, next) => {
 });
 
 exports.renderMainPage = catchAsync(async (req, res, next) => {
-    const result = await categoryModel.getAllCategory();
-    const categories = buildCategoryRoot(result);
-    const cateLists = [];
+    const cateLists = [
+        {
+            id: 'CA02',
+            categoryName: 'Comic - Truyện Tranh',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA03',
+            categoryName: 'Manga',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA05',
+            categoryName: 'Kỹ Năng Sống',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA06',
+            categoryName: 'Sách Cho Tuổi Mới Lớn',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA07',
+            categoryName: 'Tâm Lý',
+            description: undefined,
+            children: undefined,
+        },
+    ];
     const cateBooks = [];
-
-    for (const i of categories[0].children) {
-        if (i.children) {
-            for (const j of i.children) {
-                cateLists.push(j);
-            }
-        }
-    }
-    console.log(cateLists);
-
     const page = 1;
     const limit = 5;
     const offset = (page - 1) * limit;
@@ -400,6 +420,8 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
             };
         }),
     );
+
+    console.log(nBooks);
 
     const { categoryTree } = req;
 

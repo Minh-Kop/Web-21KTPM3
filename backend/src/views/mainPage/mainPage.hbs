@@ -1,46 +1,48 @@
-<div class="main-page-container">
-    <div class="banner"></div>
+<div class="container">
+    <div class="main-page-container">
+        <div class="banner"></div>
 
-    <div class="categories-list-container">
-        <div class="category-header">Danh mục</div>
-        <div class="categories-list">
-            {{#each categories}}
-            <div class="category">
-                {{this.categoryName}}
+        <div class="categories-list-container">
+            <div class="category-header">Danh mục</div>
+            <div class="categories-list">
+                {{#each categories}}
+                <div class="category">
+                    {{this.categoryName}}
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
-    </div>
 
-    <div class="newest-books-container">
-        <div class="category-name">Sách mới về</div>
-        <div class="books-list">
-            {{#each newBooks}}
-            <div class="book">
-                <img src="{{this.image}}" alt="book_image">
-                <p class="bName">{{this.bookName}}</p>
-                <p class="orgPrice">{{this.originalPrice}} VND</p>
-                <p class="disPrice">{{this.discountedPrice}} VND</p>
+        <div class="newest-books-container">
+            <div class="category-name">Sách mới về</div>
+            <div class="books-list">
+                {{#each newBooks}}
+                <div class="book">
+                    <img src="{{this.image}}" alt="book_image">
+                    <p class="bName">{{this.bookName}}</p>
+                    <p class="orgPrice">{{this.originalPrice}} VND</p>
+                    <p class="disPrice">{{this.discountedPrice}} VND</p>
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
-    </div>
 
-    {{#each cateBooks}}
-    <div class="books-by-category-container">
-        <div class="category-name">{{this.catName}}</div>
-        <div class="books-list">
-            {{#each this.booksList}}
-            <div class="book">
-                <img src="{{this.image}}" alt="book_image">
-                <p class="bName">{{this.bookName}}</p>
-                <p class="orgPrice">{{this.originalPrice}} VND</p>
-                <p class="disPrice">{{this.discountedPrice}} VND</p>
+        {{#each cateBooks}}
+        <div class="books-by-category-container">
+            <div class="category-name">{{this.catName}}</div>
+            <div class="books-list">
+                {{#each this.booksList}}
+                <div class="book">
+                    <img src="{{this.image}}" alt="book_image">
+                    <p class="bName">{{this.bookName}}</p>
+                    <p class="orgPrice">{{this.originalPrice}} VND</p>
+                    <p class="disPrice">{{this.discountedPrice}} VND</p>
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
+        {{/each}}
     </div>
-    {{/each}}
-
-    {{> css/mainPage.css}}
 </div>
+
+<link rel='stylesheet' href='/assets/css/mainPage.css' />
