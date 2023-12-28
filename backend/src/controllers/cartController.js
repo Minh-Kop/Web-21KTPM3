@@ -114,6 +114,14 @@ exports.updateBookInCart = catchAsync(async (req, res, next) => {
             status: 'success',
         });
     }
+    if (result === 0) {
+        return next(
+            new AppError(
+                `The quantity has exceeded the quantity in stock.`,
+                400,
+            ),
+        );
+    }
     await cartModel.deleteFromCart(cartId, bookId);
     await cartModel.updateCartQuantityCartTotal(cartId);
     return next(new AppError(`This book is no longer existed.`, 404));

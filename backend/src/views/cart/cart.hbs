@@ -30,11 +30,11 @@
             {{! Item list }}
             <ul class='cart-list'>
                 {{#each cartBooks}}
-                    <li class='cart-item'>
+                    <li class='cart-item' data-book-id="{{bookId}}" data-quantity="{{quantity}}">
                         {{! Radio button }}
                         <div class='radio-btn'>
                             <input
-                                class='d-none'
+                                class='d-none checkbox'
                                 type='checkbox'
                                 name='itemCheckbox'
                                 id='{{bookId}}'
@@ -78,7 +78,7 @@
                         {{! Item quantity }}
                         <div>
                             <div class='quantity-box'>
-                                <button class='quantity-box__btn'>
+                                <button class='quantity-box__btn minus'>
                                     <svg
                                         class='quantity-box__btn__img'
                                         xmlns='http://www.w3.org/2000/svg'
@@ -95,7 +95,7 @@
                                 <span
                                     class='quantity-box__quantity'
                                 >{{quantity}}</span>
-                                <button class='quantity-box__btn'>
+                                <button class='quantity-box__btn plus'>
                                     <svg
                                         class='quantity-box__btn__img'
                                         xmlns='http://www.w3.org/2000/svg'

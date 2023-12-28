@@ -32,10 +32,10 @@ a {
     word-break: break-all;
 }
 
-/* Config swal2  */
+/* ==================================== Config swal2 ==================================== */
 .swal2-confirm.swal2-styled {
     border: none !important;
-    background-color: #f98d50 !important;
+    background-color: var(--secondary-color) !important;
 }
 
 .swal2-confirm.swal2-styled:focus {

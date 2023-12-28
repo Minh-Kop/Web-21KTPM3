@@ -156,7 +156,7 @@
     align-items: center;
 
     height: 30px;
-    border: 1px solid var(--light-gray-color);
+    border: 1px solid var(--category-font-color);
     border-radius: 5px;
 }
 

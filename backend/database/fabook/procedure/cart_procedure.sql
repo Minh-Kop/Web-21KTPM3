@@ -135,23 +135,25 @@ CREATE PROCEDURE sp_UpdateCart (
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
+        DECLARE @price INT, @stock INT
+        select @price = BOOK_DISCOUNTED_PRICE, @stock = STOCK 
+        from BOOK 
+        where BOOK_ID = @bookId and SOFT_DELETE = 0
+
+        if @price IS NULL
+        BEGIN
+            PRINT N'This product is no longer exists.'
+            ROLLBACK
+            RETURN -1
+        END
+
         if @quantity IS NOT NULL
         BEGIN
-            DECLARE @price INT, @stock INT
-            select @price = BOOK_DISCOUNTED_PRICE, @stock = STOCK 
-            from BOOK 
-            where BOOK_ID = @bookId and SOFT_DELETE = 0
-
-            if @price IS NULL
-            BEGIN
-                PRINT N'This product is no longer exists.'
-                ROLLBACK  
-                RETURN -1
-            END
-
             if @quantity > @stock
             BEGIN
-                set @quantity = @stock
+                PRINT N'The quantity has exceeded the quantity in stock.'
+                ROLLBACK
+                RETURN 0
             END
 
             UPDATE CART_DETAIL

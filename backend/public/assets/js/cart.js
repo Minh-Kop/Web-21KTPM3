@@ -1,41 +1,13 @@
-$('input[name="checkboxAll"]').on('change', async function () {
-    $('.waiting').removeClass('d-none');
-
-    const isChecked = $(this).prop('checked');
-    const isClicked = isChecked ? 1 : 0;
-
-    await fetch('/api/cart/all', {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            isClicked,
-        }),
-    });
-    const { cart } = await fetch('/api/cart').then((res) => res.json());
-    const { cartCount, cartTotal, cartBooks } = cart;
-    let isAllClicked = false;
-    if (cartBooks.length) {
-        isAllClicked = cartBooks.every((el) => {
-            return el.isClicked === true;
-        });
-    }
-
-    renderCartInNavbar({ cartCount, cartBooks });
-    renderCartList({ isAllClicked, cartCount, cartBooks });
-    renderCartTotal(cartTotal);
-
-    $('.waiting').addClass('d-none');
-});
-
 const renderCartTotal = (cartTotal) => {
     $('.total-cart__amount').text(`${cartTotal} VNĐ`);
     $('.final-total__amount').text(`${cartTotal} VNĐ`);
 
-    $('.cart-checkout__btn')
-        .toggleClass('active')
-        .prop('disabled', cartTotal === '0');
+    const cartCheckoutBtn = $('.cart-checkout__btn');
+    if (cartTotal === '0') {
+        cartCheckoutBtn.removeClass('active').prop('disabled', true);
+    } else {
+        cartCheckoutBtn.addClass('active').prop('disabled', false);
+    }
 };
 
 const renderCartList = ({ isAllClicked, cartCount, cartBooks }) => {
@@ -56,10 +28,10 @@ const renderCartList = ({ isAllClicked, cartCount, cartBooks }) => {
             image,
         } = book;
         html += `
-            <li class='cart-item'>
+            <li class='cart-item' data-book-id='${bookId}' data-quantity='${quantity}'>
                 <div class='radio-btn'>
                     <input
-                        class='d-none'
+                        class='d-none checkbox'
                         type='checkbox'
                         name='itemCheckbox'
                         id='${bookId}'
@@ -99,7 +71,7 @@ const renderCartList = ({ isAllClicked, cartCount, cartBooks }) => {
 
                 <div>
                     <div class='quantity-box'>
-                        <button class='quantity-box__btn'>
+                        <button class='quantity-box__btn minus'>
                             <svg
                                 class='quantity-box__btn__img'
                                 xmlns='http://www.w3.org/2000/svg'
@@ -118,7 +90,7 @@ const renderCartList = ({ isAllClicked, cartCount, cartBooks }) => {
                         >
                             ${quantity}
                         </span>
-                        <button class='quantity-box__btn'>
+                        <button class='quantity-box__btn plus'>
                             <svg
                                 class='quantity-box__btn__img'
                                 xmlns='http://www.w3.org/2000/svg'
@@ -205,3 +177,152 @@ const renderCartInNavbar = ({ cartCount, cartBooks }) => {
         cartMini.text(cartCount);
     }
 };
+
+const renderCartPage = async () => {
+    const { cart } = await fetch('/api/cart').then((res) => res.json());
+    const { cartCount, cartTotal, cartBooks } = cart;
+    let isAllClicked = false;
+    if (cartBooks.length) {
+        isAllClicked = cartBooks.every((el) => {
+            return el.isClicked === true;
+        });
+    }
+
+    renderCartInNavbar({ cartCount, cartBooks });
+    renderCartList({ isAllClicked, cartCount, cartBooks });
+    renderCartTotal(cartTotal);
+};
+
+// Checkbox all items
+$('input[name="checkboxAll"]').on('change', async function () {
+    $('.waiting').removeClass('d-none');
+
+    const isClicked = $(this).prop('checked') ? 1 : 0;
+
+    await fetch('/api/cart/all', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            isClicked,
+        }),
+    });
+
+    await renderCartPage();
+
+    $('.waiting').addClass('d-none');
+});
+
+// Checkbox item
+$('.cart-list').change(async (e) => {
+    const target = $(e.target);
+    if (!target.hasClass('checkbox')) {
+        return;
+    }
+    $('.waiting').removeClass('d-none');
+
+    const isClicked = target.prop('checked') ? 1 : 0;
+    const bookId = target.val();
+    const res = await fetch(`/api/cart/${bookId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            isClicked,
+        }),
+    });
+
+    if (res.status === 404) {
+        $('.waiting').addClass('d-none');
+        return Swal.fire({
+            title: 'Error',
+            text: 'Sản phẩm bạn muốn cập nhật không còn tồn tại trong kho!',
+            icon: 'error',
+        }).then(async () => {
+            await renderCartPage();
+        });
+    }
+
+    await renderCartPage();
+    $('.waiting').addClass('d-none');
+});
+
+// Delete button
+const deleteButton = async (e) => {
+    $('.waiting').removeClass('d-none');
+
+    const bookId = $(e.target).closest('.cart-item').data('bookId');
+    await fetch(`/api/cart/${bookId}`, {
+        method: 'DELETE',
+    });
+
+    await renderCartPage();
+
+    $('.waiting').addClass('d-none');
+};
+
+// Quantity button
+const quantityButton = async (e, operation) => {
+    $('.waiting').removeClass('d-none');
+
+    const cartItem = $(e.target).closest('.cart-item');
+    const bookId = cartItem.data('bookId');
+    const quantity = cartItem.data('quantity');
+    let newQuantity;
+
+    if (operation === 'plus') {
+        newQuantity = quantity + 1;
+    } else if (operation === 'minus') {
+        if (quantity === 1) {
+            return $('.waiting').addClass('d-none');
+        }
+        newQuantity = quantity - 1;
+    }
+
+    const res = await fetch(`/api/cart/${bookId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            quantity: newQuantity,
+        }),
+    });
+
+    if (res.status === 400) {
+        $('.waiting').addClass('d-none');
+        return Swal.fire({
+            title: 'Error',
+            text: 'Số lượng bạn yêu cầu đã vượt quá số lượng trong kho!',
+            icon: 'error',
+        }).then(async () => {
+            await renderCartPage();
+        });
+    }
+    if (res.status === 404) {
+        $('.waiting').addClass('d-none');
+        return Swal.fire({
+            title: 'Error',
+            text: 'Sản phẩm bạn muốn cập nhật không còn tồn tại trong kho!',
+            icon: 'error',
+        }).then(async () => {
+            await renderCartPage();
+        });
+    }
+
+    await renderCartPage();
+    $('.waiting').addClass('d-none');
+};
+
+$('.cart-list').click(async (e) => {
+    const target = $(e.target);
+    if (target.closest('.delete-btn').length) {
+        await deleteButton(e);
+    } else if (target.closest('.quantity-box__btn.minus').length) {
+        await quantityButton(e, 'minus');
+    } else if (target.closest('.quantity-box__btn.plus').length) {
+        await quantityButton(e, 'plus');
+    }
+});
