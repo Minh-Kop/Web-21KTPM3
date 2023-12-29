@@ -154,7 +154,6 @@
 
 .category-menu-dropdown__category--sub,
 .category-menu-dropdown__category--sub-all {
-    display: block;
     text-decoration: none;
     font-size: 13px;
 }
@@ -232,6 +231,8 @@
 .nav__cart__dropdown__book-list {
     padding: 0;
     margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .nav__cart__dropdown__book-item:hover {
