@@ -48,6 +48,8 @@ exports.addBookToCart = catchAsync(async (req, res, next) => {
 
     const book = await bookModel.getBookById(bookId);
     if (!book) {
+        await cartModel.deleteFromCart(cartId, bookId);
+        await cartModel.updateCartQuantityCartTotal(cartId);
         return next(new AppError('Book not found.', 404));
     }
 
@@ -62,13 +64,15 @@ exports.addBookToCart = catchAsync(async (req, res, next) => {
                 quantity: +quantity + matchBook.quantity,
                 isClicked,
             });
-            if (returnValue !== 1) {
-                await cartModel.deleteFromCart(cartId, bookId);
-                await cartModel.updateCartQuantityCartTotal(cartId);
+            if (returnValue === 0) {
                 return next(
-                    new AppError(`This book is no longer existed.`, 404),
+                    new AppError(
+                        `The quantity has exceeded the quantity in stock.`,
+                        400,
+                    ),
                 );
             }
+
             await cartModel.updateCartQuantityCartTotal(cartId);
             return res.status(200).json({
                 status: 'success',
@@ -83,7 +87,7 @@ exports.addBookToCart = catchAsync(async (req, res, next) => {
         quantity,
         isClicked: isClicked || 0,
     });
-    if (returnValue !== 1) {
+    if (returnValue === -1) {
         return next(new AppError(`This book is no longer existed.`, 404));
     }
 
@@ -99,7 +103,7 @@ exports.updateBookInCart = catchAsync(async (req, res, next) => {
     const { quantity, isClicked } = req.body;
     const cartResult = await cartModel.getCartByUserId(userId);
     const { CART_ID: cartId } = cartResult;
-    console.log(bookId, quantity, isClicked, cartId);
+
     const result = await cartModel.updateBookInCart({
         cartId,
         bookId,

@@ -5,15 +5,15 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <a href="/users/me" style="text-decoration: none; color: #ff550d">
+                <a href="/api/users/me" style="text-decoration: none; color: #ff550d">
                     Thông tin tài khoản
                 </a>
             </li>
             <li class="list-group-item">
-                <a href="/shippingAddress" style="text-decoration: none; color: black">Sổ địa chỉ</a>
+                <a href="/api/shippingAddress" style="text-decoration: none; color: black">Sổ địa chỉ</a>
             </li>
             <li class="list-group-item">
-                <a href="/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
+                <a href="/api/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
             </li>
         </ul>
     </div>
@@ -118,7 +118,7 @@
         // Send PATCH request using Ajax
         $.ajax({
             type: 'PATCH',
-            url: '/users/updateMe',
+            url: '/api/users/updateMe',
             data: user,
             success: function(response) {
                 // Handle success, e.g., show a success message
@@ -143,7 +143,7 @@
         // Send PATCH request using Ajax
         $.ajax({
             type: 'PATCH',
-            url: '/users/updatePassword',
+            url: '/api/users/updatePassword',
             data: password,
             success: function(response) {
                 // Handle success, e.g., show a success message

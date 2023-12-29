@@ -6,7 +6,7 @@ const router = express.Router();
 
 router
     .route('/')
-    .get(shippingAddressController.getShippingAddresses)
+    .get(shippingAddressController.getMyShippingAddresses)
     .post(shippingAddressController.createShippingAddress);
 
 router

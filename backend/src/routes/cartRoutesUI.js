@@ -4,14 +4,6 @@ const cartController = require('../controllers/cartControllerUI');
 
 const router = express.Router();
 
-router
-    .route('/')
-    .get(cartController.getCartPage)
-    .post(cartController.addBookToCart);
-
-router
-    .route('/:bookId')
-    .patch(cartController.updateBookInCart)
-    .delete(cartController.deleteBookFromCart);
+router.route('/').get(cartController.getCartPage);
 
 module.exports = router;

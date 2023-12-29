@@ -1,0 +1,16 @@
+.add-cart {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.add-cart:hover .b {
+    stroke: white;
+}
+
+.btn:hover.buy-now {
+    color: var(--bs-btn-hover-color);
+    background-color: var(--bs-btn-hover-bg);
+    border-color: var(--bs-btn-hover-bg) !important;
+}

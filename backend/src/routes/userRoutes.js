@@ -16,11 +16,11 @@ router.post('/login', passport.authenticate('myStrategy'), (req, res, next) => {
 router.get('/logout', authController.logOut);
 
 // Protect all routes after this middleware
-router.use(authController.protectPage);
+router.use(authController.protect);
 
 router.patch('/updatePassword', authController.updatePassword);
 
-router.get('/me', accountController.getMe, accountController.getUser);
+router.get('/me', accountController.getMe, accountController.getMyAccount);
 router.patch(
     '/updateMe',
     accountController.getMe,
