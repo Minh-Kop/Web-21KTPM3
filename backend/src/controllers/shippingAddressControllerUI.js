@@ -15,6 +15,31 @@ exports.getShippingAddresses = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
+    const { userId } = req.user;
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    console.log('entered');
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('&page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+    const shippingAddresses =
+        await shippingAddressModel.getAllShippingAddressesByUserId(userId);
+    res.render('account/address_list', {
+        length: shippingAddresses.length,
+        title: 'Sổ địa chỉ',
+        shippingAddresses,
+        link: newUrl,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: url,
+        categoryTree,
+    });
+});
+
 exports.createShippingAddress = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const {

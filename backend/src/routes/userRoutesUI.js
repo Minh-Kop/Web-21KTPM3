@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 
-const accountController = require('../controllers/accountController');
+const accountController = require('../controllers/accountControllerUI');
 const authController = require('../controllers/authController');
 const config = require('../config/config');
 
@@ -20,7 +20,7 @@ router.use(authController.protectPage);
 
 router.patch('/updatePassword', authController.updatePassword);
 
-router.get('/me', accountController.getMe, accountController.getUser);
+router.get('/me', accountController.getMe, accountController.getMyAccount);
 router.patch(
     '/updateMe',
     accountController.getMe,

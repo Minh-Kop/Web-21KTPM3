@@ -1,12 +1,12 @@
 const express = require('express');
 
-const shippingAddressController = require('../controllers/shippingAddressController');
+const shippingAddressController = require('../controllers/shippingAddressControllerUI');
 
 const router = express.Router();
 
 router
     .route('/')
-    .get(shippingAddressController.getShippingAddresses)
+    .get(shippingAddressController.getMyShippingAddresses)
     .post(shippingAddressController.createShippingAddress);
 
 router

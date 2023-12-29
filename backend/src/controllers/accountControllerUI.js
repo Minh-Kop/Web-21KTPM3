@@ -28,7 +28,7 @@ exports.getMe = (req, res, next) => {
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
-    const { user, cart } = req;
+    const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
 
     const detailedUser = await accountModel.getDetailedUser(userId);
@@ -57,25 +57,30 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
         ...user,
         ...cart,
         currentUrl: url,
+        categoryTree,
     });
 });
 
 exports.getUser = catchAsync(async (req, res, next) => {
-    const { email } = req.params;
-    const { year } = req.query;
-    const userEntity = {
-        email,
-        year: +year || new Date().getFullYear(),
-    };
+    const { userId } = req.params;
 
-    const detailedUser = await accountModel.getDetailedUser(userEntity);
+    const detailedUser = await accountModel.getDetailedUser(userId);
 
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
     }
 
-    res.status(200).json({
+    detailedUser.recordset[0].birthday = new Date(
+        detailedUser.recordset[0].birthday,
+    )
+        .toISOString()
+        .split('T')[0];
+
+    res.render('account/crud_user_detail', {
+        title: 'Chi tiết tài khoản',
+        navbar: () => 'empty',
+        footer: () => 'empty',
         status: 'success',
         user: detailedUser.recordset[0],
     });
