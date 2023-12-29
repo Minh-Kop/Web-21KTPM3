@@ -116,7 +116,7 @@ GO
 CREATE PROCEDURE sp_UpdateShippingAddress (
     @addrId CHAR(10),
     @userId CHAR(5),
-    @isDefault bit,
+    @isDefault bit
 )
 AS
 BEGIN TRANSACTION

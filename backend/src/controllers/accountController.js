@@ -42,11 +42,11 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
     )
         .toISOString()
         .split('T')[0];
-    
+
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
-    
+
     res.render('account/user_account', {
         title: detailedUser.recordset[0].userName,
         user: detailedUser.recordset[0],

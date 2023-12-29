@@ -38,9 +38,20 @@ const sendErrorDev = (err, req, res) => {
 
     // B) RENDERED WEBSITE
     console.log('ERROR: ', err);
+    if (!err.isOperational) {
+        return res.status(err.statusCode).render('error', {
+            title: 'Something went wrong!',
+            navbar: () => 'navbar',
+            footer: () => 'footer',
+            statusCode: err.statusCode,
+            description: 'Please try again later!',
+        });
+    }
+
     return res.status(err.statusCode).render('error', {
         title: 'Error',
-        mainCSS: () => 'empty',
+        navbar: () => 'navbar',
+        footer: () => 'footer',
         statusCode: err.statusCode,
         description: err.message,
     });
@@ -71,6 +82,8 @@ const sendErrorProd = (err, req, res) => {
     // B1) Operational, trusted error: send message to client
     if (err.isOperational) {
         return res.status(err.statusCode).render('error', {
+            navbar: () => 'navbar',
+            footer: () => 'footer',
             title: 'Something went wrong!',
             message: err.message,
         });
@@ -83,6 +96,8 @@ const sendErrorProd = (err, req, res) => {
     // 2) Send generic message
     return res.status(err.statusCode).render('error', {
         title: 'Something went wrong!',
+        navbar: () => 'navbar',
+        footer: () => 'footer',
         message: 'Please try again later!',
     });
 };
