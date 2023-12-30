@@ -14,7 +14,7 @@ BEGIN TRANSACTION
         from SHIPPING_ADDRESS sa join PROVINCE p on p.PROV_ID = sa.PROV_ID
             join DISTRICT d on d.DIST_ID = sa.DIST_ID
             join WARD w on w.WARD_ID = sa.WARD_ID
-        where sa.USERID = @userId
+        where sa.USERID = @userId and sa.SOFT_DELETE = 0
 	END TRY
 
 	BEGIN CATCH
@@ -97,8 +97,8 @@ BEGIN TRANSACTION
             set IS_DEFAULT = 0
             WHERE USERID = @userId
         END
-        INSERT into SHIPPING_ADDRESS (ADDR_ID, USERID, DETAILED_ADDR, WARD_ID, DIST_ID, PROV_ID, RECEIVER_NAME, RECEIVER_PHONE, LATITUDE, LONGITUDE, IS_DEFAULT)
-            VALUES (@id, @userId, @address, @wardId, @distId, @provId, @fullName, @phoneNumber, @lat, @lng, @isDefault)
+        INSERT into SHIPPING_ADDRESS (ADDR_ID, USERID, DETAILED_ADDR, WARD_ID, DIST_ID, PROV_ID, RECEIVER_NAME, RECEIVER_PHONE, LATITUDE, LONGITUDE, IS_DEFAULT, SOFT_DELETE)
+            VALUES (@id, @userId, @address, @wardId, @distId, @provId, @fullName, @phoneNumber, @lat, @lng, @isDefault, 1)
 	END TRY
 
 	BEGIN CATCH
