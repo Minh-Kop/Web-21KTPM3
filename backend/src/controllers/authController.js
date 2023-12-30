@@ -194,7 +194,9 @@ exports.protectPage = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
     // 1) Get user from collection
     const { user } = req;
-
+    console.log(req.body.password)
+    console.log(req.body.currentPassword);
+    console.log(user.password);
     // 2) Check if POSTed current password is correct
     if (!verifyPassword(req.body.currentPassword, user.password)) {
         return next(new AppError('Your current password is wrong!', 401));
