@@ -5,15 +5,15 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <a href="/api/users/me" style="text-decoration: none; color: black">
+                <a href="/users/me" style="text-decoration: none; color: black">
                     Thông tin tài khoản
                 </a>
             </li>
             <li class="list-group-item">
-                <a href="/api/shippingAddress" style="text-decoration: none; color: #ff550d">Sổ địa chỉ</a>
+                <a href="/shippingAddress" style="text-decoration: none; color: #ff550d">Sổ địa chỉ</a>
             </li>
             <li class="list-group-item">
-                <a href="/api/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
+                <a href="/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
             </li>
         </ul>
     </div>
@@ -144,7 +144,7 @@
             <!-- Modal Body -->
             <div class="modal-body">
                 <!-- Add your form fields for product details here -->
-                <form action="/api/shippingAddresses/" method="post">
+                <form action="/shippingAddresses/" method="post">
                     <div class="form-group">
                         <label for="name">Tên đầy đủ:</label>
                         <input type="text" class="form-control" id="EName" name="fullName" />
@@ -238,13 +238,31 @@
                     const addrId = $(this).data("id");
                     $.ajax({
                         type: 'DELETE',
-                        url: `/api/shippingAddress/${addrId}`,
+                        url: `/shippingAddress/${addrId}`,
                         success: function (response) {
                             // Handle success, e.g., show a success message
+                            let timerInterval;
                             swalWithBootstrapButtons.fire({
                                 title: "Đã xóa!",
                                 text: "Địa chỉ đã xóa thành công",
                                 icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                    const timer = Swal.getPopup().querySelector("b");
+                                    timerInterval = setInterval(() => {
+                                        timer.textContent = `${Swal.getTimerLeft()}`;
+                                    }, 100);
+                                },
+                                willClose: () => {
+                                    clearInterval(timerInterval);
+                                }
+                            }).then((result) => {
+                                /* Read more about handling dismissals below */
+                                if (result.dismiss === Swal.DismissReason.timer) {
+                                    location.reload();
+                                }
                             });
                         },
                         error: function (error) {
@@ -280,15 +298,34 @@
         });
         $.ajax({
             type: 'PATCH',
-            url: `/api/shippingAddress/${addrId}`,
+            url: `/shippingAddress/${addrId}`,
             data: address,
             success: function (response) {
                 // Handle success, e.g., show a success message
+                let timerInterval;
                 swalWithBootstrapButtons.fire({
                     title: "Cập nhật thành công!",
                     text: "Địa chỉ mặc định đã thay đổi thành công!",
                     icon: "success",
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        location.reload();
+                    }
                 });
+
             },
             error: function (error) {
                 // Handle error, e.g., show an error message
