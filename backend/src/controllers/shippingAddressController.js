@@ -1,7 +1,7 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const shippingAddressModel = require('../models/shippingAddressModel');
-const { getCoordinateUI } = require('../controllers/locationController');
+const { getCoordinateUI } = require('./locationController');
 
 exports.getShippingAddresses = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
