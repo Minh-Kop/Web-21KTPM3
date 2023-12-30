@@ -11,15 +11,14 @@ const cartRouter = require('./cartRoutes');
 const cartRouterUI = require('./cartRoutesUI');
 const mainPage = require('../controllers/bookControllerUI');
 
-// const voucherRouter = require('./voucherRoutes');
-// const locationRouter = require('./locationRoutes');
+const locationRouter = require('./locationRoutes');
 const shippingAddressRouter = require('./shippingAddressRoutes');
-// const checkoutRouter = require('./checkoutRoutes');
+const checkoutRouter = require('./checkoutRoutes');
+const checkoutRouterUI = require('./checkoutRoutesUI');
 // const paymentRouter = require('./paymentRoutes');
 const orderRouter = require('./orderRoutes');
 // const reviewRouter = require('./reviewRoutes');
 // const searchRouter = require('./searchRoutes');
-// const pointRouter = require('./pointRoutes');
 
 const router = express.Router();
 
@@ -32,18 +31,17 @@ router.use('/api/users', userRouter);
 router.use('/api/cart', authController.protect, cartRouter);
 router.use('/cart', authController.protectPage, cartRouterUI);
 router.use('/mainPage', mainPage.renderMainPage);
-// router.use('/api/voucher', authController.protect, voucherRouter);
-// router.use('/api/location', locationRouter);
+router.use('/api/location', locationRouter);
 router.use(
     '/api/shippingAddress',
     authController.protect,
     shippingAddressRouter,
 );
-// router.use('/api/checkout', checkoutRouter);
+router.use('/api/checkout', checkoutRouter);
+router.use('/checkout', authController.protectPage, checkoutRouterUI);
 // router.use('/api/payment', paymentRouter);
 router.use('/api/order', authController.protect, orderRouter);
 // router.use('/api/review', reviewRouter);
 // router.use('/api/search', searchRouter);
-// router.use('/api/point', authController.protect, pointRouter);
 
 module.exports = router;

@@ -1,9 +1,7 @@
 .product-border {
     width: 95%;
     margin: auto;
-    border-bottom-width: 1px;
-    border-bottom-color: #ededed;
-    border-bottom-style: solid;
+    border-bottom: 1px solid var(--border-bottom-color);
 }
 
 .cart-title {

@@ -50,3 +50,17 @@ exports.getCoordinate = catchAsync(async (req, res, next) => {
         coordinates,
     });
 });
+
+exports.getCoordinateUI = async ({ address, wardId, distId, provId }) => {
+    const province = await locationModel.getProvinceById(provId);
+    const district = await locationModel.getDistrictById(distId);
+    const ward = await locationModel.getWardById(wardId);
+
+    const coordinates = await map.getCoordinate(
+        address,
+        ward.wardName,
+        district.distName,
+        province.provName,
+    );
+    return coordinates;
+};
