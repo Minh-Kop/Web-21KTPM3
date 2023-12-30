@@ -1,3 +1,4 @@
+// Render functions
 const renderCartTotal = (cartTotal) => {
     $('.total-cart__amount').text(`${cartTotal} VNĐ`);
     $('.final-total__amount').text(`${cartTotal} VNĐ`);
@@ -325,4 +326,9 @@ $('.cart-list').click(async (e) => {
     } else if (target.closest('.quantity-box__btn.plus').length) {
         await quantityButton(e, 'plus');
     }
+});
+
+// Checkout button
+$('.cart-checkout__btn').click(() => {
+    location.assign('/checkout');
 });

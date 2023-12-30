@@ -7,7 +7,6 @@ const cartModel = require('../models/cartModel');
 const shippingAddressModel = require('../models/shippingAddressModel');
 const { getDistance } = require('../utils/map');
 const orderModel = require('../models/orderModel');
-const voucherModel = require('../models/voucherModel');
 const paymentModel = require('../models/paymentModel');
 const accountModel = require('../models/accountModel');
 const {
@@ -139,47 +138,6 @@ exports.createInitialOrder = catchAsync(async (req, res, next) => {
         return next(
             new AppError(`There is at least 1 no longer existed book.`, 404),
         );
-    }
-
-    req.params = {
-        orderId,
-    };
-    next();
-});
-
-exports.addVoucher = catchAsync(async (req, res, next) => {
-    const { voucherId, orderId } = req.body;
-
-    if (!voucherId || !orderId) {
-        return next(new AppError('Missing parameter.', 400));
-    }
-
-    const listVoucherId = voucherId.split(',').map((el) => el.trim());
-
-    const result = await Promise.all(
-        listVoucherId.map(async (el) => {
-            return await voucherModel.useVoucher(orderId, el);
-        }),
-    );
-
-    if (result.includes(-1)) {
-        return next(
-            new AppError(`Subtotal isn't enough to use this voucher.`, 400),
-        );
-    }
-    if (result.includes(-2)) {
-        return next(new AppError(`Out of vouchers.`, 400));
-    }
-    if (result.includes(-3)) {
-        return next(
-            new AppError(`Subtotal isn't enough to use this voucher.`, 400),
-        );
-    }
-    if (result.includes(-4)) {
-        return next(new AppError(`Out of vouchers.`, 400));
-    }
-    if (result.includes(-5)) {
-        return next(new AppError(`User doesn't have this voucher.`, 400));
     }
 
     req.params = {
