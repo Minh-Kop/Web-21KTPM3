@@ -2,14 +2,7 @@
     <div class='container text-center'>
         <nav aria-label='breadcrumb' style="--bs-breadcrumb-divider: '>'">
             <ol class='breadcrumb my-1'>
-                {{!-- {{breadcrumb book.category}} --}}
-                {{#each list}}
-                <li class='breadcrumb-item'>
-                    <a href='/category/${accum[i].id}' style='text-decoration: none; color: rgba(33, 37, 41, 0.75)'>
-                        ${accum[i].categoryName}
-                    </a>
-                </li>
-                {{/each}}
+                {{breadcrumb book.category}}
             </ol>
         </nav>
     </div>

@@ -1,4 +1,4 @@
-.book-list-container {
+.category-list-container {
   width: 60%;
 
   display: flex;
@@ -7,7 +7,7 @@
   align-items: center;
 }
 
-.book-list-header {
+.category-list-header {
   width: 100%;
   height: 50px;
 
@@ -20,7 +20,7 @@
   border: solid black 1px;
 }
 
-.book-list-header form {
+.category-list-header form {
   height: 50%;
 
   display: flex;
@@ -29,29 +29,29 @@
   align-items: center;
 }
 
-.book-list-header button,
-.book-list-header input {
+.category-list-header button,
+.category-list-header input {
   box-sizing: border-box;
 
   height: 100%;
 }
 
-.book-list-header img {
+.category-list-header img {
   height: 80%;
 }
 
-.book-search {
+.category-search {
   width: 70%;
 }
 
-.book-add button,
-.book-sort button {
+.category-add button,
+.category-sort button {
   background-color: #eeaaa3;
   border: solid black 1px;
   border-radius: 10px;
 }
 
-.book-search button {
+.category-search button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,17 +60,17 @@
   border: none;
 }
 
-.book-search input {
+.category-search input {
   width: 100%;
   border: none;
 }
 
-.book-list {
+.category-list {
   width: 100%;
   border: solid black 1px;
 }
 
-.book-list-table {
+.category-list-table {
   width: 100%;
 
   border-collapse: collapse;
@@ -78,32 +78,31 @@
   background-color: white;
 }
 
-.book-list .book-list-table th {
+.category-list-table th {
   vertical-align: middle;
   background-color: #a7a7a7;
   color: white;
 }
 
-.book-list .book-list-table td {
+.category-list .category-list-table td {
   text-align: center;
   vertical-align: middle;
 }
 
-.book-list-table th,
+.category-list-table th,
 td {
   border: solid black 1px;
 }
 
-.book-list-table tr {
-  justify-content: center;
+.category-list-table tr {
   height: 50px;
 }
 
-.book-list-table .del-td {
+.category-list-table .del-td {
   padding: 0;
 }
 
-.book-list .book-list-table .update-td {
+.category-list .category-list-table .update-td {
   text-align: start;
   padding-left: 10px;
 }
@@ -116,7 +115,7 @@ td {
   align-items: center;
 }
 
-.book-list-table .btn-del {
+.category-list-table .btn-del {
   display: flex;
 
   justify-content: center;

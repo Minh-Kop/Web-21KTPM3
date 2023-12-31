@@ -154,7 +154,6 @@
 
 .category-menu-dropdown__category--sub,
 .category-menu-dropdown__category--sub-all {
-    display: block;
     text-decoration: none;
     font-size: 13px;
 }
@@ -195,15 +194,17 @@
     z-index: 5;
     position: absolute;
     top: 46px;
-    left: 50%;
-    transform: translateX(-50%);
+    /* left: 50%;
+    transform: translateX(-50%); */
+    right: -62px;
 
     min-width: 360px;
     border-radius: 10px;
     filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
     background: #fff;
 
-    transform-origin: 0% top;
+    /* transform-origin: 0% top; */
+    transform-origin: 93% top;
     scale: 0;
     opacity: 0;
     visibility: hidden;
@@ -232,6 +233,8 @@
 .nav__cart__dropdown__book-list {
     padding: 0;
     margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .nav__cart__dropdown__book-item:hover {

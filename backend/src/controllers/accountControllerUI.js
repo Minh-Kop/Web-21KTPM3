@@ -1,5 +1,3 @@
-// const moment = require('moment');
-
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
@@ -28,7 +26,7 @@ exports.getMe = (req, res, next) => {
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
-    const { user, cart } = req;
+    const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
 
     const detailedUser = await accountModel.getDetailedUser(userId);
@@ -57,6 +55,7 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
         ...user,
         ...cart,
         currentUrl: url,
+        categoryTree,
     });
 });
 

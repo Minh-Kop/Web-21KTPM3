@@ -9,7 +9,7 @@
             <div class="book-info">
                 <div class="father-categories-dropdown">
                     <div class="label">Danh mục cha:</div>
-                    <select name="father-category" id="fCategory">
+                    <select name="father-category" id="fCategory" onchange="renderChild({{cateData}})">
                         {{#each fCategories}}
                         <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
@@ -18,7 +18,7 @@
                 <div class="categories-dropdown">
                     <div class="label">Danh mục</div>
                     <select name="category" id="category">
-                        {{#each categories}}
+                        {{#each cCategories}}
                         <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
                     </select>
@@ -70,9 +70,17 @@
                 <div class="book-image">
                     <div class="image-submit">
                         <div class="label">Ảnh:</div>
+                        <label for="files">Browse</label>
                         <input type="file" id="files" name="files" multiple="">
                     </div>
-                    <div class="book-image-display"></div>
+                    <div class="book-image-display">
+                        {{#each images}}
+                        <div class="image">
+                            <img src="{{this.BOOK_PATH}}" alt="book image">
+                            <button type="button">X</button>
+                        </div>
+                        {{/each}}
+                    </div>
                 </div>
                 <div class="book-description">
                     <textarea name="description" id="description" cols="30" rows="10">{{book.BOOK_DESC}}</textarea>
@@ -84,3 +92,4 @@
 </div>
 
 <link rel="stylesheet" href="/assets/css/createBook.css">
+<script src="/assets/js/bookAdmin.js"></script>

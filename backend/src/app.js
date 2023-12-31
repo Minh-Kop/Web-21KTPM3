@@ -101,6 +101,10 @@ app.use(async (req, res, next) => {
 });
 
 // 2) ROUTES
+app.get('/', (req, res, next) => {
+    res.redirect('/mainPage');
+});
+
 app.use(router);
 
 app.all('*', (req, res, next) => {

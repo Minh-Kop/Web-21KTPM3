@@ -1,0 +1,123 @@
+:root {
+    --yellow-color: #f39801;
+}
+
+/* ==================================== Bottom sidebar ==================================== */
+.bottom-sidebar-content {
+    z-index: 2;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+    padding: 8px 16px;
+    background-color: white;
+    box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.66);
+}
+
+.checkout-total {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-bottom-color);
+}
+
+.checkout-total__subtotal,
+.checkout-total__shipping,
+.checkout-total__final-total {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    padding-bottom: 4px;
+    text-align: right;
+}
+
+.checkout-total__subtotal__label,
+.checkout-total__shipping__label,
+.checkout-total__final-total__label {
+    flex: 6;
+}
+
+.checkout-total__subtotal__amount,
+.checkout-total__shipping__amount,
+.checkout-total__final-total__amount {
+    flex: 1;
+}
+
+.checkout-total__final-total__label {
+    font-weight: bold;
+}
+
+.checkout-total__final-total__amount {
+    font-size: 18.5px;
+    font-weight: bold;
+    color: var(--yellow-color);
+}
+
+.checkout-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 4px 0;
+}
+
+.return-cart-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    color: black;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.return-cart-btn:hover {
+    color: var(--primary-color);
+}
+
+.confirm-checkout-btn {
+    border: none;
+    outline: none;
+
+    padding: 8px 40px;
+    margin: 8px 0;
+    border-radius: 10px;
+
+    font-size: 19px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--secondary-color);
+
+    transition: transform 0.1s;
+}
+
+.confirm-checkout-btn:hover {
+    transform: scale(1.1);
+}
+
+/* ==================================== Checkout block ==================================== */
+.checkout-block {
+    padding: 8px 16px;
+    background-color: white;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.checkout-block__title {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-bottom-color);
+
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.checkout-block__content {
+    padding: 8px 0;
+    position: relative;
+}
+
+.address-list {
+    padding: 0;
+    margin: 0;
+}

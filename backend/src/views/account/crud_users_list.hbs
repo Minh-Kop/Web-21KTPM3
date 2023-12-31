@@ -10,21 +10,21 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <a href="/api/users/me" class="fs-5" style="text-decoration: none; color: black">
+                <a href="/users/me" class="fs-5" style="text-decoration: none; color: black">
                     Sản phẩm
                 </a>
             </li>
             <li class="list-group-item">
-                <a href="/api/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Đơn hàng</a>
+                <a href="/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Đơn hàng</a>
             </li>
             <li class="list-group-item">
-                <a href="/api/order/me" class="fs-5" style="text-decoration: none; color: black">Thống kê</a>
+                <a href="/order/me" class="fs-5" style="text-decoration: none; color: black">Thống kê</a>
             </li>
             <li class="list-group-item" style="background-color: #e98074">
-                <a href="/api/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Tài khoản</a>
+                <a href="/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Tài khoản</a>
             </li>
             <li class="list-group-item">
-                <a href="/api/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Danh mục</a>
+                <a href="/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Danh mục</a>
             </li>
         </ul>
     </div>
@@ -64,7 +64,7 @@
                             <i class="fa-solid fa-trash delete" style="cursor: pointer" data-id="{{userId}}"></i>
                         </td>
                         <td>
-                            <a href="/api/users/{{userId}}" style="color: black">
+                            <a href="/users/{{userId}}" style="color: black">
                                 <i class='fa-solid fa-circle-info' style='cursor: pointer'></i>
                             </a>
                         </td>
@@ -99,7 +99,7 @@
                     const userId= $(this).data("id");
                     $.ajax({
                         type: "DELETE",
-                        url: `/api/users/${userId}`,
+                        url: `/users/${userId}`,
                         success: function (response) {
                             // Handle success, e.g., show a success message
                             swalWithBootstrapButtons.fire({

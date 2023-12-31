@@ -1,7 +1,6 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const shippingAddressModel = require('../models/shippingAddressModel');
-const { getCoordinateUI } = require('./locationController');
 
 exports.getShippingAddresses = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
@@ -17,9 +16,9 @@ exports.getShippingAddresses = catchAsync(async (req, res, next) => {
 
 exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
-    const { user, cart } = req;
+    const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
-
+    console.log('entered');
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
@@ -36,6 +35,7 @@ exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
         ...user,
         ...cart,
         currentUrl: url,
+        categoryTree,
     });
 });
 
@@ -49,14 +49,9 @@ exports.createShippingAddress = catchAsync(async (req, res, next) => {
         fullName,
         phoneNumber,
         isDefault,
+        lat,
+        lng,
     } = req.body;
-
-    const { lat, lng } = await getCoordinateUI({
-        address,
-        wardId,
-        distId,
-        provId,
-    });
 
     const result = await shippingAddressModel.createShippingAddress({
         userId,

@@ -1,4 +1,4 @@
-const { promisify } = require('util');
+// const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 
 const accountModel = require('../models/accountModel');
@@ -169,75 +169,17 @@ exports.loginGoogle = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-    let token;
-
-    // 1) Get token and check if it's there
-    if (
-        req.headers.authorization &&
-        req.headers.authorization.startsWith('Bearer')
-    ) {
-        token = req.headers.authorization.split(' ')[1];
-    } else if (req.cookies.jwt) {
-        token = req.cookies.jwt;
-    }
-
-    // if (req.session.jwt) {
-    //     token = req.session.jwt;
-    // }
-    if (!token) {
-        return next(
+    const isLoggedIn = req.isAuthenticated();
+    if (isLoggedIn) {
+        next();
+    } else {
+        next(
             new AppError(
                 'You are not logged in! Please log in to get access.',
                 401,
             ),
         );
     }
-
-    // 2) Verification token
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
-    // 3) Check if user still exists
-    let currentUser = await accountModel.getByUserId(decoded.userId);
-    if (!currentUser) {
-        return next(
-            new AppError(
-                'The user belonging this token does no longer exist!',
-                401,
-            ),
-        );
-    }
-
-    currentUser = {
-        userId: currentUser.USERID,
-        email: currentUser.EMAIL,
-        username: currentUser.USERNAME,
-        phoneNumber: currentUser.PHONE_NUMBER,
-        password: currentUser.ENC_PWD,
-        passwordChangedAt: currentUser.PASSWORDCHANGEDAT,
-        role: currentUser.HROLE,
-    };
-
-    // 4) Check if user changes password after the JWT was issued
-    let check = false;
-    const { passwordChangedAt } = currentUser;
-
-    if (passwordChangedAt) {
-        const changedTimestamp =
-            parseInt(passwordChangedAt.getTime() / 1000, 10) - 7 * 60 * 60; // Change to Hanoi timezone
-        check = changedTimestamp > decoded.iat;
-    }
-    if (check) {
-        return next(
-            new AppError(
-                'User recently changed password! Please log in again.',
-                401,
-            ),
-        );
-    }
-
-    // GRANT ACCESS TO PROTECTED ROUTE
-    req.user = currentUser;
-    next();
 });
 
 exports.protectPage = catchAsync(async (req, res, next) => {
@@ -253,7 +195,9 @@ exports.protectPage = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
     // 1) Get user from collection
     const { user } = req;
-
+    console.log(req.body.password)
+    console.log(req.body.currentPassword);
+    console.log(user.password);
     // 2) Check if POSTed current password is correct
     if (!verifyPassword(req.body.currentPassword, user.password)) {
         return next(new AppError('Your current password is wrong!', 401));

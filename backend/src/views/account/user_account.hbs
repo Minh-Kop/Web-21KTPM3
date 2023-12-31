@@ -5,15 +5,15 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <a href="/api/users/me" style="text-decoration: none; color: #ff550d">
+                <a href="/users/me" style="text-decoration: none; color: #ff550d">
                     Thông tin tài khoản
                 </a>
             </li>
             <li class="list-group-item">
-                <a href="/api/shippingAddress" style="text-decoration: none; color: black">Sổ địa chỉ</a>
+                <a href="/shippingAddress" style="text-decoration: none; color: black">Sổ địa chỉ</a>
             </li>
             <li class="list-group-item">
-                <a href="/api/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
+                <a href="/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
             </li>
         </ul>
     </div>
@@ -24,38 +24,42 @@
                 <div class="mb-3 row">
                     <label for="inputUsername" class="col-sm-2 col-form-label text-muted">Username*</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputUsername" value="{{user.userName}}" disabled/>
+                        <input type="text" class="form-control" id="inputUsername" value="{{user.userName}}" disabled />
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="inputName" class="col-sm-2 col-form-label text-muted">Họ tên*</label>
+                    <label for="inputName" class="col-sm-2 col-form-label text-muted">Họ tên</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" name="fullName" value="{{user.fullName}}" />
+                        <input type="text" class="form-control" id="inputName" name="fullName"
+                            value="{{user.fullName}}" />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="inputTel" class="col-sm-2 col-form-label text-muted">Số điện thoại</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputTel" name="phoneNumber" value="{{user.phoneNumber}}" />
+                        <input type="text" class="form-control" id="inputTel" name="phoneNumber"
+                            value="{{user.phoneNumber}}" />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="inputEmail" class="col-sm-2 col-form-label text-muted">Email</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputEmail" value="{{user.email}}" disabled/>
+                        <input type="text" class="form-control" id="inputEmail" value="{{user.email}}" disabled />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="inputGender" class="col-sm-2 col-form-label text-muted">Giới tính</label>
                     <div class="col-sm-10">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="flexRadioMale" value="0" {{#if user.gender}}{{else}}checked{{/if}} />
+                            <input class="form-check-input" type="radio" name="gender" id="flexRadioMale" value="0"
+                                {{#if user.gender}}{{else}}checked{{/if}} />
                             <label class="form-check-label" for="flexRadioMale">
                                 Nam
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="flexRadioFemale" value="1" {{#if user.gender}}checked{{/if}}/>
+                            <input class="form-check-input" type="radio" name="gender" id="flexRadioFemale" value="1"
+                                {{#if user.gender}}checked{{/if}} />
                             <label class="form-check-label" for="flexRadioFemale">
                                 Nữ
                             </label>
@@ -65,7 +69,8 @@
                 <div class="mb-3 row">
                     <label for="inputDob" class="col-sm-2 col-form-label text-muted">Birthday</label>
                     <div class="col-sm-10">
-                        <input type="date" class="form-control" id="inputDob" name="birthday" value='{{user.birthday}}' />
+                        <input type="date" class="form-control" id="inputDob" name="birthday"
+                            value='{{user.birthday}}' />
                     </div>
                 </div>
                 <div class="text-center">
@@ -79,21 +84,22 @@
             <h5 class="mt-2 mb-3">Thay đổi mật khẩu</h5>
             <form id="changePassword">
                 <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label text-muted">Mật khẩu hiện tại*</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" name="currentPassword" id="inputOldPassword">
+                    <label for="inputPassword" class="col-sm-3 col-form-label text-muted">Mật khẩu hiện tại*</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" name="currentPassword" id="inputOldPassword"
+                            required>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label  text-muted">Mật khẩu mới*</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" name="password" id="inputNewPassword">
+                    <label for="inputPassword" class="col-sm-3 col-form-label  text-muted">Mật khẩu mới*</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" name="password" id="inputNewPassword" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label  text-muted">Nhập lại mật khẩu*</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" name="reNewPass" id="inputRePassword">
+                    <label for="inputPassword" class="col-sm-3 col-form-label  text-muted">Nhập lại mật khẩu*</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" name="reNewPass" id="inputRePassword" required>
                     </div>
                 </div>
                 <div class="text-center">
@@ -107,53 +113,124 @@
 </div>
 <script>
     $('#updateForm').on('submit', function (event) {
-         // Prevent the default form submission
+        // Prevent the default form submission
         event.preventDefault();
-
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success ms-3",
+                cancelButton: "btn btn-danger",
+            },
+            buttonsStyling: false,
+        });
         var formData = $(this).serializeArray();
         let user = {};
-        formData.forEach(function(item){
+        formData.forEach(function (item) {
             user[item.name] = item.value
         })
         // Send PATCH request using Ajax
         $.ajax({
             type: 'PATCH',
-            url: '/api/users/updateMe',
+            url: '/users/updateMe',
             data: user,
-            success: function(response) {
+            success: function (response) {
                 // Handle success, e.g., show a success message
-                console.log('Update successful', response);
+                let timerInterval;
+                swalWithBootstrapButtons.fire({
+                    title: "Đã cập nhật!",
+                    text: "Thay đổi thông tin thành công",
+                    icon: "success",
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        location.reload();
+                    }
+                });
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle error, e.g., show an error message
-                console.error('Update failed', error);
+                swalWithBootstrapButtons.fire({
+                    title: 'Cập nhật thất bại',
+                    //text: error.responseJSON.message,
+                    icon: "error",
+                });
             }
         });
     });
-    $('#changePassword').on('submit', function(event){
-         event.preventDefault();
-
+    $('#changePassword').on('submit', function (event) {
+        event.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success ms-3",
+                cancelButton: "btn btn-danger",
+            },
+            buttonsStyling: false,
+        });
         var formData = $(this).serializeArray();
-        console.log(formData);
         let password = {};
-        formData.forEach(function(item){
+        formData.forEach(function (item) {
             password[item.name] = item.value
         })
-        
+        if (password.password !== password.reNewPass) {
+            swalWithBootstrapButtons.fire({
+                title: 'Mật khẩu không khớp',
+                icon: "error",
+            });
+        }
+        else {
+            $.ajax({
+                type: 'PATCH',
+                url: '/users/updatePassword',
+                data: password,
+                success: function (response) {
+                    // Handle success, e.g., show a success message
+                    let timerInterval;
+                    swalWithBootstrapButtons.fire({
+                        title: "Đã cập nhật!",
+                        text: "Thay đổi mật khẩu thành công",
+                        icon: "success",
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const timer = Swal.getPopup().querySelector("b");
+                            timerInterval = setInterval(() => {
+                                timer.textContent = `${Swal.getTimerLeft()}`;
+                            }, 100);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            location.reload();
+                        }
+                    });
+                },
+                error: function (error) {
+                    // Handle error, e.g., show an error message
+                    
+                    swalWithBootstrapButtons.fire({
+                        title: 'Thay đổi mật khẩu thất bại',
+                        text: error.responseJSON.message,
+                        icon: "error",
+                    });
+                }
+            });
+        }
         // Send PATCH request using Ajax
-        $.ajax({
-            type: 'PATCH',
-            url: '/api/users/updatePassword',
-            data: password,
-            success: function(response) {
-                // Handle success, e.g., show a success message
-                console.log('Update successful', response);
-            },
-            error: function(error) {
-                // Handle error, e.g., show an error message
-                console.error('Update failed', error);
-            }
-        });
-        
+
+
     })
 </script>
