@@ -22,6 +22,7 @@ passport.deserializeUser(async (username, done) => {
         role: account.HROLE,
         birthday: account.BIRTHDAY,
         gender: account.GENDER,
+        password: account.ENC_PWD,
     };
     if (account) {
         return done(null, returnedAccount);
