@@ -1,0 +1,71 @@
+{{! Bottom sidebar }}
+<div class='bottom-sidebar-content'>
+    <div class='container'>
+        {{! Total }}
+        <div class='checkout-total'>
+            <div class='checkout-total__subtotal'>
+                <div class='checkout-total__subtotal__label'>Thành tiền</div>
+                <div class='checkout-total__subtotal__amount'>
+                    {{cartTotal}}
+                    VNĐ
+                </div>
+            </div>
+            <div class='checkout-total__shipping'>
+                <div class='checkout-total__shipping__label'>
+                    Phí vận chuyển (Giao hàng tiêu chuẩn)
+                </div>
+                <div class='checkout-total__shipping__amount'>
+                    {{cartTotal}}
+                    VNĐ
+                </div>
+            </div>
+            <div class='checkout-total__final-total'>
+                <div class='checkout-total__final-total__label'>
+                    Tổng Số Tiền (gồm VAT)
+                </div>
+                <div class='checkout-total__final-total__amount'>
+                    {{cartTotal}}
+                    VNĐ
+                </div>
+            </div>
+        </div>
+
+        {{! Bottom }}
+        <div class='checkout-bottom'>
+            <a href='/cart' class='return-cart-btn'>
+                <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    height='16'
+                    width='10'
+                    viewBox='0 0 320 512'
+                >
+                    <path
+                        fill='currentColor'
+                        d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z'
+                    />
+                </svg>
+                <span>Quay về giỏ hàng</span>
+            </a>
+            <button class='confirm-checkout-btn'>
+                Xác nhận thanh toán
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class='container mt-3'>
+    {{!-- Address list --}}
+    <div class='checkout-block'>
+        <h2 class='checkout-block__title'>
+            ĐỊA CHỈ GIAO HÀNG
+        </h2>
+        <div class="checkout-block__content">
+            <ul class="address-list">
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+<link rel='stylesheet' href='/assets/css/checkout.css' />
+<script src='/assets/js/checkout.js'></script>
