@@ -69,6 +69,15 @@ BEGIN TRANSACTION
             RETURN -1
         END
 
+        if exists(select 1 
+                  from BOOK
+                  where BOOK_ID = @bookId and SOFT_DELETE = 1)
+        BEGIN
+            PRINT N'Book no longer exists.'
+            ROLLBACK 
+            RETURN -2
+        END
+
         INSERT into ORDER_DETAIL (ORDER_ID, BOOK_ID, ORDER_QUANTITY, ORDER_PRICE) VALUES (@orderId, @bookId, @quantity, @price)
 	END TRY
 

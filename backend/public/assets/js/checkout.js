@@ -31,16 +31,32 @@ $('.confirm-checkout-btn').click(async () => {
         addrId: $('input[name="addrId"]:checked').prop('id'),
         shippingFee: $('.checkout-total__shipping').data('shippingFee'),
     };
-    console.log(body);
 
-    const res = await fetch('/api/checkout', {
+    const { status } = await fetch('/api/checkout', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
     });
-    console.log(res.status);
+
+    if (status === 404) {
+        $('.waiting').addClass('d-none');
+        return Swal.fire({
+            title: 'Error',
+            text: 'Trong đơn hàng của bạn, có sản phẩm không còn tồn tại trong kho hoặc vượt quá số lượng trong kho!',
+            icon: 'error',
+        }).then(async () => {
+            location.assign('/cart');
+        });
+    }
 
     $('.waiting').addClass('d-none');
+    Swal.fire({
+        title: 'Success',
+        text: 'Đặt hàng thành công!',
+        icon: 'success',
+    }).then(async () => {
+        location.assign('/category');
+    });
 });

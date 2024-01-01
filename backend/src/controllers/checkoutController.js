@@ -204,7 +204,7 @@ exports.checkout = catchAsync(async (req, res, next) => {
     await cartModel.updateCartQuantityCartTotal(cartId);
 
     // If there is any failed order detail creation, delete this order
-    if (isFailedList.includes(0) || isFailedList.includes(-1)) {
+    if (isFailedList.some((el) => el !== 1)) {
         await orderModel.deleteOrder(orderId);
         return next(
             new AppError(`There is at least 1 no longer existed book.`, 404),
