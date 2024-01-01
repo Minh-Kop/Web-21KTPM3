@@ -1,4 +1,3 @@
-go
 IF OBJECT_ID('f_CreateOrderId') IS NOT NULL
 	DROP FUNCTION f_CreateOrderId
 GO
@@ -6,37 +5,35 @@ CREATE FUNCTION f_CreateOrderId()
 returns CHAR(7)
     BEGIN
         DECLARE @i INT = 1
-        DECLARE @id char(7) = 'OD00001'
+        DECLARE @id char(7) = 'OD001'
         WHILE(EXISTS(SELECT 1
                     FROM H_ORDER
                     WHERE ORDER_ID = @id))
         BEGIN
             SET @i += 1
-            SET @id = 'OD' + REPLICATE('0', 5 - LEN(@i)) + CAST(@i AS CHAR(5))
+            SET @id = 'OD' + REPLICATE('0', 3 - LEN(@i)) + CAST(@i AS CHAR(3))
         END
         return @id
     END
 GO
 
-GO
 IF OBJECT_ID('sp_CreateOrder') IS NOT NULL
 	DROP PROC sp_CreateOrder
 GO
 CREATE PROCEDURE sp_CreateOrder (
-    @email NVARCHAR(100),
-    @addrId CHAR(10),
+    @userId CHAR(5),
+    @addrId CHAR(5),
     @merchandiseSubtotal int,
     @shippingFee int
 )
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-        DECLARE @id char(7) = dbo.f_CreateOrderId()
-        DECLARE @paymentId CHAR(4) = (select PAYMENT_ID from PAYMENT where PAYMENT_PROVIDER = 'COD')
+        DECLARE @id char(5) = dbo.f_CreateOrderId()
 
-        INSERT into H_ORDER (ORDER_ID, EMAIL, ADDR_ID, PAYMENT_ID, MERCHANDISE_SUBTOTAL, SHIPPING_FEE, SHIPPING_DISCOUNT_SUBTOTAL, HACHIKO_VOUCHER_APPLIED, TOTAL_PAYMENT) values 
-            (@id, @email, @addrId, @paymentId, @merchandiseSubtotal, @shippingFee, 0, 0, @merchandiseSubtotal + @shippingFee)
-        INSERT into ORDER_STATE (ORDER_ID, ORDER_STATE, CREATED_TIME) values (@id, 0, GETDATE())
+        INSERT into H_ORDER (ORDER_ID, USERID, ADDR_ID, ORDER_DATE, MERCHANDISE_SUBTOTAL, SHIPPING_FEE, TOTAL_PAYMENT, SOFT_DELETE) values 
+            (@id, @userId, @addrId, GETDATE(), @merchandiseSubtotal, @shippingFee, @merchandiseSubtotal + @shippingFee, 0)
+        INSERT into ORDER_STATE (ORDER_ID, ORDER_STATE, CREATED_TIME) values (@id, 1, GETDATE())
 
         select @id orderId
 	END TRY
@@ -55,8 +52,8 @@ IF OBJECT_ID('sp_CreateOrderDetail') IS NOT NULL
 	DROP PROC sp_CreateOrderDetail
 GO
 CREATE PROCEDURE sp_CreateOrderDetail (
-    @orderId CHAR(7),
-    @bookId CHAR(7),
+    @orderId CHAR(5),
+    @bookId CHAR(5),
     @quantity int,
     @price int
 )
@@ -73,6 +70,29 @@ BEGIN TRANSACTION
         END
 
         INSERT into ORDER_DETAIL (ORDER_ID, BOOK_ID, ORDER_QUANTITY, ORDER_PRICE) VALUES (@orderId, @bookId, @quantity, @price)
+	END TRY
+
+	BEGIN CATCH
+		PRINT N'Bị lỗi'
+		ROLLBACK 
+		RETURN 0
+	END CATCH
+COMMIT
+RETURN 1
+GO
+
+IF OBJECT_ID('sp_DeleteOrder') IS NOT NULL
+	DROP PROC sp_DeleteOrder
+GO
+CREATE PROCEDURE sp_DeleteOrder (
+    @orderId CHAR(5)
+)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+        delete from ORDER_STATE where ORDER_ID = @orderId
+        delete from ORDER_DETAIL where ORDER_ID = @orderId
+        delete from H_ORDER where ORDER_ID = @orderId
 	END TRY
 
 	BEGIN CATCH
@@ -301,7 +321,6 @@ COMMIT
 RETURN 1
 GO
 
-GO
 IF OBJECT_ID('sp_DeleteAllInitialOrders') IS NOT NULL
 	DROP PROC sp_DeleteAllInitialOrders
 GO
@@ -340,125 +359,6 @@ COMMIT
 RETURN 1
 GO
 
-GO
-IF OBJECT_ID('sp_AddVoucher') IS NOT NULL
-	DROP PROC sp_AddVoucher
-GO
-CREATE PROCEDURE sp_AddVoucher (
-    @voucherId char(7),
-    @orderId char(7)
-)
-AS
--- BEGIN TRANSACTION
--- 	BEGIN TRY
---         if not exists (select 1 from USER_VOUCHER uv where uv.VOUCHER_ID = @voucherId)
---          BEGIN
---             PRINT N'User doesn''t have this voucher.'
---             ROLLBACK 
---             RETURN -5
---         END
-
---         -- Voucher information
---         DECLARE @voucherTypeId char(4), @remainingAmount int, @minPrice int, @maxDiscountPrice INT, @percentage int,
---             @voucherType NVARCHAR(100)
---         select @voucherTypeId = vt.VOUCHER_TYPE_ID, @remainingAmount = v.REMAINING_AMOUNT, @minPrice = v.MINIMUM_PRICE,
---             @percentage = v.PERCENTAGE_DISCOUNT, @maxDiscountPrice = v.MAXIMUM_DISCOUNT_PRICE, @voucherType = vt.VOUCHER_TYPE
---         from VOUCHER v join VOUCHER_TYPE vt on vt.VOUCHER_TYPE_ID = v.VOUCHER_TYPE_ID
---         where VOUCHER_ID = @voucherId
-
---         if @voucherTypeId is NULL
---         BEGIN
---             PRINT N'Voucher Id is invalid.'
---             ROLLBACK 
---             RETURN -3
---         END
-
---         -- Order information
---         DECLARE @merchandiseSubtotal INT, @shippingFee INT, @shippingDiscountSubtotal INT, @hachikoVoucherApplied int
---         SELECT @merchandiseSubtotal = MERCHANDISE_SUBTOTAL, @shippingFee = SHIPPING_FEE, @shippingDiscountSubtotal = SHIPPING_DISCOUNT_SUBTOTAL,
---             @hachikoVoucherApplied = HACHIKO_VOUCHER_APPLIED
---         from H_ORDER with (XLOCK)
---         where ORDER_ID = @orderId
-
---         if @merchandiseSubtotal is NULL
---         BEGIN
---             PRINT N'Order Id is invalid.'
---             ROLLBACK 
---             RETURN -4
---         END
-
---         if (@minPrice > @merchandiseSubtotal)
---         BEGIN
---             PRINT N'Subtotal isn''t enough to use this voucher.'
---             ROLLBACK 
---             RETURN -1
---         END
-
---         if (@remainingAmount < 1)
---         BEGIN
---             PRINT N'Out of vouchers.'
---             ROLLBACK 
---             RETURN -2
---         END
-
---         -- Delete old same type voucher before add new one
---         if exists (select 1
---                     from ORDER_VOUCHER ov join VOUCHER v on ov.VOUCHER_ID = v.VOUCHER_ID
---                     where v.VOUCHER_TYPE_ID = @voucherTypeId and ov.ORDER_ID = @orderId)
---         BEGIN
---             DECLARE @oldVoucherId char(7)
---             select @oldVoucherId = v.VOUCHER_ID
---             from ORDER_VOUCHER ov join VOUCHER v on ov.VOUCHER_ID = v.VOUCHER_ID
---             where v.VOUCHER_TYPE_ID = @voucherTypeId and ov.ORDER_ID = @orderId
-
---             DELETE from ORDER_VOUCHER where VOUCHER_ID = @oldVoucherId and ORDER_ID = @orderId
---         END
-
---         if (@voucherType = 'Free ship')
---         BEGIN
---             if @shippingFee < @maxDiscountPrice
---             BEGIN
---                 set @shippingDiscountSubtotal = @shippingFee
---             END
---             ELSE
---             BEGIN
---                 set @shippingDiscountSubtotal = @maxDiscountPrice
---             END
-            
---             UPDATE H_ORDER
---             SET SHIPPING_DISCOUNT_SUBTOTAL = @shippingDiscountSubtotal, 
---                 TOTAL_PAYMENT = @merchandiseSubtotal + @shippingFee - @shippingDiscountSubtotal - @hachikoVoucherApplied
---             WHERE ORDER_ID = @orderId
---         END
---         ELSE
---         BEGIN
---             if @percentage/100.0 * @merchandiseSubtotal > @maxDiscountPrice
---             BEGIN
---                 SET @hachikoVoucherApplied = @maxDiscountPrice
---             END
---             ELSE
---             BEGIN
---                 SET @hachikoVoucherApplied = @percentage/100.0 * @merchandiseSubtotal
---             END
-
---             UPDATE H_ORDER
---             SET HACHIKO_VOUCHER_APPLIED = @hachikoVoucherApplied, 
---                 TOTAL_PAYMENT = @merchandiseSubtotal + @shippingFee - @shippingDiscountSubtotal - @hachikoVoucherApplied
---             WHERE ORDER_ID = @orderId
---         END
---         INSERT into ORDER_VOUCHER (ORDER_ID, VOUCHER_ID) values (@orderId, @voucherId)
--- 	END TRY
-
--- 	BEGIN CATCH
--- 		PRINT N'Bị lỗi'
--- 		ROLLBACK 
--- 		RETURN 0
--- 	END CATCH
--- COMMIT
--- RETURN 1
--- GO
-
-GO
 IF OBJECT_ID('sp_UpdateOrder') IS NOT NULL
 	DROP PROC sp_UpdateOrder
 GO

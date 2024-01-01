@@ -4,7 +4,7 @@ const {
     searchCategoryTree,
     toListCategory,
     getParentBranch,
-    seperateThousandByDot,
+    separateThousandByDot,
 } = require('../utils/utils');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -128,8 +128,8 @@ exports.getAllBooks = async ({
                 avgRating: item.AVG_RATING,
                 countRating: item.COUNT_RATING,
             };
-            book.originalPrice = seperateThousandByDot(book.originalPrice);
-            book.discountedPrice = seperateThousandByDot(book.discountedPrice);
+            book.originalPrice = separateThousandByDot(book.originalPrice);
+            book.discountedPrice = separateThousandByDot(book.discountedPrice);
 
             const { image } = await bookModel.getCoverImage(book.bookId);
             book.image = image;

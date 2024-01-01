@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 /**
  * Build the category tree from the category list
  *
@@ -186,7 +188,7 @@ const removeUndefined = (obj) => {
     return newObj;
 };
 
-const seperateThousandByDot = (number) => {
+const separateThousandByDot = (number) => {
     if (number === 0) {
         return '0';
     }
@@ -207,6 +209,38 @@ const seperateThousandByDot = (number) => {
     }, '');
 };
 
+const calculateDeliveryDate = (days) => {
+    const currentDate = moment();
+    const futureDate = currentDate.add(days, 'days');
+
+    let dayOfWeek = futureDate.format('dddd');
+    switch (dayOfWeek) {
+        case 'Sunday':
+            dayOfWeek = 'Chủ nhật';
+            break;
+        case 'Monday':
+            dayOfWeek = 'Thứ hai';
+            break;
+        case 'Tuesday':
+            dayOfWeek = 'Thứ ba';
+            break;
+        case 'Wednesday':
+            dayOfWeek = 'Thứ tư';
+            break;
+        case 'Thursday':
+            dayOfWeek = 'Thứ năm';
+            break;
+        case 'Friday':
+            dayOfWeek = 'Thứ sáu';
+            break;
+        default:
+            dayOfWeek = 'Thứ bảy';
+            break;
+    }
+
+    return `${dayOfWeek} - ${futureDate.format('DD/MM')}`;
+};
+
 module.exports = {
     buildCategoryRoot,
     searchCategoryTree,
@@ -214,5 +248,6 @@ module.exports = {
     getParentBranch,
     getCategoryBranch,
     removeUndefined,
-    seperateThousandByDot,
+    separateThousandByDot,
+    calculateDeliveryDate,
 };

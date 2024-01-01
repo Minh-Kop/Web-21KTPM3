@@ -3,12 +3,16 @@ const sql = require('mssql');
 
 const database = require('../utils/database');
 
-exports.createInitialOrder = async (entity) => {
-    const { email, addrId, merchandiseSubtotal, shippingFee } = entity;
+exports.createInitialOrder = async ({
+    userId,
+    addrId,
+    merchandiseSubtotal,
+    shippingFee,
+}) => {
     const pool = await database.getConnectionPool();
 
     const request = new sql.Request(pool);
-    request.input('email', sql.NVarChar, email);
+    request.input('userId', sql.Char, userId);
     request.input('addrId', sql.Char, addrId);
     request.input('merchandiseSubtotal', sql.Int, merchandiseSubtotal);
     request.input('shippingFee', sql.Int, shippingFee);
@@ -103,6 +107,14 @@ exports.deleteAllInitialOrders = async (email) => {
     const request = new sql.Request(pool);
     request.input('email', sql.NVarChar, email);
     const result = await request.execute('sp_DeleteAllInitialOrders');
+    return result.returnValue;
+};
+
+exports.deleteOrder = async (orderId) => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    request.input('orderId', sql.Char, orderId);
+    const result = await request.execute('sp_DeleteOrder');
     return result.returnValue;
 };
 

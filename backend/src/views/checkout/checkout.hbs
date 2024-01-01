@@ -10,12 +10,12 @@
                     VNĐ
                 </div>
             </div>
-            <div class='checkout-total__shipping'>
+            <div class='checkout-total__shipping' data-shipping-fee="{{shippingFeeNumber}}">
                 <div class='checkout-total__shipping__label'>
                     Phí vận chuyển (Giao hàng tiêu chuẩn)
                 </div>
                 <div class='checkout-total__shipping__amount'>
-                    {{cartTotal}}
+                    {{shippingFee}}
                     VNĐ
                 </div>
             </div>
@@ -24,7 +24,7 @@
                     Tổng Số Tiền (gồm VAT)
                 </div>
                 <div class='checkout-total__final-total__amount'>
-                    {{cartTotal}}
+                    {{finalTotal}}
                     VNĐ
                 </div>
             </div>
@@ -46,22 +46,183 @@
                 </svg>
                 <span>Quay về giỏ hàng</span>
             </a>
-            <button class='confirm-checkout-btn'>
-                Xác nhận thanh toán
-            </button>
+
+            {{!-- Submit button --}}
+            {{#if hasChosenAnAddr}}
+                <button class='confirm-checkout-btn active'>
+                    Xác nhận thanh toán
+                </button>
+            {{else}}
+                <button disabled class='confirm-checkout-btn'>
+                    Xác nhận thanh toán
+                </button>
+            {{/if}}
         </div>
     </div>
 </div>
 
+{{! Main content }}
 <div class='container mt-3'>
-    {{!-- Address list --}}
+    {{! Address list }}
     <div class='checkout-block'>
         <h2 class='checkout-block__title'>
             ĐỊA CHỈ GIAO HÀNG
         </h2>
-        <div class="checkout-block__content">
-            <ul class="address-list">
-                
+        <div class='checkout-block__content'>
+            {{! Shipping addresses list }}
+            <ul data-cart-total='{{cartTotalNumber}}'>
+                {{#each shippingAddresses}}
+                    <li>
+                        <label class='addr-radio' for='{{addrId}}'>
+                            {{detailedInfo}}
+                            <input
+                                hidden
+                                type='radio'
+                                name='addrId'
+                                id='{{addrId}}'
+                                value='{{coordinates}}'
+                                {{#if isDefault}}checked{{/if}}
+                            />
+                            <span class='radio-mark'></span>
+                        </label>
+                    </li>
+                {{/each}}
+            </ul>
+
+            {{! Add address button }}
+            <button class='add-addr-btn'>
+                <svg
+                    class='add-addr-btn__img'
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='26'
+                    height='26'
+                    viewBox='0 0 26 26'
+                >
+                    <g id='ico_add' transform='translate(-1 -1)'>
+                        <circle
+                            id='Ellipse_26'
+                            data-name='Ellipse 26'
+                            cx='12'
+                            cy='12'
+                            r='12'
+                            transform='translate(2 2)'
+                            fill='none'
+                            stroke='currentColor'
+                            stroke-linecap='round'
+                            stroke-linejoin='round'
+                            stroke-width='2'
+                        />
+                        <line
+                            id='Line_64'
+                            data-name='Line 64'
+                            y2='9.6'
+                            transform='translate(14 9.2)'
+                            fill='none'
+                            stroke='currentColor'
+                            stroke-linecap='round'
+                            stroke-linejoin='round'
+                            stroke-width='2'
+                        />
+                        <line
+                            id='Line_65'
+                            data-name='Line 65'
+                            x2='9.6'
+                            transform='translate(9.2 14)'
+                            fill='none'
+                            stroke='currentColor'
+                            stroke-linecap='round'
+                            stroke-linejoin='round'
+                            stroke-width='2'
+                        />
+                    </g>
+                </svg>
+                <span>Giao hàng đến địa chỉ khác</span>
+            </button>
+        </div>
+    </div>
+
+    {{! Shipping info }}
+    <div class='checkout-block'>
+        <h2 class='checkout-block__title'>
+            Phương thức vận chuyển
+        </h2>
+        <div class='checkout-block__content'>
+            <label class='addr-radio' for='shipping'>
+                <div>
+                    <div class='fw-bold'>
+                        Giao hàng tiêu chuẩn:
+                        <span class='shipping-info__fee'>{{shippingFee}}</span>
+                        VNĐ
+                    </div>
+                    <div class='text-capitalize shipping-info__date'>
+                        {{deliveryDate}}
+                    </div>
+                </div>
+                <input
+                    hidden
+                    type='radio'
+                    name='shipping'
+                    id='shipping'
+                    value='shipping'
+                    checked
+                />
+                <span class='radio-mark'></span>
+            </label>
+        </div>
+    </div>
+
+    {{! Payment info }}
+    <div class='checkout-block'>
+        <h2 class='checkout-block__title'>
+            PHƯƠNG THỨC THANH TOÁN
+        </h2>
+        <div class='checkout-block__content'>
+            <ul>
+                <li>
+                    <label class='addr-radio' for='payment'>
+                        <div>
+                            Thanh toán bằng tài khoản ngân hàng
+                        </div>
+                        <input
+                            hidden
+                            type='radio'
+                            name='payment'
+                            id='payment'
+                            value='payment'
+                            checked
+                        />
+                        <span class='radio-mark'></span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    {{! Products info }}
+    <div class='checkout-block'>
+        <h2 class='checkout-block__title'>
+            KIỂM TRA LẠI ĐƠN HÀNG
+        </h2>
+        <div class='checkout-block__content'>
+            <ul>
+                {{#each selectedProducts}}
+                    <li class='product-item'>
+                        <img class='product-item__img' src='{{image}}' alt='' />
+                        <span class='ps-2 pe-3'>{{bookName}}</span>
+                        <div>
+                            <div>{{discountedPrice}} VNĐ</div>
+                            <div class='product-item__price--original'>
+                                {{originalPrice}}
+                                VNĐ
+                            </div>
+                        </div>
+                        <span>{{quantity}}</span>
+                        <span class='product-item__price--final'>
+                            {{cartPrice}}
+                            VNĐ
+                        </span>
+                    </li>
+                {{/each}}
             </ul>
         </div>
     </div>
