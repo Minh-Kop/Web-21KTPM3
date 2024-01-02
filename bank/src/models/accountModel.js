@@ -35,25 +35,3 @@ exports.createAccount = async ({ username, password }) => {
     const result = await request.execute('sp_CreateAccount');
     return result;
 };
-
-exports.getAllUsers = async (userEntity) => {
-    const { limit, offset } = userEntity;
-    let { sortType } = userEntity;
-    let sqlString = '';
-
-    const check = sortType[0] === '-';
-    if (check) {
-        sortType = sortType.substring(1);
-    }
-    sqlString += ` order by ${sortType} ${check ? 'desc' : 'asc'}`;
-    sqlString += ` OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`;
-
-    sqlString = `
-        select a.USERID userId, [a].USERNAME as username, [a].[EMAIL] as email, [a].[FULLNAME] as fullName, [a].[PHONE_NUMBER] as phoneNumber, [a].[AVATAR_PATH] as avatarPath, [a].[HROLE] as role, a.GENDER as gender, a.BIRTHDAY as birthday
-        from ACCOUNT a ${sqlString}`;
-
-    const pool = await database.getConnectionPool();
-    const request = new sql.Request(pool);
-    const result = await request.query(sqlString);
-    return result.recordset;
-};

@@ -1,5 +1,6 @@
 // const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 
 const accountModel = require('../models/accountModel');
 const AppError = require('../utils/appError');
@@ -49,6 +50,12 @@ exports.signUp = catchAsync(async (req, res, next) => {
         verified: 1,
         token: verifyToken,
         role: config.role.USER,
+    });
+
+    // Create bank account
+    await axios.post(`${config.BANK_URL}/api/account/create-account`, {
+        username,
+        password: encryptedPassword,
     });
 
     res.status(200).json({

@@ -13,16 +13,9 @@ passport.deserializeUser(async (username, done) => {
     // console.log('Deserialize: ', username);
     const account = await accountModel.getByUsername(username);
     const returnedAccount = {
-        userId: account.USERID,
+        accountId: account.ACCOUNTID,
         username: account.USERNAME,
-        email: account.EMAIL,
-        fullName: account.FULLNAME,
-        phoneNumber: account.PHONE_NUMBER,
-        avatarPath: account.AVATAR_PATH,
-        role: account.HROLE,
-        birthday: account.BIRTHDAY,
-        gender: account.GENDER,
-        password: account.ENC_PWD,
+        balance: account.BALANCE,
     };
     if (account) {
         return done(null, returnedAccount);
@@ -38,6 +31,10 @@ module.exports = (app) => {
             try {
                 const user = await accountModel.getByUsername(username);
 
+                if (!user) {
+                    return done('Invalid authentication', null);
+                }
+
                 // Get the database password
                 const encryptedPassword = user.ENC_PWD;
 
@@ -49,6 +46,6 @@ module.exports = (app) => {
             } catch (error) {
                 done(error);
             }
-        }),
+        })
     );
 };

@@ -1,12 +1,14 @@
 const express = require('express');
 
-// const authController = require('../controllers/authController');
+const { protectPage } = require('../controllers/authController');
 const accountRouter = require('./accountRoutes');
-// const userRouterUI = require('./userRoutesUI');
+const accountRouterUI = require('./accountRoutesUI');
+const authRouter = require('./authRoutes');
 
 const router = express.Router();
 
-// router.use('/', authRoutes);
+router.use('/', authRouter);
 router.use('/api/account', accountRouter);
+router.use('/account', protectPage, accountRouterUI);
 
 module.exports = router;

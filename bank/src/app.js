@@ -12,7 +12,10 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const router = require('./routes');
 const hbs = require('./utils/handlebars')(expressHandlebars);
-const { JWT_SECRET: secret } = require('./config/config');
+const { JWT_SECRET: secret, SHOP_URL: shopUrl } = require('./config/config');
+
+// Solve self signed certificate error
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Start express app
 const app = express();
@@ -20,7 +23,7 @@ const app = express();
 // 1) GLOBAL MIDDLEWARES
 // Implement CORS
 const corsOptions = {
-    origin: ['http://localhost:3001', 'https://group-6-e-commerce.vercel.app'],
+    origin: [shopUrl],
     credentials: true,
 };
 app.use(cors(corsOptions));
@@ -68,6 +71,9 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(hpp());
+
+// Set up passport
+require('./utils/passport')(app);
 
 // 2) ROUTES
 app.use(router);

@@ -5,6 +5,8 @@ const config = {
 
     PORT: process.env.PORT || 3002,
 
+    SHOP_URL: process.env.SHOP_URL,
+
     DATABASE: {
         server: process.env.DB_SERVER,
         user: process.env.DB_USER,

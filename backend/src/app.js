@@ -18,6 +18,9 @@ const cartController = require('./controllers/cartControllerUI');
 const router = require('./routes');
 const hbs = require('./utils/handlebars')(expressHandlebars);
 
+// Solve self signed certificate error
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 // Start express app
 const app = express();
 
