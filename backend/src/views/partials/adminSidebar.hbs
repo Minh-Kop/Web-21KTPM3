@@ -1,0 +1,36 @@
+<div class="sidebar-container">
+    <div class="profile">
+        <img src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-980x653.jpg"
+            alt="profile picture">
+        <span>{{user.name}}Nguyen Van A</span>
+    </div>
+    <div class="side-nav">
+        <div class="product-nav">
+            <form action="/admin/books" method="get">
+                <button class='btn{{#if book}} active{{/if}}' type="submit">Sản phẩm</button>
+            </form>
+        </div>
+        <div class="order-nav">
+            <form action="/admin/order" method="get">
+                <button class='btn{{#if order}} active{{/if}}' type="submit">Đơn hàng</button>
+            </form>
+        </div>
+        <div class="statistic-nav">
+            <form action="/admin/statistic" method="get">
+                <button class='btn{{#if statistic}} active{{/if}}' type="submit">Thống kê</button>
+            </form>
+        </div>
+        <div class="account-nav">
+            <form action="/admin/account" method="get">
+                <button class='btn{{#if account}} active{{/if}}' type="submit">Tài khoản</button>
+            </form>
+        </div>
+        <div class="category-nav">
+            <form action="/admin/category" method="get">
+                <button class='btn{{#if category}} active{{/if}}' type="submit">Danh mục</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/assets/css/adminSidebar.css">

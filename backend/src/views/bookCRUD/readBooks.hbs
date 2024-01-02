@@ -1,0 +1,47 @@
+<div class="book-list-container">
+    <div class="book-list-header">
+        <form class="book-add" action="/admin/book/createBookUI" method="get">
+            <button type="submit">Add</button>
+        </form>
+        <form class='book-sort' action="/sort" method="get">
+            <button type="submit">Sort</button>
+        </form>
+        <form class="book-search" action="/get" method="get">
+            <input type="text" name="book" id="bName">
+            <button type="submit"><img src="/assets/img/search_icon.svg" alt="search" /></button>
+        </form>
+    </div>
+    <div class="book-list">
+        <table class="book-list-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product name</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each books}}
+                <tr>
+                    <td>{{this.bookId}}</td>
+                    <td class="update-td"><a href="/admin/book/updateBookUI?book={{this.bookId}}">{{this.bookName}}</a>
+                    </td>
+                    <td>{{this.discountedPrice}} VNĐ</td>
+                    <td>{{this.stock}}</td>
+                    <td class="del-td">
+                        <form action="/admin/book/delete" method="get">
+                            <input type="hidden" id="bookId" name="bookId" value="{{this.bookId}}">
+                            <button class="btn-del" type="submit"><img src="/assets/img/red_trash_icon.svg"
+                                    alt="deltete"></button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/assets/css/readBook.css">
