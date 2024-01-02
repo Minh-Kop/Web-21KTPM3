@@ -15,6 +15,7 @@ passport.deserializeUser(async (username, done) => {
     const returnedAccount = {
         accountId: account.ACCOUNTID,
         username: account.USERNAME,
+        password: account.ENC_PWD,
         balance: account.BALANCE,
     };
     if (account) {

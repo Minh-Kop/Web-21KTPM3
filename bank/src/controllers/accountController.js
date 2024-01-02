@@ -24,7 +24,26 @@ const createAccount = catchAsync(async (req, res, next) => {
 });
 
 const getHomePage = catchAsync(async (req, res, next) => {
-    
+    const { user } = req;
+
+    console.log(user);
+    res.render('account/home', {
+        title: 'Home',
+        navbar: () => 'navbar',
+        ...user,
+        balance: user.balance.toLocaleString('vi-VN'),
+    });
 });
 
-module.exports = { createAccount, getHomePage };
+const getDepositPage = catchAsync(async (req, res, next) => {
+    const { user } = req;
+
+    res.render('account/deposit', {
+        title: 'Deposit',
+        navbar: () => 'navbar',
+        ...user,
+        balance: user.balance.toLocaleString('vi-VN'),
+    });
+});
+
+module.exports = { createAccount, getHomePage, getDepositPage };

@@ -75,8 +75,8 @@ go
 /*==============================================================*/
 create table "TRANSACTION" (
    TRANSACTIONID        char(5)              not null,
-   PAYER                char(5)              not null,
-   PAYEE                char(5)              not null,
+   PAYER                char(5)              null,
+   PAYEE                char(5)              null,
    CHANGED_TIME         datetime             null,
    CHANGED_MONEY        int                  null,
    CHANGED_REASON       varchar(100)         null,

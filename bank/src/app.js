@@ -76,6 +76,10 @@ app.use(hpp());
 require('./utils/passport')(app);
 
 // 2) ROUTES
+app.get('/', (req, res, next) => {
+    res.redirect('/account');
+});
+
 app.use(router);
 
 app.all('*', (req, res, next) => {

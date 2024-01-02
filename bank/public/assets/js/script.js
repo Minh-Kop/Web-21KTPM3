@@ -81,6 +81,7 @@ $('#login').on('click', async (e) => {
         timerProgressBar: true,
         showConfirmButton: false,
     }).then(() => {
-        location.assign(`/`);
+        const nextUrl = $(e.target).data('nextUrl');
+        location.assign(nextUrl);
     });
 });

@@ -1,0 +1,33 @@
+<div class='container'>
+    <div class='row g-3 mt-3'>
+        {{! Balance }}
+        <class class='col-md-4'>
+            <section class='section'>
+                <h1 class='section__header'>Số dư</h1>
+                <p class='section__balance'>{{balance}} VNĐ</p>
+            </section>
+        </class>
+
+        {{! Service }}
+        <div class='col-md-8'>
+            <section class='section'>
+                <h1 class='section__header'>Các dịch vụ</h1>
+                <ul class='service'>
+                    <li class='service__item'>
+                        <a href='/account/deposit'>
+                            <img
+                                class='service__item__img'
+                                src='/assets/img/deposit.png'
+                                alt=''
+                            />
+                            <p class='service__item__desc line-clamb'>Nạp tiền</p>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>
+
+<link rel='stylesheet' href='/assets/css/home.css' />
+<script src='/assets/js/home.js'></script>

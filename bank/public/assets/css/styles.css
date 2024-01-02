@@ -18,6 +18,16 @@ body {
     background: var(--background-color);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    margin: 0;
+    padding: 0;
+}
+
 a {
     text-decoration: none;
 }
@@ -26,6 +36,12 @@ button {
     border: none;
     outline: none;
     background-color: transparent;
+}
+
+ul,
+ol {
+    margin: 0;
+    padding: 0;
 }
 
 /* Create ... when text overflows */
