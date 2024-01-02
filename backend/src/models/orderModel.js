@@ -61,7 +61,7 @@ exports.getUserOrders = async (entity) => {
     const { userId, orderState, limit, offset } = entity;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
-    request.input('USERID', sql.NVarChar, userId);
+    request.input('USERID', sql.Char, userId);
     request.input('orderState', sql.Int, +orderState);
     request.input('limit', sql.Int, limit);
     request.input('offset', sql.Int, offset);

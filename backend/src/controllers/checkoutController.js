@@ -16,7 +16,6 @@ const {
 } = require('../utils/checkout');
 const { getRate } = require('../utils/currencyConverter');
 const crypto = require('../utils/crypto');
-const locationController = require('./locationController');
 
 exports.getOrder = catchAsync(async (req, res, next) => {
     const { orderId } = req.params;

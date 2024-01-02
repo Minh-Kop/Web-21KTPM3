@@ -25,38 +25,53 @@ $('input[name="addrId"]').change(async (e) => {
 
 // Submit button
 $('.confirm-checkout-btn').click(async () => {
-    $('.waiting').removeClass('d-none');
-
-    const body = {
-        addrId: $('input[name="addrId"]:checked').prop('id'),
-        shippingFee: $('.checkout-total__shipping').data('shippingFee'),
-    };
-
-    const { status } = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+    const { value: password } = await Swal.fire({
+        title: 'Xác thực',
+        input: 'password',
+        inputLabel: 'Password',
+        inputPlaceholder: 'Nhập mật khẩu xác thực',
+        inputAttributes: {
+            maxlength: '10',
+            autocapitalize: 'off',
+            autocorrect: 'off',
         },
-        body: JSON.stringify(body),
     });
-
-    if (status === 404) {
-        $('.waiting').addClass('d-none');
-        return Swal.fire({
-            title: 'Error',
-            text: 'Trong đơn hàng của bạn, có sản phẩm không còn tồn tại trong kho hoặc vượt quá số lượng trong kho!',
-            icon: 'error',
-        }).then(async () => {
-            location.assign('/cart');
-        });
+    if (password) {
+        Swal.fire(`Entered password: ${password}`);
     }
 
-    $('.waiting').addClass('d-none');
-    Swal.fire({
-        title: 'Success',
-        text: 'Đặt hàng thành công!',
-        icon: 'success',
-    }).then(async () => {
-        location.assign('/category');
-    });
+    //     $('.waiting').removeClass('d-none');
+    //
+    //     const body = {
+    //         addrId: $('input[name="addrId"]:checked').prop('id'),
+    //         shippingFee: $('.checkout-total__shipping').data('shippingFee'),
+    //     };
+    //
+    //     const { status } = await fetch('/api/checkout', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(body),
+    //     });
+    //
+    //     if (status === 404) {
+    //         $('.waiting').addClass('d-none');
+    //         return Swal.fire({
+    //             title: 'Error',
+    //             text: 'Trong đơn hàng của bạn, có sản phẩm không còn tồn tại trong kho hoặc vượt quá số lượng trong kho!',
+    //             icon: 'error',
+    //         }).then(async () => {
+    //             location.assign('/cart');
+    //         });
+    //     }
+    //
+    //     $('.waiting').addClass('d-none');
+    //     Swal.fire({
+    //         title: 'Success',
+    //         text: 'Đặt hàng thành công!',
+    //         icon: 'success',
+    //     }).then(async () => {
+    //         location.assign('/category');
+    //     });
 });

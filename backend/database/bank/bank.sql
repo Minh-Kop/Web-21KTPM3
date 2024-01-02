@@ -1,16 +1,16 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     16/11/2023 11:14:13 am                       */
+/* Created on:     1/1/2024 9:12:32 pm                          */
 /*==============================================================*/
--- USE master
--- go
--- if DB_ID('bank_db') is not null
--- 	drop database bank_db
--- GO 
--- CREATE DATABASE bank_db
--- GO
--- USE bank_db
--- GO
+USE master
+go
+if DB_ID('fabank_db') is not null
+	drop database fabank_db
+GO 
+CREATE DATABASE fabank_db
+GO
+USE fabank_db
+GO
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -63,10 +63,9 @@ go
 /*==============================================================*/
 create table ACCOUNT (
    ACCOUNTID            char(5)              not null,
-   BALANCE              float                null,
-   FULL_NAME            nvarchar(100)         null,
-   CREATED_TIME         datetime             null,
-   ENC_PWD              nvarchar(300)         null,
+   USERNAME             varchar(50)          null,
+   ENC_PWD              varchar(300)         null,
+   BALANCE              int                  null,
    constraint PK_ACCOUNT primary key nonclustered (ACCOUNTID)
 )
 go
@@ -80,8 +79,8 @@ create table "TRANSACTION" (
    PAYEE                char(5)              not null,
    CHANGED_TIME         datetime             null,
    CHANGED_MONEY        int                  null,
-   CHANGED_REASON       nvarchar(100)         null,
-   TRANS_STATE          nvarchar(20)          null,
+   CHANGED_REASON       varchar(100)         null,
+   TRANS_STATE          varchar(20)          null,
    constraint PK_TRANSACTION primary key nonclustered (TRANSACTIONID)
 )
 go

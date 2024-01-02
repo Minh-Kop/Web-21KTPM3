@@ -236,7 +236,7 @@ IF OBJECT_ID('sp_GetUserOrders') IS NOT NULL
 	DROP PROC sp_GetUserOrders
 GO
 CREATE PROCEDURE sp_GetUserOrders (
-    @userId NVARCHAR(100),
+    @userId char(5),
     @orderState INT,
     @limit INT,
     @offset INT    
