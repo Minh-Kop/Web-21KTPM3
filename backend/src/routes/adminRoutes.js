@@ -6,27 +6,30 @@ const {
     renderCategoryPage,
     renderUpdateCategory,
     renderCreateCategory,
-} = require('../controllers/adminController');
-const {
     deleteBook,
     createBook,
-    updateBook,
-} = require('../controllers/bookControllerUI');
+} = require('../controllers/adminController');
+const { updateBook } = require('../controllers/bookControllerUI');
+const {
+    createCategory,
+    deleteCategory,
+    updateCategory,
+} = require('../controllers/categoryController');
 
 const router = express.Router();
 
 router.get('/books', renderReadBooks);
 router.get('/book/createBookUI', renderCreateBook);
 router.get('/book/updateBookUI', renderUpdateBook);
-router.get('/book/create', createBook);
+router.post('/book/create', createBook);
 router.get('/book/update', updateBook);
-router.get('/book/deleteBook', deleteBook);
+router.get('/book/delete', deleteBook);
 
 router.get('/category', renderCategoryPage);
 router.get('/category/createCategoryUI', renderCreateCategory);
 router.get('/category/updateCategoryUI', renderUpdateCategory);
-router.get('/category/create', createBook);
-router.get('/category/update', updateBook);
-router.get('/category/deleteBook', deleteBook);
+router.get('/category/create', createCategory);
+router.get('/category/update', updateCategory);
+router.get('/category/delete', deleteCategory);
 
 module.exports = router;

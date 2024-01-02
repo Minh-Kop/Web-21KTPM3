@@ -30,7 +30,8 @@
                     </td>
                     <td>{{#if this.PARENT_ID}}{{this.PARENT_ID}}{{else}}None{{/if}}</td>
                     <td class="del-td">
-                        <form action="/delete" method="get">
+                        <form action="/admin/category/delete" method="get">
+                            <input type="hidden" name="cateId" id="cateId" value="{{this.CATE_ID}}">
                             <button class="btn-del" type="submit"><img src="/assets/img/red_trash_icon.svg"
                                     alt="deltete"></button>
                         </form>

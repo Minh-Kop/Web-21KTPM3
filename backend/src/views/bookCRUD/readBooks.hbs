@@ -31,7 +31,8 @@
                     <td>{{this.discountedPrice}} VNĐ</td>
                     <td>{{this.stock}}</td>
                     <td class="del-td">
-                        <form action="/delete" method="get">
+                        <form action="/admin/book/delete" method="get">
+                            <input type="hidden" id="bookId" name="bookId" value="{{this.bookId}}">
                             <button class="btn-del" type="submit"><img src="/assets/img/red_trash_icon.svg"
                                     alt="deltete"></button>
                         </form>

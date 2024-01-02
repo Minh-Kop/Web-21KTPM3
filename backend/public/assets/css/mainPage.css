@@ -9,6 +9,14 @@
   border-radius: 10px;
 }
 
+.banner {
+  margin-top: 30px;
+}
+
+.banner img {
+  width: 100%;
+}
+
 .category-header {
   display: flex;
   height: 50px;
@@ -88,7 +96,7 @@
   flex-direction: row;
 
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   background-color: white;
 
   border: 1px;
@@ -105,13 +113,36 @@
 }
 
 .book {
-  font-size: 18px;
-  width: 30%;
+  position: relative;
   display: flex;
   flex-direction: column;
-
-  align-items: center;
   justify-content: center;
+  align-items: center;
+
+  width: 150px;
+  padding: 10px;
+  overflow: hidden;
+  border: solid white 1px;
+}
+
+.book-section__discounted-cell {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.book:hover {
+  border: solid gray 1px;
 }
 
 .book img {
@@ -119,13 +150,24 @@
   width: 150px;
 }
 
+.book a {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .book p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
   margin: 0;
 }
 
 .bName {
   text-transform: capitalize;
-  height: 80px;
 }
 
 .disPrice {

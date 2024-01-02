@@ -360,16 +360,6 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
         },
     ];
     const cateBooks = [];
-
-    for (const i of categories[0].children) {
-        if (i.children) {
-            for (const j of i.children) {
-                cateLists.push(j);
-            }
-        }
-    }
-    console.log(cateLists);
-
     const page = 1;
     const limit = 5;
     const offset = (page - 1) * limit;
@@ -430,18 +420,20 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
         }),
     );
 
-    console.log(nBooks);
-
-    const { categoryTree } = req;
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
 
     res.render('mainPage/mainPage', {
         layout: 'main',
-        categories: cateLists.slice(0, 5),
+        categories: cateLists,
         cateBooks: cateBooks,
         newBooks: nBooks,
         categoryTree,
         navbar: () => 'navbar',
         footer: () => 'footer',
+        ...user,
+        ...cart,
+        isLoggedIn,
     });
 });
 

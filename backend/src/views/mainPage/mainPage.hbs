@@ -1,14 +1,18 @@
 <div class="container">
     <div class="main-page-container">
-        <div class="banner"></div>
+        <div class="banner">
+            <img src="/assets/img/banner.jpg" alt="banner">
+        </div>
 
         <div class="categories-list-container">
             <div class="category-header">Danh mục</div>
             <div class="categories-list">
                 {{#each categories}}
-                <div class="category">
-                    {{this.categoryName}}
-                </div>
+                <a href="/category?catId={{this.id}}">
+                    <div class="category">
+                        {{this.categoryName}}
+                    </div>
+                </a>
                 {{/each}}
             </div>
         </div>
@@ -18,8 +22,15 @@
             <div class="books-list">
                 {{#each newBooks}}
                 <div class="book">
-                    <img src="{{this.image}}" alt="book_image">
-                    <p class="bName">{{this.bookName}}</p>
+                    {{#if this.discountedNumber}}
+                    <div class="book-section__discounted-cell">
+                        <span class="book-section__discounted-number">
+                            -{{this.discountedNumber}}%
+                        </span>
+                    </div>
+                    {{/if}}
+                    <a href="/books/{{this.bookId}}" class=" bName"><img src="{{this.image}}" alt="book_image"></a>
+                    <a href="/books/{{this.bookId}}" class=" bName">{{this.bookName}}</a>
                     <p class="orgPrice">{{this.originalPrice}} VND</p>
                     <p class="disPrice">{{this.discountedPrice}} VND</p>
                 </div>
@@ -33,8 +44,15 @@
             <div class="books-list">
                 {{#each this.booksList}}
                 <div class="book">
-                    <img src="{{this.image}}" alt="book_image">
-                    <p class="bName">{{this.bookName}}</p>
+                    {{#if this.discountedNumber}}
+                    <div class="book-section__discounted-cell">
+                        <span class="book-section__discounted-number">
+                            -{{this.discountedNumber}}%
+                        </span>
+                    </div>
+                    {{/if}}
+                    <a href="/books/{{this.bookId}}" class="bName"><img src="{{this.image}}" alt="book_image"></a>
+                    <a href="/books/{{this.bookId}}" class="bName">{{this.bookName}}</a>
                     <p class="orgPrice">{{this.originalPrice}} VND</p>
                     <p class="disPrice">{{this.discountedPrice}} VND</p>
                 </div>

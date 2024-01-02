@@ -1,5 +1,16 @@
-const { getBookById, getBookImages } = require('../models/bookModel');
+const {
+    getBookById,
+    getBookImages,
+    deleteBook,
+    insertImages,
+    createBook,
+} = require('../models/bookModel');
+const {
+    createUploader,
+    deleteCloudinaryImage,
+} = require('../utils/cloudinary');
 const { getAllCategory } = require('../models/categoryModel');
+const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const { getAllBooks } = require('./bookControllerUI');
 
@@ -196,5 +207,133 @@ exports.renderCreateCategory = catchAsync(async (req, res, next) => {
         layout: 'mainAdmin',
         adminSidebar: () => 'empty',
         fCategories: fCate,
+    });
+});
+
+exports.deleteBook = catchAsync(async (req, res, next) => {
+    const { bookId } = req.query;
+
+    const result = await deleteBook(bookId);
+    if (!result) {
+        return next(new AppError('No book found with that ID!', 404));
+    }
+    res.redirect('/admin/books');
+});
+
+exports.createBook = catchAsync(async (req, res, next) => {
+    let {
+        bookName,
+        categoryId,
+        originalPrice,
+        discountedNumber,
+        stock,
+        authorId,
+        publisherId,
+        publishedYear,
+        weight,
+        dimensions,
+        numberPage,
+        bookFormat,
+        description,
+    } = req.body;
+    console.log(req.files, req.body.files, req.params);
+    let { coverImage, images } = req.files;
+
+    // Miss images
+    if (!coverImage && !images) {
+        return next(new AppError("Missing book's images!", 400));
+    }
+    // Miss cover image
+    if (!coverImage) {
+        await Promise.all(
+            images.map(async (el) => {
+                await deleteCloudinaryImage(el.filename);
+            }),
+        );
+        return next(new AppError("Missing book's cover image!", 400));
+    }
+    // Miss sub image
+    if (!images) {
+        await deleteCloudinaryImage(coverImage[0].filename);
+        return next(new AppError("Missing book's sub image!", 400));
+    }
+
+    // Miss parameter
+    if (
+        !bookName ||
+        !categoryId ||
+        !originalPrice ||
+        !discountedNumber ||
+        !stock ||
+        !authorId ||
+        !publisherId ||
+        !weight ||
+        !dimensions ||
+        !numberPage ||
+        !bookFormat ||
+        !description ||
+        !publishedYear
+    ) {
+        await deleteCloudinaryImage(coverImage[0].filename);
+        await Promise.all(
+            images.map(async (el) => {
+                await deleteCloudinaryImage(el.filename);
+            }),
+        );
+        return next(
+            new AppError('Not enough information to create a book!', 400),
+        );
+    }
+
+    originalPrice = +originalPrice;
+    discountedNumber = +discountedNumber;
+    stock = +stock;
+    weight = +weight;
+    numberPage = +numberPage;
+    authorId = authorId.split(',').map((el) => el.trim());
+
+    // Number < 0
+    if (originalPrice < 0 || discountedNumber < 0 || stock < 0 || weight < 0) {
+        await deleteCloudinaryImage(coverImage[0].filename);
+        await Promise.all(
+            images.map(async (el) => {
+                await deleteCloudinaryImage(el.filename);
+            }),
+        );
+        return next(new AppError('Number must be greater than 0.', 400));
+    }
+
+    // Limit some image properties
+    images = images.map((item) => ({
+        path: item.path,
+    }));
+    images.unshift({
+        path: coverImage[0].path,
+    });
+
+    // Create entity to insert to database
+    const bookId = await createBook({
+        categoryId,
+        bookName,
+        originalPrice,
+        coverImage,
+        stock,
+        discountedNumber,
+        authorId,
+        publisherId,
+        publishedYear,
+        weight,
+        dimensions,
+        numberPage,
+        bookFormat,
+        description,
+    });
+
+    // Insert images
+    await insertImages(bookId, images);
+
+    res.status(200).json({
+        status: 'success',
+        bookId,
     });
 });

@@ -5,11 +5,11 @@
         </form>
     </div>
     <div class="info-input">
-        <form action="admin/category/update" method="get">
+        <form action="/admin/category/update" method="get">
             <div class="category-info">
                 <div class="father-categories-dropdown">
                     <div class="label">Danh mục cha:</div>
-                    <select name="father-category" id="fCategory" onchange="renderChild({{cateData}})">
+                    <select name="fatherCategory" id="fCategory" onchange="renderChild({{cateData}})">
                         <option value="null">None</option>
                         {{#each fCategories}}
                         <option value="{{this.CATE_ID}}" {{#if this.selected}}selected{{/if}}>{{this.CATE_NAME}}
@@ -19,6 +19,7 @@
                 </div>
                 <div class="categories-dropdown">
                     <div class="label">Danh mục</div>
+                    <input type="hidden" name="cateId" value="{{cCategories.CATE_ID}}">
                     <input type="text" name="category" id="category" value="{{cCategories.CATE_NAME}}">
                 </div>
             </div>
