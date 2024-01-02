@@ -79,7 +79,7 @@ create table "TRANSACTION" (
    PAYEE                char(5)              null,
    CHANGED_TIME         datetime             null,
    CHANGED_MONEY        int                  null,
-   CHANGED_REASON       varchar(100)         null,
+   CHANGED_REASON       nvarchar(100)         null,
    TRANS_STATE          varchar(20)          null,
    constraint PK_TRANSACTION primary key nonclustered (TRANSACTIONID)
 )
