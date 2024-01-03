@@ -24,20 +24,84 @@ IF OBJECT_ID('sp_CreateDeposit') IS NOT NULL
 GO
 CREATE PROCEDURE sp_CreateDeposit (
     @accountId CHAR(5),
-    @deposit INT
+    @deposit bigint
 )
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
         declare @transactionId char(5) = (select dbo.f_CreateTransactionId('TR'))
-        PRINT @transactionId
+        DECLARE @balance bigint = (select BALANCE from ACCOUNT where ACCOUNTID = @accountId)
+        set @balance = @balance + @deposit
 
-		INSERT into [TRANSACTION] (TRANSACTIONID, PAYEE, CHANGED_TIME, CHANGED_MONEY, CHANGED_REASON, TRANS_STATE)
-            VALUES (@transactionId, @accountId, GETDATE(), @deposit, N'Nạp tiền vào tài khoản', 'complete')
+		INSERT into [TRANSACTION] (TRANSACTIONID, CHANGED_TIME, CHANGED_MONEY, CHANGED_REASON)
+            VALUES (@transactionId, GETDATE(), @deposit, N'Nạp tiền vào tài khoản')
+
+        INSERT into TRANSFER (ACCOUNTID, TRANSACTIONID, TRANSFER_TYPE, BALANCE) values 
+            (@accountId, @transactionId, 2, @balance)
         
         UPDATE ACCOUNT
-        SET BALANCE = BALANCE + @deposit
+        SET BALANCE = @balance
         WHERE ACCOUNTID = @accountId
+	END TRY
+
+	BEGIN CATCH
+		PRINT N'Bị lỗi'
+		ROLLBACK  
+		RETURN 0
+	END CATCH
+COMMIT
+RETURN 1
+GO
+
+IF OBJECT_ID('sp_GetTransactions') IS NOT NULL
+	DROP PROC sp_GetTransactions
+GO
+CREATE PROCEDURE sp_GetTransactions (
+    @accountId CHAR(5)
+)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+        SELECT t.TRANSACTIONID transactionId, a.USERNAME username, t.CHANGED_TIME changedTime,
+            CASE 
+                WHEN tf.TRANSFER_TYPE = 1 THEN '-'
+                WHEN tf.TRANSFER_TYPE = 2 THEN '+'
+            END AS changedType,
+            t.CHANGED_MONEY changedMoney, t.CHANGED_REASON changedReason, tf.BALANCE balance
+        from [TRANSACTION] t LEFT join TRANSFER tf on tf.TRANSACTIONID = t.TRANSACTIONID
+            left join ACCOUNT a on a.ACCOUNTID = tf.ACCOUNTID
+        where a.ACCOUNTID = @accountId
+        ORDER by CHANGED_TIME DESC
+	END TRY
+
+	BEGIN CATCH
+		PRINT N'Bị lỗi'
+		ROLLBACK  
+		RETURN 0
+	END CATCH
+COMMIT
+RETURN 1
+GO
+
+IF OBJECT_ID('sp_GetTransactionById') IS NOT NULL
+	DROP PROC sp_GetTransactionById
+GO
+CREATE PROCEDURE sp_GetTransactionById (
+    @accountId CHAR(5),
+    @transactionId CHAR(5)
+)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+        SELECT t.TRANSACTIONID transactionId, a.USERNAME username, t.CHANGED_TIME changedTime,
+            CASE 
+                WHEN tf.TRANSFER_TYPE = 1 THEN '-'
+                WHEN tf.TRANSFER_TYPE = 2 THEN '+'
+            END AS changedType,
+            t.CHANGED_MONEY changedMoney, t.CHANGED_REASON changedReason, tf.BALANCE balance
+        from [TRANSACTION] t LEFT join TRANSFER tf on tf.TRANSACTIONID = t.TRANSACTIONID
+            left join ACCOUNT a on a.ACCOUNTID = tf.ACCOUNTID
+        where a.ACCOUNTID = @accountId and t.TRANSACTIONID = @transactionId
 	END TRY
 
 	BEGIN CATCH

@@ -1,0 +1,43 @@
+<div class='container'>
+    <section class='section mt-3'>
+        <div class='header-area'>
+            <h1 class='section__header'>Giao dịch</h1>
+        </div>
+
+        <table class='transaction-table'>
+            <colgroup>
+                <col class='col--first' />
+                <col class='col--second' />
+                <col class='col--third' />
+            </colgroup>
+            <thead class='transaction-table__header'>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Nội dung</th>
+                    <th>Số tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each transactions}}
+                    <tr>
+                        <th>
+                            <a
+                                href='/transaction/{{transactionId}}'
+                                class='transaction__link'
+                            >{{changedTime}}</a>
+                        </th>
+                        <td>
+                            <p class='line-clamb bold'>{{changedReason}}</p>
+                        </td>
+                        <td>
+                            <p class='overflow-auto bold'>
+                                {{changedType}}{{changedMoney}}
+                                VNĐ
+                            </p>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+</div>

@@ -1,0 +1,28 @@
+<div class='container mt-3'>
+    <div>
+        {{#eq changedType 1}}
+            <span class='detail-money--out'>{{changedType}}{{changedMoney}}
+                VNĐ</span>
+        {{else}}
+            <span class='detail-money--in'>{{changedType}}{{changedMoney}}
+                VNĐ</span>
+        {{/eq}}
+        <div>{{changedTime}}</div>
+    </div>
+
+    <div class='detail-info'>
+        <section>
+            <h1 class='detail-info__header'>Tài khoản</h1>
+            <div class='detail-info__content'>{{username}}</div>
+            <div class='detail-info__extra'>{{accountId}}</div>
+        </section>
+        <section>
+            <h1 class='detail-info__header'>Nội dung</h1>
+            <div class='detail-info__content'>{{changedReason}}</div>
+        </section>
+    </div>
+
+    <div class="detail-id">Mã giao dịch: {{transactionId}}</div>
+</div>
+
+<link rel='stylesheet' href='/assets/css/transactionDetail.css' />

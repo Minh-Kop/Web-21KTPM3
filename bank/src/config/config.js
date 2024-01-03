@@ -14,9 +14,9 @@ const config = {
         database: process.env.DB_NAME,
     },
 
-    role: {
-        USER: 1,
-        ADMIN: 2,
+    transferType: {
+        OUT_PAYER: 1,
+        IN_PAYEE: 2,
     },
 
     JWT_EXP_TIME: 60 * 60,

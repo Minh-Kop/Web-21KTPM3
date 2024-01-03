@@ -1,6 +1,9 @@
+const moment = require('moment');
+
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
+const transactionModel = require('../models/transactionModel');
 
 const createAccount = catchAsync(async (req, res, next) => {
     const { password, username } = req.body;
@@ -26,12 +29,23 @@ const createAccount = catchAsync(async (req, res, next) => {
 const getHomePage = catchAsync(async (req, res, next) => {
     const { user } = req;
 
-    console.log(user);
+    user.balance = user.balance.toLocaleString('vi-VN');
+
+    const transactions = await transactionModel.getTransactions(user.accountId);
+    transactions.forEach((el) => {
+        let { changedTime, changedMoney, balance } = el;
+        el.changedTime = moment(changedTime)
+            .subtract(7, 'hours')
+            .format('DD/MM/YYYY HH:mm');
+        el.changedMoney = parseInt(changedMoney).toLocaleString('vi-VN');
+        el.balance = parseInt(balance).toLocaleString('vi-VN');
+    });
+
     res.render('account/home', {
         title: 'Home',
         navbar: () => 'navbar',
         ...user,
-        balance: user.balance.toLocaleString('vi-VN'),
+        transactions: transactions.slice(0, 3),
     });
 });
 

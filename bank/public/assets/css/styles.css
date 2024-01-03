@@ -9,7 +9,6 @@
     --balance-color: #1c578d;
     --logo-color: #f47b7b;
     --light-gray-color: #f2f4f5;
-    --border-bottom-color: #ced4da;
     --disabled-btn-color: #e0e0e0;
 }
 
@@ -67,83 +66,6 @@ ol {
     outline-color: #fff !important;
 }
 
-/* ==================================== Pagination ==================================== */
-.custom-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.custom-pagination ul {
-    display: flex;
-    flex-wrap: wrap;
-
-    padding: 4px;
-    margin: 0;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.custom-pagination ul li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 10px;
-    color: #000;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.3s ease;
-}
-
-.custom-pagination ul li.numb {
-    list-style: none;
-    height: 45px;
-    width: 45px;
-    margin: 0 1px;
-}
-
-.custom-pagination ul li.dots {
-    font-size: 18px;
-    padding: 0 5px;
-    cursor: default;
-}
-
-.custom-pagination ul li.btn {
-    padding: 0 5px;
-    color: var(--secondary-color--lighter);
-}
-
-.custom-pagination ul li:first-child {
-    margin-right: 1px;
-}
-
-.custom-pagination ul li:last-child {
-    margin-left: 1px;
-}
-
-.custom-pagination ul li.custom-pagination--disabled {
-    pointer-events: none;
-    color: #6f7373;
-    opacity: 0.5;
-}
-
-.custom-pagination li.active,
-.custom-pagination ul li:not(.active).numb:hover,
-.custom-pagination ul li:not(.active):first-child:hover,
-.custom-pagination ul li:not(.active):last-child:hover {
-    color: #fff;
-    background: #efb5ae;
-}
-
-.custom-pagination li.active {
-    background: var(--secondary-color);
-    cursor: default;
-}
-
 /* ==================================== Loading animation ==================================== */
 .loading {
     position: fixed;
@@ -197,4 +119,130 @@ ol {
     inset: 0;
     background-color: whitesmoke;
     opacity: 0.5;
+}
+
+/* ==================================== Balance ==================================== */
+.section {
+    height: 100%;
+    background-color: white;
+    padding: 15px;
+}
+
+.section__header {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.section__balance {
+    font-size: 30px;
+    color: var(--balance-color);
+    text-align: right;
+    overflow-x: auto;
+}
+
+/* ==================================== Service ==================================== */
+.service {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    margin-top: 20px;
+}
+
+.service__item a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    overflow: hidden;
+}
+
+.service__item__img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+}
+
+.service__item__desc {
+    font-size: 18px;
+    color: black;
+}
+
+/* ==================================== Transaction ==================================== */
+.container > .section {
+    height: auto;
+    margin-bottom: 16px;
+}
+
+.header-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-area__link {
+    color: var(--primary-color);
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+    padding: 10px;
+    --line-clamb: 1;
+}
+
+.transaction-table,
+.balance-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+thead {
+    font-weight: bold;
+    text-align: center;
+}
+
+.col--first {
+    width: 20%;
+}
+
+.col--second {
+    width: 55%;
+}
+
+.transaction-table__header {
+    background-color: var(--secondary-color);
+}
+
+.transaction__link {
+    color: var(--balance-color);
+}
+
+p.bold {
+    font-weight: 500;
+}
+
+/* ==================================== Balance ==================================== */
+.balance-table__col--first {
+    width: 20%;
+}
+
+.balance-table__col--second {
+    width: 40%;
+}
+
+.balance-table__col--third {
+    width: 20%;
+}
+
+th,
+td {
+    vertical-align: middle;
 }

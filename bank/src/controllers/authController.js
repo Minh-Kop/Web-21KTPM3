@@ -1,7 +1,5 @@
-const accountModel = require('../models/accountModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const config = require('../config/config');
 
 const protect = catchAsync(async (req, res, next) => {
     const isLoggedIn = req.isAuthenticated();

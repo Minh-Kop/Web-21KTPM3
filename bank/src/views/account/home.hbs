@@ -1,5 +1,5 @@
 <div class='container'>
-    <div class='row g-3 mt-3'>
+    <div class='row g-3 my-3'>
         {{! Balance }}
         <class class='col-md-4'>
             <section class='section'>
@@ -27,7 +27,98 @@
             </section>
         </div>
     </div>
-</div>
 
-<link rel='stylesheet' href='/assets/css/home.css' />
-<script src='/assets/js/home.js'></script>
+    {{! Transaction section }}
+    <section class='section'>
+        <div class='header-area'>
+            <h1 class='section__header'>Giao dịch</h1>
+            <a class='header-area__link' href='/transaction'>Xem thêm</a>
+        </div>
+
+        <table class='transaction-table'>
+            <colgroup>
+                <col class='col--first' />
+                <col class='col--second' />
+                <col class='col--third' />
+            </colgroup>
+            <thead class='transaction-table__header'>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Nội dung</th>
+                    <th>Số tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each transactions}}
+                    <tr>
+                        <th>
+                            <a
+                                href='/transaction/{{transactionId}}'
+                                class='transaction__link'
+                            >{{changedTime}}</a>
+                        </th>
+                        <td>
+                            <p class='line-clamb bold'>{{changedReason}}</p>
+                        </td>
+                        <td>
+                            <p class='overflow-auto bold'>
+                                {{changedType}}{{changedMoney}}
+                                VNĐ
+                            </p>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+
+    {{! Balance section }}
+    <section class='section'>
+        <div class='header-area'>
+            <h1 class='section__header'>Biến động số dư</h1>
+            <a class='header-area__link' href='/transaction/balance'>Xem thêm</a>
+        </div>
+
+        <table class='balance-table'>
+            <colgroup>
+                <col class='balance-table__col--first' />
+                <col class='balance-table__col--second' />
+                <col class='balance-table__col--third' />
+            </colgroup>
+            <thead class='transaction-table__header'>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Nội dung</th>
+                    <th>Số tiền</th>
+                    <th>Số dư</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each transactions}}
+                    <tr valign='middle'>
+                        <th>
+                            <span
+                                class='transaction__link'
+                            >{{changedTime}}</span>
+                        </th>
+                        <td>
+                            <p class='bold'>{{changedReason}}</p>
+                        </td>
+                        <td>
+                            <p class='bold'>
+                                {{changedType}}{{changedMoney}}
+                                VNĐ
+                            </p>
+                        </td>
+                        <td>
+                            <p class='bold'>
+                                {{balance}}
+                                VNĐ
+                            </p>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+</div>
