@@ -16,6 +16,7 @@ const { getVerifyEmail, createTransport } = require('../utils/nodemailer');
 
 exports.signUp = catchAsync(async (req, res, next) => {
     const { email, password, username } = req.body;
+    console.log(req.body);
 
     // Check for username duplicated
     const account = await accountModel.getByUsername(username);
@@ -37,10 +38,10 @@ exports.signUp = catchAsync(async (req, res, next) => {
     const encryptedPassword = encryptPassword(password);
 
     // Send each mail with different time to prevent the html being trimmed by Gmail
-    const url = `${req.protocol}://${req.get('host')}/api/users`;
-    const mailOption = getVerifyEmail(email, url, verifyToken);
-    const transport = await createTransport();
-    await transport.sendMail(mailOption);
+    // const url = `${req.protocol}://${req.get('host')}/api/users`;
+    // const mailOption = getVerifyEmail(email, url, verifyToken);
+    // const transport = await createTransport();
+    // await transport.sendMail(mailOption);
 
     // Create entity to insert to DB
     await accountModel.createAccount({
@@ -201,9 +202,7 @@ exports.protectPage = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
     // 1) Get user from collection
     const { user } = req;
-    console.log(req.body.password);
-    console.log(req.body.currentPassword);
-    console.log(user.password);
+
     // 2) Check if POSTed current password is correct
     if (!verifyPassword(req.body.currentPassword, user.password)) {
         return next(new AppError('Your current password is wrong!', 401));

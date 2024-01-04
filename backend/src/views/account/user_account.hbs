@@ -212,15 +212,18 @@
                         willClose: () => {
                             clearInterval(timerInterval);
                         }
-                    }).then((result) => {
+                    }).then(async (result) => {
                         if (result.dismiss === Swal.DismissReason.timer) {
-                            location.reload();
+                            await fetch('/logout', {
+                                method: 'delete',
+                            });
+                            window.location.href = "/login";
                         }
                     });
                 },
                 error: function (error) {
                     // Handle error, e.g., show an error message
-                    
+
                     swalWithBootstrapButtons.fire({
                         title: 'Thay đổi mật khẩu thất bại',
                         text: error.responseJSON.message,

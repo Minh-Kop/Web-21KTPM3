@@ -1,0 +1,31 @@
+<div class="update-category-container">
+    <div class="btn-back">
+        <form action="/admin/category" method="get">
+            <button type="submit">&lt;</button>
+        </form>
+    </div>
+    <div class="info-input">
+        <form action="/admin/category/update" method="get">
+            <div class="category-info">
+                <div class="father-categories-dropdown">
+                    <div class="label">Danh mục cha:</div>
+                    <select name="fatherCategory" id="fCategory" onchange="renderChild({{cateData}})">
+                        <option value="null">None</option>
+                        {{#each fCategories}}
+                        <option value="{{this.CATE_ID}}" {{#if this.selected}}selected{{/if}}>{{this.CATE_NAME}}
+                        </option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="categories-dropdown">
+                    <div class="label">Danh mục</div>
+                    <input type="hidden" name="cateId" value="{{cCategories.CATE_ID}}">
+                    <input type="text" name="category" id="category" value="{{cCategories.CATE_NAME}}">
+                </div>
+            </div>
+            <button class="btn-submit" type="submit">Cập nhật</button>
+        </form>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/assets/css/createCategory.css">
