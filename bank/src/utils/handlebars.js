@@ -141,10 +141,10 @@ module.exports = (hbs) => {
                                 .map(
                                     (item) =>
                                         `<div class="col-3">
-                                <a href="/books/${item.bookId}">
+                                <a href="/book/${item.bookId}">
                                 <img src="${item.image}" class="img-fluid" alt="book_image">
                                 </a>
-                                <a class="fs-6" href="/books/${item.bookId}" style="text-decoration: none; color: black">${item.bookName}</a>
+                                <a class="fs-6" href="/book/${item.bookId}" style="text-decoration: none; color: black">${item.bookName}</a>
                                 <p class="fs-6 text-danger fw-bold mb-1">${item.originalPrice} VND</p>
                                 <p class="fs-6 text-muted text-decoration-line-through mb-1">${item.discountedPrice} VND</p>
                                 <div class='d-flex flex-row my-3'>
@@ -153,9 +153,9 @@ module.exports = (hbs) => {
                                     </div>
                                     <span class='text text-warning'>(${item.countRating})</span>
                                 </div>
-                            </div>`,
+                            </div>`
                                 )
-                                .join('')}</div></div>`,
+                                .join('')}</div></div>`
                     )
                     .join('');
 

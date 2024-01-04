@@ -217,7 +217,7 @@ exports.deleteBook = catchAsync(async (req, res, next) => {
     if (!result) {
         return next(new AppError('No book found with that ID!', 404));
     }
-    res.redirect('/admin/books');
+    res.redirect('/admin/book');
 });
 
 exports.createBook = catchAsync(async (req, res, next) => {

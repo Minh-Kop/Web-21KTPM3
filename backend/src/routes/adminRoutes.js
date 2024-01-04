@@ -18,7 +18,7 @@ const {
 
 const router = express.Router();
 
-router.get('/books', renderReadBooks);
+router.get('/book', renderReadBooks);
 router.get('/book/createBookUI', renderCreateBook);
 router.get('/book/updateBookUI', renderUpdateBook);
 router.post('/book/create', createBook);
