@@ -1,0 +1,75 @@
+/* ==================================== Return button ==================================== */
+.return-cart-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    padding: 10px;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.return-cart-btn:hover {
+    opacity: 0.5;
+}
+
+/* ==================================== Deposit ==================================== */
+.deposit {
+    margin-top: 30px;
+    padding: 0 0 30px 30px;
+}
+
+.deposit__line {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+}
+
+.deposit__line + .deposit__line {
+    margin-top: 18px;
+}
+
+.label {
+    width: 200px;
+    font-size: 17px;
+    color: #733e3e;
+}
+
+.input {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.input:focus {
+    outline-color: var(--primary-color);
+}
+
+.form-error {
+    grid-column: 2;
+    margin-top: 5px;
+    color: red;
+}
+
+/* ==================================== Submit button ==================================== */
+.submit-btn {
+    width: 300px;
+    padding: 10px 0;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+
+    transition: opacity 0.5s;
+}
+
+.submit-btn:hover {
+    opacity: 0.5;
+}

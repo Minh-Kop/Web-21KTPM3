@@ -12,7 +12,7 @@ router.get(
     orderController.getUserOrders,
 );
 
-router.get('/me', orderController.getMe, orderController.getMyOrders);
+router.get('/me', orderController.getMe, orderController.getUserOrders);
 router.post('/buyAgain', orderController.buyAgain);
 router
     .route('/:orderId')

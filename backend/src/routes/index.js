@@ -1,7 +1,7 @@
 const express = require('express');
 
 const authController = require('../controllers/authController');
-const authRoutes = require('./authRoutes');
+const authRouter = require('./authRoutes');
 const categoryRouter = require('./categoryRoutes');
 const categoryRouterUI = require('./categoryRoutesUI');
 const bookRouter = require('./bookRoutes');
@@ -27,7 +27,7 @@ const orderRouterUI = require('./orderRoutesUI');
 
 const router = express.Router();
 
-router.use('/', authRoutes);
+router.use('/', authRouter);
 router.use('/api/category', categoryRouter);
 router.use('/category', categoryRouterUI);
 router.use('/api/books', bookRouter);

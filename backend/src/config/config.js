@@ -5,6 +5,8 @@ const config = {
 
     PORT: process.env.PORT || 3001,
 
+    BANK_URL: process.env.BANK_URL,
+
     DATABASE: {
         server: process.env.DB_SERVER,
         user: process.env.DB_USER,

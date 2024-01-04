@@ -1,0 +1,124 @@
+<div class='custom-pagination'>
+    <ul data-page="{{page}}" data-total-pages="{{totalPages}}" data-link="{{link}}"></ul>
+</div>
+
+<script>
+    const createPagination = (totalPages, page, link) => {
+        let liTag = '',
+            startPage,
+            endPage,
+            isFirstDotsNeeded = false,
+            isSecondDotsNeeded = false,
+            nextPage = page < totalPages ? page + 1 : null,
+            prevPage = page === 1 ? null : page - 1;
+
+        if (totalPages < page || !totalPages) {
+            return null;
+        }
+
+        // Previous button
+        liTag += `
+            <li class="btn ${
+                prevPage ? '' : 'custom-pagination--disabled'
+            }" onclick="goToPage('${link + '&page=' + prevPage}')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 320 512">
+                    <path
+                    d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+                    fill="currentColor" />
+                </svg>
+            </li>`;
+        // First number button
+        liTag += `<li class="numb ${
+            page === 1 ? 'active' : ''
+        }" onclick="goToPage('${link + '&page=1'}')"<span>1</span></li>`;
+
+        // Center buttons
+        if (totalPages < 8) {
+            for (let curPage = 2; curPage < totalPages; curPage++) {
+                const active = page === curPage ? 'active' : '';
+
+                liTag += `<li class="numb ${active}" onclick="goToPage('${link + '&page=' + curPage}')"><span>${curPage}</span></li>`;
+            }
+        } else {
+            if (page - 1 <= 1) {
+                startPage = 2;
+                endPage = 3;
+                isSecondDotsNeeded = true;
+            } else if (page - 1 === 2) {
+                startPage = 2;
+                endPage = 4;
+                isSecondDotsNeeded = true;
+            } else if (page - 1 === 3) {
+                startPage = 2;
+                endPage = 5;
+                isSecondDotsNeeded = true;
+            } else if (totalPages - page === 3) {
+                startPage = totalPages - 4;
+                endPage = totalPages - 1;
+                isFirstDotsNeeded = true;
+            } else if (totalPages - page === 2) {
+                startPage = totalPages - 3;
+                endPage = totalPages - 1;
+                isFirstDotsNeeded = true;
+            } else if (totalPages - page <= 1) {
+                startPage = totalPages - 2;
+                endPage = totalPages - 1;
+                isFirstDotsNeeded = true;
+            } else {
+                startPage = page - 1;
+                endPage = page + 1;
+                isFirstDotsNeeded = true;
+                isSecondDotsNeeded = true;
+            }
+
+            // First dots
+            if (isFirstDotsNeeded) {
+                liTag += `<li class="dots"><span>...</span></li>`;
+            }
+
+            for (let curPage = startPage; curPage <= endPage; curPage++) {
+                // If page is equal to curPage than assign active string in the active variable
+                const active = page === curPage ? 'active' : '';
+
+                liTag += `<li class="numb ${active}" onclick="goToPage('${link + '&page=' + curPage}')"><span>${curPage}</span></li>`;
+            }
+
+            // Second dots
+            if (isSecondDotsNeeded) {
+                liTag += `<li class="dots"><span>...</span></li>`;
+            }
+        }
+
+        // End number button
+        if (totalPages > 1) {
+            liTag += `<li class="numb ${
+                page === totalPages ? 'active' : ''
+            }" onclick="goToPage('${link + '&page=' + totalPages}')"><span>${totalPages}</span></li>`;
+        }
+        // Next button
+        liTag += `
+            <li class="btn ${
+                nextPage ? '' : 'custom-pagination--disabled'
+            }" onclick="goToPage('${link + '&page=' + nextPage}')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 320 512">
+                    <path
+                    d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+                    fill="currentColor" />
+                </svg>
+            </li>`;
+
+        return liTag;
+    };
+
+    const goToPage = (link) => {
+        window.location.assign(link);
+    };
+
+    const pagination = $('.custom-pagination ul');
+    const page = pagination.data('page');
+    const totalPages = pagination.data('totalPages');
+    const link = pagination.data('link');
+    
+    pagination.html(createPagination(totalPages, page, link));
+    $('.custom-pagination li.active').prop( "onclick", null );
+</script>

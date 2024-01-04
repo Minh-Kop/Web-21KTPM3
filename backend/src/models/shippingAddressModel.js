@@ -53,11 +53,7 @@ exports.createShippingAddress = async (entity) => {
 };
 
 exports.updateShippingAddress = async (entity) => {
-    const {
-        userId,
-        addrId,
-        isDefault,
-    } = entity;
+    const { userId, addrId, isDefault } = entity;
     const pool = await database.getConnectionPool();
 
     const request = new sql.Request(pool);
@@ -69,13 +65,9 @@ exports.updateShippingAddress = async (entity) => {
 };
 
 exports.deleteShippingAddress = async (addrId) => {
-    console.log('entered model');
-    console.log(addrId);
-    const sqlString = `update SHIPPING_ADDRESS set SOFT_DELETE = 'true' where ADDR_ID = '${addrId}'`;
-    console.log(sqlString);
+    const sqlString = `update SHIPPING_ADDRESS set SOFT_DELETE = 1 where ADDR_ID = '${addrId}'`;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
-    console.log(result);
     return result.rowsAffected[0];
 };
