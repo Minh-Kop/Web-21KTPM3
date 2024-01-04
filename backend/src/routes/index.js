@@ -24,9 +24,12 @@ const orderRouterUI = require('./orderRoutesUI');
 // const reviewRouter = require('./reviewRoutes');
 const searchRouter = require('./searchRoutes');
 
+const authRouter2 = require('./authRouter');
+
 const router = express.Router();
 
 router.use('/', authRouter);
+router.use('/api/auth', authRouter2);
 router.use('/api/category', categoryRouter);
 router.use('/category', categoryRouterUI);
 router.use('/api/book', bookRouter);
