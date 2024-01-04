@@ -1246,3 +1246,16 @@ alter table WRITTEN_BY
       references AUTHOR (AUTHOR_ID)
 go
 
+
+CREATE TABLE Users (
+    id NVARCHAR(255) PRIMARY KEY NOT NULL,
+    email NVARCHAR(255),
+    role NVARCHAR(255) DEFAULT 'USER',
+    typeLogin NVARCHAR(255),
+    tokenLogin NVARCHAR(255),
+    name NVARCHAR(255),
+    avatarUrl NVARCHAR(255),
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
+);
+

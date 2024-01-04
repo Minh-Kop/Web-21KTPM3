@@ -12,7 +12,7 @@ router.use(authController.protect);
 
 router.post('/notifyPaypal', checkout.notifyPaypal);
 router.post('/voucher', checkout.addVoucher, checkout.getPrice);
-router.delete('/initialOrders', checkout.deleteInitialOrders);
+router.delete('/initialOrders', checkout.deleteInitialOrders); //Done
 router.post('/', checkout.createInitialOrder, checkout.getOrder);
 router
     .route('/:orderId')

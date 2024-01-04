@@ -3,19 +3,19 @@ IF OBJECT_ID('sp_GetAllUserShippingAddresses') IS NOT NULL
 	DROP PROC sp_GetAllUserShippingAddresses
 GO
 CREATE PROCEDURE sp_GetAllUserShippingAddresses (
-    @email NVARCHAR(100)
+    @userId NVARCHAR(100)
 )
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
         SELECT sa.ADDR_ID 'addrId', sa.DETAILED_ADDR 'address', w.WARD_NAME wardName, d.DIST_NAME distName, p.PROV_NAME provName,
             sa.DETAILED_ADDR + ', ' + w.WARD_NAME + ', ' + d.DIST_NAME + ', ' + p.PROV_NAME detailedAddress,
-            sa.RECEIVER_NAME fullName, sa.RECEIVER_PHONE_NUMBER phoneNumber, sa.LATITUDE lat, sa.LONGITUDE lng,
+            sa.RECEIVER_NAME fullName, sa.RECEIVER_PHONE phoneNumber, sa.LATITUDE lat, sa.LONGITUDE lng,
             sa.IS_DEFAULT isDefault
         from SHIPPING_ADDRESS sa join PROVINCE p on p.PROV_ID = sa.PROV_ID
             join DISTRICT d on d.DIST_ID = sa.DIST_ID
             join WARD w on w.WARD_ID = sa.WARD_ID
-        where sa.EMAIL = @email
+        where sa.USERID = @userId
 	END TRY
 
 	BEGIN CATCH

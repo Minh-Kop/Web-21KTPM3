@@ -23,7 +23,7 @@ IF OBJECT_ID('sp_CreateOrder') IS NOT NULL
 	DROP PROC sp_CreateOrder
 GO
 CREATE PROCEDURE sp_CreateOrder (
-    @email NVARCHAR(100),
+    @userId NVARCHAR(100),
     @addrId CHAR(10),
     @merchandiseSubtotal int,
     @shippingFee int
@@ -34,8 +34,8 @@ BEGIN TRANSACTION
         DECLARE @id char(7) = dbo.f_CreateOrderId()
         DECLARE @paymentId CHAR(4) = (select PAYMENT_ID from PAYMENT where PAYMENT_PROVIDER = 'COD')
 
-        INSERT into H_ORDER (ORDER_ID, EMAIL, ADDR_ID, PAYMENT_ID, MERCHANDISE_SUBTOTAL, SHIPPING_FEE, SHIPPING_DISCOUNT_SUBTOTAL, HACHIKO_VOUCHER_APPLIED, TOTAL_PAYMENT) values 
-            (@id, @email, @addrId, @paymentId, @merchandiseSubtotal, @shippingFee, 0, 0, @merchandiseSubtotal + @shippingFee)
+        INSERT into H_ORDER (ORDER_ID, USERID, ADDR_ID, PAYMENT_ID, MERCHANDISE_SUBTOTAL, SHIPPING_FEE, SHIPPING_DISCOUNT_SUBTOTAL, HACHIKO_VOUCHER_APPLIED, TOTAL_PAYMENT) values 
+            (@id, @userId, @addrId, @paymentId, @merchandiseSubtotal, @shippingFee, 0, 0, @merchandiseSubtotal + @shippingFee)
         INSERT into ORDER_STATE (ORDER_ID, ORDER_STATE, CREATED_TIME) values (@id, 0, GETDATE())
 
         select @id orderId
@@ -306,14 +306,14 @@ IF OBJECT_ID('sp_DeleteAllInitialOrders') IS NOT NULL
 	DROP PROC sp_DeleteAllInitialOrders
 GO
 CREATE PROCEDURE sp_DeleteAllInitialOrders (
-    @email NVARCHAR(100)
+    @userId NVARCHAR(100)
 )
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
         WHILE(exists(SELECT 1
 					 from ORDER_STATE os join H_ORDER o on o.ORDER_ID = os.ORDER_ID
-					 where o.EMAIL = @email
+					 where o.userId = @userId
                      group by os.ORDER_ID
                      having count(*) = 1))
         BEGIN
@@ -321,7 +321,7 @@ BEGIN TRANSACTION
             
             SELECT @id = os.ORDER_ID
             from ORDER_STATE os join H_ORDER o on o.ORDER_ID = os.ORDER_ID
-            where o.EMAIL = @email
+            where o.userId = @userId
             group by os.ORDER_ID
             having count(*) = 1
             

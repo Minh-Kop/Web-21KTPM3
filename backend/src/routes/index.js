@@ -9,7 +9,8 @@ const cartRouter = require('./cartRoutes');
 // const voucherRouter = require('./voucherRoutes');
 // const locationRouter = require('./locationRoutes');
 // const shippingAddressRouter = require('./shippingAddressRoutes');
-// const checkoutRouter = require('./checkoutRoutes');
+const checkoutRouter = require('./checkoutRoutes');
+const authRouter = require('./authRouter')
 // const paymentRouter = require('./paymentRoutes');
 // const orderRouter = require('./orderRoutes');
 // const reviewRouter = require('./reviewRoutes');
@@ -23,6 +24,8 @@ router.use('/api/books', bookRouter);
 router.use('/books', bookRouterUI);
 router.use('/api/users', userRouter);
 router.use('/api/cart', authController.protect, cartRouter);
+router.use('/api/auth', authRouter)
+
 // router.use('/api/voucher', authController.protect, voucherRouter);
 // router.use('/api/location', locationRouter);
 // router.use(
@@ -30,7 +33,7 @@ router.use('/api/cart', authController.protect, cartRouter);
 //     authController.protect,
 //     shippingAddressRouter,
 // );
-// router.use('/api/checkout', checkoutRouter);
+router.use('/api/checkout', checkoutRouter);
 // router.use('/api/payment', paymentRouter);
 // router.use('/api/order', authController.protect, orderRouter);
 // router.use('/api/review', reviewRouter);
