@@ -2,26 +2,39 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const bookModel = require('../models/bookModel');
 const cartModel = require('../models/cartModel');
+const { separateThousandByDot } = require('../utils/utils');
 
 exports.getCart = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const cartResult = await cartModel.getCartByUserId(userId);
-    
+
     const {
         CART_ID: cartId,
         CART_COUNT: cartCount,
         CART_TOTAL: cartTotal,
     } = cartResult;
 
-    const books = await bookModel.getBooksByCartId(cartId);
+    let cartBooks = await bookModel.getBooksByCartId(cartId);
+    cartBooks = await Promise.all(
+        cartBooks.map(async (book) => {
+            book.originalPrice = separateThousandByDot(book.originalPrice);
+            book.discountedPrice = separateThousandByDot(book.discountedPrice);
+            book.cartPrice = separateThousandByDot(book.cartPrice);
+
+            const { image } = await bookModel.getCoverImage(book.bookId);
+            book.image = image;
+
+            return book;
+        }),
+    );
 
     res.status(200).json({
         status: 'success',
         cart: {
             cartId,
             cartCount,
-            cartTotal,
-            books,
+            cartTotal: separateThousandByDot(cartTotal),
+            cartBooks,
         },
     });
 });
@@ -35,6 +48,8 @@ exports.addBookToCart = catchAsync(async (req, res, next) => {
 
     const book = await bookModel.getBookById(bookId);
     if (!book) {
+        await cartModel.deleteFromCart(cartId, bookId);
+        await cartModel.updateCartQuantityCartTotal(cartId);
         return next(new AppError('Book not found.', 404));
     }
 
@@ -49,13 +64,15 @@ exports.addBookToCart = catchAsync(async (req, res, next) => {
                 quantity: +quantity + matchBook.quantity,
                 isClicked,
             });
-            if (returnValue !== 1) {
-                await cartModel.deleteFromCart(cartId, bookId);
-                await cartModel.updateCartQuantityCartTotal(cartId);
+            if (returnValue === 0) {
                 return next(
-                    new AppError(`This book is no longer existed.`, 404),
+                    new AppError(
+                        `The quantity has exceeded the quantity in stock.`,
+                        400,
+                    ),
                 );
             }
+
             await cartModel.updateCartQuantityCartTotal(cartId);
             return res.status(200).json({
                 status: 'success',
@@ -70,7 +87,7 @@ exports.addBookToCart = catchAsync(async (req, res, next) => {
         quantity,
         isClicked: isClicked || 0,
     });
-    if (returnValue !== 1) {
+    if (returnValue === -1) {
         return next(new AppError(`This book is no longer existed.`, 404));
     }
 
@@ -84,7 +101,6 @@ exports.updateBookInCart = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const { bookId } = req.params;
     const { quantity, isClicked } = req.body;
-
     const cartResult = await cartModel.getCartByUserId(userId);
     const { CART_ID: cartId } = cartResult;
 
@@ -94,16 +110,41 @@ exports.updateBookInCart = catchAsync(async (req, res, next) => {
         quantity,
         isClicked,
     });
-
     if (result === 1) {
         await cartModel.updateCartQuantityCartTotal(cartId);
         return res.status(200).json({
             status: 'success',
         });
     }
+    if (result === 0) {
+        return next(
+            new AppError(
+                `The quantity has exceeded the quantity in stock.`,
+                400,
+            ),
+        );
+    }
     await cartModel.deleteFromCart(cartId, bookId);
     await cartModel.updateCartQuantityCartTotal(cartId);
     return next(new AppError(`This book is no longer existed.`, 404));
+});
+
+exports.updateAllBooksInCart = catchAsync(async (req, res, next) => {
+    const { userId } = req.user;
+    const { isClicked } = req.body;
+
+    const cartResult = await cartModel.getCartByUserId(userId);
+    const { CART_ID: cartId } = cartResult;
+
+    await cartModel.updateBooksInCart({
+        cartId,
+        isClicked,
+    });
+
+    await cartModel.updateCartQuantityCartTotal(cartId);
+    return res.status(200).json({
+        status: 'success',
+    });
 });
 
 exports.deleteBookFromCart = catchAsync(async (req, res, next) => {

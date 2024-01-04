@@ -1,0 +1,151 @@
+.nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 0px;
+}
+
+.nav__logo {
+    text-decoration: none;
+
+    color: var(--logo-color);
+    font-family: Habibi;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1;
+}
+.nav__account {
+    position: relative;
+}
+
+.nav__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav__link-label {
+    font-size: 20px;
+    color: white;
+}
+
+.nav__account_img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* Account */
+.nav__account__dropdown,
+.nav__account__dropdown--logged-in {
+    z-index: 5;
+    position: absolute;
+    top: 46px;
+    right: -8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+
+    min-width: 250px;
+    padding: 16px 12px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+    background: #fff;
+
+    transform-origin: 93% top;
+    scale: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: opacity 0.2s, visibility 0.2s, scale 0.2s;
+}
+
+.nav__account:hover .nav__account__dropdown,
+.nav__account:hover .nav__account__dropdown--logged-in {
+    opacity: 1;
+    visibility: visible;
+    scale: 1;
+}
+
+.nav__account__dropdown .login,
+.nav__account__dropdown .signup {
+    display: block;
+
+    width: 100%;
+    padding: 0 10px;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+
+    font-weight: bold;
+    line-height: 2.5;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+}
+
+.nav__account__dropdown .signup {
+    background-color: transparent;
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.nav__account__dropdown .login:hover,
+.nav__account__dropdown .signup:hover {
+    scale: 1.05;
+}
+
+.nav__account__dropdown--logged-in {
+    gap: 0;
+    padding: 10px 0;
+    /* padding: 0; */
+}
+
+.nav__account__dropdown--logged-in .link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--light-gray-color);
+
+    font-size: 15px;
+    color: var(--category-font-color);
+    --line-clamb: 1;
+}
+
+.nav__account__dropdown--logged-in .link:last-of-type {
+    border: none;
+}
+
+.nav__account__dropdown--logged-in .link:hover {
+    background: var(--light-gray-color);
+}
+
+.nav__account__dropdown--logged-in .icon,
+.nav__account__dropdown--logged-in .medal {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    margin-right: 5px;
+}
+
+.nav__account__dropdown--logged-in .medal {
+    width: 44px;
+    height: 44px;
+    margin-right: 10px;
+}
+
+.nav__account__dropdown--logged-in .heading {
+    font-weight: bold;
+    font-size: 16px;
+    color: black;
+}

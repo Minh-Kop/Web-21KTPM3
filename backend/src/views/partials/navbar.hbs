@@ -1,57 +1,201 @@
-<nav class='navbar navbar-expand alert alert-danger py-1 mb-1'>
+<div style='background: #d8c3a5;'>
     <div class='container'>
-        <span>20127538</span>
-        <h1>Movies information</h1>
+        <div class='nav'>
+            {{! Logo }}
+            <a class='nav__logo' href='#!'>Fabook</a>
 
-        <form id="switch-form" class='d-flex'>
-            <div class='form-check form-switch'>
+            {{! Search section }}
+            <div class='nav__search'>
+                <div class='nav__category'>
+                    Category
+                </div>
                 <input
-                    id='mode-switch'
-                    class='form-check-input'
-                    type='checkbox'
-                    role='switch'
-                    {{#if isDarkMode}} checked {{/if}}
+                    type='text'
+                    class='nav__search-input'
+                    placeholder='Nhập từ khóa'
                 />
-                <label class='form-check-label' for='mode-switch'>
-                    <i class='fa-solid {{#if isDarkMode}}fa-moon{{else}}fa-sun{{/if}}'></i>
-                </label>
+                <button class='nav__search-btn'>
+                    <svg
+                        class='search-icon'
+                        xmlns='http://www.w3.org/2000/svg'
+                        height='16'
+                        width='16'
+                        viewBox='0 0 512 512'
+                    >
+                        <path
+                            d='M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z'
+                            fill='currentColor'
+                        />
+                    </svg>
+                </button>
             </div>
-        </form>
-    </div>
-</nav>
-<nav class='navbar navbar-expand alert alert-primary py-1 mb-0'>
-    <div class='container'>
-        <!-- Home button -->
-        <a href='/' class='navbar-brand'>
-            <svg class="home-icon" {{#if isDarkMode}}style="color: white;"{{/if}} xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 50 50">
-                    <path
-                        d="M 25 1.0507812 C 24.7825 1.0507812 24.565859 1.1197656 24.380859 1.2597656 L 1.3808594 19.210938 C 0.95085938 19.550938 0.8709375 20.179141 1.2109375 20.619141 C 1.5509375 21.049141 2.1791406 21.129062 2.6191406 20.789062 L 4 19.710938 L 4 46 C 4 46.55 4.45 47 5 47 L 19 47 L 19 29 L 31 29 L 31 47 L 45 47 C 45.55 47 46 46.55 46 46 L 46 19.710938 L 47.380859 20.789062 C 47.570859 20.929063 47.78 21 48 21 C 48.3 21 48.589063 20.869141 48.789062 20.619141 C 49.129063 20.179141 49.049141 19.550938 48.619141 19.210938 L 25.619141 1.2597656 C 25.434141 1.1197656 25.2175 1.0507812 25 1.0507812 z M 35 5 L 35 6.0507812 L 41 10.730469 L 41 5 L 35 5 z"
-                        fill="currentColor">
-                    </path>
-            </svg>
-        </a>
 
-        <!-- Favorite button -->
-        <h1 id="favorite-btn">20538</h1>
+            <div class='d-flex gap-4'>
+                {{! Cart }}
+                <div class='nav__cart'>
+                    <a href='/cart' class='nav__link'>
+                        <img src='/assets/img/cart_icon.svg' alt='Cart' />
+                        <div class='nav__link-label'>
+                            Giỏ hàng
+                        </div>
+                    </a>
+                    {{#if isLoggedIn}}
+                        {{#if cartCount}}
+                            <div class="cart-mini__quantity">
+                                {{cartCount}}
+                            </div>
+                        {{else}}
+                            <div class="cart-mini__quantity d-none">
+                                {{cartCount}}
+                            </div>
+                        {{/if}}
 
-        <!-- Form -->
-        <form class='d-flex' role='search' action='/movie/search'>
-            <input
-                id='search-input'
-                type='search'
-                class='form-control me-2'
-                placeholder='Search'
-                aria-label='Search'
-                @keyup.enter='handleSearch'
-                name='searchInput'
-            />
-            <button
-                class='btn btn-outline-success'
-                type='submit'
-                @click='handleSearch'
-            >
-                Search
-            </button>
-        </form>
+                        <section class="nav__cart__dropdown">
+                            <h1 class="nav__cart__dropdown__heading">Giỏ hàng ({{cartCount}})</h1>
+                            <ul class="nav__cart__dropdown__book-list">
+                                {{#each cartBooks }}
+                                    <li class="nav__cart__dropdown__book-item">
+                                        <a class="nav__cart__dropdown__book-link" href="/books/{{bookId}}">
+                                            <img class="thumb" src="{{image}}" alt="">
+                                            <div class="info">
+                                                <h2 class="heading line-clamb">{{bookName}}</h2>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="price">{{discountedPrice}} VNĐ</span> 
+                                                    
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="12" viewBox="0 0 384 512"><path opacity="1" fill="currentColor" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+                                                    <span>{{quantity}}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+
+                            {{!-- Cart dropdown bottom --}}
+                            <div class="nav__cart__dropdown__bottom">
+                                <a class="cart-btn" href="/cart">Xem giỏ hàng</a>
+                            </div>
+                        </section>
+                    {{/if}}
+                </div>
+
+                {{! Account }}
+                <div class='nav__account'>
+                    {{#if isLoggedIn}}
+                        <a href='/users/me' class='nav__link'>
+                            <img class='nav__account_img' src='/assets/img/account_icon.svg' alt='Account' />
+                            <div class='nav__link-label'>
+                                {{username}}
+                            </div>
+                        </a>
+
+                        <div class="nav__account__dropdown--logged-in">
+                            <a href="/users/me" class="link">
+                                <img class="medal" src="/assets/img/badge_icon.svg" alt="">
+                                <div>
+                                    <div class="heading line-clamb break-all">{{username}}</div>
+                                    <p class="my-0">Thành viên Fabook</p>
+                                </div>
+                            </a>
+
+                            <a href="/order/me" class="link">
+                                <img class="icon" src="/assets/img/bill_icon.svg" alt="">
+                                <span>Đơn hàng của tôi</span>
+                            </a>
+
+                            <a id="logout" href="#!" class="link">
+                                <img class="icon" src="/assets/img/logout_icon.svg" alt="">
+                                <span>Đăng xuất</span>
+                            </a>
+                        </div>
+                    {{else}}
+                        <a href='/login' class='nav__link'>
+                            <img class='nav__account_img' src='/assets/img/account_icon.svg' alt='Account' />
+                            <div class='nav__link-label'>
+                                Tài khoản
+                            </div>
+                        </a>
+
+                        <div class="nav__account__dropdown">
+                            <a href="/login?nextUrl={{currentUrl}}" class="login">Đăng nhập</a>
+                            <a href="/signup?nextUrl={{currentUrl}}" class="signup">Đăng ký</a>
+                        </div>
+                    {{/if}}
+                    
+                </div>
+            </div>
+
+            {{!-- Dropdown --}}
+            <div class='category-menu-dropdown__padding d-none'>
+                <div class='category-menu-dropdown'>
+                    <div class='row'>
+                        <section class='col-3 pe-1 border-end border-2'>
+                            <h1 class='category-menu-dropdown__heading'>
+                                Danh mục sản phẩm
+                            </h1>
+                            {{#each categoryTree}}
+                                <a
+                                    href='/category?catId={{id}}'
+                                    class='category-menu-dropdown__category'
+                                    data-cat-id='{{id}}'
+                                >
+                                    {{categoryName}}
+                                </a>
+                            {{/each}}
+                        </section>
+                        <section class='col-9 ps-3'>
+                            {{#each categoryTree}}
+                                <div
+                                    class='category-menu-dropdown__detail {{#unless @first}}d-none{{/unless}}'
+                                    data-cat-id='{{id}}'
+                                >
+                                    <div class='d-flex align-items-center mb-3'>
+                                        <img
+                                            class='category-menu-dropdown__icon'
+                                            src='/assets/img/book_icon.svg'
+                                            alt='Book icon'
+                                        />
+                                        <h1
+                                            class='category-menu-dropdown__heading--2 line-clamb'
+                                        >
+                                            {{categoryName}}
+                                        </h1>
+                                    </div>
+                                    <div class='row'>
+                                        {{#each children}}
+                                            <div class='col-md-3'>
+                                                <a
+                                                    href='/category?catId={{id}}'
+                                                    class='category-menu-dropdown__heading--sub line-clamb'
+                                                >
+                                                    {{categoryName}}
+                                                </a>
+                                                {{#each children}}
+                                                    <a
+                                                        href='/category?catId={{id}}'
+                                                        class='category-menu-dropdown__category--sub line-clamb'
+                                                    >
+                                                        {{categoryName}}
+                                                    </a>
+                                                {{/each}}
+                                                <a
+                                                    class='category-menu-dropdown__category--sub-all'
+                                                    href='/category?catId={{id}}'
+                                                >
+                                                    Xem tất cả
+                                                </a>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</nav>
+</div>
+
+<link rel='stylesheet' href='/assets/css/navbar.css' />
+<script src="/assets/js/navbar.js"></script>

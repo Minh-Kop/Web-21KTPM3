@@ -9,8 +9,8 @@ const { encryptPassword } = require('../utils/crypto');
 
 const createAvatarName = async (req, file) => {
     if (file.fieldname === 'avatar') {
-        const { email } = req.user;
-        return `${email}`;
+        const { userId } = req.user;
+        return `${userId}`;
     }
 };
 
@@ -22,26 +22,64 @@ const avatarUploader = createUploader(
 exports.uploadAvatar = avatarUploader.fields([{ name: 'avatar', maxCount: 1 }]);
 
 exports.getMe = (req, res, next) => {
-    req.params.email = req.user.email;
+    req.params.userId = req.user.userId;
     next();
 };
 
-exports.getUser = catchAsync(async (req, res, next) => {
-    const { email } = req.params;
-    const { year } = req.query;
-    const userEntity = {
-        email,
-        year: +year || new Date().getFullYear(),
-    };
+exports.getMyAccount = catchAsync(async (req, res, next) => {
+    const { userId } = req.params;
+    const { user, cart } = req;
+    const isLoggedIn = req.isAuthenticated();
 
-    const detailedUser = await accountModel.getDetailedUser(userEntity);
+    const detailedUser = await accountModel.getDetailedUser(userId);
+
+    // Check if this user exists
+    if (detailedUser.returnValue === -1) {
+        return next(new AppError('The account is no longer exist.', 404));
+    }
+    detailedUser.recordset[0].birthday = new Date(
+        detailedUser.recordset[0].birthday,
+    )
+        .toISOString()
+        .split('T')[0];
+
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('&page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+
+    res.render('account/user_account', {
+        title: detailedUser.recordset[0].userName,
+        user: detailedUser.recordset[0],
+        link: newUrl,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: url,
+    });
+});
+
+exports.getUser = catchAsync(async (req, res, next) => {
+    const { userId } = req.params;
+
+    const detailedUser = await accountModel.getDetailedUser(userId);
 
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
     }
 
-    res.status(200).json({
+    detailedUser.recordset[0].birthday = new Date(
+        detailedUser.recordset[0].birthday,
+    )
+        .toISOString()
+        .split('T')[0];
+
+    res.render('account/crud_user_detail', {
+        title: 'Chi tiết tài khoản',
+        navbar: () => 'empty',
+        footer: () => 'empty',
         status: 'success',
         user: detailedUser.recordset[0],
     });
@@ -58,65 +96,53 @@ exports.updateUser = catchAsync(async (req, res, next) => {
         );
     }
 
-    const { email } = req.params;
-    const { fullName, phoneNumber, birthday, gender, tier, role } = req.body;
-    const userEntity = {
-        email,
+    const { userId } = req.params;
+    const { fullName, phoneNumber, birthday, gender, role } = req.body;
+
+    await accountModel.updateAccount({
+        userId,
         fullName,
         phoneNumber,
         birthday,
         gender: +gender,
-        tier: +tier,
         role: +role,
-    };
-
-    await accountModel.updateAccount(userEntity);
-
-    res.status(200).json({
-        status: 'success',
-        email,
     });
+
+    res.status(204).json();
 });
 
 exports.updateAvatar = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
-    const { path: avatarPath, filename: avatarFilename } = req.files.avatar[0];
-    const userEntity = {
-        email,
+    const { userId } = req.user;
+    const { path: avatarPath } = req.files.avatar[0];
+
+    await accountModel.updateAccount({
+        userId,
         avatarPath,
-        avatarFilename,
-    };
-
-    await accountModel.updateAccount(userEntity);
-
-    res.status(200).json({
-        status: 'success',
-        email,
     });
+
+    res.status(204).json();
 });
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-    const { sortType } = req.query;
-    let { year, tier, limit, page } = req.query;
-
-    year = +year || new Date().getFullYear();
-    tier = +tier;
+    let { sortType, limit, page } = req.query;
+    const { user } = req;
+    sortType = sortType || 'userid';
     page = +page || 1;
     limit = +limit || 12;
     const offset = (page - 1) * limit;
 
-    const userEntity = {
-        year,
-        tier,
+    const users = await accountModel.getAllUsers({
         sortType,
         limit,
         offset,
-    };
+    });
 
-    const users = await accountModel.getAllUsers(userEntity);
-
-    res.status(200).json({
+    res.render('account/crud_users_list', {
+        title: 'Danh sách tài khoản',
         status: 'success',
+        navbar: () => 'empty',
+        footer: () => 'empty',
+        ...user,
         users,
     });
 });

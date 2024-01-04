@@ -1,0 +1,224 @@
+:root {
+    --yellow-color: #f39801;
+}
+
+ul,
+ol {
+    padding: 0;
+    margin: 0;
+}
+
+/* ==================================== Bottom sidebar ==================================== */
+.bottom-sidebar-content {
+    z-index: 2;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+    padding: 8px 16px;
+    background-color: white;
+    box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.66);
+}
+
+.checkout-total {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-bottom-color);
+}
+
+.checkout-total__subtotal,
+.checkout-total__shipping,
+.checkout-total__final-total {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    padding-bottom: 4px;
+    text-align: right;
+}
+
+.checkout-total__subtotal__label,
+.checkout-total__shipping__label,
+.checkout-total__final-total__label {
+    flex: 6;
+}
+
+.checkout-total__subtotal__amount,
+.checkout-total__shipping__amount,
+.checkout-total__final-total__amount {
+    flex: 1;
+}
+
+.checkout-total__final-total__label {
+    font-weight: bold;
+}
+
+.checkout-total__final-total__amount {
+    font-size: 18.5px;
+    font-weight: bold;
+    color: var(--yellow-color);
+}
+
+.checkout-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 4px 0;
+}
+
+.return-cart-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    color: black;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.return-cart-btn:hover {
+    color: var(--primary-color);
+}
+
+.confirm-checkout-btn {
+    padding: 8px 40px;
+    margin: 8px 0;
+    border-radius: 10px;
+
+    font-size: 19px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--disabled-btn-color);
+    cursor: not-allowed;
+
+    transition: transform 0.1s;
+}
+
+.confirm-checkout-btn.active {
+    cursor: pointer;
+    background-color: var(--secondary-color);
+}
+
+.confirm-checkout-btn.active:hover {
+    transform: scale(1.1);
+}
+
+/* ==================================== Checkout block ==================================== */
+.checkout-block {
+    padding: 8px 16px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.checkout-block__title {
+    padding: 8px 0;
+    margin: 0;
+    border-bottom: 1px solid var(--border-bottom-color);
+
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.checkout-block__content {
+    padding: 8px 0;
+    position: relative;
+}
+
+/* ==================================== Radio button ==================================== */
+.addr-radio {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+
+    padding: 4px 4px 4px 30px;
+    margin: 2px 0 5px;
+
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.radio-mark {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+}
+
+.radio-mark::after {
+    content: '';
+    display: inline-block;
+}
+
+.addr-radio [type='radio']:checked ~ .radio-mark {
+    border-color: var(--secondary-color);
+}
+
+.addr-radio [type='radio']:checked ~ .radio-mark::after {
+    position: absolute;
+    /* inset: 0;
+    margin: auto; */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+}
+
+/* ==================================== Add address button ==================================== */
+.add-addr-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 0;
+}
+
+.add-addr-btn__img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    color: var(--secondary-color);
+}
+
+/* ==================================== Product item ==================================== */
+.product-item {
+    display: grid;
+    grid-template-columns: 2fr 7fr 2fr 1fr 2fr;
+
+    padding: 8px 0;
+    font-size: 15px;
+}
+
+.product-item:not(:last-of-type) {
+    border-bottom: 1px solid var(--border-bottom-color);
+}
+
+.product-item__img {
+    display: inline-block;
+    width: 100%;
+    padding: 0 6px;
+    max-height: 145px;
+    object-fit: contain;
+}
+
+.product-item__price--original {
+    text-decoration: line-through;
+    color: var(--category-font-color);
+    font-size: 14px;
+}
+
+.product-item__price--final {
+    color: var(--yellow-color);
+    font-weight: bold;
+}

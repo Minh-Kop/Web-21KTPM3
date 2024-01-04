@@ -1,4 +1,4 @@
-use fabook_db
+-- use fabook_db
 
 IF OBJECT_ID('f_CreateCartId') IS NOT NULL
 	DROP FUNCTION f_CreateCartId
@@ -123,7 +123,6 @@ COMMIT
 RETURN 1
 GO
 
-GO
 IF OBJECT_ID('sp_UpdateCart') IS NOT NULL
 	DROP PROC sp_UpdateCart
 GO
@@ -136,23 +135,25 @@ CREATE PROCEDURE sp_UpdateCart (
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
+        DECLARE @price INT, @stock INT
+        select @price = BOOK_DISCOUNTED_PRICE, @stock = STOCK 
+        from BOOK 
+        where BOOK_ID = @bookId and SOFT_DELETE = 0
+
+        if @price IS NULL
+        BEGIN
+            PRINT N'This product is no longer exists.'
+            ROLLBACK
+            RETURN -1
+        END
+
         if @quantity IS NOT NULL
         BEGIN
-            DECLARE @price INT, @stock INT
-            select @price = BOOK_DISCOUNTED_PRICE, @stock = STOCK 
-            from BOOK 
-            where BOOK_ID = @bookId and SOFT_DELETE = 0
-
-            if @price IS NULL
-            BEGIN
-                PRINT N'This product is no longer exists.'
-                ROLLBACK  
-                RETURN -1
-            END
-
             if @quantity > @stock
             BEGIN
-                set @quantity = @stock
+                PRINT N'The quantity has exceeded the quantity in stock.'
+                ROLLBACK
+                RETURN 0
             END
 
             UPDATE CART_DETAIL
@@ -165,6 +166,33 @@ BEGIN TRANSACTION
             UPDATE CART_DETAIL
             set IS_CLICKED = @isClicked
             where CART_ID = @cartId and BOOK_ID = @bookId
+        END
+	END TRY
+
+	BEGIN CATCH
+		PRINT N'Bị lỗi'
+		ROLLBACK  
+		RETURN 0
+	END CATCH
+COMMIT
+RETURN 1
+GO
+
+IF OBJECT_ID('sp_UpdateBooksInCart') IS NOT NULL
+	DROP PROC sp_UpdateBooksInCart
+GO
+CREATE PROCEDURE sp_UpdateBooksInCart (
+    @cartId char(5),
+    @isClicked BIT
+)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+        if @isClicked is NOT NULL
+        BEGIN
+            UPDATE CART_DETAIL
+            set IS_CLICKED = @isClicked
+            where CART_ID = @cartId
         END
 	END TRY
 
@@ -211,16 +239,6 @@ CREATE PROCEDURE sp_DeleteClickedBooksFromCart (
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-        -- Update order date
-        UPDATE H_ORDER
-        SET ORDER_DATE = GETDATE()
-        WHERE ORDER_ID = @orderId
-
-        -- Delete user's vouchers
-        DELETE from USER_VOUCHER where USERID = @userId and VOUCHER_ID IN (select uv.VOUCHER_ID 
-                                                                            from USER_VOUCHER uv join ORDER_VOUCHER ov on ov.VOUCHER_ID = uv.VOUCHER_ID 
-                                                                            where ORDER_ID = @orderId)
-
         -- Delete each book in cart
         DECLARE @cartId CHAR(5) = (select CART_ID from CART where USERID = @userId)
         WHILE EXISTS (select 1 from CART_DETAIL where CART_ID = @cartId and IS_CLICKED = 1)
@@ -243,7 +261,6 @@ BEGIN TRANSACTION
         select @cartCount = COUNT(*)
         from CART_DETAIL
         where CART_ID = @cartId
-        GROUP by CART_ID
         
         UPDATE CART
         set CART_COUNT = @cartCount, CART_TOTAL = 0

@@ -1,0 +1,107 @@
+<div class='text-start px-4 row m-0 pb-3' style='background-color: #eae7dc'>
+    <p class="fs-2 fw-bold" style="color:#E85A4F">Đơn hàng</p>
+    <div class="card col-2 mt-3 border border-success rounded h-100 p-2 text-center">
+        <div class="card-header text-warning-emphasis fs-6" style="background-color: #D8C3A5; height: 230px;">
+            <img src="{{avatarPath}}" alt="" class="img-thumbnail" />
+            {{username}}
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a href="/users/me" class="fs-5" style="text-decoration: none; color: black">
+                    Sản phẩm
+                </a>
+            </li>
+            <li class="list-group-item"  style="background-color: #E98074; ">
+                <a href="/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Đơn hàng</a>
+            </li>
+            <li class="list-group-item">
+                <a href="/order/me" class="fs-5" style="text-decoration: none; color: #ffffff;">Thống kê</a>
+            </li>
+            <li class="list-group-item">
+                <a href="/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Tài khoản</a>
+            </li>
+            <li class="list-group-item">
+                <a href="/shippingAddress" class="fs-5" style="text-decoration: none; color: black">Danh mục</a>
+            </li>
+        </ul>
+    </div>
+    <div class='container col-9'>
+        <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
+            <h4 class='mt-2 mb-3'>ĐƠN HÀNG CỦA TÔI</h4>
+            <div class='containter ms-0 row text-center'>
+                <div class='position-relative mb-3 border border-3 border-danger status' style='width: 150px'>
+                    <a href='#' class='fw-bold button' style='text-decoration: none; color: black'><span>9
+                            <br />
+                            Tất cả</span>
+                    </a>
+                </div>
+                <div class='position-relative mb-3 status' style='width: 150px'>
+                    <a href='#' class='fw-bold button' style='text-decoration: none; color: black'><span>9
+                            <br />
+                            Chờ thanh toán</span>
+                    </a>
+                </div>
+                <div class='position-relative mb-3 status' style='width: 150px'>
+                    <a href='#' class='fw-bold button' style='text-decoration: none; color: black'><span>9
+                            <br />
+                            Chờ xác nhận</span>
+                    </a>
+                </div>
+                <div class='position-relative mb-3 status' style='width: 150px'>
+                    <a href='#' class='fw-bold button' style='text-decoration: none; color: black'><span>9
+                            <br />
+                            Đang xử lý</span>
+                    </a>
+                </div>
+                <div class='position-relative mb-3 status' style='width: 150px'>
+                    <a href='#' class='fw-bold button' style='text-decoration: none; color: black'><span>9
+                            <br />
+                            Hoàn tất</span>
+                    </a>
+                </div>
+                <div class='position-relative mb-3 status' style='width: 150px'>
+                    <a href='#' class='fw-bold button' style='text-decoration: none; color: black'><span>9
+                            <br />
+                            Bị hủy</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
+            <table class='table table-striped table-hover text-center'>
+                <thead>
+                    <tr>
+                        <th scope='col'>Mã đơn hàng</th>
+                        <th scope='col'>Ngày mua</th>
+                        <th scope='col'>Người nhận</th>
+                        <th scope='col'>Tổng Tiền</th>
+                        <th scope='col'>Trạng thái</th>
+                        <th scope='col'></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope='row'>1</th>
+                        <td>28/12/2020</td>
+                        <td>
+                            Nguyễn Văn A
+                        </td>
+                        <td>85.525 đ</td>
+                        <td>Bị hủy</td>
+                        <td>
+                            <a href="/order/{{orderId}}" style="color: black">
+                                <i class='fa-solid fa-circle-info' style='cursor: pointer'></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(".status").on("click", function () {
+        $(".status").removeClass("border border-3 border-danger");
+        $(this).addClass("border border-3 border-danger");
+    });
+</script>

@@ -1,22 +1,26 @@
-// const path = require('path');
+const path = require('path');
 const express = require('express');
-const morgan = require('morgan');
+// const morgan = require('morgan');
+const expressHandlebars = require('express-handlebars');
 const rateLimit = require('express-rate-limit');
 // const helmet = require('helmet');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-require('./passport')
-// const session = require('express-session');
+require('./passport');
+const session = require('express-session');
 
+const { JWT_SECRET: secret } = require('./config/config');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
+const categoryController = require('./controllers/categoryControllerUI');
+const cartController = require('./controllers/cartControllerUI');
 const router = require('./routes');
-// const config = require('./config');
+const hbs = require('./utils/handlebars')(expressHandlebars);
 
-// const authRouter = require('./routes/authRouter')
-// app.use('/api/auth', authRouter)
+// Solve self signed certificate error
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Start express app
 const app = express();
@@ -37,7 +41,7 @@ app.options('*', cors(corsOptions));
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
+    // app.use(morgan('dev'));
 }
 
 // Limit requests from same API
@@ -48,26 +52,37 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+// Serving static files
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Set up template engine
+app.engine('hbs', hbs.engine);
+app.set('views', path.join(__dirname, './views'));
+app.set('view engine', 'hbs');
+
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // Parse cookie
-// app.use(
-//     session({
-//         name: 'jwt',
-//         secret: 'khoi',
-//         resave: false,
-//         saveUninitialized: false,
-//         cookie: {
-//             maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
-//             sameSite: 'none',
-//             secure: true,
-//             httpOnly: true,
-//         },
-//     }),
-// );
+app.use(
+    session({
+        name: 'session',
+        secret,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            // maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+            // sameSite: 'none',
+            secure: true,
+            httpOnly: true,
+        },
+    }),
+);
+
+// Set up passport
+require('./utils/passport')(app);
 
 // Data sanitization against XSS
 app.use(xss());
@@ -75,14 +90,25 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(hpp());
 
-// Test middleware
-app.use((req, res, next) => {
-    req.requestTime = new Date().toISOString();
-    // console.log(req.cookies);
+// Create category tree
+app.use(async (req, res, next) => {
+    const categoryTree = await categoryController.getCategoryTree();
+    req.categoryTree = categoryTree;
+
+    if (req.isAuthenticated()) {
+        const { userId } = req.user;
+        const cart = await cartController.getCart(userId);
+        req.cart = cart;
+    }
+
     next();
 });
 
 // 2) ROUTES
+app.get('/', (req, res, next) => {
+    res.redirect('/mainPage');
+});
+
 app.use(router);
 
 app.all('*', (req, res, next) => {

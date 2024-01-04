@@ -4,6 +4,7 @@ const {
     searchCategoryTree,
     toListCategory,
     getParentBranch,
+    separateThousandByDot,
 } = require('../utils/utils');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -53,17 +54,141 @@ exports.uploadBookImages = bookImageUploader.fields([
     { name: 'images', maxCount: config.PRODUCT_IMAGE_NUMBER_LIMIT },
 ]);
 
-exports.getAllBooks = catchAsync(async (req, res, next) => {
-    let {
-        categoryId,
+exports.countBooks = async ({
+    categoryId,
+    priceRange,
+    publisherId,
+    bookFormat,
+    sortType,
+}) => {
+    if (priceRange) {
+        priceRange = priceRange.split(',').map((el) => +el);
+    }
+    if (publisherId) {
+        publisherId = publisherId.split(',').map((el) => el.trim());
+    }
+    if (bookFormat) {
+        bookFormat = bookFormat.split(',').map((el) => el.trim());
+    }
+
+    const categoryIdList = await getListCategoryId(categoryId);
+    const countedNumber = await bookModel.countBooks({
+        categoryIdList,
         priceRange,
         publisherId,
         bookFormat,
-        sortType,
-        limit,
-        page,
-    } = req.query;
+        sortType: sortType || 'BOOK_DISCOUNTED_PRICE',
+    });
 
+    return countedNumber;
+};
+
+exports.getAllBooks = async ({
+    categoryId,
+    priceRange,
+    publisherId,
+    bookFormat,
+    sortType,
+    limit,
+    page,
+}) => {
+    if (priceRange) {
+        priceRange = priceRange.split(',').map((el) => +el);
+    }
+    if (publisherId) {
+        publisherId = publisherId.split(',').map((el) => el.trim());
+    }
+    if (bookFormat) {
+        bookFormat = bookFormat.split(',').map((el) => el.trim());
+    }
+
+    page = +page || 1;
+    limit = +limit || 24;
+    const offset = (page - 1) * limit;
+
+    const categoryIdList = await getListCategoryId(categoryId);
+    const resultBooks = await bookModel.getAllBooks({
+        categoryIdList,
+        priceRange,
+        publisherId,
+        bookFormat,
+        sortType: sortType || 'BOOK_DISCOUNTED_PRICE',
+        limit,
+        offset,
+    });
+
+    const books = await Promise.all(
+        resultBooks.map(async (item) => {
+            const book = {
+                bookId: item.BOOK_ID,
+                bookName: item.BOOK_NAME,
+                originalPrice: item.BOOK_PRICE,
+                discountedPrice: item.BOOK_DISCOUNTED_PRICE,
+                discountedNumber: item.DISCOUNTED_NUMBER,
+                stock: item.STOCK,
+                avgRating: item.AVG_RATING,
+                countRating: item.COUNT_RATING,
+            };
+            book.originalPrice = separateThousandByDot(book.originalPrice);
+            book.discountedPrice = separateThousandByDot(book.discountedPrice);
+
+            const { image } = await bookModel.getCoverImage(book.bookId);
+            book.image = image;
+
+            return book;
+        }),
+    );
+    return books;
+};
+
+const getBook = async (bookId) => {
+    const returnedBook = await bookModel.getBookById(bookId);
+
+    if (!returnedBook) {
+        return null;
+    }
+
+    const imageList = await bookModel.getBookImages(bookId);
+    const images = imageList.map((item) => ({
+        id: item.IMAGE_ID,
+        path: item.BOOK_PATH,
+    }));
+
+    const category = await categoryModel.getAllCategory();
+    const categoryTree = buildCategoryRoot(category);
+    const selectedBranch = getParentBranch(categoryTree, returnedBook.CATE_ID);
+
+    return {
+        bookId: returnedBook.BOOK_ID,
+        bookName: returnedBook.BOOK_NAME,
+        category: selectedBranch,
+        images: images,
+        originalPrice: returnedBook.BOOK_PRICE,
+        discountedNumber: returnedBook.DISCOUNTED_NUMBER,
+        discountedPrice: returnedBook.BOOK_DISCOUNTED_PRICE,
+        avgRating: returnedBook.AVG_RATING,
+        countRating: returnedBook.COUNT_RATING,
+        stock: returnedBook.STOCK,
+        author: returnedBook.author,
+        publisher: returnedBook.PUB_NAME,
+        publishedYear: returnedBook.PUBLISHED_YEAR,
+        weight: returnedBook.BOOK_WEIGHT,
+        dimensions: returnedBook.DIMENSIONS.replace(/\?/g, '✖'),
+        numberPage: returnedBook.NUMBER_PAGE,
+        bookFormat: returnedBook.BOOK_FORMAT,
+        description: returnedBook.BOOK_DESC,
+    };
+};
+
+const getAllBooksForRendering = async ({
+    categoryId,
+    priceRange,
+    publisherId,
+    bookFormat,
+    sortType,
+    limit,
+    page,
+}) => {
     if (priceRange) {
         priceRange = priceRange.split(',').map((el) => +el);
     }
@@ -106,18 +231,18 @@ exports.getAllBooks = catchAsync(async (req, res, next) => {
         }),
     );
 
-    // SEND RESPONSE
-    res.status(200).json({
-        status: 'success',
-        length: books.length,
-        books,
+    return books;
+};
+
+exports.test = catchAsync(async (req, res, next) => {
+    const books = await getAllBooksForRendering({
+        categoryId: 'CA02',
+        page: 2,
     });
+    console.log(books);
 });
 
-exports.getRelatedBooks = catchAsync(async (req, res, next) => {
-    const { bookId } = req.params;
-    let { limit, page } = req.query;
-
+const getRelatedBooks = async ({ bookId, limit, page }) => {
     page = +page || 1;
     limit = +limit || 12;
     const offset = (page - 1) * limit;
@@ -138,13 +263,8 @@ exports.getRelatedBooks = catchAsync(async (req, res, next) => {
         }),
     );
 
-    // SEND RESPONSE
-    res.status(200).json({
-        status: 'success',
-        length: books.length,
-        books,
-    });
-});
+    return books;
+};
 
 exports.getNewestArrival = catchAsync(async (req, res, next) => {
     let { limit, page } = req.query;
@@ -206,46 +326,142 @@ exports.getBestSeller = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getBook = catchAsync(async (req, res, next) => {
-    const { bookId } = req.params;
-    const returnedBook = await bookModel.getBookById(bookId);
-
-    if (!returnedBook) {
-        return next(new AppError('No book found with that ID!', 404));
-    }
-
-    const imageList = await bookModel.getBookImages(bookId);
-    const images = imageList.map((item) => ({
-        id: item.IMAGE_ID,
-        path: item.BOOK_PATH,
-    }));
-
-    const category = await categoryModel.getAllCategory();
-    const categoryTree = buildCategoryRoot(category);
-    const selectedBranch = getParentBranch(categoryTree, returnedBook.CATE_ID);
-
-    res.status(200).json({
-        status: 'success',
-        book: {
-            bookId: returnedBook.BOOK_ID,
-            bookName: returnedBook.BOOK_NAME,
-            category: selectedBranch,
-            images: images,
-            originalPrice: returnedBook.BOOK_PRICE,
-            discountedNumber: returnedBook.DISCOUNTED_NUMBER,
-            discountedPrice: returnedBook.BOOK_DISCOUNTED_PRICE,
-            avgRating: returnedBook.AVG_RATING,
-            countRating: returnedBook.COUNT_RATING,
-            stock: returnedBook.STOCK,
-            author: returnedBook.author,
-            publisher: returnedBook.PUB_NAME,
-            publishedYear: returnedBook.PUBLISHED_YEAR,
-            weight: returnedBook.BOOK_WEIGHT,
-            dimensions: returnedBook.DIMENSIONS.replace(/\?/g, '✖'),
-            numberPage: returnedBook.NUMBER_PAGE,
-            bookFormat: returnedBook.BOOK_FORMAT,
-            description: returnedBook.BOOK_DESC,
+exports.renderMainPage = catchAsync(async (req, res, next) => {
+    const cateLists = [
+        {
+            id: 'CA02',
+            categoryName: 'Comic - Truyện Tranh',
+            description: undefined,
+            children: undefined,
         },
+        {
+            id: 'CA03',
+            categoryName: 'Manga',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA05',
+            categoryName: 'Kỹ Năng Sống',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA06',
+            categoryName: 'Sách Cho Tuổi Mới Lớn',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA07',
+            categoryName: 'Tâm Lý',
+            description: undefined,
+            children: undefined,
+        },
+    ];
+    const cateBooks = [];
+    const page = 1;
+    const limit = 5;
+    const offset = (page - 1) * limit;
+
+    await Promise.all(
+        cateLists.map(async (i) => {
+            const catID = await getListCategoryId(i.id);
+
+            let a = {
+                categoryIdList: catID,
+                priceRange: null,
+                publisherId: null,
+                bookFormat: null,
+                sortType: 'BOOK_DISCOUNTED_PRICE',
+                limit: limit,
+                offset: offset,
+            };
+
+            let resultBooks = await bookModel.getAllBooks(a);
+
+            const books = await Promise.all(
+                resultBooks.map(async (item) => {
+                    const bookId = item.BOOK_ID;
+                    const { image } = await bookModel.getCoverImage(bookId);
+                    return {
+                        bookId,
+                        bookName: item.BOOK_NAME,
+                        originalPrice: item.BOOK_PRICE,
+                        discountedPrice: item.BOOK_DISCOUNTED_PRICE,
+                        discountedNumber: item.DISCOUNTED_NUMBER,
+                        avgRating: item.AVG_RATING,
+                        countRating: item.COUNT_RATING,
+                        image,
+                    };
+                }),
+            );
+
+            cateBooks.push({ catName: i.categoryName, booksList: books });
+        }),
+    );
+
+    const nPage = 1;
+    const nLimit = 5;
+    const noffset = (nPage - 1) * nLimit;
+
+    let nBooks = await bookModel.getNewestArrival({
+        limit: nLimit,
+        offset: noffset,
+    });
+    nBooks = await Promise.all(
+        nBooks.map(async (book) => {
+            const { bookId: id } = book;
+            const { image } = await bookModel.getCoverImage(id);
+            return {
+                ...book,
+                image,
+            };
+        }),
+    );
+
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+
+    res.render('mainPage/mainPage', {
+        layout: 'main',
+        categories: cateLists,
+        cateBooks: cateBooks,
+        newBooks: nBooks,
+        categoryTree,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        ...user,
+        ...cart,
+        isLoggedIn,
+    });
+});
+
+exports.getBookDetail = catchAsync(async (req, res, next) => {
+    const { bookId } = req.params;
+    // Information from pre-middleware
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+
+    const book = await getBook(bookId);
+    if (!book) {
+        return res.redirect('/');
+    }
+    const relatedBooks = await getRelatedBooks({ bookId, page: 1, limit: 12 });
+
+    res.render('product/productDetail', {
+        title: book.bookName,
+        navbar: () => 'navbar',
+        footer: () => 'footer',
+        book: {
+            ...book,
+            relatedBooks,
+        },
+        categoryTree,
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: req.originalUrl,
     });
 });
 

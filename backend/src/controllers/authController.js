@@ -1,5 +1,6 @@
-const { promisify } = require('util');
+// const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 
 const accountModel = require('../models/accountModel');
 const AppError = require('../utils/appError');
@@ -14,18 +15,19 @@ const oauth2Client = require('../utils/oauth2');
 const { getVerifyEmail, createTransport } = require('../utils/nodemailer');
 
 exports.signUp = catchAsync(async (req, res, next) => {
-    const { email, phoneNumber, password, username } = req.body;
+    const { email, password, username } = req.body;
+    console.log(req.body);
+
+    // Check for username duplicated
+    const account = await accountModel.getByUsername(username);
+    if (account) {
+        return next(new AppError('Username already exists.', 400));
+    }
 
     // Check for email duplicated
     const emailAccount = await accountModel.getByEmail(email);
     if (emailAccount) {
         return next(new AppError('Email already exists.', 400));
-    }
-
-    // Check for phone number duplicated
-    const phoneNumberAccount = await accountModel.getByPhone(phoneNumber);
-    if (phoneNumberAccount) {
-        return next(new AppError('Phone number is already used.', 400));
     }
 
     // 256 bits which provides about 1e+77 possible different number
@@ -36,20 +38,25 @@ exports.signUp = catchAsync(async (req, res, next) => {
     const encryptedPassword = encryptPassword(password);
 
     // Send each mail with different time to prevent the html being trimmed by Gmail
-    const url = `${req.protocol}://${req.get('host')}/api/users`;
-    const mailOption = getVerifyEmail(email, url, verifyToken);
-    const transport = await createTransport();
-    await transport.sendMail(mailOption);
+    // const url = `${req.protocol}://${req.get('host')}/api/users`;
+    // const mailOption = getVerifyEmail(email, url, verifyToken);
+    // const transport = await createTransport();
+    // await transport.sendMail(mailOption);
 
     // Create entity to insert to DB
     await accountModel.createAccount({
-        email,
-        phoneNumber,
         username,
+        email,
         password: encryptedPassword,
         verified: 1,
         token: verifyToken,
         role: config.role.USER,
+    });
+
+    // Create bank account
+    await axios.post(`${config.BANK_URL}/api/account/create-account`, {
+        username,
+        password: encryptedPassword,
     });
 
     res.status(200).json({
@@ -97,30 +104,30 @@ const createSendToken = (user, statusCode, req, res) => {
 };
 
 exports.login = catchAsync(async (req, res, next) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     // Check if email and password exist
-    if (!email || !password) {
+    if (!username || !password) {
         return next(
-            new AppError('Please provide both email and password!', 400),
+            new AppError('Please provide both username and password!', 400),
         );
     }
 
-    // Check for correct email
-    const account = await accountModel.getByEmail(email);
+    // Check for correct username
+    const account = await accountModel.getByUsername(username);
     if (!account) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Get the database password
     const encryptedPassword = account.ENC_PWD;
     if (!encryptedPassword) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Check the correctness of password
     if (!verifyPassword(password, encryptedPassword)) {
-        return next(new AppError('Email or password is not correct.', 400));
+        return next(new AppError('Username or password is not correct.', 400));
     }
 
     // Handle account not verified
@@ -169,75 +176,27 @@ exports.loginGoogle = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-    let token;
-
-    // 1) Get token and check if it's there
-    if (
-        req.headers.authorization &&
-        req.headers.authorization.startsWith('Bearer')
-    ) {
-        token = req.headers.authorization.split(' ')[1];
-    } else if (req.cookies.jwt) {
-        token = req.cookies.jwt;
-    }
-
-    // if (req.session.jwt) {
-    //     token = req.session.jwt;
-    // }
-    if (!token) {
-        return next(
+    const isLoggedIn = req.isAuthenticated();
+    if (isLoggedIn) {
+        next();
+    } else {
+        next(
             new AppError(
                 'You are not logged in! Please log in to get access.',
                 401,
             ),
         );
     }
+});
 
-    // 2) Verification token
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
-    // 3) Check if user still exists
-    let currentUser = await accountModel.getByUserId(decoded.userId);
-    if (!currentUser) {
-        return next(
-            new AppError(
-                'The user belonging this token does no longer exist!',
-                401,
-            ),
-        );
+exports.protectPage = catchAsync(async (req, res, next) => {
+    const isLoggedIn = req.isAuthenticated();
+    if (isLoggedIn) {
+        next();
+    } else {
+        const nextUrl = req.originalUrl;
+        res.redirect(`/login?nextUrl=${nextUrl}`);
     }
-
-    currentUser = {
-        userId: currentUser.USERID,
-        email: currentUser.EMAIL,
-        username: currentUser.USERNAME,
-        phoneNumber: currentUser.PHONE_NUMBER,
-        password: currentUser.ENC_PWD,
-        passwordChangedAt: currentUser.PASSWORDCHANGEDAT,
-        role: currentUser.HROLE,
-    };
-
-    // 4) Check if user changes password after the JWT was issued
-    let check = false;
-    const { passwordChangedAt } = currentUser;
-
-    if (passwordChangedAt) {
-        const changedTimestamp =
-            parseInt(passwordChangedAt.getTime() / 1000, 10) - 7 * 60 * 60; // Change to Hanoi timezone
-        check = changedTimestamp > decoded.iat;
-    }
-    if (check) {
-        return next(
-            new AppError(
-                'User recently changed password! Please log in again.',
-                401,
-            ),
-        );
-    }
-
-    // GRANT ACCESS TO PROTECTED ROUTE
-    req.user = currentUser;
-    next();
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -252,7 +211,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     // 3) If so, update the password
     const password = encryptPassword(req.body.password);
     const userEntity = {
-        email: user.email,
+        userId: user.userId,
         password,
     };
     await accountModel.updateAccount(userEntity);
@@ -269,9 +228,21 @@ exports.logOut = (req, res) => {
     });
 };
 
+exports.logOutWebsite = async (req, res) => {
+    await new Promise((resolve, reject) => {
+        req.session.regenerate((err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+    res.json({ status: 1 });
+};
+
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
-        // roles ['admin', 'lead-guide']
         if (!roles.includes(req.user.role)) {
             return next(
                 new AppError(
@@ -300,4 +271,27 @@ exports.loginSuccess = catchAsync(async (req, res) => {
             msg: 'Fail at auth controller ' + error
         })
     }
+});
+
+exports.getLoginPage = catchAsync(async (req, res, next) => {
+    const fullUrl = req.originalUrl;
+    let nextUrl = fullUrl.substring(
+        fullUrl.indexOf('nextUrl=') + 'nextUrl='.length,
+    );
+    nextUrl = nextUrl || '/mainPage';
+
+    res.render('authentication/login', {
+        title: 'Login',
+        navbar: () => 'empty',
+        footer: () => 'empty',
+        nextUrl,
+    });
+});
+
+exports.getSignupPage = catchAsync(async (req, res, next) => {
+    res.render('authentication/signup', {
+        title: 'Sign up',
+        navbar: () => 'empty',
+        footer: () => 'empty',
+    });
 });

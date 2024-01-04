@@ -420,6 +420,7 @@ exports.updateBook = catchAsync(async (req, res, next) => {
         numberPage,
         bookFormat,
         description,
+        softDelete,
     } = req.body;
 
     // Update to db
@@ -438,6 +439,7 @@ exports.updateBook = catchAsync(async (req, res, next) => {
         numberPage,
         bookFormat,
         description,
+        softDelete,
     });
 
     res.status(200).json({

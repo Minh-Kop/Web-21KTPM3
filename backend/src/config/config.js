@@ -5,6 +5,8 @@ const config = {
 
     PORT: process.env.PORT || 3001,
 
+    BANK_URL: process.env.BANK_URL,
+
     DATABASE: {
         server: process.env.DB_SERVER,
         user: process.env.DB_USER,
@@ -13,6 +15,52 @@ const config = {
     },
 
     NO_TOKEN_URL: ['/auth', '/location', '/category', '/product'],
+
+    priceRanges: [
+        {
+            price: '0,150000',
+            title: '0đ - 150,000đ',
+        },
+        {
+            price: '150000,300000',
+            title: '150,000đ - 300,000đ',
+        },
+        {
+            price: '300000,450000',
+            title: '300,000đ - 450,000đ',
+        },
+        {
+            price: '450000,600000',
+            title: '450,000đ - 600,000đ',
+        },
+    ],
+
+    sortList: [
+        {
+            value: 'book_discounted_price',
+            title: 'Giá bán',
+        },
+        {
+            value: '-avg_rating',
+            title: 'Rating trung bình',
+        },
+        {
+            value: '-discounted_number',
+            title: 'Chiết khấu',
+        },
+    ],
+
+    limitList: [
+        {
+            value: 12,
+        },
+        {
+            value: 24,
+        },
+        {
+            value: 48,
+        },
+    ],
 
     role: {
         USER: 1,

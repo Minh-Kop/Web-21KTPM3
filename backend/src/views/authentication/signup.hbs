@@ -1,0 +1,82 @@
+<div class='login-page'>
+    <h1 class='login__heading'>
+        FABOOK - ONLINE BOOKSTORE
+    </h1>
+    <p class='login__info'>GET 20% OFF FOR TODAY</p>
+    <div class='d-flex justify-content-center'>
+        <form action='' class='login-form'>
+            <h1 class='login-form__heading'>
+                Sign up
+            </h1>
+
+            {{! Username }}
+            <div class='login-form__input-area'>
+                <label class='login-form__label' for='signUpUsername'>
+                    Username
+                </label>
+                <input
+                    type='text'
+                    class='login-form__input'
+                    id='signUpUsername'
+                    placeholder='Username'
+                />
+                <p class='form-error d-none'></p>
+            </div>
+
+            {{! Email }}
+            <div class='login-form__input-area'>
+                <label class='login-form__label' for='signUpEmail'>
+                    Email
+                </label>
+                <input
+                    type='text'
+                    class='login-form__input'
+                    id='signUpEmail'
+                    placeholder='Email'
+                />
+                <p class='form-error d-none'></p>
+            </div>
+
+            {{! Password }}
+            <div class='login-form__input-area'>
+                <label
+                    class='login-form__label'
+                    for='signUpPassword'
+                >Password</label>
+                <input
+                    type='password'
+                    class='login-form__input'
+                    id='signUpPassword'
+                    placeholder='Password'
+                />
+                <p class='form-error d-none'></p>
+            </div>
+
+            {{! Re-enter password }}
+            <div class='login-form__input-area'>
+                <label class='login-form__label' for='rePassword'>Re enter
+                    password</label>
+                <input
+                    type='password'
+                    class='login-form__input'
+                    id='rePassword'
+                    placeholder='Re-enter password'
+                />
+                <p class='form-error d-none'></p>
+            </div>
+
+            {{! Submit button }}
+            <button id='sign-up' class='login-form__btn' type='submit'>
+                Register
+            </button>
+
+            {{! Register section }}
+            <div class='d-flex justify-content-between'>
+                <p class='register-info my-0'>Are you a member?</p>
+                <a class='register-link' href='/login'>Login now</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<link rel='stylesheet' href='/assets/css/login.css' />

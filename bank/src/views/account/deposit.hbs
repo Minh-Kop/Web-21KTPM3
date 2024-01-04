@@ -1,0 +1,39 @@
+<div class='container mt-3'>
+    {{! Return button }}
+    <a href='/account' class='return-cart-btn'>
+        <svg
+            xmlns='http://www.w3.org/2000/svg'
+            height='16'
+            width='10'
+            viewBox='0 0 320 512'
+        >
+            <path
+                fill='currentColor'
+                d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z'
+            />
+        </svg>
+        <span>Quay về</span>
+    </a>
+
+    <form>
+        <div class='deposit'>
+            <div class='deposit__line'>
+                <label for='depositNum' class='label'>Số tiền cần nạp:</label>
+                <input id='depositNum' type='text' class='input' />
+                <p class='form-error d-none'></p>
+            </div>
+            <div class='deposit__line'>
+                <label for='password' class='label'>Mật khẩu xác nhận:</label>
+                <input id='password' type='password' class='input' />
+                <p class='form-error d-none'></p>
+            </div>
+        </div>
+
+        <div class='d-flex justify-content-center'>
+            <button class='submit-btn'>Xác nhận</button>
+        </div>
+    </form>
+</div>
+
+<link rel='stylesheet' href='/assets/css/deposit.css' />
+<script src='/assets/js/deposit.js'></script>

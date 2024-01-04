@@ -1,12 +1,13 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const shippingAddressModel = require('../models/shippingAddressModel');
+const { getCoordinateUI } = require('./locationController');
 
 exports.getShippingAddresses = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
 
     const shippingAddresses =
-        await shippingAddressModel.getShippingAddressesByEmail(email);
+        await shippingAddressModel.getAllShippingAddressesByUserId(userId);
     res.status(200).json({
         status: 'success',
         length: shippingAddresses.length,
@@ -15,7 +16,7 @@ exports.getShippingAddresses = catchAsync(async (req, res, next) => {
 });
 
 exports.createShippingAddress = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
     const {
         provId,
         distId,
@@ -24,12 +25,17 @@ exports.createShippingAddress = catchAsync(async (req, res, next) => {
         fullName,
         phoneNumber,
         isDefault,
-        lat,
-        lng,
     } = req.body;
 
+    const { lat, lng } = await getCoordinateUI({
+        address,
+        wardId,
+        distId,
+        provId,
+    });
+
     const result = await shippingAddressModel.createShippingAddress({
-        email,
+        userId,
         address,
         wardId,
         distId,
@@ -49,32 +55,13 @@ exports.createShippingAddress = catchAsync(async (req, res, next) => {
 });
 
 exports.updateShippingAddress = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
     const { addrId } = req.params;
-    const {
-        provId,
-        distId,
-        wardId,
-        address,
-        fullName,
-        phoneNumber,
-        isDefault,
-        lat,
-        lng,
-    } = req.body;
-
+    const { isDefault } = req.body;
     const result = await shippingAddressModel.updateShippingAddress({
-        email,
+        userId,
         addrId,
-        address,
-        wardId,
-        distId,
-        provId,
-        fullName,
-        phoneNumber,
         isDefault,
-        lat,
-        lng,
     });
     if (result <= 0) {
         return next(new AppError('Shipping address not found.', 404));
@@ -86,7 +73,6 @@ exports.updateShippingAddress = catchAsync(async (req, res, next) => {
 
 exports.deleteShippingAddress = catchAsync(async (req, res, next) => {
     const { addrId } = req.params;
-
     const result = await shippingAddressModel.deleteShippingAddress(addrId);
     if (result <= 0) {
         return next(new AppError('Shipping address not found.', 404));

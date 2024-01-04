@@ -7,7 +7,6 @@ const cartModel = require('../models/cartModel');
 const shippingAddressModel = require('../models/shippingAddressModel');
 const { getDistance } = require('../utils/map');
 const orderModel = require('../models/orderModel');
-const voucherModel = require('../models/voucherModel');
 const paymentModel = require('../models/paymentModel');
 const accountModel = require('../models/accountModel');
 const {
@@ -147,45 +146,74 @@ exports.createInitialOrder = catchAsync(async (req, res, next) => {
     next();
 });
 
-exports.addVoucher = catchAsync(async (req, res, next) => {
-    const { voucherId, orderId } = req.body;
+exports.checkout = catchAsync(async (req, res, next) => {
+    const { addrId, shippingFee } = req.body;
+    const { user, cart } = req;
+    const { userId } = user;
+    const { cartId, cartTotalNumber: merchandiseSubtotal, cartBooks } = cart;
 
-    if (!voucherId || !orderId) {
-        return next(new AppError('Missing parameter.', 400));
+    // Prepare order items
+    // If cart is empty, raise error
+    if (merchandiseSubtotal === 0) {
+        return next(new AppError("Can't check out with empty cart.", 400));
     }
 
-    const listVoucherId = voucherId.split(',').map((el) => el.trim());
+    const books = cartBooks.filter((el) => el.isClicked);
 
-    const result = await Promise.all(
-        listVoucherId.map(async (el) => {
-            return await voucherModel.useVoucher(orderId, el);
+    // Create an order
+    const result = await orderModel.createInitialOrder({
+        userId,
+        addrId,
+        merchandiseSubtotal,
+        shippingFee: +shippingFee,
+    });
+
+    if (result.returnValue !== 1) {
+        return next(new AppError('Create order failed.', 500));
+    }
+
+    const { orderId } = result.recordset[0];
+
+    // Transfer clicked books in cart to order
+    const isCreatedList = await Promise.all(
+        books.map(async (book) => {
+            const { bookId, quantity, cartPriceNumber: price } = book;
+            const createdResult = await orderModel.createDetailedOrder({
+                orderId,
+                bookId,
+                quantity,
+                price,
+            });
+            return {
+                bookId,
+                createdResult,
+            };
         }),
     );
 
-    if (result.includes(-1)) {
+    // If there are any errors in book creation, delete that book from the cart
+    const isFailedList = await Promise.all(
+        isCreatedList.map(async ({ bookId, createdResult }) => {
+            if (createdResult !== 1) {
+                await cartModel.deleteFromCart(cartId, bookId);
+            }
+            return createdResult;
+        }),
+    );
+    await cartModel.updateCartQuantityCartTotal(cartId);
+
+    // If there is any failed order detail creation, delete this order
+    if (isFailedList.some((el) => el !== 1)) {
+        await orderModel.deleteOrder(orderId);
         return next(
-            new AppError(`Subtotal isn't enough to use this voucher.`, 400),
+            new AppError(`There is at least 1 no longer existed book.`, 404),
         );
-    }
-    if (result.includes(-2)) {
-        return next(new AppError(`Out of vouchers.`, 400));
-    }
-    if (result.includes(-3)) {
-        return next(
-            new AppError(`Subtotal isn't enough to use this voucher.`, 400),
-        );
-    }
-    if (result.includes(-4)) {
-        return next(new AppError(`Out of vouchers.`, 400));
-    }
-    if (result.includes(-5)) {
-        return next(new AppError(`User doesn't have this voucher.`, 400));
     }
 
-    req.params = {
-        orderId,
-    };
-    next();
+    // Delete clicked books in cart
+    await cartModel.deleteClickedBooksFromCart(userId, orderId);
+
+    res.json({ orderId });
 });
 
 exports.updateCheckout = catchAsync(async (req, res, next) => {
