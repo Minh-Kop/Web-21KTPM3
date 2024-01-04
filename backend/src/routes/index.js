@@ -18,7 +18,6 @@ const shippingAddressRouter = require('./shippingAddressRoutes');
 const shippingAddressRouterUI = require('./shippingAddressRoutesUI');
 const checkoutRouter = require('./checkoutRoutes');
 const checkoutRouterUI = require('./checkoutRoutesUI');
-// const checkoutRouter = require('./checkoutRoutes');
 // const paymentRouter = require('./paymentRoutes');
 const orderRouter = require('./orderRoutes');
 const orderRouterUI = require('./orderRoutesUI');

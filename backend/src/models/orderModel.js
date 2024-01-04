@@ -102,10 +102,10 @@ exports.getOrderDetail = async (orderId) => {
     return result.recordset;
 };
 
-exports.deleteAllInitialOrders = async (email) => {
+exports.deleteAllInitialOrders = async (userId) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
-    request.input('email', sql.NVarChar, email);
+    request.input('userId', sql.NVarChar, userId);
     const result = await request.execute('sp_DeleteAllInitialOrders');
     return result.returnValue;
 };

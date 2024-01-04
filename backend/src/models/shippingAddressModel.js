@@ -14,6 +14,15 @@ exports.getAllShippingAddressesByUserId = async (userId) => {
     return result.recordset;
 };
 
+exports.getShippingAddressesByUserId = async (userId) => {
+    const pool = await database.getConnectionPool();
+
+    const request = new sql.Request(pool);
+    request.input('userId', sql.NVarChar, userId);
+    const result = await request.execute('sp_GetAllUserShippingAddresses');
+    return result.recordset;
+};
+
 exports.getShippingAddressesById = async (id) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
