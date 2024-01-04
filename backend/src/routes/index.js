@@ -23,7 +23,7 @@ const checkoutRouterUI = require('./checkoutRoutesUI');
 const orderRouter = require('./orderRoutes');
 const orderRouterUI = require('./orderRoutesUI');
 // const reviewRouter = require('./reviewRoutes');
-// const searchRouter = require('./searchRoutes');
+const searchRouter = require('./searchRoutes');
 
 const router = express.Router();
 
@@ -55,6 +55,6 @@ router.use('/checkout', authController.protectPage, checkoutRouterUI);
 router.use('/api/order', authController.protect, orderRouter);
 router.use('/order', authController.protectPage, orderRouterUI);
 // router.use('/api/review', reviewRouter);
-// router.use('/api/search', searchRouter);
+router.use('/api/search', searchRouter);
 
 module.exports = router;

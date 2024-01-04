@@ -220,7 +220,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     });
 
     // 4) Update password in bank server
-    await axios.post(`${bankUrl}/api/account/password`, {
+    await axios.patch(`${bankUrl}/api/account/password`, {
         username,
         password,
     });
@@ -237,10 +237,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     });
 
     // 6) Login again
-    await axios.post(`/api/user/login`, {
+    await axios.post(`${req.protocol}://${req.get('host')}/api/user/login`, {
         username,
-        password,
+        password: rawPassword,
     });
+
+    res.status(204).json({});
 });
 
 exports.logOut = async (req, res) => {
