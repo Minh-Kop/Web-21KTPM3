@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+require('./passport');
 const session = require('express-session');
 
 const { JWT_SECRET: secret } = require('./config/config');

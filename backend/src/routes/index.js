@@ -18,7 +18,6 @@ const shippingAddressRouter = require('./shippingAddressRoutes');
 const shippingAddressRouterUI = require('./shippingAddressRoutesUI');
 const checkoutRouter = require('./checkoutRoutes');
 const checkoutRouterUI = require('./checkoutRoutesUI');
-// const checkoutRouter = require('./checkoutRoutes');
 // const paymentRouter = require('./paymentRoutes');
 const orderRouter = require('./orderRoutes');
 const orderRouterUI = require('./orderRoutesUI');
@@ -51,7 +50,6 @@ router.use(
 );
 router.use('/api/checkout', checkoutRouter);
 router.use('/checkout', authController.protectPage, checkoutRouterUI);
-// router.use('/api/checkout', checkoutRouter);
 // router.use('/api/payment', paymentRouter);
 router.use('/api/order', authController.protect, orderRouter);
 router.use('/order', authController.protectPage, orderRouterUI);
