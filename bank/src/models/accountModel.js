@@ -35,3 +35,11 @@ exports.createAccount = async ({ username, password }) => {
     const result = await request.execute('sp_CreateAccount');
     return result;
 };
+
+exports.updatePassword = async ({ accountId, password }) => {
+    const sqlString = `update ACCOUNT set ENC_PWD = '${password}' where ACCOUNTID = '${accountId}'`;
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(sqlString);
+    return result;
+};

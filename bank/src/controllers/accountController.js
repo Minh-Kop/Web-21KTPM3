@@ -26,6 +26,24 @@ const createAccount = catchAsync(async (req, res, next) => {
     });
 });
 
+const updatePassword = catchAsync(async (req, res, next) => {
+    const { password, username } = req.body;
+
+    // Check for username duplicated
+    const account = await accountModel.getByUsername(username);
+    if (!account) {
+        return next(new AppError('Invalid account', 401));
+    }
+
+    const { ACCOUNTID: accountId } = account;
+    await accountModel.updatePassword({
+        accountId,
+        password,
+    });
+
+    res.status(200).json();
+});
+
 const getHomePage = catchAsync(async (req, res, next) => {
     const { user } = req;
 
@@ -60,4 +78,4 @@ const getDepositPage = catchAsync(async (req, res, next) => {
     });
 });
 
-module.exports = { createAccount, getHomePage, getDepositPage };
+module.exports = { createAccount, updatePassword, getHomePage, getDepositPage };
