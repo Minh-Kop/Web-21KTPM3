@@ -22,17 +22,20 @@ const checkoutRouterUI = require('./checkoutRoutesUI');
 const orderRouter = require('./orderRoutes');
 const orderRouterUI = require('./orderRoutesUI');
 // const reviewRouter = require('./reviewRoutes');
-// const searchRouter = require('./searchRoutes');
+const searchRouter = require('./searchRoutes');
+
+const authRouter2 = require('./authRouter');
 
 const router = express.Router();
 
 router.use('/', authRouter);
+router.use('/api/auth', authRouter2);
 router.use('/api/category', categoryRouter);
 router.use('/category', categoryRouterUI);
-router.use('/api/books', bookRouter);
-router.use('/books', bookRouterUI);
-router.use('/api/users', userRouter);
-router.use('/users', userRouterUI);
+router.use('/api/book', bookRouter);
+router.use('/book', bookRouterUI);
+router.use('/api/user', userRouter);
+router.use('/user', userRouterUI);
 router.use('/api/cart', authController.protect, cartRouter);
 router.use('/cart', authController.protectPage, cartRouterUI);
 router.use('/mainPage', mainPage.renderMainPage);
@@ -54,6 +57,6 @@ router.use('/checkout', authController.protectPage, checkoutRouterUI);
 router.use('/api/order', authController.protect, orderRouter);
 router.use('/order', authController.protectPage, orderRouterUI);
 // router.use('/api/review', reviewRouter);
-// router.use('/api/search', searchRouter);
+router.use('/api/search', searchRouter);
 
 module.exports = router;

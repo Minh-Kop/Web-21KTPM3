@@ -21,7 +21,7 @@ router.get('/newestArrival', bookController.getNewestArrival);
 router.get('/bestSeller', bookController.getBestSeller);
 
 router
-    .route('/images/:bookId')
+    .route('/image/:bookId')
     .patch(
         authController.protect,
         authController.restrictTo(config.role.ADMIN),

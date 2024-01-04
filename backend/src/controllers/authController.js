@@ -14,6 +14,8 @@ const {
 const oauth2Client = require('../utils/oauth2');
 const { getVerifyEmail, createTransport } = require('../utils/nodemailer');
 
+const bankUrl = config.BANK_URL;
+
 exports.signUp = catchAsync(async (req, res, next) => {
     const { email, password, username } = req.body;
     console.log(req.body);
@@ -38,7 +40,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     const encryptedPassword = encryptPassword(password);
 
     // Send each mail with different time to prevent the html being trimmed by Gmail
-    // const url = `${req.protocol}://${req.get('host')}/api/users`;
+    // const url = `${req.protocol}://${req.get('host')}/api/user`;
     // const mailOption = getVerifyEmail(email, url, verifyToken);
     // const transport = await createTransport();
     // await transport.sendMail(mailOption);
@@ -53,8 +55,8 @@ exports.signUp = catchAsync(async (req, res, next) => {
         role: config.role.USER,
     });
 
-    // Create bank account
-    await axios.post(`${config.BANK_URL}/api/account/create-account`, {
+    // Create bank account in bank server
+    await axios.post(`${bankUrl}/api/account/create-account`, {
         username,
         password: encryptedPassword,
     });
@@ -202,33 +204,48 @@ exports.protectPage = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
     // 1) Get user from collection
     const { user } = req;
+    const { userId, username, password } = user;
 
     // 2) Check if POSTed current password is correct
-    if (!verifyPassword(req.body.currentPassword, user.password)) {
+    const { currentPassword, password: rawPassword } = req.body;
+    if (!verifyPassword(currentPassword, password)) {
         return next(new AppError('Your current password is wrong!', 401));
     }
 
     // 3) If so, update the password
-    const password = encryptPassword(req.body.password);
-    const userEntity = {
-        userId: user.userId,
-        password,
-    };
-    await accountModel.updateAccount(userEntity);
+    const newPassword = encryptPassword(rawPassword);
+    await accountModel.updateAccount({
+        userId,
+        password: newPassword,
+    });
 
-    // 4) Log user in, send JWT
-    createSendToken(user, 200, req, res);
+    // 4) Update password in bank server
+    await axios.patch(`${bankUrl}/api/account/password`, {
+        username,
+        password,
+    });
+
+    // 5) Create a new session
+    await new Promise((resolve, reject) => {
+        req.session.regenerate((err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+
+    // 6) Login again
+    await axios.post(`${req.protocol}://${req.get('host')}/api/user/login`, {
+        username,
+        password: rawPassword,
+    });
+
+    res.status(204).json({});
 });
 
-exports.logOut = (req, res) => {
-    res.clearCookie('jwt');
-    res.status(200).json({
-        status: 'success',
-        token: '',
-    });
-};
-
-exports.logOutWebsite = async (req, res) => {
+exports.logOut = async (req, res) => {
     await new Promise((resolve, reject) => {
         req.session.regenerate((err) => {
             if (err) {

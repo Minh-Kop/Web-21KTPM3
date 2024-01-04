@@ -5,7 +5,7 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <a href="/users/me" style="text-decoration: none; color: #ff550d">
+                <a href="/user/me" style="text-decoration: none; color: #ff550d">
                     Thông tin tài khoản
                 </a>
             </li>
@@ -130,7 +130,7 @@
         // Send PATCH request using Ajax
         $.ajax({
             type: 'PATCH',
-            url: '/users/updateMe',
+            url: '/user/updateMe',
             data: user,
             success: function (response) {
                 // Handle success, e.g., show a success message
@@ -191,7 +191,7 @@
         else {
             $.ajax({
                 type: 'PATCH',
-                url: '/users/updatePassword',
+                url: '/user/updatePassword',
                 data: password,
                 success: function (response) {
                     // Handle success, e.g., show a success message

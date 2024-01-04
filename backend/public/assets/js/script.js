@@ -89,7 +89,7 @@ $('#sign-up').on('click', async (e) => {
         },
         body: JSON.stringify(body),
     };
-    const apiUrl = '/api/users/signup';
+    const apiUrl = '/api/user/signup';
 
     const res = await fetch(apiUrl, requestOptions);
     const result = await res.json();
@@ -151,16 +151,13 @@ $('#login').on('click', async (e) => {
         username: usernameValue,
         password: passwordValue,
     };
-    const requestOptions = {
+    const res = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
-    };
-    const apiUrl = '/api/users/login';
-
-    const res = await fetch(apiUrl, requestOptions);
+    });
 
     // If sign up fails
     if (!res.ok) {

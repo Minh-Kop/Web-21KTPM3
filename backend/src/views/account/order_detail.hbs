@@ -1,59 +1,19 @@
 <style>
-    .order-view-status-new-order,
-    .order-view-status-processing,
-    .order-view-status-canceled {
-        text-align: center;
-        position: relative;
-    }
-
-    .order-view-icon-img {
-        border: 3px solid;
-        border-radius: 50%;
-        background-size: 25px;
-        height: 100%;
-    }
-
-    .order-view-status-new-order,
-    .order-view-status-processing,
-    .order-view-status-canceled {
-        flex: 1;
-    }
-
-    .order-view-icon-container {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .order-view-progress-bar {
-        position: absolute;
-        background: #29a72a;
-        top: calc(50% - 25px);
-        height: 3px;
-        width: calc(100% - 60px);
-        left: calc(50% + 30px);
-    }
-
-    .order-view-icon-content p {
-        margin: 0;
-    }
-
-    .order-view-icon-content p:nth-child(1) {
-        font-weight: bold;
-    }
-
-    .order-view-icon-content {
-        margin-top: 10px;
-    }
-
-    .order-view-status-container {
-        display: flex;
-        margin-top: 10px;
-        border: 1px solid #e0e0e0;
-        padding: 10px 0px;
-    }
+    .order-view-status-new-order, .order-view-status-processing,
+    .order-view-status-canceled { text-align: center; position: relative; }
+    .order-view-icon-img { border: 3px solid; border-radius: 50%;
+    background-size: 25px; height: 100%; } .order-view-status-new-order,
+    .order-view-status-processing, .order-view-status-canceled { flex: 1; }
+    .order-view-icon-container { display: flex; flex-direction: column; }
+    .order-view-progress-bar { position: absolute; background: #29a72a; top:
+    calc(50% - 25px); height: 3px; width: calc(100% - 60px); left: calc(50% +
+    30px); } .order-view-icon-content p { margin: 0; } .order-view-icon-content
+    p:nth-child(1) { font-weight: bold; } .order-view-icon-content { margin-top:
+    10px; } .order-view-status-container { display: flex; margin-top: 10px;
+    border: 1px solid #e0e0e0; padding: 10px 0px; }
 </style>
 <div class='text-start px-4 row m-0 pb-3' style='background-color: #eae7dc'>
-    <div class='card col-2 mt-3 border  -success rounded h-100'>
+    <div class='card col-2 mt-3 border -success rounded h-100'>
         <div class='card-header fw-bold text-danger fs-4'>
             Tài khoản
         </div>
@@ -74,7 +34,10 @@
         </ul>
     </div>
     <div class='container col-9'>
-        <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
+        <div
+            class='container mt-3 border border-success rounded text-start'
+            style='background-color: FFFFFF'
+        >
             <h4 class='mt-2 mb-3'>CHI TIẾT ĐƠN HÀNG</h4>
             <span class='badge rounded-pill text-bg-success'>Đơn hàng hoàn tất</span>
             <div class='row'>
@@ -90,7 +53,10 @@
                 <dt class='col p-0'>100000 đ</dt>
             </div>
         </div>
-        <div class='container px-4 text-start mt-3 border border-success rounded' style='background-color: #ffffff'>
+        <div
+            class='container px-4 text-start mt-3 border border-success rounded'
+            style='background-color: #ffffff'
+        >
             <div class='row gx-5'>
                 <div class='col d- p-0 ms-3'>
                     <div class='p-2 border border-dark-subtle m-2 flex-fill'>
@@ -117,59 +83,82 @@
                     </div>
                 </div>
             </div>
-            <div class='order-view-status-container border border-dark-subtle mb-2'>
+            <div
+                class='order-view-status-container border border-dark-subtle mb-2'
+            >
                 <div class='order-view-status-new-order'>
                     <div class='order-view-icon-container'>
-                        <div style='
+                        <div
+                            style='
                                         height: 60px;
                                         width: 60px;
                                         align-self: center;
-                                    '>
-                            <div class='order-view-icon-img' style='
+                                    '
+                        >
+                            <div
+                                class='order-view-icon-img'
+                                style='
                                             background: url(https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_donhangmoi_green.svg)
                                                 no-repeat center;
                                             border-color: #29a72a;
-                                        '></div>
+                                        '
+                            ></div>
                         </div>
                         <div class='order-view-icon-content'>
                             <p>Đơn hàng mới</p>
                             <p>28/12/2020 - 06:42</p>
                         </div>
                     </div>
-                    <div class='order-view-progress-bar' style='background: #29a72a'></div>
+                    <div
+                        class='order-view-progress-bar'
+                        style='background: #29a72a'
+                    ></div>
                 </div>
                 <div class='order-view-status-new-order'>
                     <div class='order-view-icon-container'>
-                        <div style='
+                        <div
+                            style='
                                         height: 60px;
                                         width: 60px;
                                         align-self: center;
-                                    '>
-                            <div class='order-view-icon-img' style='
+                                    '
+                        >
+                            <div
+                                class='order-view-icon-img'
+                                style='
                                             background: url(https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_dangxuly_green.svg)
                                                 no-repeat center;
                                             border-color: #29a72a;
-                                        '></div>
+                                        '
+                            ></div>
                         </div>
                         <div class='order-view-icon-content'>
                             <p>Đang xử lý</p>
                             <p>29/12/2020 - 09:57</p>
                         </div>
                     </div>
-                    <div class='order-view-progress-bar' style='background: #29a72a'></div>
+                    <div
+                        class='order-view-progress-bar'
+                        style='background: #29a72a'
+                    ></div>
                 </div>
                 <div class='order-view-status-new-order'>
                     <div class='order-view-icon-container'>
-                        <div style='
+                        <div
+                            style='
                                         height: 60px;
                                         width: 60px;
                                         align-self: center;
-                                    '>
-                            <div class='order-view-icon-img' style='
+                                    '
+                        >
+                            <div
+                                class='order-view-icon-img'
+                                style='
                                             background: url(https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_hoantat_green.svg)
                                                 no-repeat center;
                                             border-color: #29a72a;
-                                        '></div>
+                                        '
+                            ></div>
                         </div>
                         <div class='order-view-icon-content'>
                             <p>Hoàn tất</p>
@@ -179,7 +168,10 @@
                 </div>
             </div>
         </div>
-        <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
+        <div
+            class='container mt-3 border border-success rounded text-start'
+            style='background-color: FFFFFF'
+        >
             <p class='mt-2'>
                 Đơn hàng:
                 <span class='fw-bold'>101719588</span>
@@ -203,13 +195,17 @@
                 <tbody>
                     <tr>
                         <th scope='row'>
-                            <img class='img-fluid'
+                            <img
+                                class='img-fluid'
                                 src='https://cdn0.fahasa.com/media/catalog/product/g/r/grimgar---tap-9.jpg'
-                                style='width: 100px; height: 100px' />
+                                style='width: 100px; height: 100px'
+                            />
                         </th>
                         <td class='text-wrap' style='width: 25rem'>
-                            <a href='/books/' style='text-decoration: none; color: black'>Grimgar - Ảo Ảnh Và Tro Tàn -
-                                Tập 9 - Bản Giới Hạn
+                            <a
+                                href='/book/'
+                                style='text-decoration: none; color: black'
+                            >Grimgar - Ảo Ảnh Và Tro Tàn - Tập 9 - Bản Giới Hạn
                                 - Tặng Kèm Bookmark + 5 Bao Lì Xì</a>
                         </td>
                         <td>80750 đ</td>

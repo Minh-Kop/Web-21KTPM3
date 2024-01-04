@@ -133,7 +133,7 @@ const renderCartInNavbar = async () => {
         } = book;
         html += `
             <li class="nav__cart__dropdown__book-item">
-                <a class="nav__cart__dropdown__book-link" href="/books/${bookId}">
+                <a class="nav__cart__dropdown__book-link" href="/book/${bookId}">
                     <img class="thumb" src="${image}" alt="">
                     <div class="info">
                         <h2 class="heading line-clamb">${bookName}</h2>

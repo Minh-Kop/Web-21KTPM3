@@ -30,7 +30,7 @@ exports.getBooks = catchAsync(async (req, res, next) => {
     sortType = sortType || 'BOOK_DISCOUNTED_PRICE';
 
     page = +page || 1;
-    limit = +limit || 12;
+    limit = +limit || 24;
     const offset = (page - 1) * limit;
 
     const books = await searchModel.getBooks({

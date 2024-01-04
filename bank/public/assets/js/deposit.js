@@ -32,7 +32,6 @@ $('.submit-btn').click(async (e) => {
     const deposit = depositEl.val().trim();
     const passwordEl = $('#password');
     const password = passwordEl.val().trim();
-    console.log({ deposit, password });
 
     const numberRegex = /^\d+$/;
     const passwordRegex = /.+/;
