@@ -6,5 +6,6 @@ const { protect } = require('../controllers/authController');
 const router = express.Router();
 
 router.post('/deposit', protect, transactionController.deposit);
+router.post('/pay-order', transactionController.payOrder);
 
 module.exports = router;

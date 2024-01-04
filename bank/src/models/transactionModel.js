@@ -11,6 +11,20 @@ exports.createDeposit = async ({ accountId, deposit }) => {
     return result;
 };
 
+exports.createPaymentTransaction = async ({
+    payerId,
+    total,
+    changedReason,
+}) => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    request.input('payerId', sql.Char, payerId);
+    request.input('total', sql.Int, total);
+    request.input('changedReason', sql.NVarChar, changedReason);
+    const result = await request.execute('sp_CreatePaymentTransaction');
+    return result;
+};
+
 exports.getTransactions = async (accountId) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);

@@ -112,3 +112,47 @@ BEGIN TRANSACTION
 COMMIT
 RETURN 1
 GO
+
+IF OBJECT_ID('sp_CreatePaymentTransaction') IS NOT NULL
+	DROP PROC sp_CreatePaymentTransaction
+GO
+CREATE PROCEDURE sp_CreatePaymentTransaction (
+    @payerId CHAR(5),
+    @total int,
+    @changedReason NVARCHAR(300)
+)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+        DECLARE @payerBalance bigint = (select BALANCE from ACCOUNT where ACCOUNTID = @payerId)
+        if(@payerBalance < @total)
+        BEGIN
+            PRINT N'Not have enough money to pay'
+            ROLLBACK  
+            RETURN -1
+        END
+
+        declare @payeeId char(5) = 'UB000'
+        DECLARE @payeeBalance bigint = (select BALANCE from ACCOUNT where ACCOUNTID = @payeeId)
+        set @payerBalance = @payerBalance - @total
+        set @payeeBalance = @payeeBalance + @total
+
+        declare @transactionId char(5) = (select dbo.f_CreateTransactionId('TR'))
+        INSERT into [TRANSACTION] (TRANSACTIONID, CHANGED_TIME, CHANGED_MONEY, CHANGED_REASON) VALUES
+            (@transactionId, GETDATE(), @total, @changedReason)
+        INSERT into TRANSFER (ACCOUNTID, TRANSACTIONID, TRANSFER_TYPE, BALANCE) VALUES
+            (@payerId, @transactionId, 1, @payerBalance),
+            (@payeeId, @transactionId, 2, @payeeBalance)
+
+        UPDATE ACCOUNT set BALANCE = @payerBalance WHERE ACCOUNTID = @payerId
+        UPDATE ACCOUNT set BALANCE = @payeeBalance WHERE ACCOUNTID = @payeeId
+	END TRY
+
+	BEGIN CATCH
+		PRINT N'Bị lỗi'
+		ROLLBACK  
+		RETURN 0
+	END CATCH
+COMMIT
+RETURN 1
+GO

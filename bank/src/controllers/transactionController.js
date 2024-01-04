@@ -4,6 +4,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const crypto = require('../utils/crypto');
 const transactionModel = require('../models/transactionModel');
+const accountModel = require('../models/accountModel');
 
 const deposit = catchAsync(async (req, res, next) => {
     const { deposit, password } = req.body;
@@ -20,6 +21,35 @@ const deposit = catchAsync(async (req, res, next) => {
         accountId,
         deposit: +deposit,
     });
+
+    res.json({});
+});
+
+const payOrder = catchAsync(async (req, res, next) => {
+    const { total, username, password } = req.body;
+
+    const account = await accountModel.getByUsername(username);
+    if (!account) {
+        return next(new AppError('Invalid account', 401));
+    }
+
+    const { ACCOUNTID: payerId, ENC_PWD: encryptedPassword } = account;
+
+    // Check validation of password
+    if (!crypto.verifyPassword(password, encryptedPassword)) {
+        return next(new AppError('Wrong password', 401));
+    }
+
+    // Create a payment transaction
+    const { returnValue } = await transactionModel.createPaymentTransaction({
+        payerId,
+        total: +total,
+        changedReason: 'Thanh toán cho đơn hàng tại Fabook',
+    });
+
+    if (returnValue === -1) {
+        return next(new AppError('Not have enough money', 400));
+    }
 
     res.json({});
 });
@@ -84,7 +114,6 @@ const getTransactionDetailPage = catchAsync(async (req, res, next) => {
     transaction.changedMoney = parseInt(
         transaction.changedMoney
     ).toLocaleString('vi-VN');
-    console.log(transaction);
 
     res.render('transaction/transactionDetail', {
         title: 'Transaction detail',
@@ -96,6 +125,7 @@ const getTransactionDetailPage = catchAsync(async (req, res, next) => {
 
 module.exports = {
     deposit,
+    payOrder,
     getBalancePage,
     getTransactionPage,
     getTransactionDetailPage,

@@ -1,5 +1,10 @@
 {{! Bottom sidebar }}
-<div class='bottom-sidebar-content'>
+<div 
+    class='bottom-sidebar-content' 
+    data-username="{{username}}" 
+    data-final-total="{{finalTotalNumber}}" 
+    data-bank-url="{{bankUrl}}"
+>
     <div class='container'>
         {{! Total }}
         <div class='checkout-total'>
@@ -70,7 +75,7 @@
         </h2>
         <div class='checkout-block__content'>
             {{! Shipping addresses list }}
-            <ul data-cart-total='{{cartTotalNumber}}'>
+            <ul id="shippingAddressesList" data-cart-total='{{cartTotalNumber}}'>
                 {{#each shippingAddresses}}
                     <li>
                         <label class='addr-radio' for='{{addrId}}'>

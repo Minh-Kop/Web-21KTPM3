@@ -4,5 +4,5 @@ $('#logout').click(async (e) => {
     await fetch('/logout', {
         method: 'delete',
     });
-    location.reload();
+    location.assign('/');
 });

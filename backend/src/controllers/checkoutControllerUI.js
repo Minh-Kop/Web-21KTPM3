@@ -1,9 +1,10 @@
 const catchAsync = require('../utils/catchAsync');
 const shippingAddressControllerUI = require('./shippingAddressControllerUI');
-// const { getDistance } = require('../utils/map');
-// const config = require('../config/config');
+const config = require('../config/config');
 const { separateThousandByDot } = require('../utils/utils');
 const locationController = require('./locationController');
+
+const bankUrl = config.BANK_URL;
 
 const getCheckoutPage = catchAsync(async (req, res, next) => {
     // Information from pre-middleware
@@ -64,8 +65,10 @@ const getCheckoutPage = catchAsync(async (req, res, next) => {
         shippingFee: separateThousandByDot(shippingFee),
         shippingFeeNumber: shippingFee,
         finalTotal: separateThousandByDot(finalTotal),
+        finalTotalNumber: finalTotal,
         deliveryDate,
         cartTotalNumber,
+        bankUrl,
     });
 });
 
