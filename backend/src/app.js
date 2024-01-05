@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+require('./passport');
 const session = require('express-session');
 
 const { JWT_SECRET: secret } = require('./config/config');
@@ -17,6 +18,9 @@ const categoryController = require('./controllers/categoryControllerUI');
 const cartController = require('./controllers/cartControllerUI');
 const router = require('./routes');
 const hbs = require('./utils/handlebars')(expressHandlebars);
+
+// Solve self signed certificate error
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Start express app
 const app = express();

@@ -68,10 +68,7 @@
 
 .radio-btn [type='checkbox']:checked + label::after {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    inset: 0;
     margin: auto;
 
     width: 12px;
@@ -158,12 +155,6 @@
     border-radius: 5px;
 }
 
-.quantity-box__btn {
-    background-color: transparent;
-    border: none;
-    outline: none;
-}
-
 .quantity-box__btn__img {
     width: 15px;
     height: 15px;
@@ -181,9 +172,6 @@
 /* Delete button */
 .delete-btn {
     padding: 0;
-    border: none;
-    outline: none;
-    background-color: transparent;
 }
 
 .delete-btn__icon {
@@ -243,11 +231,9 @@
 .cart-checkout__btn {
     width: 100%;
     padding: 10px 20px;
-    border: none;
-    outline: none;
     border-radius: 10px;
 
-    background-color: #e0e0e0;
+    background-color: var(--disabled-btn-color);
     color: white;
     text-transform: uppercase;
 

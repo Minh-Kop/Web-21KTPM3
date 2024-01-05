@@ -1,0 +1,36 @@
+<div style='background: var(--primary-color);'>
+    <div class='container'>
+        <div class='nav'>
+            {{! Logo }}
+            <a class='nav__logo' href='/'>Fabank</a>
+
+            {{! Account }}
+            <div class='nav__account'>
+                <a href='#!' class='nav__link'>
+                    <img
+                        class='nav__account_img'
+                        src='/assets/img/account_icon.svg'
+                        alt='Account'
+                    />
+                    <div class='nav__link-label'>
+                        {{username}}
+                    </div>
+                </a>
+
+                <div class='nav__account__dropdown--logged-in'>
+                    <a id='logout' href='#!' class='link'>
+                        <img
+                            class='icon'
+                            src='/assets/img/logout_icon.svg'
+                            alt=''
+                        />
+                        <span>Đăng xuất</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel='stylesheet' href='/assets/css/navbar.css' />
+<script src='/assets/js/navbar.js'></script>

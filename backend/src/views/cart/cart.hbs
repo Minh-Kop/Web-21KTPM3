@@ -46,7 +46,7 @@
 
                         {{! Item info }}
                         <div class='cart-item__info'>
-                            <a href='/books/{{bookId}}'>
+                            <a href='/book/{{bookId}}'>
                                 <img
                                     class='cart-item__img'
                                     src='{{image}}'
@@ -57,7 +57,7 @@
                                 <h2 class='cart-item__title'>
                                     <a
                                         class='line-clamb'
-                                        href='/books/{{bookId}}'
+                                        href='/book/{{bookId}}'
                                     >
                                         {{bookName}}
                                     </a>
@@ -78,6 +78,7 @@
                         {{! Item quantity }}
                         <div>
                             <div class='quantity-box'>
+                                {{!-- Minus button --}}
                                 <button class='quantity-box__btn minus'>
                                     <svg
                                         class='quantity-box__btn__img'
@@ -92,9 +93,14 @@
                                         />
                                     </svg>
                                 </button>
+                                
                                 <span
                                     class='quantity-box__quantity'
-                                >{{quantity}}</span>
+                                >
+                                    {{quantity}}
+                                </span>
+                                
+                                {{!-- Plus button --}}
                                 <button class='quantity-box__btn plus'>
                                     <svg
                                         class='quantity-box__btn__img'

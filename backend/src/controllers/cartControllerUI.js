@@ -1,7 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const bookModel = require('../models/bookModel');
 const cartModel = require('../models/cartModel');
-const { seperateThousandByDot } = require('../utils/utils');
+const { separateThousandByDot } = require('../utils/utils');
 
 const getCart = async (userId) => {
     const cartResult = await cartModel.getCartByUserId(userId);
@@ -15,9 +15,10 @@ const getCart = async (userId) => {
     let cartBooks = await bookModel.getBooksByCartId(cartId);
     cartBooks = await Promise.all(
         cartBooks.map(async (book) => {
-            book.originalPrice = seperateThousandByDot(book.originalPrice);
-            book.discountedPrice = seperateThousandByDot(book.discountedPrice);
-            book.cartPrice = seperateThousandByDot(book.cartPrice);
+            book.originalPrice = separateThousandByDot(book.originalPrice);
+            book.discountedPrice = separateThousandByDot(book.discountedPrice);
+            book.cartPriceNumber = book.cartPrice;
+            book.cartPrice = separateThousandByDot(book.cartPrice);
 
             const { image } = await bookModel.getCoverImage(book.bookId);
             book.image = image;
@@ -29,7 +30,8 @@ const getCart = async (userId) => {
     return {
         cartId,
         cartCount,
-        cartTotal: seperateThousandByDot(cartTotal),
+        cartTotal: separateThousandByDot(cartTotal),
+        cartTotalNumber: cartTotal,
         cartBooks,
     };
 };
