@@ -38,6 +38,10 @@ module.exports = (app) => {
             try {
                 const user = await accountModel.getByUsername(username);
 
+                if (!user) {
+                    return done('Invalid authentication', null);
+                }
+
                 // Get the database password
                 const encryptedPassword = user.ENC_PWD;
 

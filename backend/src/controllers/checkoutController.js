@@ -41,16 +41,16 @@ exports.getPrice = catchAsync(async (req, res, next) => {
 });
 
 exports.createInitialOrder = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
 
     // Delete older initial orders
-    await orderModel.deleteAllInitialOrders(email);
+    await orderModel.deleteAllInitialOrders(userId);
 
     // Prepare order items
     let books;
 
     const { CART_ID: cartId, CART_TOTAL: merchandiseSubtotal } =
-        await cartModel.getCartByEmail(email);
+        await cartModel.getCartByUserID(userId);
 
     // If cart is empty, raise error
     if (merchandiseSubtotal === 0) {
@@ -63,7 +63,7 @@ exports.createInitialOrder = catchAsync(async (req, res, next) => {
 
     // Get shipping address
     let shippingAddress =
-        await shippingAddressModel.getShippingAddressesByEmail(email);
+        await shippingAddressModel.getShippingAddressesByUserId(userId);
     shippingAddress = shippingAddress.filter((el) => el.isDefault)[0];
 
     // Is there no shipping address?
@@ -93,7 +93,7 @@ exports.createInitialOrder = catchAsync(async (req, res, next) => {
 
     // Create an order
     const result = await orderModel.createInitialOrder({
-        email,
+        userId,
         addrId: shippingAddress.addrId,
         merchandiseSubtotal,
         shippingFee,
@@ -134,7 +134,7 @@ exports.createInitialOrder = catchAsync(async (req, res, next) => {
 
     // If there is any failed book creation, delete this order
     if (isFailedList.includes(0) || isFailedList.includes(-1)) {
-        await orderModel.deleteAllInitialOrders(email);
+        await orderModel.deleteAllInitialOrders(userId);
         return next(
             new AppError(`There is at least 1 no longer existed book.`, 404),
         );
@@ -144,6 +144,76 @@ exports.createInitialOrder = catchAsync(async (req, res, next) => {
         orderId,
     };
     next();
+});
+
+exports.checkout = catchAsync(async (req, res, next) => {
+    const { addrId, shippingFee } = req.body;
+    const { user, cart } = req;
+    const { userId } = user;
+    const { cartId, cartTotalNumber: merchandiseSubtotal, cartBooks } = cart;
+
+    // Prepare order items
+    // If cart is empty, raise error
+    if (merchandiseSubtotal === 0) {
+        return next(new AppError("Can't check out with empty cart.", 400));
+    }
+
+    const books = cartBooks.filter((el) => el.isClicked);
+
+    // Create an order
+    const result = await orderModel.createInitialOrder({
+        userId,
+        addrId,
+        merchandiseSubtotal,
+        shippingFee: +shippingFee,
+    });
+
+    if (result.returnValue !== 1) {
+        return next(new AppError('Create order failed.', 500));
+    }
+
+    const { orderId } = result.recordset[0];
+
+    // Transfer clicked books in cart to order
+    const isCreatedList = await Promise.all(
+        books.map(async (book) => {
+            const { bookId, quantity, cartPriceNumber: price } = book;
+            const createdResult = await orderModel.createDetailedOrder({
+                orderId,
+                bookId,
+                quantity,
+                price,
+            });
+            return {
+                bookId,
+                createdResult,
+            };
+        }),
+    );
+
+    // If there are any errors in book creation, delete that book from the cart
+    const isFailedList = await Promise.all(
+        isCreatedList.map(async ({ bookId, createdResult }) => {
+            if (createdResult !== 1) {
+                await cartModel.deleteFromCart(cartId, bookId);
+            }
+            return createdResult;
+        }),
+    );
+    await cartModel.updateCartQuantityCartTotal(cartId);
+
+    // If there is any failed order detail creation, delete this order
+    if (isFailedList.some((el) => el !== 1)) {
+        await orderModel.deleteOrder(orderId);
+        return next(
+            new AppError(`There is at least 1 no longer existed book.`, 404),
+        );
+    }
+
+    // Delete clicked books in cart
+    await cartModel.deleteClickedBooksFromCart(userId, orderId);
+
+    res.json({ orderId });
 });
 
 exports.updateCheckout = catchAsync(async (req, res, next) => {
@@ -206,8 +276,8 @@ exports.updateCheckout = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteInitialOrders = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
-    const result = await orderModel.deleteAllInitialOrders(email);
+    const { userId } = req.user;
+    const result = await orderModel.deleteAllInitialOrders(userId);
     if (result <= 0) {
         return next(new AppError('Order not found.', 404));
     }
@@ -217,9 +287,9 @@ exports.deleteInitialOrders = catchAsync(async (req, res, next) => {
 });
 
 exports.placeOrder = catchAsync(async (req, res, next) => {
-    const { email } = req.user;
+    const { userId } = req.user;
     const { orderId } = req.params;
-    const { paymentId } = req.body;
+    const { transactionId } = req.body;
 
     // Verify order ID
     const { totalPayment } = await orderModel.getTotalPayment(orderId);
@@ -229,12 +299,12 @@ exports.placeOrder = catchAsync(async (req, res, next) => {
 
     // Get user information
     const { FULLNAME: fullName, PHONE_NUMBER: phoneNumber } =
-        await accountModel.getByEmail(email);
+        await accountModel.getByUserId(userId);
     if (!fullName) {
-        return next(new AppError('Email not found.', 404));
+        return next(new AppError('User not found.', 404));
     }
     const userInfo = {
-        email,
+        userId,
         fullName,
         phoneNumber,
         orderId,

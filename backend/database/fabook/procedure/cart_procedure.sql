@@ -239,16 +239,6 @@ CREATE PROCEDURE sp_DeleteClickedBooksFromCart (
 AS
 BEGIN TRANSACTION
 	BEGIN TRY
-        -- Update order date
-        UPDATE H_ORDER
-        SET ORDER_DATE = GETDATE()
-        WHERE ORDER_ID = @orderId
-
-        -- Delete user's vouchers
-        DELETE from USER_VOUCHER where USERID = @userId and VOUCHER_ID IN (select uv.VOUCHER_ID 
-                                                                            from USER_VOUCHER uv join ORDER_VOUCHER ov on ov.VOUCHER_ID = uv.VOUCHER_ID 
-                                                                            where ORDER_ID = @orderId)
-
         -- Delete each book in cart
         DECLARE @cartId CHAR(5) = (select CART_ID from CART where USERID = @userId)
         WHILE EXISTS (select 1 from CART_DETAIL where CART_ID = @cartId and IS_CLICKED = 1)
@@ -271,7 +261,6 @@ BEGIN TRANSACTION
         select @cartCount = COUNT(*)
         from CART_DETAIL
         where CART_ID = @cartId
-        GROUP by CART_ID
         
         UPDATE CART
         set CART_COUNT = @cartCount, CART_TOTAL = 0

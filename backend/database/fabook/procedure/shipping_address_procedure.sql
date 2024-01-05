@@ -30,7 +30,7 @@ IF OBJECT_ID('sp_GetShippingAddressById') IS NOT NULL
 	DROP PROC sp_GetShippingAddressById
 GO
 CREATE PROCEDURE sp_GetShippingAddressById (
-    @id CHAR(10)
+    @id CHAR(5)
 )
 AS
 BEGIN TRANSACTION
@@ -41,7 +41,7 @@ BEGIN TRANSACTION
         from SHIPPING_ADDRESS sa join PROVINCE p on p.PROV_ID = sa.PROV_ID
             join DISTRICT d on d.DIST_ID = sa.DIST_ID
             join WARD w on w.WARD_ID = sa.WARD_ID
-        where sa.ADDR_ID = @id
+        where sa.ADDR_ID = @id and sa.SOFT_DELETE = 0
 	END TRY
 
 	BEGIN CATCH
@@ -91,14 +91,27 @@ AS
 BEGIN TRANSACTION
 	BEGIN TRY
         DECLARE @id char(10) = dbo.f_CreateShippingAddressId()
+        declare @countDefaultAddr INT
+        
         if @isDefault = 1
         BEGIN
             update SHIPPING_ADDRESS
             set IS_DEFAULT = 0
             WHERE USERID = @userId
         END
+
+        -- Count number of default addresses
+        select @countDefaultAddr = count(*)
+        from SHIPPING_ADDRESS
+        where USERID = @userId and IS_DEFAULT = 1
+        -- If number of default addresses = 0, set new address to be default
+        if @countDefaultAddr = 0
+        BEGIN
+            set @isDefault = 1
+        END
+
         INSERT into SHIPPING_ADDRESS (ADDR_ID, USERID, DETAILED_ADDR, WARD_ID, DIST_ID, PROV_ID, RECEIVER_NAME, RECEIVER_PHONE, LATITUDE, LONGITUDE, IS_DEFAULT, SOFT_DELETE)
-            VALUES (@id, @userId, @address, @wardId, @distId, @provId, @fullName, @phoneNumber, @lat, @lng, @isDefault, 1)
+            VALUES (@id, @userId, @address, @wardId, @distId, @provId, @fullName, @phoneNumber, @lat, @lng, @isDefault, 0)
 	END TRY
 
 	BEGIN CATCH

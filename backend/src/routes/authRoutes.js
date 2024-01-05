@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.route('/login').get(authController.getLoginPage);
 router.route('/signup').get(authController.getSignupPage);
-router.delete('/logout', authController.logOutWebsite);
+router.delete('/logout', authController.logOut);
 
 module.exports = router;

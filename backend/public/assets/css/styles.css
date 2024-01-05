@@ -9,6 +9,7 @@
     --category-font-color: #666;
     --light-gray-color: #f2f4f5;
     --border-bottom-color: #ced4da;
+    --disabled-btn-color: #e0e0e0;
 }
 
 body {
@@ -18,6 +19,12 @@ body {
 
 a {
     text-decoration: none;
+}
+
+button {
+    border: none;
+    outline: none;
+    background-color: transparent;
 }
 
 /* Create ... when text overflows */

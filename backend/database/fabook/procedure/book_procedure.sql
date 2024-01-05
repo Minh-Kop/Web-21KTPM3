@@ -93,7 +93,7 @@ BEGIN TRANSACTION
 			b.BOOK_DISCOUNTED_PRICE 'discountedPrice', cd.CART_PRICE 'cartPrice', b.STOCK 'stock', cd.CART_QUANTITY 'quantity',
 			cd.IS_CLICKED 'isClicked'
 		from CART_DETAIL cd LEFT join BOOK b on b.BOOK_ID = cd.BOOK_ID
-		where cd.CART_ID = @cartId and b.SOFT_DELETE = 0
+		where cd.CART_ID = @cartId
 	END TRY
 
 	BEGIN CATCH

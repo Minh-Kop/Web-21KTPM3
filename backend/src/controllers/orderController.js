@@ -86,19 +86,19 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
 });
 
 exports.getMe = catchAsync(async (req, res, next) => {
-    req.query.email = req.user.email;
+    req.query.userId = req.user.userId;
     next();
 });
 
 exports.getUserOrders = catchAsync(async (req, res, next) => {
-    const { email, orderState, limit: strLimit, page: strPage } = req.query;
+    const { userId, orderState, limit: strLimit, page: strPage } = req.query;
 
     const page = +strPage || 1;
     const limit = +strLimit || 10;
     const offset = (page - 1) * limit;
 
     const returnedOrders = await orderModel.getUserOrders({
-        email,
+        userId,
         orderState,
         limit,
         offset,
