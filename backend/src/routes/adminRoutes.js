@@ -1,4 +1,15 @@
 const express = require('express');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/assets/img/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
+const upload = multer({ storage: storage });
 const {
     renderReadBooks,
     renderCreateBook,
@@ -8,6 +19,7 @@ const {
     renderCreateCategory,
     deleteBook,
     createBook,
+    createBookTest,
 } = require('../controllers/adminController');
 const { updateBook } = require('../controllers/bookControllerUI');
 const {
@@ -21,7 +33,7 @@ const router = express.Router();
 router.get('/books', renderReadBooks);
 router.get('/book/createBookUI', renderCreateBook);
 router.get('/book/updateBookUI', renderUpdateBook);
-router.post('/book/create', createBook);
+router.post('/book/create', upload.array('files', 3), createBook);
 router.get('/book/update', updateBook);
 router.get('/book/delete', deleteBook);
 
