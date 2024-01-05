@@ -236,13 +236,10 @@ exports.createBook = catchAsync(async (req, res, next) => {
         bookFormat,
         description,
     } = req.body;
-    console.log(req.files, req.body.files, req.params);
-    let { coverImage, images } = req.files;
 
-    // Miss images
-    if (!coverImage && !images) {
-        return next(new AppError("Missing book's images!", 400));
-    }
+    const coverImage = req.files[0];
+    const images = req.files.slice(0);
+
     // Miss cover image
     if (!coverImage) {
         await Promise.all(
@@ -274,7 +271,7 @@ exports.createBook = catchAsync(async (req, res, next) => {
         !description ||
         !publishedYear
     ) {
-        await deleteCloudinaryImage(coverImage[0].filename);
+        await deleteCloudinaryImage(coverImage.filename);
         await Promise.all(
             images.map(async (el) => {
                 await deleteCloudinaryImage(el.filename);
@@ -294,7 +291,7 @@ exports.createBook = catchAsync(async (req, res, next) => {
 
     // Number < 0
     if (originalPrice < 0 || discountedNumber < 0 || stock < 0 || weight < 0) {
-        await deleteCloudinaryImage(coverImage[0].filename);
+        await deleteCloudinaryImage(coverImage.filename);
         await Promise.all(
             images.map(async (el) => {
                 await deleteCloudinaryImage(el.filename);
@@ -308,7 +305,7 @@ exports.createBook = catchAsync(async (req, res, next) => {
         path: item.path,
     }));
     images.unshift({
-        path: coverImage[0].path,
+        path: coverImage.path,
     });
 
     // Create entity to insert to database
@@ -332,8 +329,5 @@ exports.createBook = catchAsync(async (req, res, next) => {
     // Insert images
     await insertImages(bookId, images);
 
-    res.status(200).json({
-        status: 'success',
-        bookId,
-    });
+    res.redirect('/admin/books');
 });

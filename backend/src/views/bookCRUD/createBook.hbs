@@ -1,11 +1,13 @@
 <div class="update-book-container">
     <div class="btn-back">
-        <form action="/admin/book" method="get">
-            <button type="submit">&lt;</button>
+        <form action="/admin/books" method="get">
+            <button type="submit">
+                <img src="/assets/img/back_icon.svg" alt="Back">
+            </button>
         </form>
     </div>
     <div class="info-input">
-        <form action="/admin/book/create" method="post">
+        <form action="/admin/book/create" method="post" enctype="multipart/form-data">
             <div class="book-info">
                 <div class="father-categories-dropdown">
                     <div class="label">Danh mục cha:</div>
@@ -81,7 +83,7 @@
                     <textarea name="description" id="description" cols="30" rows="10"></textarea>
                 </div>
             </div>
-            <button class="btn-submit-create" type="submit">Cập nhật</button>
+            <button class="btn-submit-create" type="submit">Xác nhận</button>
         </form>
     </div>
 </div>
