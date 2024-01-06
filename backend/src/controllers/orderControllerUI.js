@@ -28,7 +28,7 @@ exports.getOrder = catchAsync(async (req, res, next) => {
             .format('DD/MM/YYYY HH:mm'),
     }));
 
-    res.status(200).json({
+    res.render('account/order_detail',{
         status: 'success',
         data: {
             deliveryInformation: deliveryInformation[0],
