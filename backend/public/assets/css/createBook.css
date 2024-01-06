@@ -10,6 +10,7 @@
 }
 
 .btn-back button {
+  padding: 0;
   height: 30px;
   width: 100px;
 
@@ -19,13 +20,19 @@
 
   background-color: #e98074;
 
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   font-family: Hahmlet;
   font-size: 20px;
 
   border: none;
   border-radius: 10px;
+}
+
+.btn-back button img {
+  height: 80%;
 }
 
 .info-input {
