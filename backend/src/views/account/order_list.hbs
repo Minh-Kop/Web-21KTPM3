@@ -75,13 +75,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each orders}}
                         <tr>
-                            <th scope='row'>1</th>
-                            <td>28/12/2020</td>
+                            <th scope='row'>{{orderId}}</th>
+                            <td>{{orderDate}}</td>
                             <td>
-                                Nguyễn Văn A
+                                {{fullName}}
                             </td>
-                            <td>85.525 đ</td>
+                            <td>{{totalPaymentString}} VNĐ</td>
                             <td>Bị hủy</td>
                             <td>
                                 <a href="/order/{{orderId}}" style="color: black">
@@ -89,6 +90,7 @@
                                 </a>
                             </td>
                         </tr>
+                        {{/each}}
                     </tbody>
                 </table>
             </div>

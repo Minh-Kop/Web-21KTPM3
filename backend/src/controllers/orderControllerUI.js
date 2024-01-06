@@ -28,7 +28,7 @@ exports.getOrder = catchAsync(async (req, res, next) => {
             .format('DD/MM/YYYY HH:mm'),
     }));
 
-    res.render('account/order_detail',{
+    res.render('account/order_detail', {
         status: 'success',
         data: {
             deliveryInformation: deliveryInformation[0],
@@ -131,17 +131,23 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
 
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
-
+    const uid = user.userId
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
 
     const returnedOrders = await orderModel.getUserOrders({
-        userId,
+        uid,
         orderState,
         limit,
         offset,
     });
+
+    returnedOrders.forEach(order => {
+        order.orderDate = order.orderDate.toISOString().split('T')[0];
+        order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');    
+    });
+    console.log(returnedOrders);
     const orders = await Promise.all(
         returnedOrders.map(async (order) => {
             const books = await bookModel.getBooksByOrderId(order.orderId);
@@ -154,7 +160,6 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
             };
         }),
     );
-    console.log(orders);
     res.render('account/order_list', {
         title: 'Đơn hàng của tôi',
         status: 'success',
