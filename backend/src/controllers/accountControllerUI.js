@@ -97,7 +97,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
     const { userId } = req.params;
     const { fullName, phoneNumber, birthday, gender, role } = req.body;
-
+    
     await accountModel.updateAccount({
         userId,
         fullName,
@@ -134,6 +134,14 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         sortType,
         limit,
         offset,
+    });
+
+    users.forEach(user => {
+        user.birthday = new Date(
+            user.birthday,
+        )
+            .toISOString()
+            .split('T')[0];
     });
 
     res.render('account/crud_users_list', {
