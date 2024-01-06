@@ -1,41 +1,33 @@
 const path = require('path');
 const express = require('express');
-const morgan = require('morgan');
 const expressHandlebars = require('express-handlebars');
 const rateLimit = require('express-rate-limit');
-// const helmet = require('helmet');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-// const session = require('express-session');const expressHandlebars = require('express-handlebars');
+const session = require('express-session');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const router = require('./routes');
 const hbs = require('./utils/handlebars')(expressHandlebars);
+const { JWT_SECRET: secret, SHOP_URL: shopUrl } = require('./config/config');
+
+// Solve self signed certificate error
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Start express app
 const app = express();
 
-app.set('trust proxy', true);
-
 // 1) GLOBAL MIDDLEWARES
 // Implement CORS
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://group-6-e-commerce.vercel.app'],
+    origin: [shopUrl],
     credentials: true,
 };
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
-
-// Set security HTTP headers
-// app.use(helmet());
-
-// Development logging
-if (process.env.NODE_ENV === 'development') {
-    // app.use(morgan('dev'));
-}
 
 // Limit requests from same API
 const limiter = rateLimit({
@@ -59,20 +51,20 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // Parse cookie
-// app.use(
-//     session({
-//         name: 'jwt',
-//         secret: 'khoi',
-//         resave: false,
-//         saveUninitialized: false,
-//         cookie: {
-//             maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
-//             sameSite: 'none',
-//             secure: true,
-//             httpOnly: true,
-//         },
-//     }),
-// );
+app.use(
+    session({
+        name: 'jwt',
+        secret,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            // maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+            // sameSite: 'none',
+            secure: true,
+            httpOnly: true,
+        },
+    })
+);
 
 // Data sanitization against XSS
 app.use(xss());
@@ -80,7 +72,14 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(hpp());
 
+// Set up passport
+require('./utils/passport')(app);
+
 // 2) ROUTES
+app.get('/', (req, res, next) => {
+    res.redirect('/account');
+});
+
 app.use(router);
 
 app.all('*', (req, res, next) => {

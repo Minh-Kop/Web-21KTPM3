@@ -4,7 +4,7 @@ const {
     searchCategoryTree,
     toListCategory,
     getParentBranch,
-    seperateThousandByDot,
+    separateThousandByDot,
 } = require('../utils/utils');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -125,11 +125,12 @@ exports.getAllBooks = async ({
                 originalPrice: item.BOOK_PRICE,
                 discountedPrice: item.BOOK_DISCOUNTED_PRICE,
                 discountedNumber: item.DISCOUNTED_NUMBER,
+                stock: item.STOCK,
                 avgRating: item.AVG_RATING,
                 countRating: item.COUNT_RATING,
             };
-            book.originalPrice = seperateThousandByDot(book.originalPrice);
-            book.discountedPrice = seperateThousandByDot(book.discountedPrice);
+            book.originalPrice = separateThousandByDot(book.originalPrice);
+            book.discountedPrice = separateThousandByDot(book.discountedPrice);
 
             const { image } = await bookModel.getCoverImage(book.bookId);
             book.image = image;
@@ -326,19 +327,39 @@ exports.getBestSeller = catchAsync(async (req, res, next) => {
 });
 
 exports.renderMainPage = catchAsync(async (req, res, next) => {
-    const result = await categoryModel.getAllCategory();
-    const categories = buildCategoryRoot(result);
-    const cateLists = [];
+    const cateLists = [
+        {
+            id: 'CA02',
+            categoryName: 'Comic - Truyện Tranh',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA03',
+            categoryName: 'Manga',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA05',
+            categoryName: 'Kỹ Năng Sống',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA06',
+            categoryName: 'Sách Cho Tuổi Mới Lớn',
+            description: undefined,
+            children: undefined,
+        },
+        {
+            id: 'CA07',
+            categoryName: 'Tâm Lý',
+            description: undefined,
+            children: undefined,
+        },
+    ];
     const cateBooks = [];
-
-    for (const i of categories[0].children) {
-        if (i.children) {
-            for (const j of i.children) {
-                cateLists.push(j);
-            }
-        }
-    }
-
     const page = 1;
     const limit = 5;
     const offset = (page - 1) * limit;
@@ -399,16 +420,20 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
         }),
     );
 
-    const { categoryTree } = req;
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
 
     res.render('mainPage/mainPage', {
         layout: 'main',
-        categories: cateLists.slice(0, 5),
+        categories: cateLists,
         cateBooks: cateBooks,
         newBooks: nBooks,
         categoryTree,
         navbar: () => 'navbar',
         footer: () => 'footer',
+        ...user,
+        ...cart,
+        isLoggedIn,
     });
 });
 

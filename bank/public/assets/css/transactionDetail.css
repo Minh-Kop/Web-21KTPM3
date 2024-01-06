@@ -1,0 +1,35 @@
+.detail-money--in,
+.detail-money--out {
+    color: rgb(17, 215, 17);
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.detail-money--out {
+    color: red;
+}
+
+.detail-info {
+    margin: 40px 0;
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    gap: 30px;
+}
+
+.detail-info__header {
+    font-size: 18px;
+}
+
+.detail-info__extra,
+.detail-info__content {
+    color: var(--balance-color);
+}
+
+.detail-info__content {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.detail-id {
+    font-weight: bold;
+}

@@ -134,7 +134,7 @@
         // Send PATCH request using Ajax
         $.ajax({
             type: 'PATCH',
-            url: '/users/updateMe',
+            url: '/user/updateMe',
             data: user,
             success: function (response) {
                 // Handle success, e.g., show a success message
@@ -195,7 +195,7 @@
         else {
             $.ajax({
                 type: 'PATCH',
-                url: '/users/updatePassword',
+                url: '/user/updatePassword',
                 data: password,
                 success: function (response) {
                     // Handle success, e.g., show a success message

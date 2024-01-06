@@ -15,30 +15,6 @@ exports.getShippingAddresses = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
-    const { userId } = req.user;
-    const { user, cart } = req;
-    const isLoggedIn = req.isAuthenticated();
-
-    const url = req.originalUrl;
-    const indexOfPage = url.lastIndexOf('&page');
-    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
-    const shippingAddresses =
-        await shippingAddressModel.getAllShippingAddressesByUserId(userId);
-    res.render('account/address_list', {
-        length: shippingAddresses.length,
-        title: 'Sổ địa chỉ',
-        shippingAddresses,
-        link: newUrl,
-        navbar: () => 'navbar',
-        footer: () => 'footer',
-        isLoggedIn,
-        ...user,
-        ...cart,
-        currentUrl: url,
-    });
-});
-
 exports.createShippingAddress = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const {
@@ -97,7 +73,6 @@ exports.updateShippingAddress = catchAsync(async (req, res, next) => {
 
 exports.deleteShippingAddress = catchAsync(async (req, res, next) => {
     const { addrId } = req.params;
-    console.log('entered');
     const result = await shippingAddressModel.deleteShippingAddress(addrId);
     if (result <= 0) {
         return next(new AppError('Shipping address not found.', 404));

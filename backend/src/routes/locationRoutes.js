@@ -8,5 +8,6 @@ router.get('/province', locationController.getProvinces);
 router.get('/district/:provId', locationController.getDistricts);
 router.get('/ward/:distId', locationController.getWards);
 router.get('/coordinate', locationController.getCoordinate);
+router.get('/shipping-fee', locationController.calculateShippingFee);
 
 module.exports = router;

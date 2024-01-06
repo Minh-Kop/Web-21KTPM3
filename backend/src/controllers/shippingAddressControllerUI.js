@@ -2,23 +2,16 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const shippingAddressModel = require('../models/shippingAddressModel');
 
-exports.getShippingAddresses = catchAsync(async (req, res, next) => {
-    const { userId } = req.user;
-
+exports.getShippingAddresses = async (userId) => {
     const shippingAddresses =
         await shippingAddressModel.getAllShippingAddressesByUserId(userId);
-    res.status(200).json({
-        status: 'success',
-        length: shippingAddresses.length,
-        shippingAddresses,
-    });
-});
+    return shippingAddresses;
+};
 
 exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
-    console.log('entered');
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
@@ -92,7 +85,6 @@ exports.updateShippingAddress = catchAsync(async (req, res, next) => {
 
 exports.deleteShippingAddress = catchAsync(async (req, res, next) => {
     const { addrId } = req.params;
-    console.log('entered');
     const result = await shippingAddressModel.deleteShippingAddress(addrId);
     if (result <= 0) {
         return next(new AppError('Shipping address not found.', 404));

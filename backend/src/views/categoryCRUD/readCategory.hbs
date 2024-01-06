@@ -1,0 +1,39 @@
+<div class="category-list-container">
+    <div class="category-list-header">
+        <form class="category-add" action="/admin/category/createCategoryUI" method="get">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+    <div class="category-list">
+        <table class="category-list-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category name</th>
+                    <th>Parent</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each categories}}
+                <tr>
+                    <td>{{this.CATE_ID}}</td>
+                    <td class="update-td"><a
+                            href="/admin/category/updateCategoryUI?category={{this.CATE_ID}}">{{this.CATE_NAME}}</a>
+                    </td>
+                    <td>{{#if this.PARENT_ID}}{{this.PARENT_ID}}{{else}}None{{/if}}</td>
+                    <td class="del-td">
+                        <form action="/admin/category/delete" method="get">
+                            <input type="hidden" name="cateId" id="cateId" value="{{this.CATE_ID}}">
+                            <button class="btn-del" type="submit"><img src="/assets/img/red_trash_icon.svg"
+                                    alt="deltete"></button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/assets/css/readCategory.css">

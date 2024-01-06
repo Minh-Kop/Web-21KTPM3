@@ -1,0 +1,27 @@
+<div id='error' class='d-flex align-items-center justify-content-center'>
+    <div class='text-center'>
+        <h1 class='display-1 fw-bold'>{{statusCode}}</h1>
+        <p class='fs-3'>
+            <span class='text-danger'>Opps!</span>
+            {{msg}}
+        </p>
+        <p class='lead'>
+            {{description}}
+        </p>
+        <a href='/' class='btn btn-primary'>Go Home</a>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Lấy chiều cao của navbar và footer
+        let navbarHeight = $('.nav').outerHeight(true);
+        let footerHeight = $('.footer').outerHeight(true);
+
+        // Tính chiều cao của nội dung
+        let contentHeight = window.innerHeight - navbarHeight - footerHeight;
+
+        // Thiết lập chiều cao của nội dung
+        $('#error').outerHeight(contentHeight, true);
+    });
+</script>

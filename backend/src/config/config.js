@@ -5,6 +5,8 @@ const config = {
 
     PORT: process.env.PORT || 3001,
 
+    BANK_URL: process.env.BANK_URL,
+
     DATABASE: {
         server: process.env.DB_SERVER,
         user: process.env.DB_USER,
@@ -121,6 +123,9 @@ const config = {
     GOOGLE_REFRESH_TOKEN: process.env.GOOGLE_REFRESH_TOKEN,
     GMAIL_USERNAME: process.env.GMAIL_USERNAME,
     GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+
+    FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID,
+    FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET,
 
     MOMO_PARTNER_CODE: process.env.MOMO_PARTNER_CODE,
     MOMO_ACCESS_KEY: process.env.MOMO_ACCESS_KEY,
