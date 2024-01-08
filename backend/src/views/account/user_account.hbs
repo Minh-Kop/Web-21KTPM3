@@ -1,113 +1,117 @@
-<div class="text-start px-4 row m-0 pb-3" style="background-color: #eae7dc">
-    <div class="card col-2 mt-3 border border-success rounded h-100">
-        <div class="card-header fw-bold text-danger fs-4">
-            Tài khoản
+<div class="container p-0 mb-3">
+    <div class="text-start px-4 row" style="background-color: #eae7dc">
+        <div class="card col-2 mt-3 border border-success rounded h-100">
+            <div class="card-header fw-bold text-danger fs-4">
+                Tài khoản
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <a href="/users/me" style="text-decoration: none; color: #ff550d">
+                        Thông tin tài khoản
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="/shippingAddress" style="text-decoration: none; color: black">Sổ địa chỉ</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
+                </li>
+            </ul>
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <a href="/user/me" style="text-decoration: none; color: #ff550d">
-                    Thông tin tài khoản
-                </a>
-            </li>
-            <li class="list-group-item">
-                <a href="/shippingAddress" style="text-decoration: none; color: black">Sổ địa chỉ</a>
-            </li>
-            <li class="list-group-item">
-                <a href="/order/me" style="text-decoration: none; color: black">Đơn hàng của tôi</a>
-            </li>
-        </ul>
-    </div>
-    <div class="container col-9">
-        <div class="container mt-3 border border-success rounded text-start" style="background-color: FFFFFF">
-            <h5 class="mt-2 mb-3">Thông tin tài khoản</h5>
-            <form id="updateForm">
-                <div class="mb-3 row">
-                    <label for="inputUsername" class="col-sm-2 col-form-label text-muted">Username*</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputUsername" value="{{user.userName}}" disabled />
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="inputName" class="col-sm-2 col-form-label text-muted">Họ tên</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" name="fullName"
-                            value="{{user.fullName}}" />
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="inputTel" class="col-sm-2 col-form-label text-muted">Số điện thoại</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputTel" name="phoneNumber"
-                            value="{{user.phoneNumber}}" />
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="inputEmail" class="col-sm-2 col-form-label text-muted">Email</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputEmail" value="{{user.email}}" disabled />
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="inputGender" class="col-sm-2 col-form-label text-muted">Giới tính</label>
-                    <div class="col-sm-10">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="flexRadioMale" value="0"
-                                {{#if user.gender}}{{else}}checked{{/if}} />
-                            <label class="form-check-label" for="flexRadioMale">
-                                Nam
-                            </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="flexRadioFemale" value="1"
-                                {{#if user.gender}}checked{{/if}} />
-                            <label class="form-check-label" for="flexRadioFemale">
-                                Nữ
-                            </label>
+        <div class="col-10 pe-0">
+            <div class="container mt-3 border border-success rounded text-start" style="background-color: FFFFFF">
+                <h5 class="mt-2 mb-3">Thông tin tài khoản</h5>
+                <form id="updateForm">
+                    <div class="mb-3 row">
+                        <label for="inputUsername" class="col-sm-2 col-form-label text-muted">Username*</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputUsername" value="{{user.userName}}"
+                                disabled />
                         </div>
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="inputDob" class="col-sm-2 col-form-label text-muted">Birthday</label>
-                    <div class="col-sm-10">
-                        <input type="date" class="form-control" id="inputDob" name="birthday"
-                            value='{{user.birthday}}' />
+                    <div class="mb-3 row">
+                        <label for="inputName" class="col-sm-2 col-form-label text-muted">Họ tên</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputName" name="fullName"
+                                value="{{user.fullName}}" />
+                        </div>
                     </div>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-danger mb-2">
-                        Lưu thay đổi
-                    </button>
-                </div>
-            </form>
-        </div>
-        <div class="container mt-3 border border-success rounded text-start" style="background-color: FFFFFF">
-            <h5 class="mt-2 mb-3">Thay đổi mật khẩu</h5>
-            <form id="changePassword">
-                <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-3 col-form-label text-muted">Mật khẩu hiện tại*</label>
-                    <div class="col-sm-9">
-                        <input type="password" class="form-control" name="currentPassword" id="inputOldPassword"
-                            required>
+                    <div class="mb-3 row">
+                        <label for="inputTel" class="col-sm-2 col-form-label text-muted">Số điện thoại</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputTel" name="phoneNumber"
+                                value="{{user.phoneNumber}}" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-3 col-form-label  text-muted">Mật khẩu mới*</label>
-                    <div class="col-sm-9">
-                        <input type="password" class="form-control" name="password" id="inputNewPassword" required>
+                    <div class="mb-3 row">
+                        <label for="inputEmail" class="col-sm-2 col-form-label text-muted">Email</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail" value="{{user.email}}" disabled />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-3 col-form-label  text-muted">Nhập lại mật khẩu*</label>
-                    <div class="col-sm-9">
-                        <input type="password" class="form-control" name="reNewPass" id="inputRePassword" required>
+                    <div class="mb-3 row">
+                        <label for="inputGender" class="col-sm-2 col-form-label text-muted">Giới tính</label>
+                        <div class="col-sm-10">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="flexRadioMale" value="0"
+                                    {{#if user.gender}}{{else}}checked{{/if}} />
+                                <label class="form-check-label" for="flexRadioMale">
+                                    Nam
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="flexRadioFemale"
+                                    value="1" {{#if user.gender}}checked{{/if}} />
+                                <label class="form-check-label" for="flexRadioFemale">
+                                    Nữ
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-danger mb-2">
-                        Đổi mật khẩu
-                    </button>
-                </div>
-            </form>
+                    <div class="mb-3 row">
+                        <label for="inputDob" class="col-sm-2 col-form-label text-muted">Birthday</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" id="inputDob" name="birthday"
+                                value='{{user.birthday}}' />
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-danger mb-2">
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="container border border-success rounded text-start" style="background-color: FFFFFF; margin-top:12px">
+                <h5 class="mt-2 mb-3">Thay đổi mật khẩu</h5>
+                <form id="changePassword">
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label text-muted">Mật khẩu hiện tại*</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="currentPassword" id="inputOldPassword"
+                                required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label  text-muted">Mật khẩu mới*</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="password" id="inputNewPassword" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label  text-muted">Nhập lại mật
+                            khẩu*</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="reNewPass" id="inputRePassword" required>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-danger mb-2">
+                            Đổi mật khẩu
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

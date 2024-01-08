@@ -179,7 +179,7 @@ BEGIN TRANSACTION
 	BEGIN TRY
         if @orderState IS NULL
         BEGIN
-            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment
+            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment, o.ORDER_DATE orderDate
             FROM H_ORDER o
             JOIN (
                 SELECT ORDER_ID, ORDER_STATE,
@@ -192,7 +192,7 @@ BEGIN TRANSACTION
         END
         ELSE
         BEGIN
-            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment
+            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment, o.ORDER_DATE orderDate
             FROM H_ORDER o
             JOIN (
                 SELECT ORDER_ID, ORDER_STATE,

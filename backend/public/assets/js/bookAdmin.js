@@ -1,5 +1,3 @@
-const img = [];
-
 const renderChild = (fCate) => {
   const cateId = $("#fCategory").find(":selected").val();
   const category = $("#category");
@@ -50,4 +48,8 @@ $("#files").on("change", function (event) {
   $(".image button").on("click", function () {
     this.parentNode.remove();
   });
+});
+
+$(() => {
+  $("#files").fileinput({ theme: "fa6" });
 });

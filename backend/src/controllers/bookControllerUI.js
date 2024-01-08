@@ -143,7 +143,8 @@ exports.getAllBooks = async ({
 
 const getBook = async (bookId) => {
     const returnedBook = await bookModel.getBookById(bookId);
-
+    const sBook_Price = returnedBook.BOOK_PRICE.toLocaleString('vi-VN');
+    const sBook_Discounted_Price = returnedBook.BOOK_DISCOUNTED_PRICE.toLocaleString('vi-VN');
     if (!returnedBook) {
         return null;
     }
@@ -164,8 +165,10 @@ const getBook = async (bookId) => {
         category: selectedBranch,
         images: images,
         originalPrice: returnedBook.BOOK_PRICE,
+        originalPriceString: sBook_Price,
         discountedNumber: returnedBook.DISCOUNTED_NUMBER,
         discountedPrice: returnedBook.BOOK_DISCOUNTED_PRICE,
+        discountedPriceString: sBook_Discounted_Price,
         avgRating: returnedBook.AVG_RATING,
         countRating: returnedBook.COUNT_RATING,
         stock: returnedBook.STOCK,
