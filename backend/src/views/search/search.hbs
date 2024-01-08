@@ -1,49 +1,11 @@
 <div class='container'>
-    {{! Breadcrumb }}
-    <nav
-        class='my-2'
-        style="--bs-breadcrumb-divider: '>';"
-        aria-label='breadcrumb'
-    >
-        <ol class='breadcrumb mb-0'>
-            <li class='breadcrumb-item'>
-                <a class='category-page__breadcrumb' href='/mainPage'>
-                    Home
-                </a>
-            </li>
-            {{#each stringifiedBranch}}
-                {{#if @last}}
-                    <li class='breadcrumb-item active' aria-current='page'>
-                        <span class='category-page__breadcrumb'>
-                            {{categoryName}}
-                        </span>
-                    </li>
-                {{else}}
-                    <li class='breadcrumb-item' aria-current='page'>
-                        <a
-                            class='category-page__breadcrumb'
-                            href='/category?catId={{catId}}'
-                        >
-                            {{categoryName}}
-                        </a>
-                    </li>
-                {{/if}}
-            {{/each}}
-        </ol>
-    </nav>
-
-    {{! Content }}
-    <div class='row gx-3 mb-3'>
+    <div class='row gx-3 mt-2 mb-3'>
         {{! Sidebar }}
         <div class='col-md-3'>
-            <div class='sidebar-section'>
-                {{! Category }}
-                <section class='category-section'>
-                    <h1 class='category-section__heading'>Nhóm sản phẩm</h1>
-                    {{#createCategoryTree
-                        catId selectedBranch
-                    }}{{/createCategoryTree}}
-                </section>
+            <section class='sidebar-section'>
+                <h1 class='sidebar-section__title'>
+                    <strong>lọc theo</strong>
+                </h1>
 
                 {{! Price }}
                 <section class='sidebar-section__section'>
@@ -99,15 +61,20 @@
                     </ul>
                 </section>
             </section>
-            </div>
         </div>
 
         {{! Books }}
         <div class='col-md-9'>
             <div class='book-section'>
+                {{! Keyword }}
+                <div class='page-title-search'>
+                    <h1>Kết quả tìm kiếm:</h1>
+                    <p class='search-term-text'>{{searchText}}</p>
+                </div>
+
                 {{! Sort section }}
                 <div
-                    class='d-flex mt-2 pb-3'
+                    class='d-flex mt-3 pb-3'
                 >
                     {{! Sort }}
                     <div class='d-flex align-items-center'>
@@ -117,9 +84,9 @@
                             name='sortAttr'
                             class='form-select select-dropdown'
                         >
-                            {{#each sortList }}
+                            {{#each sortList}}
                                 <option
-                                    {{#eq value ../sortType}}selected{{/eq}} 
+                                    {{#eq value ../sortType}}selected{{/eq}}
                                     value='{{value}}'
                                 >
                                     {{title}}
@@ -137,9 +104,9 @@
                             class='form-select select-dropdown'
                             aria-label='Default select example'
                         >
-                            {{#each limitList }}
+                            {{#each limitList}}
                                 <option
-                                    {{#eq value ../limit}}selected{{/eq}} 
+                                    {{#eq value ../limit}}selected{{/eq}}
                                     value='{{value}}'
                                 >
                                     {{value}}
@@ -149,19 +116,22 @@
                     </div>
                 </div>
 
+                {{! Book list }}
                 <ul class='p-1 mb-0 book-section__list'>
                     {{#each books}}
                         <li class='book-inner'>
-                            {{!-- Discounted cell --}}
+                            {{! Discounted cell }}
                             {{#if discountedNumber}}
-                                <div class="book-section__discounted-cell">
-                                    <span class="book-section__discounted-number">
+                                <div class='book-section__discounted-cell'>
+                                    <span
+                                        class='book-section__discounted-number'
+                                    >
                                         -{{discountedNumber}}%
                                     </span>
                                 </div>
                             {{/if}}
-                            
-                            {{!-- Main book content --}}
+
+                            {{! Main book content }}
                             <div class='book-content'>
                                 {{! Image }}
                                 <div class='mb-2 book-content__img-container'>
@@ -200,12 +170,12 @@
                     {{/each}}
                 </ul>
 
-                {{!-- Pagination --}}
+                {{! Pagination }}
                 {{> pagination}}
             </div>
         </div>
     </div>
 </div>
 
-<link rel='stylesheet' href='/assets/css/categoryPage.css' />
-<script src="/assets/js/categoryPage.js"></script>
+<link rel='stylesheet' href='/assets/css/search.css' />
+<script src='/assets/js/search.js'></script>

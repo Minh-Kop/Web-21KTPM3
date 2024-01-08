@@ -33,3 +33,10 @@ $('#logout').click(async (e) => {
     });
     location.reload();
 });
+
+// Search button
+$('.nav__search-btn').click((e) => {
+    e.preventDefault();
+    const keyword = $('.nav__search-input').val();
+    location.assign(`/search?keyword=${keyword}`);
+});

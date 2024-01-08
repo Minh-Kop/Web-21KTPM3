@@ -11,13 +11,7 @@ router.post('/notifyMomo', checkout.notifyMomo);
 router.use(authController.protect);
 
 router.post('/notifyPaypal', checkout.notifyPaypal);
-router.delete('/initialOrders', checkout.deleteInitialOrders);
-// router.post('/', checkout.createInitialOrder, checkout.getOrder);
 router.post('/', checkout.checkout);
-router
-    .route('/:orderId')
-    .get(checkout.getOrder)
-    .patch(checkout.updateCheckout, checkout.getPrice)
-    .post(checkout.placeOrder);
+router.route('/:orderId').post(checkout.placeOrder);
 
 module.exports = router;

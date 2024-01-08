@@ -225,3 +225,61 @@ button {
     background-color: whitesmoke;
     opacity: 0.5;
 }
+
+/* ==================================== Radio button ==================================== */
+.custom-radio {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+
+    padding-left: 24px;
+
+    /* font-size: 18px; */
+    cursor: pointer;
+}
+
+.custom-radio:hover {
+    color: var(--primary-color);
+}
+
+.radio-mark {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+
+    width: 1em;
+    height: 1em;
+    border: 1px solid #dee2e6;
+    border-radius: 50%;
+}
+
+.radio-mark::after {
+    content: '';
+    display: inline-block;
+}
+
+.custom-radio [type='radio']:checked ~ .radio-mark {
+    border-color: var(--secondary-color);
+    background-color: var(--secondary-color);
+}
+
+.custom-radio [type='radio']:checked ~ .radio-mark::after,
+.glory-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    height: 0.45em;
+    width: 0.45em;
+    border-radius: 50%;
+    background: white;
+}
+
+.glory-circle {
+    height: 1.5em;
+    width: 1.5em;
+    background: var(--secondary-color);
+    opacity: 0.4;
+}
