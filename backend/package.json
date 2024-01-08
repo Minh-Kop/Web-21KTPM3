@@ -45,7 +45,6 @@
         "passport-facebook": "^3.0.0",
         "passport-google-oauth20": "^2.0.0",
         "passport-strategy": "^1.0.0",
-        "sweetalert2": "^11.10.1",
         "xss-clean": "^0.1.4"
     },
     "devDependencies": {
