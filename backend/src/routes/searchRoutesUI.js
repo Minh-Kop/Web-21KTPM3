@@ -4,7 +4,6 @@ const search = require('../controllers/searchController');
 
 const router = express.Router();
 
-router.get('/', search.getBooksAPI);
-router.get('/count', search.countBooksAPI);
+router.get('/', search.getSearchPage);
 
 module.exports = router;

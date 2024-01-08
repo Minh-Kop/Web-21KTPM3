@@ -1,0 +1,160 @@
+ul,
+ol,
+h1,
+h2,
+h3,
+p {
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --border-color: #f6f6f6;
+}
+
+/* ==================================== Sidebar ==================================== */
+.sidebar-section,
+.book-section {
+    background-color: white;
+    padding: 10px;
+}
+
+.sidebar-section {
+    padding-bottom: 30px;
+}
+
+.sidebar-section__title {
+    margin: -10px -10px 10px;
+    padding: 18px 20px 0;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.sidebar-section__title strong {
+    display: block;
+    padding: 10px 15px 10px 0;
+    word-wrap: break-word;
+
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+}
+
+.sidebar-section__section {
+    margin-top: 0;
+    margin-bottom: 5px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.sidebar-section__section__title {
+    padding: 10px 0;
+
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.sidebar-section__list {
+    color: var(--category-font-color);
+    font-size: 14px;
+}
+
+.sidebar-section__list li {
+    margin: 0 0 7px 10px;
+}
+
+/* ==================================== Main content ==================================== */
+.page-title-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.page-title-search h1 {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.search-term-text {
+    color: #2489f4;
+}
+
+/* Dropdown select */
+.select-dropdown {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.book-section > .d-flex {
+    border-bottom: 2px solid var(--border-color);
+}
+
+/* Book content */
+.book-section__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    grid-gap: 10px;
+}
+
+.book-inner {
+    position: relative;
+    padding: 8px;
+}
+
+.book-inner:hover {
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
+}
+
+.book-section__discounted-cell {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+}
+
+.book-section__discounted-number {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+.book-content__img {
+    width: 100%;
+    max-height: 190px;
+    object-fit: contain;
+}
+
+.book-content__heading-link {
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+}
+
+.book-content__heading-link:hover {
+    color: var(--primary-color);
+}
+
+.book-content__price--discounted {
+    color: var(--secondary-color);
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.book-content__price--original {
+    font-size: 14px;
+    color: var(--category-font-color);
+    text-decoration: line-through;
+    margin-bottom: 0;
+}

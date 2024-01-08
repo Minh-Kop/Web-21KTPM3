@@ -3,7 +3,7 @@ const sql = require('mssql');
 
 const database = require('../utils/database');
 
-exports.createInitialOrder = async ({
+exports.createOrder = async ({
     userId,
     addrId,
     merchandiseSubtotal,
@@ -31,22 +31,6 @@ exports.createDetailedOrder = async (entity) => {
     request.input('price', sql.Int, price);
     const result = await request.execute('sp_CreateOrderDetail');
     return result.returnValue;
-};
-
-exports.getInitialOrder = async (orderId) => {
-    const pool = await database.getConnectionPool();
-    const request = new sql.Request(pool);
-    request.input('orderId', sql.Char, orderId);
-    const result = await request.execute('sp_GetInitialOrder');
-    return result.recordsets;
-};
-
-exports.getPrice = async (orderId) => {
-    const pool = await database.getConnectionPool();
-    const request = new sql.Request(pool);
-    request.input('orderId', sql.Char, orderId);
-    const result = await request.execute('sp_GetPrice');
-    return result.recordset[0];
 };
 
 exports.getDetailedOrder = async (orderId) => {
@@ -102,39 +86,11 @@ exports.getOrderDetail = async (orderId) => {
     return result.recordset;
 };
 
-exports.deleteAllInitialOrders = async (userId) => {
-    const pool = await database.getConnectionPool();
-    const request = new sql.Request(pool);
-    request.input('userId', sql.NVarChar, userId);
-    const result = await request.execute('sp_DeleteAllInitialOrders');
-    return result.returnValue;
-};
-
 exports.deleteOrder = async (orderId) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     request.input('orderId', sql.Char, orderId);
     const result = await request.execute('sp_DeleteOrder');
-    return result.returnValue;
-};
-
-exports.updateOrder = async ({
-    orderId,
-    addrId,
-    shippingFee,
-    paymentId,
-    useHPoint,
-    hPoint,
-}) => {
-    const pool = await database.getConnectionPool();
-    const request = new sql.Request(pool);
-    request.input('orderId', sql.Char, orderId);
-    request.input('addrId', sql.Char, addrId);
-    request.input('shippingFee', sql.Int, shippingFee);
-    request.input('paymentId', sql.Char, paymentId);
-    request.input('useHPoint', sql.Bit, useHPoint);
-    request.input('hPoint', sql.Int, hPoint);
-    const result = await request.execute('sp_UpdateOrder');
     return result.returnValue;
 };
 
