@@ -26,7 +26,6 @@ router
         authController.protect,
         authController.restrictTo(config.role.ADMIN),
         bookController.uploadBookImages,
-        bookController.updateBookImages,
     )
     .delete(
         authController.protect,
@@ -41,7 +40,6 @@ router
         authController.protect,
         authController.restrictTo(config.role.ADMIN),
         bookController.uploadBookImages,
-        bookController.updateBookImages,
         bookController.updateBook,
     )
     .delete(

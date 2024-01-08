@@ -1,4 +1,19 @@
-/* Breadcrumb */
+ul,
+ol,
+h1,
+h2,
+h3,
+p,
+li {
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --border-color: #f6f6f6;
+}
+
+/* ==================================== Breadcrumb ==================================== */
 .category-page__breadcrumb {
     text-decoration: none;
     color: #2f2e2e;
@@ -15,45 +30,47 @@
 }
 
 .sidebar-section {
-    padding-bottom: 20px;
+    padding-bottom: 35px;
 }
 
-/* Category list */
+/* ==================================== Category list ==================================== */
 .category-section,
-.price-section,
-.publisher-section {
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid var(--category-font-color);
+.sidebar-section__section {
+    border-bottom: 2px solid var(--border-color);
 }
 
-.category-section__heading {
+.category-section {
+    padding-bottom: 10px;
+}
+
+.category-section__heading,
+.sidebar-section__section__title {
     font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
-    /* margin: 0; */
+
+    padding: 10px 0;
 }
 
-.category-section__list,
-.price-section__list,
-.publisher-section__list {
+.category-section__list {
     margin: 0 0 0 10px;
     padding: 0;
     color: var(--category-font-color);
     font-size: 14px;
 }
 
-.category-section__list li {
-    padding: 0;
+.sidebar-section__list,
+.category-section__list__link {
+    color: var(--category-font-color);
+    font-size: 14px;
 }
 
 .category-section__list__link {
     display: block;
-    text-decoration: none;
-    color: var(--category-font-color);
-    font-size: 14px;
-    text-transform: capitalize;
     margin-bottom: 7px;
+
+    text-decoration: none;
+    text-transform: capitalize;
 }
 
 .parent-active > .category-section__list__link,
@@ -84,18 +101,28 @@ li:not(.active):not(.child-active) > .category-section__list__link:hover,
     color: var(--primary-color);
 }
 
-/* Book section */
+/* ==================================== Sidebar section ==================================== */
+.sidebar-section__list li {
+    margin: 0 0 7px 10px;
+}
+
+/* ==================================== Book section ==================================== */
+.book-section > .d-flex {
+    border-bottom: 2px solid var(--border-color);
+}
+
+/* Dropdown select */
+.select-dropdown {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Book list */
 .book-section__list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: 1fr;
     grid-gap: 10px;
-}
-
-/* Dropdown select */
-.select-dropdown {
-    width: 100%;
-    margin-left: 10px;
 }
 
 /* Book content */

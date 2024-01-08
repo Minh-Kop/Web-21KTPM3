@@ -73,6 +73,10 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
     const stringifiedBranch = stringifyBranch(selectedBranch, catId);
 
     const publisher = await publisherModel.getAll();
+    publisher.unshift({
+        pubId: 'all',
+        pubName: 'Tất cả',
+    });
 
     const books = await bookController.getAllBooks({
         ...entity,
