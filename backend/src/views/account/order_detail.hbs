@@ -1,16 +1,58 @@
 <style>
-    .order-view-status-new-order, .order-view-status-processing,
-    .order-view-status-canceled { text-align: center; position: relative; }
-    .order-view-icon-img { border: 3px solid; border-radius: 50%;
-    background-size: 25px; height: 100%; } .order-view-status-new-order,
-    .order-view-status-processing, .order-view-status-canceled { flex: 1; }
-    .order-view-icon-container { display: flex; flex-direction: column; }
-    .order-view-progress-bar { position: absolute; background: #29a72a; top:
-    calc(50% - 25px); height: 3px; width: calc(100% - 60px); left: calc(50% +
-    30px); } .order-view-icon-content p { margin: 0; } .order-view-icon-content
-    p:nth-child(1) { font-weight: bold; } .order-view-icon-content { margin-top:
-    10px; } .order-view-status-container { display: flex; margin-top: 10px;
-    border: 1px solid #e0e0e0; padding: 10px 0px; }
+    .order-view-status-new-order,
+    .order-view-status-processing,
+    .order-view-status-canceled {
+        text-align: center;
+        position: relative;
+    }
+
+    .order-view-icon-img {
+        border: 3px solid;
+        border-radius: 50%;
+        background-size: 25px;
+        height: 100%;
+    }
+
+    .order-view-status-new-order,
+    .order-view-status-processing,
+    .order-view-status-canceled {
+        flex: 1;
+    }
+
+    .order-view-icon-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .order-view-progress-bar {
+        position: absolute;
+        background: #29a72a;
+        top:
+            calc(50% - 25px);
+        height: 3px;
+        width: calc(100% - 60px);
+        left: calc(50% + 30px);
+    }
+
+    .order-view-icon-content p {
+        margin: 0;
+    }
+
+    .order-view-icon-content p:nth-child(1) {
+        font-weight: bold;
+    }
+
+    .order-view-icon-content {
+        margin-top:
+            10px;
+    }
+
+    .order-view-status-container {
+        display: flex;
+        margin-top: 10px;
+        border: 1px solid #e0e0e0;
+        padding: 10px 0px;
+    }
 </style>
 <div class='text-start px-4 row m-0 pb-3' style='background-color: #eae7dc'>
     <div class='card col-2 mt-3 border -success rounded h-100'>
@@ -19,58 +61,49 @@
         </div>
         <ul class='list-group list-group-flush'>
             <li class='list-group-item'>
-                <a href='' style='text-decoration: none; color: black'>
+                <a href='/user/me' style='text-decoration: none; color: black'>
                     Thông tin tài khoản
                 </a>
             </li>
             <li class='list-group-item'>
-                <a href='' style='text-decoration: none; color: black'>Sổ địa
+                <a href='/shippingAddress' style='text-decoration: none; color: black'>Sổ địa
                     chỉ</a>
             </li>
             <li class='list-group-item'>
-                <a href='' style='text-decoration: none; color: #ff550d'>Đơn
+                <a href='/order/me' style='text-decoration: none; color: #ff550d'>Đơn
                     hàng của tôi</a>
             </li>
         </ul>
     </div>
     <div class='container col-9'>
-        <div
-            class='container mt-3 border border-success rounded text-start'
-            style='background-color: FFFFFF'
-        >
+        <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
             <h4 class='mt-2 mb-3'>CHI TIẾT ĐƠN HÀNG</h4>
-            <span class='badge rounded-pill text-bg-success'>Đơn hàng hoàn tất</span>
+            {{state data.orderInformation.orderState}}
             <div class='row'>
                 <dd class='col-2 pe-0'>Mã đơn hàng:</dd>
-                <dt class='col p-0'>101719588</dt>
+                <dt class='col p-0'>{{data.orderInformation.orderId}}</dt>
             </div>
             <div class='row'>
                 <dd class='col-2 pe-0'>Ngày mua:</dd>
-                <dt class='col p-0'>29/12/2022</dt>
+                <dt class='col p-0'>{{data.orderInformation.orderDate}}</dt>
             </div>
             <div class='row'>
                 <dd class='col-2 pe-0'>Tổng tiền:</dd>
-                <dt class='col p-0'>100000 đ</dt>
+                <dt class='col p-0'>{{data.orderInformation.totalPaymentString}} VNĐ</dt>
             </div>
         </div>
-        <div
-            class='container px-4 text-start mt-3 border border-success rounded'
-            style='background-color: #ffffff'
-        >
+        {{log data}}
+        <div class='container px-4 text-start mt-3 border border-success rounded' style='background-color: #ffffff'>
             <div class='row gx-5'>
                 <div class='col d- p-0 ms-3'>
                     <div class='p-2 border border-dark-subtle m-2 flex-fill'>
                         <p class='fw-bold fs-6'>THÔNG TIN NGƯỜI NHẬN</p>
                         <hr />
-                        <p class='m-0'>Nguyễn Văn A</p>
+                        <p class='m-0'>{{data.deliveryInformation.fullName}}</p>
                         <p class='m-0'>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Assumenda voluptatem dicta minima debitis odit
-                            nemo inventore voluptas ratione error. Sequi iure
-                            esse rem aut aliquid ea reprehenderit repudiandae
-                            voluptatum repellat.
+                            {{data.deliveryInformation.detailedAddress}}
                         </p>
-                        <p>Tel: 0987654321</p>
+                        <p>Tel: {{data.deliveryInformation.phoneNumber}}</p>
                     </div>
                 </div>
                 <div class='col d-flex p-0 me-3'>
@@ -83,105 +116,79 @@
                     </div>
                 </div>
             </div>
-            <div
-                class='order-view-status-container border border-dark-subtle mb-2'
-            >
+            <div class='order-view-status-container border border-dark-subtle mb-2'>
                 <div class='order-view-status-new-order'>
                     <div class='order-view-icon-container'>
-                        <div
-                            style='
+                        <div style='
                                         height: 60px;
                                         width: 60px;
                                         align-self: center;
-                                    '
-                        >
-                            <div
-                                class='order-view-icon-img'
-                                style='
-                                            background: url(https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_donhangmoi_green.svg)
+                                    '>
+                            <div class='order-view-icon-img' style='
+                                            background: url({{checkState data.orderInformation.orderState 'link' 1}})
                                                 no-repeat center;
-                                            border-color: #29a72a;
-                                        '
-                            ></div>
+                                            border-color: {{checkState data.orderInformation.orderState 'color' 1}};
+                                        '></div>
                         </div>
+
                         <div class='order-view-icon-content'>
-                            <p>Đơn hàng mới</p>
-                            <p>28/12/2020 - 06:42</p>
+                            {{getOrderStateInfo data.orderStates 1}}
                         </div>
                     </div>
-                    <div
-                        class='order-view-progress-bar'
-                        style='background: #29a72a'
-                    ></div>
+                    <div class='order-view-progress-bar'
+                        style='background: {{checkState data.orderInformation.orderState 'color' 1}}'></div>
                 </div>
                 <div class='order-view-status-new-order'>
                     <div class='order-view-icon-container'>
-                        <div
-                            style='
+                        <div style='
                                         height: 60px;
                                         width: 60px;
                                         align-self: center;
-                                    '
-                        >
-                            <div
-                                class='order-view-icon-img'
-                                style='
-                                            background: url(https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_dangxuly_green.svg)
+                                    '>
+                            <div class='order-view-icon-img' style='
+                                            background: url({{checkState data.orderInformation.orderState 'link' 2}})
                                                 no-repeat center;
-                                            border-color: #29a72a;
-                                        '
-                            ></div>
+                                            border-color: {{checkState data.orderInformation.orderState 'color' 2}};
+                                        '></div>
                         </div>
                         <div class='order-view-icon-content'>
-                            <p>Đang xử lý</p>
-                            <p>29/12/2020 - 09:57</p>
+                            {{getOrderStateInfo data.orderStates 2}}
                         </div>
                     </div>
-                    <div
-                        class='order-view-progress-bar'
-                        style='background: #29a72a'
-                    ></div>
+                    <div class='order-view-progress-bar'
+                        style='background: {{checkState data.orderInformation.orderState 'color' 2}}'></div>
                 </div>
                 <div class='order-view-status-new-order'>
                     <div class='order-view-icon-container'>
-                        <div
-                            style='
+                        <div style='
                                         height: 60px;
                                         width: 60px;
                                         align-self: center;
-                                    '
-                        >
-                            <div
-                                class='order-view-icon-img'
-                                style='
-                                            background: url(https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_hoantat_green.svg)
+                                    '>
+                            <div class='order-view-icon-img' style='
+                                            background: url({{checkState data.orderInformation.orderState 'link' 3}})
                                                 no-repeat center;
-                                            border-color: #29a72a;
-                                        '
-                            ></div>
+                                            border-color: {{checkState data.orderInformation.orderState 'color'  3}};
+                                        '></div>
                         </div>
                         <div class='order-view-icon-content'>
-                            <p>Hoàn tất</p>
-                            <p>31/12/2020 - 03:31</p>
+                            {{getOrderStateInfo data.orderStates 3}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div
-            class='container mt-3 border border-success rounded text-start'
-            style='background-color: FFFFFF'
-        >
+        <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
             <p class='mt-2'>
                 Đơn hàng:
-                <span class='fw-bold'>101719588</span>
+                <span class='fw-bold'>{{data.orderInformation.orderId}}</span>
             </p>
-            <span class='badge rounded-pill text-bg-success'>Đơn hàng hoàn tất</span>
+            {{state data.orderInformation.orderState}}
             <p class='mt-2'>
                 Tổng tiền:
-                <span class='fw-bold'>100000 đ</span>
+                <span class='fw-bold'>{{data.orderInformation.totalPaymentString}} VNĐ</span>
             </p>
-            <p class='mt-2'>Số lượng: <span class='fw-bold'>1</span></p>
+            <p class='mt-2'>Số lượng: <span class='fw-bold'>{{data.orderInformation.totalQuantity}}</span></p>
             <table class='table text-start'>
                 <thead>
                     <tr>
@@ -193,31 +200,27 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{#each data.booksOrdered}}
                     <tr>
                         <th scope='row'>
-                            <img
-                                class='img-fluid'
-                                src='https://cdn0.fahasa.com/media/catalog/product/g/r/grimgar---tap-9.jpg'
-                                style='width: 100px; height: 100px'
-                            />
+                            <img class='img-fluid'
+                                src='{{bookImage}}'
+                                style='width: 100px; height: 100px' />
                         </th>
                         <td class='text-wrap' style='width: 25rem'>
-                            <a
-                                href='/book/'
-                                style='text-decoration: none; color: black'
-                            >Grimgar - Ảo Ảnh Và Tro Tàn - Tập 9 - Bản Giới Hạn
-                                - Tặng Kèm Bookmark + 5 Bao Lì Xì</a>
+                            <a href='/book/{{bookId}}' style='text-decoration: none; color: black'>{{bookName}}</a>
                         </td>
-                        <td>80750 đ</td>
-                        <td>1</td>
-                        <td>80750 đ</td>
+                        <td>{{unitPriceString}} VNĐ</td>
+                        <td>{{amount}}</td>
+                        <td>{{itemSubtotalString}} VNĐ</td>
                     </tr>
+                    {{/each}}
                 </tbody>
             </table>
             <div class='d-flex flex-column mb-3 fs-6 align-items-end'>
-                <p>Thành tiền: <span class='fw-bold'>85000 đ</span></p>
-                <p>Phí vận chuyển: <span class='fw-bold'>15000 đ</span></p>
-                <p>Tổng số tiền: <span class='fw-bold'>100000 đ</span></p>
+                <p>Thành tiền: <span class='fw-bold'>{{data.orderInformation.totalPaymentString}} VNĐ</span></p>
+                <p>Phí vận chuyển: <span class='fw-bold'>{{data.orderInformation.shippingFeeString}} VNĐ</span></p>
+                <p>Tổng số tiền: <span class='fw-bold'>{{add data.orderInformation.totalPayment data.orderInformation.shippingFee}} VNĐ</span></p>
             </div>
         </div>
     </div>

@@ -114,6 +114,102 @@ module.exports = (hbs) => {
             mainImage(obj) {
                 return obj[0].path;
             },
+            orderState(obj) {
+                if (obj == 0) return 'Đơn hàng mới';
+                else if (obj == 1) return 'Đang xử lý';
+                else if (obj == -1) return 'Bị hủy';
+                else if (obj == 2) return 'Đang giao hàng';
+                else if (obj == 3) return 'Thành công';
+            },
+            state(obj) {
+                if (obj == -1)
+                    return new Handlebars.SafeString(
+                        `<span class='badge rounded-pill text-bg-danger'>Đơn hàng bị hủy</span>`,
+                    );
+                else if (obj == 3)
+                    return new Handlebars.SafeString(
+                        `<span class='badge rounded-pill text-bg-success'>Đơn hàng thành công</span>`,
+                    );
+                else if (obj == 0)
+                    return new Handlebars.SafeString(
+                        `<span class='badge rounded-pill text-bg-secondary'>Đơn hàng mới</span>`,
+                    );
+                else if (obj == 1)
+                    return new Handlebars.SafeString(
+                        `<span class='badge rounded-pill text-bg-secondary'>Đơn hàng đang xử lý</span>`,
+                    );
+                else if (obj == 2)
+                    return new Handlebars.SafeString(
+                        `<span class='badge rounded-pill text-bg-secondary'>Đơn hàng đang giao</span>`,
+                    );
+            },
+            getOrderStateInfo(obj, int) {
+                if (int == 1) {
+                    console.log(obj);
+                    return new Handlebars.SafeString(
+                        `<p>Đơn hàng mới</p><p>${
+                            obj[obj.length - 1].createdTime
+                        }</p>`,
+                    );
+                } else if (int == 3) {
+                    if (obj[0].orderState == -1) {
+                        return new Handlebars.SafeString(
+                            `<p>Bị hủy</p><p>${obj[0].createdTime}</p>`,
+                        );
+                    }
+                    if (obj[0].orderState == 3) {
+                        return new Handlebars.SafeString(
+                            `<p>Thành công</p><p>${obj[0].createdTime}</p>`,
+                        );
+                    }
+                }
+                return new Handlebars.SafeString(
+                    `<p>Đang xử lý</p><p>${obj[1].createdTime}</p>`,
+                );
+            },
+            checkState(obj, str, int) {
+                if (obj == 3) {
+                    if (str == 'color')
+                        return new Handlebars.SafeString('#29a72a');
+                    else if (str == 'link') {
+                        if (int == 1)
+                            return new Handlebars.SafeString(
+                                'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_donhangmoi_green.svg',
+                            );
+                        else if (int == 2) {
+                            return new Handlebars.SafeString(
+                                'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_dangxuly_green.svg',
+                            );
+                        } else if (int == 3) {
+                            return new Handlebars.SafeString(
+                                'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_hoantat_green.svg',
+                            );
+                        }
+                    }
+                }
+                if (obj == -1) {
+                    if (str == 'color')
+                        return new Handlebars.SafeString('#fa0001');
+                    else if (str == 'link') {
+                        if (int == 1)
+                            return new Handlebars.SafeString(
+                                'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_donhangmoi_red.svg',
+                            );
+                        else if (int == 2) {
+                            return new Handlebars.SafeString(
+                                'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_dangxuly_red.svg',
+                            );
+                        } else if (int == 3) {
+                            return new Handlebars.SafeString(
+                                'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_huy_red.svg',
+                            );
+                        }
+                    }
+                }
+            },
+            add(a, b) {
+                return new Handlebars.SafeString((a+b).toLocaleString('vi-VN'));
+            },
             carousel(obj) {
                 const chunks = [];
                 const chunkSize = 4;
@@ -145,8 +241,8 @@ module.exports = (hbs) => {
                                 <img src="${item.image}" class="img-fluid" alt="book_image">
                                 </a>
                                 <a class="fs-6" href="/book/${item.bookId}" style="text-decoration: none; color: black">${item.bookName}</a>
-                                <p class="fs-6 text-danger fw-bold mb-1">${item.originalPrice} VND</p>
-                                <p class="fs-6 text-muted text-decoration-line-through mb-1">${item.discountedPrice} VND</p>
+                                <p class="fs-6 text-danger fw-bold mb-1">${item.originalPriceString} VNĐ</p>
+                                <p class="fs-6 text-muted text-decoration-line-through mb-1">${item.discountedPriceString} VNĐ</p>
                                 <div class='d-flex flex-row my-3'>
                                     <div class='text-warning'>
                                         ${item.stars}

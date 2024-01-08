@@ -16,7 +16,7 @@ router.get('/me', orderController.getMe, orderController.getMyOrders);
 router.post('/buyAgain', orderController.buyAgain);
 router
     .route('/:orderId')
-    .get(orderController.getOrder)
+    .get(orderController.getThisOrder)
     .patch(orderController.updateState);
 
 // Restrict all routes to only role admin after this middleware
