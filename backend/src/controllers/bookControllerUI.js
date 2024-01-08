@@ -265,7 +265,14 @@ const getRelatedBooks = async ({ bookId, limit, page }) => {
             };
         }),
     );
-
+    books = books.map(book => {
+        return {
+            ...book,
+            originalPriceString: book.originalPrice.toLocaleString('vi-VN'),
+            discountedPriceString: book.discountedPrice.toLocaleString('vi-VN'),
+        };
+    });
+    console.log(books);
     return books;
 };
 

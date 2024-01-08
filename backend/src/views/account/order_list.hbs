@@ -4,9 +4,10 @@
             <div class='card-header fw-bold text-danger fs-4'>
                 Tài khoản
             </div>
+            {{log orders}}
             <ul class='list-group list-group-flush'>
                 <li class='list-group-item'>
-                    <a href='/users/me' style='text-decoration: none; color: black'>
+                    <a href='/user/me' style='text-decoration: none; color: black'>
                         Thông tin tài khoản
                     </a>
                 </li>
@@ -33,7 +34,7 @@
                     <div class='position-relative mb-3 status' style='width: 150px'>
                         <a href='#' class='fw-bold button' style='text-decoration: none; color: black'><span>9
                                 <br />
-                                Chờ thanh toán</span>
+                                Chờ xử lý</span>
                         </a>
                     </div>
                     <div class='position-relative mb-3 status' style='width: 150px'>
@@ -45,7 +46,7 @@
                     <div class='position-relative mb-3 status' style='width: 150px'>
                         <a href='#' class='fw-bold button' style='text-decoration: none; color: black'><span>9
                                 <br />
-                                Đang xử lý</span>
+                                Đang giao hàng</span>
                         </a>
                     </div>
                     <div class='position-relative mb-3 status' style='width: 150px'>
@@ -62,7 +63,8 @@
                     </div>
                 </div>
             </div>
-            <div class='container border border-success rounded text-start' style='background-color: FFFFFF; margin-top:12px'>
+            <div class='container border border-success rounded text-start'
+                style='background-color: FFFFFF; margin-top:12px'>
                 <table class='table table-striped table-hover text-center'>
                     <thead>
                         <tr>
@@ -73,7 +75,7 @@
                             <th scope='col'>Trạng thái</th>
                             <th scope='col'></th>
                         </tr>
-                    </thead>
+                    </thead>              
                     <tbody>
                         {{#each orders}}
                         <tr>
@@ -83,7 +85,7 @@
                                 {{fullName}}
                             </td>
                             <td>{{totalPaymentString}} VNĐ</td>
-                            <td>Bị hủy</td>
+                            <td>{{orderState orderState}}</td>
                             <td>
                                 <a href="/order/{{orderId}}" style="color: black">
                                     <i class='fa-solid fa-circle-info' style='cursor: pointer'></i>
@@ -98,7 +100,7 @@
     </div>
 </div>
 <script>
-    $(".status").on("click", function () { $(".status").removeClass("border
-    border-3 border-danger"); $(this).addClass("border border-3 border-danger");
+    $(".status").on("click", function () {
+        $(".status").removeClass("border border-3 border-danger"); $(this).addClass("border border-3 border-danger");
     });
 </script>

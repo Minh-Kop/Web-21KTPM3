@@ -48,7 +48,7 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
         orderInformation,
     ] = await orderModel.getDetailedOrder(orderId);
 
-    const { user, cart } = req;
+    const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
 
     const url = req.originalUrl;
@@ -65,9 +65,22 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
             .subtract(7, 'hours')
             .format('DD/MM/YYYY HH:mm'),
     }));
-
+    let totalQuantity = 0;
+    for (let i = 0; i < booksOrdered.length; i++){
+        totalQuantity += booksOrdered[i].amount;
+    }
+    orderInformation.forEach((order) => {
+        order.orderDate = order.orderDate.toISOString().split('T')[0];
+        order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');
+        order.totalQuantity = totalQuantity;
+        order.shippingFeeString = order.shippingFee.toLocaleString('vi-VN');
+    });
+    booksOrdered.forEach((book) => {
+        book.unitPriceString = book.unitPrice.toLocaleString('vi-VN');
+        book.itemSubtotalString = book.itemSubtotal.toLocaleString('vi-VN');
+    });
     res.render('account/order_detail', {
-        title: orderId,
+        title: 'Chi tiết đơn hàng',
         status: 'success',
         data: {
             deliveryInformation: deliveryInformation[0],
@@ -81,6 +94,7 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
         isLoggedIn,
         ...user,
         ...cart,
+        categoryTree,
         currentUrl: url,
     });
 });
@@ -147,7 +161,6 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         order.orderDate = order.orderDate.toISOString().split('T')[0];
         order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');    
     });
-    console.log(returnedOrders);
     const orders = await Promise.all(
         returnedOrders.map(async (order) => {
             const books = await bookModel.getBooksByOrderId(order.orderId);
