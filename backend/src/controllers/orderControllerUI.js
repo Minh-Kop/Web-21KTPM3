@@ -66,7 +66,7 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
             .format('DD/MM/YYYY HH:mm'),
     }));
     let totalQuantity = 0;
-    for (let i = 0; i < booksOrdered.length; i++){
+    for (let i = 0; i < booksOrdered.length; i++) {
         totalQuantity += booksOrdered[i].amount;
     }
     orderInformation.forEach((order) => {
@@ -139,13 +139,17 @@ exports.getUserOrders = catchAsync(async (req, res, next) => {
 exports.getMyOrders = catchAsync(async (req, res, next) => {
     const { userId, orderState, limit: strLimit, page: strPage } = req.query;
 
+    if (!orderState) {
+        return res.redirect('/order/me?orderState=6');
+    }
+
     const page = +strPage || 1;
     const limit = +strLimit || 10;
     const offset = (page - 1) * limit;
 
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
-    const uid = user.userId
+    const uid = user.userId;
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
@@ -156,10 +160,23 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         limit,
         offset,
     });
-
-    returnedOrders.forEach(order => {
+    const orderNumber = await orderModel.countOrders();
+    let total = orderNumber.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.totalNumber,
+        0,
+    );
+    orderNumber.unshift({
+        orderstate: 6,
+        totalNumber: total,
+    });
+    const totalPages = Math.ceil(
+        parseFloat(
+            orderNumber.find((order) => order.orderstate == orderState).totalNumber,
+        ) / limit,
+    );
+    returnedOrders.forEach((order) => {
         order.orderDate = order.orderDate.toISOString().split('T')[0];
-        order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');    
+        order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');
     });
     const orders = await Promise.all(
         returnedOrders.map(async (order) => {
@@ -184,6 +201,11 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         isLoggedIn,
         ...user,
         ...cart,
+        page,
+        limit,
+        totalPages,
+        orderNumber,
+        orderState: orderState || 6,
         currentUrl: url,
         categoryTree,
     });

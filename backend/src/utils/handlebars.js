@@ -120,6 +120,7 @@ module.exports = (hbs) => {
                 else if (obj == -1) return 'Bị hủy';
                 else if (obj == 2) return 'Đang giao hàng';
                 else if (obj == 3) return 'Thành công';
+                else if (obj == 6) return 'Tất cả';
             },
             state(obj) {
                 if (obj == -1)
@@ -132,15 +133,15 @@ module.exports = (hbs) => {
                     );
                 else if (obj == 0)
                     return new Handlebars.SafeString(
-                        `<span class='badge rounded-pill text-bg-secondary'>Đơn hàng mới</span>`,
+                        `<span class='badge rounded-pill text-bg-primary'>Đơn hàng mới</span>`,
                     );
                 else if (obj == 1)
                     return new Handlebars.SafeString(
-                        `<span class='badge rounded-pill text-bg-secondary'>Đơn hàng đang xử lý</span>`,
+                        `<span class='badge rounded-pill text-bg-primary'>Đơn hàng đang xử lý</span>`,
                     );
                 else if (obj == 2)
                     return new Handlebars.SafeString(
-                        `<span class='badge rounded-pill text-bg-secondary'>Đơn hàng đang giao</span>`,
+                        `<span class='badge rounded-pill text-bg-primary'>Đơn hàng đang giao</span>`,
                     );
             },
             getOrderStateInfo(obj, int) {
@@ -160,6 +161,11 @@ module.exports = (hbs) => {
                     if (obj[0].orderState == 3) {
                         return new Handlebars.SafeString(
                             `<p>Thành công</p><p>${obj[0].createdTime}</p>`,
+                        );
+                    }
+                    else {
+                        return new Handlebars.SafeString(
+                            ` `,
                         );
                     }
                 }
@@ -202,6 +208,25 @@ module.exports = (hbs) => {
                         } else if (int == 3) {
                             return new Handlebars.SafeString(
                                 'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_huy_red.svg',
+                            );
+                        }
+                    }
+                }
+                if (obj == 1) {
+                    if (str == 'color')
+                        return new Handlebars.SafeString('#0078d4');
+                    else if (str == 'link') {
+                        if (int == 1)
+                            return new Handlebars.SafeString(
+                                'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_donhangmoi_blue.svg',
+                            );
+                        else if (int == 2) {
+                            return new Handlebars.SafeString(
+                                'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_dangxuly_blue.svg',
+                            );
+                        } else if (int == 3) {
+                            return new Handlebars.SafeString(
+                                '',
                             );
                         }
                     }

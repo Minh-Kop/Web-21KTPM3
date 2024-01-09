@@ -3,6 +3,14 @@ const sql = require('mssql');
 
 const database = require('../utils/database');
 
+exports.countOrders = async () => {
+    const sqlString = `select ORDER_STATE orderstate, count(*) totalNumber from ORDER_STATE group by ORDER_STATE;`;
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(sqlString);
+    return result.recordset;
+}
+
 exports.createOrder = async ({
     userId,
     addrId,
@@ -43,10 +51,11 @@ exports.getDetailedOrder = async (orderId) => {
 
 exports.getUserOrders = async (entity) => {
     const { uid, orderState, limit, offset } = entity;
+    let state = orderState == 6 ? null : orderState;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     request.input('USERID', sql.Char, uid);
-    request.input('orderState', sql.Int, +orderState);
+    request.input('orderState', sql.Int, state);
     request.input('limit', sql.Int, limit);
     request.input('offset', sql.Int, offset);
     const result = await request.execute('sp_GetUserOrders');
