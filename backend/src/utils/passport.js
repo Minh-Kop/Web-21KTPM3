@@ -41,7 +41,6 @@ module.exports = (app) => {
         new MyStrategy(async (username, password, done) => {
             try {
                 const user = await accountModel.getByUsername(username);
-
                 if (!user) {
                     return done('Invalid authentication', null);
                 }

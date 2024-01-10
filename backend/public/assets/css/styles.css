@@ -17,6 +17,13 @@ body {
     background: #eae7dc;
 }
 
+input,
+textarea,
+select,
+button {
+    font-family: inherit;
+}
+
 a {
     text-decoration: none;
 }
