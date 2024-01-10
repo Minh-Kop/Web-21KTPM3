@@ -6,7 +6,7 @@ const accountModel = require('../models/accountModel');
 const transactionModel = require('../models/transactionModel');
 
 const createAccount = catchAsync(async (req, res, next) => {
-    const { password, username } = req.body;
+    const { password, username, isOauth2 } = req.body;
 
     // Check for username duplicated
     const account = await accountModel.getByUsername(username);
@@ -18,6 +18,7 @@ const createAccount = catchAsync(async (req, res, next) => {
     await accountModel.createAccount({
         username,
         password,
+        isOauth2,
     });
 
     res.status(200).json({

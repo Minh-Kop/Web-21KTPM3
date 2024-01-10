@@ -170,6 +170,8 @@
 .nav__cart,
 .nav__account {
     position: relative;
+    max-width: 80px;
+    --line-clamb: 1;
 }
 
 .cart-mini__quantity {

@@ -18,7 +18,6 @@ const bankUrl = config.BANK_URL;
 
 exports.signUp = catchAsync(async (req, res, next) => {
     const { email, password, username } = req.body;
-    console.log(req.body);
 
     // Check for username duplicated
     const account = await accountModel.getByUsername(username);
@@ -66,6 +65,33 @@ exports.signUp = catchAsync(async (req, res, next) => {
         message: 'Create account successfully',
     });
 });
+
+exports.signUpForOauth2 = async (email) => {
+    // Send each mail with different time to prevent the html being trimmed by Gmail
+    // const url = `${req.protocol}://${req.get('host')}/api/user`;
+    // const mailOption = getVerifyEmail(email, url, verifyToken);
+    // const transport = await createTransport();
+    // await transport.sendMail(mailOption);
+
+    // Create account
+    const username = email.substring(0, email.indexOf('@'));
+    const isOauth2 = true;
+    await accountModel.createAccount({
+        username,
+        email,
+        verified: 1,
+        isOauth2,
+        role: config.role.USER,
+    });
+
+    // Create bank account in bank server
+    await axios.post(`${bankUrl}/api/account/create-account`, {
+        username,
+        isOauth2,
+    });
+
+    return username;
+};
 
 exports.verify = catchAsync(async (req, res, next) => {
     const { token } = req.params;
@@ -273,20 +299,20 @@ exports.restrictTo = (...roles) => {
 };
 
 exports.loginSuccess = catchAsync(async (req, res) => {
-    const { id, tokenLogin } = req?.body
+    const { id, tokenLogin } = req.body;
     try {
-        if (!id || !tokenLogin) res.status(400).json({
-            err: 1,
-            msg: 'Missing inputs'
-        })
-        let response = await authService.loginSuccessService(id, tokenLogin)
-        res.status(200).json(response)
-
+        if (!id || !tokenLogin)
+            res.status(400).json({
+                err: 1,
+                msg: 'Missing inputs',
+            });
+        const response = await authService.loginSuccessService(id, tokenLogin);
+        res.status(200).json(response);
     } catch (error) {
         res.status(500).json({
             err: -1,
-            msg: 'Fail at auth controller ' + error
-        })
+            msg: `Fail at auth controller ${error}`,
+        });
     }
 });
 

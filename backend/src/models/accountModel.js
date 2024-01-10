@@ -20,7 +20,7 @@ exports.getByEmail = async (email) => {
 };
 
 exports.getByUsername = async (username) => {
-    const sqlString = `select * from ACCOUNT where username = '${username}'`;
+    const sqlString = `select * from ACCOUNT where username = '${username}' and is_oauth2 = 0`;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
@@ -50,6 +50,7 @@ exports.createAccount = async ({
     password,
     verified,
     token,
+    isOauth2,
     role,
 }) => {
     const pool = await database.getConnectionPool();
@@ -58,6 +59,7 @@ exports.createAccount = async ({
     request.input('username', sql.NVarChar, username);
     request.input('password', sql.NVarChar, password);
     request.input('verified', sql.Bit, verified);
+    request.input('isOauth2', sql.Bit, isOauth2);
     request.input('token', sql.Char, token);
     request.input('role', sql.Int, role);
     const result = await request.execute('sp_CreateAccount');

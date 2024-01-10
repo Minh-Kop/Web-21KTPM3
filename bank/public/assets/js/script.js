@@ -81,7 +81,18 @@ $('#login').on('click', async (e) => {
         timerProgressBar: true,
         showConfirmButton: false,
     }).then(() => {
-        const nextUrl = $(e.target).data('nextUrl');
+        const nextUrl = $('.login-page').data('nextUrl');
         location.assign(nextUrl);
     });
+});
+
+/* ==================================== Other login ==================================== */
+$('#google').click(async (e) => {
+    e.preventDefault();
+    const nextUrl = $('.login-page').data('nextUrl');
+    location.assign(`/api/account/login-with-google?nextUrl=${nextUrl}`);
+});
+
+$('#facebook').click((e) => {
+    e.preventDefault();
 });

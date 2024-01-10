@@ -32,6 +32,7 @@ $('.submit-btn').click(async (e) => {
     const deposit = depositEl.val().trim();
     const passwordEl = $('#password');
     const password = passwordEl.val().trim();
+    const isOauth2 = passwordEl.data('isOauth2');
 
     const numberRegex = /^\d+$/;
     const passwordRegex = /.+/;
@@ -50,6 +51,7 @@ $('.submit-btn').click(async (e) => {
     }
     // Check password
     if (
+        !isOauth2 &&
         checkValidation(
             password,
             passwordEl,
