@@ -24,7 +24,8 @@ IF OBJECT_ID('sp_CreateAccount') IS NOT NULL
 GO
 CREATE PROCEDURE sp_CreateAccount (
     @username NVARCHAR(100), 
-    @password NVARCHAR(100)
+    @password NVARCHAR(100),
+    @isOauth2 bit
 )
 AS
 BEGIN TRANSACTION
@@ -38,8 +39,8 @@ BEGIN TRANSACTION
 
         declare @accountId char(5) = (select dbo.f_CreateUserId('UB'))
 
-        INSERT into ACCOUNT (ACCOUNTID, USERNAME, ENC_PWD, BALANCE) values 
-            (@accountId, @username, @password, 0)
+        INSERT into ACCOUNT (ACCOUNTID, USERNAME, ENC_PWD, BALANCE, IS_OAUTH2) values 
+            (@accountId, @username, @password, 0, @isOauth2)
 	END TRY
 
 	BEGIN CATCH

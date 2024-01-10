@@ -1,4 +1,4 @@
-<div class='login-page'>
+<div class='login-page' data-next-url='{{nextUrl}}'>
     <div class='login-content'>
         <h1 class='login__heading'>
             FABANK
@@ -39,14 +39,38 @@
                 </div>
 
                 {{! Submit button }}
-                <button
-                    id='login'
-                    class='login-form__btn'
-                    type='submit'
-                    data-next-url='{{nextUrl}}'
-                >
+                <button id='login' class='login-form__btn' type='submit'>
                     Login
                 </button>
+
+                {{! Border }}
+                <div class='custom-border'>
+                    <hr class='custom-border__line' />
+                    <div class='custom-border__word'>or</div>
+                    <hr class='custom-border__line' />
+                </div>
+
+                <section class='other-login'>
+                    {{! Login with Google }}
+                    <button id='google' class='login-form__btn--other'>
+                        <img
+                            class='login-form__btn__icon'
+                            src='/assets/img/google_icon.svg'
+                            alt=''
+                        />
+                        Continue with Google
+                    </button>
+
+                    {{! Login with Facebook }}
+                    <button id='facebook' class='login-form__btn--other'>
+                        <img
+                            class='login-form__btn__icon'
+                            src='/assets/img/facebook_icon.svg'
+                            alt=''
+                        />
+                        Continue with Facebook
+                    </button>
+                </section>
             </form>
         </div>
     </div>

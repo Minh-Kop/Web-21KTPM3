@@ -12,7 +12,7 @@ const deposit = catchAsync(async (req, res, next) => {
     const { password: encryptedPassword, accountId } = user;
 
     // Check validation of password
-    if (!crypto.verifyPassword(password, encryptedPassword)) {
+    if (password && !crypto.verifyPassword(password, encryptedPassword)) {
         return next(new AppError('Wrong password', 401));
     }
 

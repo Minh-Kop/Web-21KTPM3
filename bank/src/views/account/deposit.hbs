@@ -22,9 +22,9 @@
                 <input id='depositNum' type='text' class='input' />
                 <p class='form-error d-none'></p>
             </div>
-            <div class='deposit__line'>
+            <div class='deposit__line {{#if isOauth2}}d-none{{/if}}'>
                 <label for='password' class='label'>Mật khẩu xác nhận:</label>
-                <input id='password' type='password' class='input' />
+                <input id='password' type='password' class='input' data-is-oauth2="{{isOauth2}}" />
                 <p class='form-error d-none'></p>
             </div>
         </div>

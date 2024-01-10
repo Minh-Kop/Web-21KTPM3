@@ -1,17 +1,20 @@
 const passport = require('passport');
 
-const MyStrategy = require('./myStrategy');
 const accountModel = require('../models/accountModel');
+const authController = require('../controllers/authController');
+const MyStrategy = require('./myStrategy');
+const MyGoogleOAuth2Strategy = require('./myGoogleOauth2Strategy');
 const crypto = require('./crypto');
 
 passport.serializeUser((user, done) => {
     // console.log('Serialize: ', user);
-    done(null, user.USERNAME);
+    const { email } = user;
+    done(null, email);
 });
 
-passport.deserializeUser(async (username, done) => {
-    // console.log('Deserialize: ', username);
-    const account = await accountModel.getByUsername(username);
+passport.deserializeUser(async (email, done) => {
+    // console.log('Deserialize: ', email);
+    const account = await accountModel.getByEmail(email);
     const returnedAccount = {
         userId: account.USERID,
         username: account.USERNAME,
@@ -23,6 +26,7 @@ passport.deserializeUser(async (username, done) => {
         birthday: account.BIRTHDAY,
         gender: account.GENDER,
         password: account.ENC_PWD,
+        isOauth2: account.IS_OAUTH2,
     };
     if (account) {
         return done(null, returnedAccount);
@@ -47,10 +51,27 @@ module.exports = (app) => {
 
                 // Check the correctness of password
                 if (crypto.verifyPassword(password, encryptedPassword)) {
+                    user.email = user.EMAIL;
                     return done(null, user);
                 }
                 done('Invalid authentication', null);
             } catch (error) {
+                done(error);
+            }
+        }),
+    );
+
+    passport.use(
+        new MyGoogleOAuth2Strategy(async (info, done) => {
+            try {
+                const { email } = info;
+                const account = await accountModel.getByEmail(email);
+                if (!account) {
+                    info.username = await authController.signUpForOauth2(email);
+                }
+                return done(null, info);
+            } catch (error) {
+                console.log(error);
                 done(error);
             }
         }),
