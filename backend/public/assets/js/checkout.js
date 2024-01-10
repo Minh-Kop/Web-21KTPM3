@@ -126,9 +126,64 @@ $('.add-addr-btn').click((e) => {
     $('.popup-section').removeClass('d-none');
 });
 
+// Close and reset popup
 $('.background-behind, .address-popup__btn--close').click((e) => {
     e.preventDefault();
     $('.popup-section').addClass('d-none');
+    $('.address-popup__line__input')
+        .val('')
+        .removeClass('address-popup__line__input-error');
+    $('.address-popup__line__select').removeClass(
+        'address-popup__line__input-error'
+    );
+    $('.form-error').addClass('d-none');
+
+    $('#addrProvince').val('Chọn tỉnh/thành phố');
+    $('#addrDistrict')
+        .html('<option disabled selected hidden>Chọn quận/huyện</option>')
+        .attr('disabled', true);
+    $('#addrWard')
+        .html('<option disabled selected hidden>Chọn phường/xã</option>')
+        .attr('disabled', true);
+});
+
+$('#addrProvince').change(async (e) => {
+    const provId = $(e.target).val();
+    const { districts } = await fetch(`/api/location/district/${provId}`).then(
+        (res) => res.json()
+    );
+
+    // Set values for district select
+    const addrDistrict = $('#addrDistrict');
+    addrDistrict.attr('disabled', false);
+    addrDistrict.html(
+        '<option disabled selected hidden>Chọn quận/huyện</option>'
+    );
+    districts.forEach((el) => {
+        const { distId, distName } = el;
+        addrDistrict.append(`<option value='${distId}'>${distName}</option>`);
+    });
+
+    // Set values for ward select
+    const addrWard = $('#addrWard');
+    addrWard.attr('disabled', true);
+    addrWard.html('<option disabled selected hidden>Chọn phường/xã</option>');
+});
+
+$('#addrDistrict').change(async (e) => {
+    const distId = $(e.target).val();
+    const { wards } = await fetch(`/api/location/ward/${distId}`).then((res) =>
+        res.json()
+    );
+
+    // Set values for ward select
+    const addrWard = $('#addrWard');
+    addrWard.attr('disabled', false);
+    addrWard.html('<option disabled selected hidden>Chọn phường/xã</option>');
+    wards.forEach((el) => {
+        const { wardId, wardName } = el;
+        addrWard.append(`<option value='${wardId}'>${wardName}</option>`);
+    });
 });
 
 // Check validation
@@ -175,6 +230,10 @@ $('.address-popup__btn--submit').click(async (e) => {
     const phoneNumber = phoneNumberEl.val().trim();
     const provinceEl = $('#addrProvince');
     const province = provinceEl.val();
+    const districtEl = $('#addrDistrict');
+    const district = districtEl.val();
+    const wardEl = $('#addrWard');
+    const ward = wardEl.val();
     const addressEl = $('#address');
     const address = addressEl.val().trim();
 
@@ -220,42 +279,67 @@ $('.address-popup__btn--submit').click(async (e) => {
     ) {
         return;
     }
+    // Check district
+    if (
+        checkValidation(
+            district,
+            districtEl,
+            addressRegex,
+            'Quận/huyện',
+            'addr'
+        ) !== 1
+    ) {
+        return;
+    }
+    // Check ward
+    if (
+        checkValidation(ward, wardEl, addressRegex, 'Phường/xã', 'addr') !== 1
+    ) {
+        return;
+    }
     // Check address
     if (
-        checkValidation(address, addressEl, addressRegex, 'Địa chỉ', 'addr') !==
-        1
+        checkValidation(
+            address,
+            addressEl,
+            addressRegex,
+            'Địa chỉ nhận hàng',
+            'addr'
+        ) !== 1
     ) {
         return;
     }
 
-    //     const res = await fetch('/api/transaction/deposit', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             deposit,
-    //             password,
-    //         }),
-    //     });
-    //     const { status } = res;
-    //
-    //     if (status === 401) {
-    //         return Swal.fire({
-    //             title: 'Error',
-    //             text: 'Mật khẩu không chính xác!',
-    //             icon: 'error',
-    //             allowOutsideClick: true,
-    //         });
-    //     }
-    //
-    //     await Swal.fire({
-    //         title: 'Success',
-    //         text: 'Nạp tiền thành công!',
-    //         icon: 'success',
-    //         timer: 2000,
-    //         timerProgressBar: true,
-    //         showConfirmButton: false,
-    //     });
-    //     location.reload();
+    const { status } = await fetch('api/shippingAddress', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            fullName,
+            phoneNumber,
+            address,
+            wardId: ward,
+            distId: district,
+            provId: province,
+            isDefault: 1,
+        }),
+    });
+
+    if (status === 400) {
+        return Swal.fire({
+            title: 'Thất bại',
+            text: 'Tạo địa chỉ giao hàng mới không thành công!',
+            icon: 'error',
+            allowOutsideClick: true,
+        });
+    }
+
+    await Swal.fire({
+        title: 'Thành công',
+        text: 'Tạo địa chỉ giao hàng mới thành công!',
+        icon: 'success',
+        allowOutsideClick: true,
+    });
+    location.reload();
 });

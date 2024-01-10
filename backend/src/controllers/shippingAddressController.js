@@ -33,6 +33,7 @@ exports.createShippingAddress = catchAsync(async (req, res, next) => {
         distId,
         provId,
     });
+    console.log({ lat, lng });
 
     const result = await shippingAddressModel.createShippingAddress({
         userId,
