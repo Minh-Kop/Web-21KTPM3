@@ -57,6 +57,7 @@ CREATE PROCEDURE sp_CreateAccount (
     @username NVARCHAR(100), 
     @password NVARCHAR(100), 
     @verified bit, 
+    @isOauth2 bit, 
     @token char(64), 
     @role int
 )
@@ -73,8 +74,8 @@ BEGIN TRANSACTION
         declare @userId char(5) = (select dbo.f_CreateUserId('UR'))
         declare @cartId char(5) = (select dbo.f_CreateCartId('CT'))
 
-        INSERT into ACCOUNT (USERID , EMAIL, USERNAME, ENC_PWD, VERIFIED, TOKEN, HROLE) values 
-            (@userId, @email, @username, @password, @verified, @token, @role)
+        INSERT into ACCOUNT (USERID , EMAIL, USERNAME, ENC_PWD, VERIFIED, TOKEN, HROLE, IS_OAUTH2, SOFT_DELETE) values 
+            (@userId, @email, @username, @password, @verified, @token, @role, @isOauth2, 0)
         INSERT into CART (CART_ID, USERID, CART_COUNT, CART_TOTAL) values (@cartId, @userId, 0, 0)
 	END TRY
 

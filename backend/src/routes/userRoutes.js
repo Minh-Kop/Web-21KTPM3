@@ -13,6 +13,14 @@ router.patch('/verify/:token', authController.verify);
 router.post('/login', passport.authenticate('myStrategy'), (req, res, next) => {
     res.status(204).json();
 });
+router.get(
+    '/login-with-google',
+    passport.authenticate('myGoogleOAuth2Strategy'),
+    (req, res, next) => {
+        const { state: nextUrl } = req.query;
+        res.redirect(`${nextUrl}`);
+    },
+);
 router.get('/logout', authController.logOut);
 
 // Protect all routes after this middleware
