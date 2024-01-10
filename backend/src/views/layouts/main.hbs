@@ -149,8 +149,10 @@
         {{{body}}}
 
         {{!-- Loading animation --}}
-        <div class="waiting loading d-none" data-text="Đang xử lý..."></div>
-        <div class="waiting background-behind d-none"></div>
+        <div class="waiting d-none">
+            <div class=" loading" data-text="Đang xử lý..."></div>
+            <div class=" background-behind"></div>
+        </div>
 
         {{! Footer }}
         {{> (footer)}}

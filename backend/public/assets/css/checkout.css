@@ -3,7 +3,8 @@
 }
 
 ul,
-ol {
+ol,
+p {
     padding: 0;
     margin: 0;
 }
@@ -105,6 +106,10 @@ ol {
 }
 
 /* ==================================== Checkout block ==================================== */
+.main-content {
+    margin-bottom: 210px;
+}
+
 .checkout-block {
     padding: 8px 16px;
     margin-bottom: 16px;
@@ -221,4 +226,130 @@ ol {
 .product-item__price--final {
     color: var(--yellow-color);
     font-weight: bold;
+}
+
+/* ==================================== Add address popup ==================================== */
+.address-popup {
+    z-index: 99999;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 600px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.address-popup__title {
+    padding: 8px 0;
+
+    text-align: center;
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--yellow-color);
+}
+
+.address-popup__line {
+    display: grid;
+    grid-template-columns: 165px 1fr;
+    align-items: center;
+
+    padding: 8px 0;
+}
+
+.address-popup__line__label {
+    padding: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.address-popup__line__input,
+.address-popup__line__select {
+    height: 30px;
+    padding: 5px 10px;
+    border: 1px solid var(--border-bottom-color);
+    border-radius: 4px;
+
+    font-size: 14px;
+    color: #495057;
+}
+
+.address-popup__line__input:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.address-popup__line__input-error {
+    border-color: var(--secondary-color);
+}
+
+.address-popup__line__input-error.address-popup__line__input:focus,
+.address-popup__line__input-error.address-popup__line__select:focus {
+    border-color: var(--secondary-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(232, 90, 79, 0.25);
+}
+
+.address-popup__line__select,
+.address-popup__line__select option:hover {
+    cursor: pointer;
+}
+
+.address-popup__line__select[disabled] {
+    background-color: transparent;
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.form-error {
+    grid-column: 2;
+    margin-top: 5px;
+
+    font-size: 14px;
+    color: var(--secondary-color);
+}
+
+.address-popup__btn-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.address-popup__btn--close,
+.address-popup__btn--submit {
+    width: 245px;
+    max-width: 100%;
+    padding: 8px 0;
+    margin: 8px 0;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 700;
+    /* background: linear-gradient(
+        90deg,
+        rgba(224, 224, 224, 1) 0%,
+        rgba(224, 224, 224, 1) 100%
+    );
+    color: #636363; */
+    background: var(--secondary-color);
+    color: white;
+}
+
+.address-popup__btn--close {
+    border: 1px solid var(--secondary-color);
+    background: transparent;
+    color: var(--secondary-color);
+
+    transition: all 0.5s;
+}
+
+.address-popup__btn--close:hover {
+    background: var(--secondary-color);
+    color: white;
 }

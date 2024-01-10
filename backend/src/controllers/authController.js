@@ -18,6 +18,7 @@ const bankUrl = config.BANK_URL;
 
 exports.signUp = catchAsync(async (req, res, next) => {
     const { email, password, username } = req.body;
+    const isOauth2 = false;
 
     // Check for username duplicated
     const account = await accountModel.getByUsername(username);
@@ -44,7 +45,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     // const transport = await createTransport();
     // await transport.sendMail(mailOption);
 
-    // Create entity to insert to DB
+    // Create account
     await accountModel.createAccount({
         username,
         email,
@@ -52,12 +53,14 @@ exports.signUp = catchAsync(async (req, res, next) => {
         verified: 1,
         token: verifyToken,
         role: config.role.USER,
+        isOauth2,
     });
 
     // Create bank account in bank server
     await axios.post(`${bankUrl}/api/account/create-account`, {
         username,
         password: encryptedPassword,
+        isOauth2,
     });
 
     res.status(200).json({
