@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     28/12/2023 10:29:17 pm                       */
+/* Created on:     9/1/2024 6:43:46 pm                          */
 /*==============================================================*/
 USE master
 go
@@ -502,7 +502,7 @@ go
 /*==============================================================*/
 create table ACCOUNT (
    USERID               char(5)              not null,
-   USERNAME             nvarchar(50)          null,
+   USERNAME             nvarchar(50)          not null,
    EMAIL                nvarchar(100)         not null,
    FULLNAME             nvarchar(50)          null,
    PHONE_NUMBER         char(10)             null,
@@ -515,6 +515,7 @@ create table ACCOUNT (
    BIRTHDAY             datetime             null,
    GENDER               bit                  null,
    SOFT_DELETE          bit                  null,
+   IS_OAUTH2            bit                  null,
    constraint PK_ACCOUNT primary key nonclustered (USERID)
 )
 go
@@ -1029,17 +1030,4 @@ alter table WRITTEN_BY
    add constraint FK_WRITTEN__WRITTEN_B_AUTHOR foreign key (AUTHOR_ID)
       references AUTHOR (AUTHOR_ID)
 go
-
-
-CREATE TABLE Users (
-    id NVARCHAR(255) PRIMARY KEY NOT NULL,
-    email NVARCHAR(255),
-    role NVARCHAR(255) DEFAULT 'USER',
-    typeLogin NVARCHAR(255),
-    tokenLogin NVARCHAR(255),
-    name NVARCHAR(255),
-    avatarUrl NVARCHAR(255),
-    createdAt DATETIME NOT NULL,
-    updatedAt DATETIME NOT NULL
-);
 

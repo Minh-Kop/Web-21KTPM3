@@ -27,11 +27,12 @@ exports.getDetailedUser = async (accountId) => {
     return result;
 };
 
-exports.createAccount = async ({ username, password }) => {
+exports.createAccount = async ({ username, password, isOauth2 }) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     request.input('username', sql.NVarChar, username);
     request.input('password', sql.NVarChar, password);
+    request.input('isOauth2', sql.Bit, isOauth2);
     const result = await request.execute('sp_CreateAccount');
     return result;
 };
