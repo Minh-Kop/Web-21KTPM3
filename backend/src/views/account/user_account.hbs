@@ -1,3 +1,9 @@
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/css/fileinput.min.css" media="all"
+    rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css"
+    crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/js/fileinput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/themes/fa5/theme.min.js"></script>
 <div class="container p-0 mb-3">
     <div class="text-start px-4 row" style="background-color: #eae7dc">
         <div class="card col-2 mt-3 border border-success rounded h-100">
@@ -82,7 +88,8 @@
                     </div>
                 </form>
             </div>
-            <div class="container border border-success rounded text-start" style="background-color: FFFFFF; margin-top:12px">
+            <div class="container border border-success rounded text-start"
+                style="background-color: FFFFFF; margin-top:12px">
                 <h5 class="mt-2 mb-3">Thay đổi mật khẩu</h5>
                 <form id="changePassword">
                     <div class="mb-3 row">
@@ -112,12 +119,22 @@
                     </div>
                 </form>
             </div>
+            <div class="container mt-3 border border-success rounded text-start" style="background-color: FFFFFF">
+                <h5 class="mt-2 mb-3">Thay đổi avatar</h5>
+                <form id="uploadAvatar" enctype="multipart/form-data">
+                    <button type="submit" class="btn btn-danger mb-2">Cập nhật</button>
+                    <!-- Add more form fields as needed -->
+                    <div class="mb-3">
+                        <input type="file" name="avatar" id="formFile" class="form-control" accept="image/*" />
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
 <script>
     $('#updateForm').on('submit', function (event) {
-        // Prevent the default form submission
         event.preventDefault();
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -131,13 +148,12 @@
         formData.forEach(function (item) {
             user[item.name] = item.value
         })
-        // Send PATCH request using Ajax
+
         $.ajax({
             type: 'PATCH',
             url: '/user/updateMe',
             data: user,
             success: function (response) {
-                // Handle success, e.g., show a success message
                 let timerInterval;
                 swalWithBootstrapButtons.fire({
                     title: "Đã cập nhật!",
@@ -156,22 +172,20 @@
                         clearInterval(timerInterval);
                     }
                 }).then((result) => {
-                    /* Read more about handling dismissals below */
                     if (result.dismiss === Swal.DismissReason.timer) {
                         location.reload();
                     }
                 });
             },
             error: function (error) {
-                // Handle error, e.g., show an error message
                 swalWithBootstrapButtons.fire({
                     title: 'Cập nhật thất bại',
-                    //text: error.responseJSON.message,
                     icon: "error",
                 });
             }
         });
     });
+
     $('#changePassword').on('submit', function (event) {
         event.preventDefault();
         const swalWithBootstrapButtons = Swal.mixin({
@@ -198,7 +212,6 @@
                 url: '/user/updatePassword',
                 data: password,
                 success: function (response) {
-                    // Handle success, e.g., show a success message
                     let timerInterval;
                     swalWithBootstrapButtons.fire({
                         title: "Đã cập nhật!",
@@ -226,18 +239,73 @@
                     });
                 },
                 error: function (error) {
-                    // Handle error, e.g., show an error message
-
                     swalWithBootstrapButtons.fire({
                         title: 'Thay đổi mật khẩu thất bại',
-                        text: error.responseJSON.message,
                         icon: "error",
                     });
                 }
             });
         }
-        // Send PATCH request using Ajax
+    });
 
+    $("#formFile").fileinput({
+        theme: 'fa6', showUpload: false,
+        previewFileType: 'any'
+    });
 
-    })
+    $('#uploadAvatar').on('submit', function (event) {
+        event.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success ms-3",
+                cancelButton: "btn btn-danger",
+            },
+            buttonsStyling: false,
+        });
+        const formData = new FormData(this);
+
+        const avatar = {};
+        formData.forEach(function (value, key) {
+            avatar[key] = value;
+        });
+
+        $.ajax({
+            type: 'PATCH',
+            url: '/user/avatar',
+            data: avatar,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                let timerInterval;
+                swalWithBootstrapButtons.fire({
+                    title: "Đã cập nhật!",
+                    text: "Thay đổi ảnh đại diện thành công",
+                    icon: "success",
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const timer = Swal.getPopup().querySelector("b");
+                        timerInterval = setInterval(() => {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }, 100);
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                }).then(async (result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        location.reload();
+                    }
+                });
+            },
+            error: function (error) {
+                swalWithBootstrapButtons.fire({
+                    title: 'Thay đổi ảnh đại diện thất bại',
+                    text: error.responseJSON,
+                    icon: "error",
+                });
+            }
+        });
+    });
 </script>
