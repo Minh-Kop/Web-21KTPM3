@@ -230,7 +230,7 @@ p {
 
 /* ==================================== Add address popup ==================================== */
 .address-popup {
-    z-index: 99999;
+    z-index: 100;
     position: fixed;
     top: 10%;
     left: 50%;
@@ -262,14 +262,16 @@ p {
 }
 
 .address-popup__line__label {
+    width: max-content;
     padding: 4px;
+
     font-size: 14px;
     white-space: nowrap;
 }
 
 .address-popup__line__input,
 .address-popup__line__select {
-    height: 30px;
+    height: 35px;
     padding: 5px 10px;
     border: 1px solid var(--border-bottom-color);
     border-radius: 4px;

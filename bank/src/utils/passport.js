@@ -3,7 +3,6 @@ const passport = require('passport');
 const accountModel = require('../models/accountModel');
 const crypto = require('./crypto');
 const MyStrategy = require('./myStrategy');
-const MyGoogleOAuth2Strategy = require('./myGoogleOauth2Strategy');
 
 passport.serializeUser((user, done) => {
     // console.log('Serialize: ', user);
@@ -47,25 +46,6 @@ module.exports = (app) => {
                 }
                 done('Invalid authentication', null);
             } catch (error) {
-                done(error);
-            }
-        })
-    );
-
-    passport.use(
-        new MyGoogleOAuth2Strategy(async (info, done) => {
-            try {
-                const { email } = info;
-                const username = email.substring(0, email.indexOf('@'));
-                const user = await accountModel.getByUsername(username);
-                if (!user) {
-                    return done('Invalid authentication', null);
-                }
-
-                info.USERNAME = username;
-                return done(null, info);
-            } catch (error) {
-                console.log(error);
                 done(error);
             }
         })

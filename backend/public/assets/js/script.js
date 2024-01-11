@@ -1,3 +1,24 @@
+$(async () => {
+    const error = $('.login-page').data('error');
+    if (!error) {
+        return;
+    }
+
+    let text = '';
+    if (error === 1) {
+        text =
+            'Email bạn chọn chưa được liên kết với tài khoản nào trong hệ thống!';
+    } else if (error === 2) {
+        text = 'Tài khoản liên kết với email này trong hệ thống đã bị xóa!';
+    }
+    return Swal.fire({
+        title: 'Lỗi xác thực',
+        text,
+        icon: 'error',
+    });
+});
+
+/* ==================================== Validate ==================================== */
 const checkValidation = (value, input, regex, message, flag = '') => {
     const formError = input.parent().find('.form-error');
     if (!value) {
@@ -106,7 +127,7 @@ $('#sign-up').on('click', async (e) => {
         if (message === 'Username already exists.') {
             $('.waiting').addClass('d-none');
             return Swal.fire({
-                title: 'Error',
+                title: 'Lỗi',
                 text: 'Username đã tồn tại!',
                 icon: 'error',
             });
@@ -114,7 +135,7 @@ $('#sign-up').on('click', async (e) => {
         if (message === 'Email already exists.') {
             $('.waiting').addClass('d-none');
             return Swal.fire({
-                title: 'Error',
+                title: 'Lỗi',
                 text: 'Email đã tồn tại!',
                 icon: 'error',
             });
@@ -123,7 +144,7 @@ $('#sign-up').on('click', async (e) => {
 
     $('.waiting').addClass('d-none');
     Swal.fire({
-        title: 'Success',
+        title: 'Thành công',
         text: 'Tạo tài khoản thành công!',
         icon: 'success',
         timer: 2000,
@@ -156,22 +177,21 @@ $('#login').on('click', async (e) => {
         return;
     }
 
-    const body = {
-        username: usernameValue,
-        password: passwordValue,
-    };
     const res = await fetch('/api/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+            username: usernameValue,
+            password: passwordValue,
+        }),
     });
 
     // If sign up fails
     if (!res.ok) {
         Swal.fire({
-            title: 'Error',
+            title: 'Lỗi xác thực',
             text: 'Username hoặc mật khẩu chưa chính xác!',
             icon: 'error',
             allowOutsideClick: true,

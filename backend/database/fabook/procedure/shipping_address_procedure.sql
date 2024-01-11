@@ -78,8 +78,8 @@ GO
 CREATE PROCEDURE sp_CreateShippingAddress (
     @userId CHAR(5),
     @address NVARCHAR(100),
-    @wardId char(5),
-    @distId char(5),
+    @wardId char(9),
+    @distId char(7),
     @provId char(5),
     @fullName NVARCHAR(60),
     @phoneNumber CHAR(10),

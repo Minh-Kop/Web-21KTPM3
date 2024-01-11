@@ -52,7 +52,6 @@ const getCheckoutPage = catchAsync(async (req, res, next) => {
     const selectedProducts = cartBooks.filter((el) => el.isClicked);
 
     const provinces = await locationModel.getProvinces();
-    console.log(provinces);
 
     res.render('checkout/checkout', {
         title: 'Checkout',

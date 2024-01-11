@@ -1,5 +1,3 @@
-// const { promisify } = require('util');
-const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
 const accountModel = require('../models/accountModel');
@@ -11,17 +9,30 @@ const {
     encryptPassword,
     generateToken,
 } = require('../utils/crypto');
-const oauth2Client = require('../utils/oauth2');
 const { getVerifyEmail, createTransport } = require('../utils/nodemailer');
 
 const bankUrl = config.BANK_URL;
+
+const createSignUpMail = async (email, webUrl) => {
+    // 256 bits which provides about 1e+77 possible different number
+    // This is enough for preventing brute force
+    const verifyToken = generateToken(config.NUMBER_BYTE_VERIFY_TOKEN);
+
+    // Send each mail with different time to prevent the html being trimmed by Gmail
+    const url = `${webUrl}/api/user`;
+    const mailOption = getVerifyEmail(email, url, verifyToken);
+    const transport = await createTransport();
+    await transport.sendMail(mailOption);
+
+    return verifyToken;
+};
 
 exports.signUp = catchAsync(async (req, res, next) => {
     const { email, password, username } = req.body;
     const isOauth2 = false;
 
     // Check for username duplicated
-    const account = await accountModel.getByUsername(username);
+    const account = await accountModel.getByUsername(username, true);
     if (account) {
         return next(new AppError('Username already exists.', 400));
     }
@@ -32,18 +43,12 @@ exports.signUp = catchAsync(async (req, res, next) => {
         return next(new AppError('Email already exists.', 400));
     }
 
-    // 256 bits which provides about 1e+77 possible different number
-    // This is enough for preventing brute force
-    const verifyToken = generateToken(config.NUMBER_BYTE_VERIFY_TOKEN);
+    // Send mail
+    const webUrl = `${req.protocol}://${req.get('host')}`;
+    const verifyToken = await createSignUpMail(email, webUrl);
 
     // Encrypt password by salting and hashing
     const encryptedPassword = encryptPassword(password);
-
-    // Send each mail with different time to prevent the html being trimmed by Gmail
-    // const url = `${req.protocol}://${req.get('host')}/api/user`;
-    // const mailOption = getVerifyEmail(email, url, verifyToken);
-    // const transport = await createTransport();
-    // await transport.sendMail(mailOption);
 
     // Create account
     await accountModel.createAccount({
@@ -69,12 +74,9 @@ exports.signUp = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.signUpForOauth2 = async (email) => {
-    // Send each mail with different time to prevent the html being trimmed by Gmail
-    // const url = `${req.protocol}://${req.get('host')}/api/user`;
-    // const mailOption = getVerifyEmail(email, url, verifyToken);
-    // const transport = await createTransport();
-    // await transport.sendMail(mailOption);
+exports.signUpForOauth2 = async (email, webUrl) => {
+    // Send mail
+    await createSignUpMail(email, webUrl);
 
     // Create account
     const username = email.substring(0, email.indexOf('@'));
@@ -107,103 +109,6 @@ exports.verify = catchAsync(async (req, res, next) => {
         });
     }
     return next(new AppError('Verification code is not found.', 400));
-});
-
-const signToken = (userId) => {
-    return jwt.sign({ userId }, config.JWT_SECRET, {
-        expiresIn: config.JWT_EXPIRES_IN,
-    });
-};
-
-const createSendToken = (user, statusCode, req, res) => {
-    const token = signToken(user.userId);
-
-    res.cookie('jwt', token, {
-        maxAge: config.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        sameSite: 'none',
-        // secure: req.secure || req.headers('x-forwarded-proto') === 'https',
-        secure: true,
-    });
-    // req.session.jwt = token;
-
-    res.status(statusCode).json({
-        status: 'success',
-        token,
-        user,
-    });
-};
-
-exports.login = catchAsync(async (req, res, next) => {
-    const { username, password } = req.body;
-
-    // Check if email and password exist
-    if (!username || !password) {
-        return next(
-            new AppError('Please provide both username and password!', 400),
-        );
-    }
-
-    // Check for correct username
-    const account = await accountModel.getByUsername(username);
-    if (!account) {
-        return next(new AppError('Username or password is not correct.', 400));
-    }
-
-    // Get the database password
-    const encryptedPassword = account.ENC_PWD;
-    if (!encryptedPassword) {
-        return next(new AppError('Username or password is not correct.', 400));
-    }
-
-    // Check the correctness of password
-    if (!verifyPassword(password, encryptedPassword)) {
-        return next(new AppError('Username or password is not correct.', 400));
-    }
-
-    // Handle account not verified
-    const verified = account.VERIFIED;
-    if (!verified) {
-        return next(new AppError('Account is not verified.', 400));
-    }
-
-    const returnAccount = {
-        userId: account.USERID,
-        email: account.EMAIL,
-        phoneNumber: account.PHONE_NUMBER,
-        fullName: account.FULLNAME,
-        verified,
-    };
-
-    // Send back response with token
-    createSendToken(returnAccount, 200, req, res);
-});
-
-exports.loginGoogle = catchAsync(async (req, res, next) => {
-    // Extract and verify token from Google
-    const { tokenId } = req.body;
-    const result = await oauth2Client.verifyIdToken({
-        idToken: tokenId,
-        audience: config.GOOGLE_CLIENT_ID,
-    });
-
-    // Create new account if email is not registered
-    const { email } = result.payload;
-    const currentAccount = await accountModel.getByEmail(email);
-    if (!currentAccount) {
-        const newAccount = {
-            email: email,
-            verified: 1,
-            role: config.role.USER,
-        };
-        await accountModel.createAccount(newAccount);
-    }
-
-    // Sign a new token by server
-    const returnAccount = {
-        email,
-    };
-    createSendToken(returnAccount, 200, req, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -320,17 +225,15 @@ exports.loginSuccess = catchAsync(async (req, res) => {
 });
 
 exports.getLoginPage = catchAsync(async (req, res, next) => {
-    const fullUrl = req.originalUrl;
-    let nextUrl = fullUrl.substring(
-        fullUrl.indexOf('nextUrl=') + 'nextUrl='.length,
-    );
-    nextUrl = nextUrl || '/mainPage';
+    const { error, nextUrl: url } = req.query;
+    const nextUrl = url || '/mainPage';
 
     res.render('authentication/login', {
         title: 'Login',
         navbar: () => 'empty',
         footer: () => 'empty',
         nextUrl,
+        error,
     });
 });
 

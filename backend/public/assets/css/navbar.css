@@ -221,6 +221,7 @@
     opacity: 1;
     visibility: visible;
     scale: 1;
+    --line-clamb: 2;
 }
 
 .nav__cart__dropdown__heading {
