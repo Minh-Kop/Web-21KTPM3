@@ -25,6 +25,8 @@ const orderRouterUI = require('./orderRoutesUI');
 const searchRouter = require('./searchRoutes');
 const searchRouterUI = require('./searchRoutesUI');
 
+const statisticRouter = require('./statisticRoutes');
+
 const authRouter2 = require('./authRouter');
 
 const router = express.Router();
@@ -60,5 +62,7 @@ router.use('/order', authController.protectPage, orderRouterUI);
 // router.use('/api/review', reviewRouter);
 router.use('/api/search', searchRouter);
 router.use('/search', searchRouterUI);
+
+router.use('/statistic', authController.protect, statisticRouter);
 
 module.exports = router;
