@@ -74,6 +74,8 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
         order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');
         order.totalQuantity = totalQuantity;
         order.shippingFeeString = order.shippingFee.toLocaleString('vi-VN');
+        order.merchandiseSubtotalString =
+            order.merchandiseSubtotal.toLocaleString('vi-VN');
     });
     booksOrdered.forEach((book) => {
         book.unitPriceString = book.unitPrice.toLocaleString('vi-VN');
@@ -165,13 +167,44 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         (accumulator, currentValue) => accumulator + currentValue.totalNumber,
         0,
     );
+    if (!orderNumber.find((order) => order.orderstate == 3)) {
+        orderNumber.push({
+            orderstate: 3,
+            totalNumber: 0,
+        });
+    }
+    if (!orderNumber.find((order) => order.orderstate == -1)) {
+         orderNumber.push({
+             orderstate: -1,
+             totalNumber: 0,
+         });
+    }
+    if (!orderNumber.find((order) => order.orderstate == 2)) {
+        orderNumber.unshift({
+            orderstate: 2,
+            totalNumber: 0,
+        });
+    }
+    if (!orderNumber.find((order) => order.orderstate == 1)) {
+        orderNumber.unshift({
+            orderstate: 1,
+            totalNumber: 0,
+        });
+    }
+    if (!orderNumber.find((order) => order.orderstate == 0)) {
+        orderNumber.unshift({
+            orderstate: 0,
+            totalNumber: 0,
+        });
+    }
     orderNumber.unshift({
         orderstate: 6,
         totalNumber: total,
     });
     const totalPages = Math.ceil(
         parseFloat(
-            orderNumber.find((order) => order.orderstate == orderState).totalNumber,
+            orderNumber.find((order) => order.orderstate == orderState)
+                .totalNumber,
         ) / limit,
     );
     returnedOrders.forEach((order) => {

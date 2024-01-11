@@ -25,7 +25,7 @@
                 <h4 class='mt-2 mb-3'>ĐƠN HÀNG CỦA TÔI</h4>
                 <div class='containter ms-0 row text-center'>
                     {{#each orderNumber}}
-                    <div class='position-relative mb-3 {{#eq orderstate ../orderState}}border border-3 border-danger{{/eq}} status'
+                    <div class='position-relative mb-3 {{#eq orderstate ../orderState}}border border-3 border-danger{{/eq}}status'  
                         style='width: 150px'>
                         <a href='/order/me?orderState={{orderstate}}' class='fw-bold button'
                             style='text-decoration: none; color: black'><span>{{totalNumber}}
@@ -74,13 +74,4 @@
     </div>
 </div>
 <script>
-    $(".status").click((e)=> {
-        let link = window.location;
-        console.log(link);
-        //$(".status").removeClass("border border-3 border-danger"); $(this).addClass("border border-3 border-danger");
-        //const selectedState = $(this).val();
-        //link = `${link}&orderState=${selectedState}`;
-        //console.log(link);
-        //window.location = link;
-    });
 </script>
