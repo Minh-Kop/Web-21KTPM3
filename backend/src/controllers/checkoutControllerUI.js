@@ -3,6 +3,7 @@ const shippingAddressControllerUI = require('./shippingAddressControllerUI');
 const config = require('../config/config');
 const { separateThousandByDot } = require('../utils/utils');
 const locationController = require('./locationController');
+const locationModel = require('../models/locationModel');
 
 const bankUrl = config.BANK_URL;
 
@@ -50,10 +51,13 @@ const getCheckoutPage = catchAsync(async (req, res, next) => {
 
     const selectedProducts = cartBooks.filter((el) => el.isClicked);
 
+    const provinces = await locationModel.getProvinces();
+    console.log(provinces);
+
     res.render('checkout/checkout', {
         title: 'Checkout',
         navbar: () => 'navbar',
-        footer: () => 'footer',
+        footer: () => 'empty',
         isLoggedIn,
         ...user,
         ...cart,
@@ -69,6 +73,7 @@ const getCheckoutPage = catchAsync(async (req, res, next) => {
         deliveryDate,
         cartTotalNumber,
         bankUrl,
+        provinces,
     });
 });
 

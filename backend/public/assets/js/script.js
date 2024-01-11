@@ -27,6 +27,8 @@ const checkValidation = (value, input, regex, message, flag = '') => {
 
 $('#sign-up').on('click', async (e) => {
     e.preventDefault();
+    $('.waiting').removeClass('d-none');
+
     const username = $('#signUpUsername');
     const usernameValue = username.val().trim();
     const signUpEmail = $('#signUpEmail');
@@ -44,6 +46,7 @@ $('#sign-up').on('click', async (e) => {
 
     // Check username
     if (checkValidation(usernameValue, username, nameRegex, 'Username') !== 1) {
+        $('.waiting').addClass('d-none');
         return;
     }
     // Check email
@@ -51,6 +54,7 @@ $('#sign-up').on('click', async (e) => {
         checkValidation(signUpEmailValue, signUpEmail, emailRegex, 'Email') !==
         1
     ) {
+        $('.waiting').addClass('d-none');
         return;
     }
     // Check password
@@ -62,6 +66,7 @@ $('#sign-up').on('click', async (e) => {
             'Password'
         ) !== 1
     ) {
+        $('.waiting').addClass('d-none');
         return;
     }
     // Check re-enter password
@@ -74,6 +79,7 @@ $('#sign-up').on('click', async (e) => {
             're'
         ) !== 1
     ) {
+        $('.waiting').addClass('d-none');
         return;
     }
 
@@ -98,6 +104,7 @@ $('#sign-up').on('click', async (e) => {
     if (!res.ok) {
         const { message } = result;
         if (message === 'Username already exists.') {
+            $('.waiting').addClass('d-none');
             return Swal.fire({
                 title: 'Error',
                 text: 'Username đã tồn tại!',
@@ -105,6 +112,7 @@ $('#sign-up').on('click', async (e) => {
             });
         }
         if (message === 'Email already exists.') {
+            $('.waiting').addClass('d-none');
             return Swal.fire({
                 title: 'Error',
                 text: 'Email đã tồn tại!',
@@ -113,6 +121,7 @@ $('#sign-up').on('click', async (e) => {
         }
     }
 
+    $('.waiting').addClass('d-none');
     Swal.fire({
         title: 'Success',
         text: 'Tạo tài khoản thành công!',
