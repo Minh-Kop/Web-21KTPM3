@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     9/1/2024 6:43:46 pm                          */
+/* Created on:     11/1/2024 4:05:31 pm                         */
 /*==============================================================*/
 USE master
 go
@@ -515,7 +515,7 @@ create table ACCOUNT (
    BIRTHDAY             datetime             null,
    GENDER               bit                  null,
    SOFT_DELETE          bit                  null,
-   IS_OAUTH2            bit                  null,
+   IS_OAUTH2            int                  null,
    constraint PK_ACCOUNT primary key nonclustered (USERID)
 )
 go
@@ -673,7 +673,7 @@ go
 /* Table: DISTRICT                                              */
 /*==============================================================*/
 create table DISTRICT (
-   DIST_ID              char(5)              not null,
+   DIST_ID              char(7)              not null,
    PROV_ID              char(5)              not null,
    DIST_NAME            nvarchar(50)          null,
    constraint PK_DISTRICT primary key nonclustered (DIST_ID)
@@ -825,8 +825,8 @@ go
 create table SHIPPING_ADDRESS (
    ADDR_ID              char(5)              not null,
    USERID               char(5)              not null,
-   DIST_ID              char(5)              not null,
-   WARD_ID              char(5)              not null,
+   DIST_ID              char(7)              not null,
+   WARD_ID              char(9)              not null,
    PROV_ID              char(5)              not null,
    DETAILED_ADDR        nvarchar(100)         null,
    IS_DEFAULT           bit                  null,
@@ -875,8 +875,8 @@ go
 /* Table: WARD                                                  */
 /*==============================================================*/
 create table WARD (
-   WARD_ID              char(5)              not null,
-   DIST_ID              char(5)              not null,
+   WARD_ID              char(9)              not null,
+   DIST_ID              char(7)              not null,
    WARD_NAME            nvarchar(50)          null,
    constraint PK_WARD primary key nonclustered (WARD_ID)
 )

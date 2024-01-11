@@ -19,8 +19,11 @@ exports.getByEmail = async (email) => {
     return result.recordset[0];
 };
 
-exports.getByUsername = async (username) => {
-    const sqlString = `select * from ACCOUNT where username = '${username}' and is_oauth2 = 0`;
+exports.getByUsername = async (username, isSignUp = false) => {
+    let sqlString = `select * from ACCOUNT where username = '${username}'`;
+    if (!isSignUp) {
+        sqlString += ' and SOFT_DELETE = 0';
+    }
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);

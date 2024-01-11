@@ -67,8 +67,7 @@
     margin-bottom: 0;
 }
 
-.login-form__btn,
-.login-form__btn--other {
+.login-form__btn {
     width: 100%;
     padding: 5px 0;
     margin: 12px 0 0;
@@ -82,58 +81,4 @@
 
 .login-form__btn:hover {
     opacity: 0.8;
-}
-
-.custom-border {
-    /* display: grid;
-    grid-template-columns: 1fr 30px 1fr; */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.custom-border__line {
-    margin: 21px 0px;
-    height: 1px;
-    border: none;
-    background-color: black;
-    flex: 1 1 0%;
-}
-
-.custom-border__word {
-    padding: 0 10px;
-    font-size: 14px;
-    text-align: center;
-
-    vertical-align: middle;
-}
-
-.other-login {
-    display: grid;
-    gap: 22px;
-}
-
-.login-form__btn--other {
-    position: relative;
-
-    margin: 0;
-    background-color: transparent;
-    border: 1px solid black;
-    color: black;
-}
-
-.login-form__btn--other:hover {
-    background-color: var(--background-color);
-    color: var(--primary-color);
-}
-
-.login-form__btn__icon {
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-
-    width: 18px;
-    height: 18px;
 }

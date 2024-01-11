@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     9/1/2024 6:44:30 pm                          */
+/* Created on:     11/1/2024 4:09:53 pm                         */
 /*==============================================================*/
 USE master
 go
@@ -70,10 +70,10 @@ go
 /*==============================================================*/
 create table ACCOUNT (
    ACCOUNTID            char(5)              not null,
-   USERNAME             nvarchar(50)          null,
-   ENC_PWD              nvarchar(300)         null,
+   USERNAME             varchar(50)          null,
+   ENC_PWD              varchar(300)         null,
    BALANCE              bigint               null,
-   IS_OAUTH2            bit                  null,
+   IS_OAUTH2            int                  null,
    constraint PK_ACCOUNT primary key nonclustered (ACCOUNTID)
 )
 go

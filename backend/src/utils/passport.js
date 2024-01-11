@@ -1,7 +1,7 @@
 const passport = require('passport');
 
 const accountModel = require('../models/accountModel');
-const authController = require('../controllers/authController');
+// const authController = require('../controllers/authController');
 const MyStrategy = require('./myStrategy');
 const MyGoogleOAuth2Strategy = require('./myGoogleOauth2Strategy');
 const crypto = require('./crypto');
@@ -63,14 +63,25 @@ module.exports = (app) => {
     passport.use(
         new MyGoogleOAuth2Strategy(async (info, done) => {
             try {
+                // const { email, webUrl } = info;
                 const { email } = info;
-                const account = await accountModel.getByEmail(email);
+                let account = await accountModel.getByEmail(email);
                 if (!account) {
-                    info.username = await authController.signUpForOauth2(email);
+                    // info.username = await authController.signUpForOauth2(
+                    //     email,
+                    //     webUrl,
+                    // );
+                    return done('No account is created with this email!');
+                }
+
+                account = await accountModel.getByUsername(account.USERNAME);
+                if (!account) {
+                    return done(
+                        'The account that associates with this email is deleted!',
+                    );
                 }
                 return done(null, info);
             } catch (error) {
-                console.log(error);
                 done(error);
             }
         }),

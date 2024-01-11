@@ -21,9 +21,8 @@ module.exports = class MyGoogleOAuth2Strategy extends Strategy {
     }
 
     async authenticate(req, options) {
-        const redirectURI = `${req.protocol}://${req.get(
-            'host',
-        )}/api/user/login-with-google`;
+        const webUrl = `${req.protocol}://${req.get('host')}`;
+        const redirectURI = `${webUrl}/api/user/login-with-google`;
         const oauth2Client = new google.auth.OAuth2(
             this.clientID,
             this.clientSecret,
@@ -54,6 +53,7 @@ module.exports = class MyGoogleOAuth2Strategy extends Strategy {
         const { data } = await google
             .oauth2('v2')
             .userinfo.get({ auth: oauth2Client });
+        data.webUrl = webUrl;
 
         this.verify(data, (err, user) => {
             if (err) {
