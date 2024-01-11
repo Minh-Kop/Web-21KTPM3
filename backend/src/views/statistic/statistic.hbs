@@ -63,7 +63,7 @@
 </div>
 
 <script>
-    const monthlyRevenueData = [];
+    /*const monthlyRevenueData = [];
     const dailyOrderData = [];
 
     const xMonths = [];
@@ -79,7 +79,25 @@
     orderNumber.forEach((item) => {
             dailyOrderData.push(item.dailyOrder);
             xDates.push(item.orderDate);
-    });
+    });*/
+
+    const monthlyRevenueData = [
+        10014, 12995, 13598, 9151, 9733, 11183, 5969, 8813, 8501, 14682, 5043, 13390
+    ];
+
+    const dailyOrderData = [
+        444, 258, 378, 458, 171, 461, 153, 237, 440, 254, 166, 483
+    ];
+
+    const xMonths = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    const xDates = [
+        '2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04', '2024-01-05', '2024-01-06',
+        '2024-02-01', '2024-02-02', '2024-02-03', '2024-02-04', '2024-02-05', '2024-02-06',
+    ];
+
     new Chart("myRevenueChart", {
         type: 'line',
         data: {
