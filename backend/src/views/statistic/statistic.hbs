@@ -1,3 +1,7 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
 <div class="container p-0 mb-3">
     <div class="text-start px-4 row" style="background-color: #eae7dc">
         <p class='fs-2 fw-bold' style='color:#E85A4F'>Thống kê</p>
@@ -48,7 +52,75 @@
             </div>
             <div class="container mt-3 border border-success rounded text-start" style="background-color: #ffffff">
                 <h5 class="mt-2 mb-3">Biểu đồ</h5>
+                <div class="d-flex align-items-center justify-content-center mb-3 row">
+                    <canvas id="myRevenueChart" class="mb-4" style="width: 100%; max-width: 700px" data-revenue="{{totalMonthlyRevenue}}"></canvas>
+                    <canvas id="myOrderChart" style="width: 100%; max-width: 700px" data-orderNumber="{{totalOrderDaily}}"></canvas>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const monthlyRevenueData = [];
+    const dailyOrderData = [];
+
+    const xMonths = [];
+    const xDates = [];
+
+    const revenue = $('#myRevenueChart').data("revenue");
+    const orderNumber = $('#myOrderChart').data("orderNumber");
+
+    revenue.forEach((item) => {
+        monthlyRevenueData.push(item.monthlyRevenue);
+        xMonths.push(item.orderMonth);
+    });
+    orderNumber.forEach((item) => {
+            dailyOrderData.push(item.dailyOrder);
+            xDates.push(item.orderDate);
+    });
+    new Chart("myRevenueChart", {
+        type: 'line',
+        data: {
+            labels: xMonths,
+            datasets: [
+                {
+                    label: 'Monthly Revenue',
+                    data: monthlyRevenueData,
+                    borderColor: '#88E1C1',
+                    fill: false,
+                },
+            ],
+        },
+        options: {
+            legend:{display: false},
+            title: {
+                display: true,
+                text: "Tổng doanh thu theo tháng"
+            }
+        },
+    });
+
+    new Chart("myOrderChart", {
+            type: 'line',
+            data: {
+                labels: xDates,
+                datasets: [
+                    {
+                        label: 'Daily Orders',
+                        data: dailyOrderData,
+                        borderColor: '#7D94E5',
+                        fill: false,
+                    },
+                ],
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: "Tổng đơn theo ngày"
+                }
+            },
+        });
+</script>

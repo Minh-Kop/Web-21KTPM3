@@ -6,12 +6,14 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
     const { user } = req;
 
     const SOrdernRevenue = await statisticModel.getSOrdernRevenue();
-    console.log(SOrdernRevenue)
     SOrdernRevenue.totalRevenue =
         SOrdernRevenue.totalRevenue == null ? 0 : SOrdernRevenue.totalRevenue;
     const totalRevenueString =
         SOrdernRevenue.totalRevenue.toLocaleString('vi-VN');
-
+    const [
+        totalOrderDaily,
+        totalMonthlyRevenue
+    ] = await statisticModel.getStatistic();
     res.render('statistic/statistic', {
         title: 'Thống kê',
         status: 'success',
@@ -21,5 +23,7 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
         totalSuccessfulOrder: SOrdernRevenue.totalSuccessfulOrder,
         totalRevenue: SOrdernRevenue.totalRevenue,
         totalRevenueString,
+        totalOrderDaily,
+        totalMonthlyRevenue
     });
 });

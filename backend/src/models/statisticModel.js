@@ -18,10 +18,7 @@ exports.getSOrdernRevenue = async () => {
 };
 exports.getStatistic = async () => {
     const pool = await database.getConnectionPool();
-
     const request = new sql.Request(pool);
-    const result = await request.execute(
-        'sp_GetAllUserShippingAddressesByUserId',
-    );
+    const result = await request.execute('sp_GetStatistic');
     return result.recordset;
 };
