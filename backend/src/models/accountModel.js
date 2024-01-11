@@ -145,10 +145,18 @@ exports.getAllUsers = async (userEntity) => {
 
     sqlString = `
         select a.USERID userId, [a].USERNAME as username, [a].[EMAIL] as email, [a].[FULLNAME] as fullName, [a].[PHONE_NUMBER] as phoneNumber, [a].[AVATAR_PATH] as avatarPath, [a].[HROLE] as role, a.GENDER as gender, a.BIRTHDAY as birthday
-        from ACCOUNT a ${sqlString}`;
+        from ACCOUNT a where SOFT_DELETE = 0 ${sqlString}`;
 
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
     return result.recordset;
+};
+
+exports.deleteAccount = async (userId) => {
+    const sqlString = `update ACCOUNT set SOFT_DELETE = 1 where USERID = '${userId}'`;
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(sqlString);
+    return result.rowsAffected[0];
 };

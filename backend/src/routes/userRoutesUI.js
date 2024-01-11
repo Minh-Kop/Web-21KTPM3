@@ -42,6 +42,7 @@ router
 router
     .route('/:userId')
     .get(accountController.getUser)
-    .patch(accountController.updateUser);
+    .patch(accountController.updateUser)
+    .delete(accountController.deleteUser);
 
 module.exports = router;
