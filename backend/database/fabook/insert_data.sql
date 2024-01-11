@@ -6,19 +6,19 @@ INSERT into Province (PROV_ID, PROV_NAME) values ('PR004', N'Cần Thơ')
 INSERT into Province (PROV_ID, PROV_NAME) values ('PR005', N'Lâm Đồng')
 
 -- ========== DISTRICT ==========
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT001', 'PR001', N'Quận 1')
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT002', 'PR001', N'Quận 2')
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT003', 'PR001', N'Quận 3')
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT004', 'PR001', N'Quận 4')
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT005', 'PR001', N'Quận 5')
+insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00001', 'PR001', N'Quận 1')
+insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00002', 'PR001', N'Quận 2')
+insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00003', 'PR001', N'Quận 3')
+insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00004', 'PR001', N'Quận 4')
+insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00005', 'PR001', N'Quận 5')
 
 -- ========== WARD ==========
 insert into WARD (WARD_ID, DIST_ID, WARD_NAME) values
-    ('WD001', 'DT005', N'Phường 1'),
-    ('WD002', 'DT005', N'Phường 2'),
-    ('WD003', 'DT005', N'Phường 3'),
-    ('WD004', 'DT005', N'Phường 4'),
-    ('WD005', 'DT005', N'Phường 5')
+    ('WD0000001', 'DT00005', N'Phường 1'),
+    ('WD0000002', 'DT00005', N'Phường 2'),
+    ('WD0000003', 'DT00005', N'Phường 3'),
+    ('WD0000004', 'DT00005', N'Phường 4'),
+    ('WD0000005', 'DT00005', N'Phường 5')
 
 -- ========== CATEGORY ==========
 insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA01', N'Manga - Comic')

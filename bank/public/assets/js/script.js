@@ -65,7 +65,7 @@ $('#login').on('click', async (e) => {
     // If sign up fails
     if (!res.ok) {
         Swal.fire({
-            title: 'Error',
+            title: 'Lỗi xác thực',
             text: 'Username hoặc mật khẩu chưa chính xác!',
             icon: 'error',
             allowOutsideClick: true,
@@ -74,7 +74,7 @@ $('#login').on('click', async (e) => {
     }
 
     Swal.fire({
-        title: 'Success',
+        title: 'Thành công',
         text: 'Đăng nhập thành công!',
         icon: 'success',
         timer: 2000,
@@ -84,15 +84,4 @@ $('#login').on('click', async (e) => {
         const nextUrl = $('.login-page').data('nextUrl');
         location.assign(nextUrl);
     });
-});
-
-/* ==================================== Other login ==================================== */
-$('#google').click(async (e) => {
-    e.preventDefault();
-    const nextUrl = $('.login-page').data('nextUrl');
-    location.assign(`/api/account/login-with-google?nextUrl=${nextUrl}`);
-});
-
-$('#facebook').click((e) => {
-    e.preventDefault();
 });

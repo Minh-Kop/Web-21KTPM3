@@ -85,7 +85,7 @@ $('.submit-btn').click(async (e) => {
     }
 
     await Swal.fire({
-        title: 'Success',
+        title: 'Thành công',
         text: 'Nạp tiền thành công!',
         icon: 'success',
         timer: 2000,

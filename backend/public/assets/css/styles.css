@@ -1,4 +1,6 @@
-* {
+*,
+::after,
+::before {
     box-sizing: border-box;
 }
 
@@ -49,6 +51,7 @@ button {
 
 /* ==================================== Config swal2 ==================================== */
 .swal2-confirm.swal2-styled {
+    z-index: 10000 !important;
     border: none !important;
     background-color: var(--secondary-color) !important;
 }

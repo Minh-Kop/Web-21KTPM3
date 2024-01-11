@@ -4,23 +4,62 @@ const passport = require('passport');
 const accountController = require('../controllers/accountController');
 const authController = require('../controllers/authController');
 const config = require('../config/config');
+const AppError = require('../utils/appError');
 
 const router = express.Router();
 
 router.post('/signup', authController.signUp);
 router.patch('/verify/:token', authController.verify);
-// router.post('/login', authController.login);
-router.post('/login', passport.authenticate('myStrategy'), (req, res, next) => {
-    res.status(204).json();
+
+router.post('/login', (req, res, next) => {
+    passport.authenticate('myStrategy', (err, user, info, status) => {
+        // console.log({ err, user, info, status });
+        if (err) {
+            return next(new AppError(err, 400));
+        }
+        if (!user) {
+            return res.status(401).json();
+        }
+        req.logIn(user, (logInError) => {
+            if (logInError) {
+                return next(new AppError(logInError, 500));
+            }
+            res.status(204).json();
+        });
+    })(req, res, next);
 });
-router.get(
-    '/login-with-google',
-    passport.authenticate('myGoogleOAuth2Strategy'),
-    (req, res, next) => {
-        const { state: nextUrl } = req.query;
-        res.redirect(`${nextUrl}`);
-    },
-);
+router.get('/login-with-google', (req, res, next) => {
+    passport.authenticate(
+        'myGoogleOAuth2Strategy',
+        (err, user, info, status) => {
+            const { state: nextUrl } = req.query;
+            let error;
+            // console.log({ err, user, info, status });
+            if (err) {
+                return next(new AppError(err, 400));
+            }
+            if (info === 'No account is created with this email!') {
+                error = 1;
+            } else if (
+                info ===
+                'The account that associates with this email is deleted!'
+            ) {
+                error = 2;
+            }
+            if (!user) {
+                return res.redirect(`/login?nextUrl=${nextUrl}&error=${error}`);
+            }
+
+            req.logIn(user, (logInError) => {
+                if (logInError) {
+                    return next(new AppError(logInError, 500));
+                }
+                res.redirect(`${nextUrl}`);
+            });
+        },
+    )(req, res, next);
+});
+
 router.get('/logout', authController.logOut);
 
 // Protect all routes after this middleware

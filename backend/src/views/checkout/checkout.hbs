@@ -92,7 +92,7 @@
                                 name='addrId'
                                 id='{{addrId}}'
                                 value='{{coordinates}}'
-                                {{!-- {{#if isDefault}}checked{{/if}} --}}
+                                {{#if isDefault}}checked{{/if}}
                             />
                             <span class='radio-mark'></span>
                         </label>
@@ -282,7 +282,7 @@
                 class='form-select address-popup__line__select'
                 aria-label='Default select example'
             >
-                <option disabled selected hidden value=''>Chọn tỉnh/thành phố</option>
+                <option disabled selected hidden>Chọn tỉnh/thành phố</option>
                 {{#each provinces}}
                     <option value='{{provId}}'>{{provName}}</option>
                 {{/each}}
@@ -301,7 +301,7 @@
                 aria-label='Default select example'
                 disabled
             >
-                <option selected>Chọn quận/huyện</option>
+                <option disabled selected hidden>Chọn quận/huyện</option>
             </select>
             <p class='form-error d-none'></p>
         </div>
@@ -317,7 +317,7 @@
                 aria-label='Default select example'
                 disabled
             >
-                <option selected>Chọn phường/xã</option>
+                <option disabled selected hidden>Chọn phường/xã</option>
             </select>
             <p class='form-error d-none'></p>
         </div>
