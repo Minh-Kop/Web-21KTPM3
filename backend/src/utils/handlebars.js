@@ -162,11 +162,8 @@ module.exports = (hbs) => {
                         return new Handlebars.SafeString(
                             `<p>Thành công</p><p>${obj[0].createdTime}</p>`,
                         );
-                    }
-                    else {
-                        return new Handlebars.SafeString(
-                            ` `,
-                        );
+                    } else {
+                        return new Handlebars.SafeString(` `);
                     }
                 }
                 return new Handlebars.SafeString(
@@ -225,15 +222,15 @@ module.exports = (hbs) => {
                                 'https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/order/ico_dangxuly_blue.svg',
                             );
                         } else if (int == 3) {
-                            return new Handlebars.SafeString(
-                                '',
-                            );
+                            return new Handlebars.SafeString('');
                         }
                     }
                 }
             },
             add(a, b) {
-                return new Handlebars.SafeString((a+b).toLocaleString('vi-VN'));
+                return new Handlebars.SafeString(
+                    (a + b).toLocaleString('vi-VN'),
+                );
             },
             carousel(obj) {
                 const chunks = [];

@@ -1,23 +1,8 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
-const { createUploader } = require('../utils/cloudinary');
 const config = require('../config/config');
 const { encryptPassword } = require('../utils/crypto');
-
-const createAvatarName = async (req, file) => {
-    if (file.fieldname === 'avatar') {
-        const { userId } = req.user;
-        return `${userId}`;
-    }
-};
-
-const avatarUploader = createUploader(
-    config.CLOUDINARY_AVATAR_PATH,
-    createAvatarName,
-);
-
-exports.uploadAvatar = avatarUploader.fields([{ name: 'avatar', maxCount: 1 }]);
 
 exports.getMe = (req, res, next) => {
     req.params.userId = req.user.userId;
@@ -25,11 +10,11 @@ exports.getMe = (req, res, next) => {
 };
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
-    const { userId } = req.params;
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
 
-    const detailedUser = await accountModel.getDetailedUser(userId);
+    const detailedUser = await accountModel.getDetailedUser(user.userId);
+    const avatarTag = `<img src="${user.avatarPath}" class="kv-preview-data file-preview-image">`;
 
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
@@ -56,6 +41,7 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
         ...cart,
         currentUrl: url,
         categoryTree,
+        avatarTag,
     });
 });
 
@@ -97,7 +83,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
     const { userId } = req.params;
     const { fullName, phoneNumber, birthday, gender, role } = req.body;
-    
+
     await accountModel.updateAccount({
         userId,
         fullName,
@@ -105,18 +91,6 @@ exports.updateUser = catchAsync(async (req, res, next) => {
         birthday,
         gender: +gender,
         role: +role,
-    });
-
-    res.status(204).json();
-});
-
-exports.updateAvatar = catchAsync(async (req, res, next) => {
-    const { userId } = req.user;
-    const { path: avatarPath } = req.files.avatar[0];
-
-    await accountModel.updateAccount({
-        userId,
-        avatarPath,
     });
 
     res.status(204).json();
@@ -136,12 +110,8 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         offset,
     });
 
-    users.forEach(user => {
-        user.birthday = new Date(
-            user.birthday,
-        )
-            .toISOString()
-            .split('T')[0];
+    users.forEach((el) => {
+        el.birthday = new Date(el.birthday).toISOString().split('T')[0];
     });
 
     res.render('account/crud_users_list', {
