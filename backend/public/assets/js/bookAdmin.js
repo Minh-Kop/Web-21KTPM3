@@ -51,5 +51,9 @@ $("#files").on("change", function (event) {
 });
 
 $(() => {
-  $("#files").fileinput({ theme: "fa6" });
+  const pub = $("#data-container").attr("data-value1");
+  const aut = $("#data-container").attr("data-value2");
+
+  $(`#author option:contains(${aut})`).prop("selected", true);
+  $(`#publisher option:contains(${pub})`).prop("selected", true);
 });

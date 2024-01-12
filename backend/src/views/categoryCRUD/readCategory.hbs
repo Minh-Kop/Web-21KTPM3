@@ -9,9 +9,9 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Category name</th>
-                    <th>Parent</th>
-                    <th>Delete</th>
+                    <th>Danh mục</th>
+                    <th>Danh mục cha</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -19,9 +19,9 @@
                 <tr>
                     <td>{{this.CATE_ID}}</td>
                     <td class="update-td"><a
-                            href="/admin/category/updateCategoryUI?category={{this.CATE_ID}}">{{this.CATE_NAME}}</a>
+                            href="/admin/category/updateCategoryUI?category={{this.CATE_ID}}"><span>{{this.CATE_NAME}}</span></a>
                     </td>
-                    <td>{{#if this.PARENT_ID}}{{this.PARENT_ID}}{{else}}None{{/if}}</td>
+                    <td id="parent">{{#if this.PARENT_ID}}{{this.PARENT_ID}}{{else}}None{{/if}}</td>
                     <td class="del-td">
                         <form action="/admin/category/delete" method="get">
                             <input type="hidden" name="cateId" id="cateId" value="{{this.CATE_ID}}">
@@ -37,3 +37,6 @@
 </div>
 
 <link rel="stylesheet" href="/assets/css/readCategory.css">
+<script>
+
+</script>
