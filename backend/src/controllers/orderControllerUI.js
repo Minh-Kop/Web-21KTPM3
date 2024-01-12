@@ -70,15 +70,20 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
         totalQuantity += booksOrdered[i].amount;
     }
     orderInformation.forEach((order) => {
-        order.orderDate = order.orderDate.toISOString().split('T')[0];
+        order.orderDate = moment(order.orderDate).subtract(7, 'hours').format('DD/MM/YYYY');
+        order.totalPayment = order.totalPayment || 0;
         order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');
         order.totalQuantity = totalQuantity;
+        order.shippingFee = order.shippingFee || 0;
         order.shippingFeeString = order.shippingFee.toLocaleString('vi-VN');
+        order.merchandiseSubtotal = order.merchandiseSubtotal || 0;
         order.merchandiseSubtotalString =
             order.merchandiseSubtotal.toLocaleString('vi-VN');
     });
     booksOrdered.forEach((book) => {
+        book.unitPrice = book.unitPrice || 0;
         book.unitPriceString = book.unitPrice.toLocaleString('vi-VN');
+        book.itemSubtotal = book.itemSubtotal || 0;
         book.itemSubtotalString = book.itemSubtotal.toLocaleString('vi-VN');
     });
     res.render('account/order_detail', {
@@ -162,7 +167,8 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         limit,
         offset,
     });
-    const orderNumber = await orderModel.countOrders();
+    console.log(returnedOrders);
+    const orderNumber = await orderModel.countOrders(uid);
     let total = orderNumber.reduce(
         (accumulator, currentValue) => accumulator + currentValue.totalNumber,
         0,
@@ -238,7 +244,7 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         limit,
         totalPages,
         orderNumber,
-        orderState: orderState || 6,
+        orderState: +orderState,
         currentUrl: url,
         categoryTree,
     });
