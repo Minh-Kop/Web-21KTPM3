@@ -114,6 +114,14 @@ module.exports = (hbs) => {
             mainImage(obj) {
                 return obj[0].path;
             },
+            orderState(obj) {
+                if (obj == 0) return 'Đơn hàng mới';
+                else if (obj == 1) return 'Đang xử lý';
+                else if (obj == -1) return 'Bị hủy';
+                else if (obj == 2) return 'Đang giao hàng';
+                else if (obj == 3) return 'Thành công';
+                else if (obj == 6) return 'Tất cả';
+            },
             state(obj) {
                 if (obj == -1)
                     return new Handlebars.SafeString(

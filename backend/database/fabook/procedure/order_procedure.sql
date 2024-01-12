@@ -258,7 +258,7 @@ BEGIN TRANSACTION
                 FROM ORDER_STATE
             ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
             JOIN ACCOUNT A ON A.USERID = O.USERID
-            WHERE o.USERID = @userId and os.ORDER_STATE <> 0
+            WHERE o.USERID = @userId
             ORDER BY o.ORDER_DATE DESC, o.ORDER_ID DESC
             OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         END
@@ -272,7 +272,7 @@ BEGIN TRANSACTION
                 FROM ORDER_STATE
             ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
             JOIN ACCOUNT A ON A.USERID = O.USERID
-            WHERE o.USERID = @userId and os.ORDER_STATE = @orderState and os.ORDER_STATE <> 0
+            WHERE o.USERID = @userId and os.ORDER_STATE = @orderState
             ORDER BY o.ORDER_DATE DESC, o.ORDER_ID DESC
             OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         END
