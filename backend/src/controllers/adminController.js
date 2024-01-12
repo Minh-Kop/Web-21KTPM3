@@ -155,6 +155,7 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
         }
     }
     const cateData = JSON.stringify(fatherCategories);
+    //console.log(book);
 
     res.render('bookCRUD/updateBook', {
         layout: 'mainAdmin',
@@ -343,10 +344,8 @@ exports.createBook = catchAsync(async (req, res, next) => {
 });
 
 exports.updateBook = catchAsync(async (req, res, next) => {
-    const { bookId } = req.params;
-    console.log(req.params, req.body);
-
     let {
+        bookId,
         bookName,
         categoryId,
         originalPrice,
@@ -361,6 +360,7 @@ exports.updateBook = catchAsync(async (req, res, next) => {
         bookFormat,
         description,
     } = req.body;
+    console.log(req.body);
 
     // Update to db
     await updateBook({

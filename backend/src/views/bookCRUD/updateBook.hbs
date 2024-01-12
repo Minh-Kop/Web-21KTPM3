@@ -10,6 +10,7 @@
     </div>
     <div class="info-input">
         <form action="/admin/book/update" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="bookId" value="{{book.BOOK_ID}}">
             <div class="book-info">
                 <div class="father-categories-dropdown">
                     <div class="label">Danh mục cha:</div>
@@ -21,7 +22,7 @@
                 </div>
                 <div class="categories-dropdown">
                     <div class="label">Danh mục</div>
-                    <select name="category" id="category">
+                    <select name="categoryId" id="category">
                         {{#each cCategories}}
                         <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
@@ -33,7 +34,7 @@
                 </div>
                 <div class="book-author">
                     <div class="label">Tác giả:</div>
-                    <select name="author" id="author">
+                    <select name="authorId" id="author">
                         {{#each authors}}
                         <option value="{{this.AUTHOR_ID}}">{{this.AUTHOR_NAME}}</option>
                         {{/each}}
@@ -41,7 +42,7 @@
                 </div>
                 <div class="book-publisher">
                     <div class="label">Nhà xuất bản:</div>
-                    <select name="publisher" id="publisher">
+                    <select name="publisherId" id="publisher">
                         {{#each publishers}}
                         <option value="{{this.pubId}}">{{this.pubName}}</option>
                         {{/each}}

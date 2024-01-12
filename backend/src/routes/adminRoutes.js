@@ -33,7 +33,7 @@ router.get('/book', renderReadBooks);
 router.get('/book/createBookUI', renderCreateBook);
 router.get('/book/updateBookUI', renderUpdateBook);
 router.post('/book/create', upload.array('files', 3), createBook);
-router.post('/book/update', updateBook);
+router.post('/book/update', upload.array('files', 3), updateBook);
 router.get('/book/delete', deleteBook);
 
 router.get('/category', renderCategoryPage);
