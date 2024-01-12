@@ -42,7 +42,7 @@
 
 .btn {
   width: 100%;
-  padding: 20px;
+  padding: 5px;
 
   font-family: Hahmlet;
   font-size: 24px;
@@ -50,6 +50,11 @@
   background-color: white;
 
   border: none;
+}
+
+.btn:hover {
+  background-color: #e98074;
+  color: white;
 }
 
 .active {

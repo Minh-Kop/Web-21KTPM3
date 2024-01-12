@@ -19,9 +19,8 @@ const {
     renderCreateCategory,
     deleteBook,
     createBook,
-    createBookTest,
+    updateBook,
 } = require('../controllers/adminController');
-const { updateBook } = require('../controllers/bookControllerUI');
 const {
     createCategory,
     deleteCategory,
@@ -34,7 +33,7 @@ router.get('/book', renderReadBooks);
 router.get('/book/createBookUI', renderCreateBook);
 router.get('/book/updateBookUI', renderUpdateBook);
 router.post('/book/create', upload.array('files', 3), createBook);
-router.get('/book/update', updateBook);
+router.post('/book/update', updateBook);
 router.get('/book/delete', deleteBook);
 
 router.get('/category', renderCategoryPage);

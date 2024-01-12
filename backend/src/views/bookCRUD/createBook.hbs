@@ -1,6 +1,6 @@
 <div class="update-book-container">
     <div class="btn-back">
-        <form action="/admin/books" method="get">
+        <form action="/admin/book" method="get">
             <button type="submit">
                 <img src="/assets/img/back_icon.svg" alt="Back">
             </button>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="categories-dropdown">
                     <div class="label">Danh mục</div>
-                    <select name="category" id="category">
+                    <select name="categoryId" id="category">
                         {{#each categories}}
                         <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
@@ -31,11 +31,19 @@
                 </div>
                 <div class="book-author">
                     <div class="label">Tác giả:</div>
-                    <input type="text" name="author" />
+                    <select name="authorId" id="author">
+                        {{#each authors}}
+                        <option value="{{this.AUTHOR_ID}}">{{this.AUTHOR_NAME}}</option>
+                        {{/each}}
+                    </select>
                 </div>
                 <div class="book-publisher">
                     <div class="label">Nhà xuất bản:</div>
-                    <input type="text" name="publisher" />
+                    <select name="publisherId" id="publisher">
+                        {{#each publishers}}
+                        <option value="{{this.pubId}}">{{this.pubName}}</option>
+                        {{/each}}
+                    </select>
                 </div>
                 <div class="book-publishedYear">
                     <div class="label">Năm xuất bản:</div>
@@ -52,6 +60,10 @@
                 <div class="book-numberPage">
                     <div class="label">Số trang:</div>
                     <input type="text" name="numberPage" />
+                </div>
+                <div class="book-Stock">
+                    <div class="label">Số lượng:</div>
+                    <input type="text" name="stock" />
                 </div>
                 <div class="book-bookFormat">
                     <div class="label">Hình thức:</div>

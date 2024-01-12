@@ -9,17 +9,18 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Product name</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Delete</th>
+                    <th>Tên sách</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {{#each books}}
                 <tr>
                     <td>{{this.bookId}}</td>
-                    <td class="update-td"><a href="/admin/book/updateBookUI?book={{this.bookId}}">{{this.bookName}}</a>
+                    <td class="update-td"><a
+                            href="/admin/book/updateBookUI?book={{this.bookId}}"><span>{{this.bookName}}</span></a>
                     </td>
                     <td>{{this.discountedPrice}} VNĐ</td>
                     <td>{{this.stock}}</td>

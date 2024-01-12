@@ -4,11 +4,14 @@ const {
     deleteBook,
     insertImages,
     createBook,
+    updateBook,
 } = require('../models/bookModel');
 const {
     createUploader,
     deleteCloudinaryImage,
 } = require('../utils/cloudinary');
+const { getAllAuthors } = require('../models/authorModel');
+const { getAll } = require('../models/publisherModel');
 const { getAllCategory } = require('../models/categoryModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -86,7 +89,7 @@ const fatherCategories = [
 ];
 
 exports.renderAdminPage = catchAsync(async (req, res, next) => {
-    const books = getAllBooks;
+    const books = await getAllBooks({});
 
     res.render('readBooks', {
         layout: 'mainAdmin',
@@ -95,7 +98,9 @@ exports.renderAdminPage = catchAsync(async (req, res, next) => {
 });
 
 exports.renderReadBooks = catchAsync(async (req, res, next) => {
-    const books = await getAllBooks({});
+    const books = await getAllBooks({
+        limit: 50,
+    });
     res.render('bookCRUD/readBooks', {
         layout: 'mainAdmin',
         adminSidebar: () => 'adminSidebar',
@@ -103,13 +108,13 @@ exports.renderReadBooks = catchAsync(async (req, res, next) => {
         headerName: 'Danh sách sản phẩm',
         book: true,
         title: 'Books management',
-        // navbar: () => 'empty',
-        // footer: () => 'empty',
     });
 });
 
 exports.renderCreateBook = catchAsync(async (req, res, next) => {
     const cateData = JSON.stringify(fatherCategories);
+    const authourList = await getAllAuthors();
+    const publisherList = await getAll();
     const categories = [
         {
             id: 'CA02',
@@ -127,6 +132,8 @@ exports.renderCreateBook = catchAsync(async (req, res, next) => {
         fCategories: fatherCategories,
         cateData: cateData,
         categories: categories,
+        authors: authourList,
+        publishers: publisherList,
     });
 });
 
@@ -134,6 +141,8 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
     const book = await getBookById(req.query.book);
     const bookImg = await getBookImages(req.query.book);
     let cCate = [];
+    const authourList = await getAllAuthors();
+    const publisherList = await getAll();
 
     for (const i of fatherCategories) {
         for (const j of i.children) {
@@ -145,7 +154,6 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
             }
         }
     }
-    //console.log(book);
     const cateData = JSON.stringify(fatherCategories);
 
     res.render('bookCRUD/updateBook', {
@@ -155,6 +163,8 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
         fCategories: fatherCategories,
         cateData: cateData,
         cCategories: cCate,
+        authors: authourList,
+        publishers: publisherList,
         images: bookImg,
     });
 });
@@ -238,7 +248,7 @@ exports.createBook = catchAsync(async (req, res, next) => {
     } = req.body;
 
     const coverImage = req.files[0];
-    const images = req.files.slice(0);
+    let images = req.files.slice(0);
 
     // Miss cover image
     if (!coverImage) {
@@ -329,5 +339,46 @@ exports.createBook = catchAsync(async (req, res, next) => {
     // Insert images
     await insertImages(bookId, images);
 
-    res.redirect('/admin/books');
+    res.redirect('/admin/book');
+});
+
+exports.updateBook = catchAsync(async (req, res, next) => {
+    const { bookId } = req.params;
+    console.log(req.params, req.body);
+
+    let {
+        bookName,
+        categoryId,
+        originalPrice,
+        discountedNumber,
+        stock,
+        authorId,
+        publisherId,
+        publishedYear,
+        weight,
+        dimensions,
+        numberPage,
+        bookFormat,
+        description,
+    } = req.body;
+
+    // Update to db
+    await updateBook({
+        bookId,
+        categoryId,
+        bookName,
+        originalPrice,
+        stock,
+        discountedNumber,
+        authorId,
+        publisherId,
+        publishedYear,
+        weight,
+        dimensions,
+        numberPage,
+        bookFormat,
+        description,
+    });
+
+    res.redirect('/admin/book');
 });
