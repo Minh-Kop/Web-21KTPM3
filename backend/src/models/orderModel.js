@@ -3,8 +3,8 @@ const sql = require('mssql');
 
 const database = require('../utils/database');
 
-exports.countOrders = async () => {
-    const sqlString = `select ORDER_STATE orderstate, count(*) totalNumber from ORDER_STATE group by ORDER_STATE;`;
+exports.countOrders = async (uid) => {
+    const sqlString = `select ORDER_STATE orderstate, count(*) totalNumber from ORDER_STATE os join H_ORDER o on os.ORDER_ID = o.ORDER_ID where USERID = '${uid}' group by ORDER_STATE`;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);

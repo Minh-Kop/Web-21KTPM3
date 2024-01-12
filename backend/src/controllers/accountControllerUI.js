@@ -4,6 +4,7 @@ const accountModel = require('../models/accountModel');
 const { createUploader } = require('../utils/cloudinary');
 const config = require('../config/config');
 const { encryptPassword } = require('../utils/crypto');
+const moment = require('moment');
 
 const createAvatarName = async (req, file) => {
     if (file.fieldname === 'avatar') {
@@ -35,11 +36,11 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
     }
-    detailedUser.recordset[0].birthday = new Date(
+    detailedUser.recordset[0].birthday = moment(
         detailedUser.recordset[0].birthday,
     )
-        .toISOString()
-        .split('T')[0];
+        .subtract(7, 'hours')
+        .format('YYYY-MM-DD');
 
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
@@ -69,12 +70,11 @@ exports.getUser = catchAsync(async (req, res, next) => {
         return next(new AppError('The account is no longer exist.', 404));
     }
 
-    detailedUser.recordset[0].birthday = new Date(
+    detailedUser.recordset[0].birthday = moment(
         detailedUser.recordset[0].birthday,
     )
-        .toISOString()
-        .split('T')[0];
-
+        .subtract(7, 'hours')
+        .format('YYYY-MM-DD');
     res.render('account/crud_user_detail', {
         title: 'Chi tiết tài khoản',
         navbar: () => 'empty',
@@ -97,7 +97,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
     const { userId } = req.params;
     const { fullName, phoneNumber, birthday, gender, role } = req.body;
-    
+
     await accountModel.updateAccount({
         userId,
         fullName,
@@ -130,20 +130,17 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     limit = +limit || 12;
     const offset = (page - 1) * limit;
 
-    const users = await accountModel.getAllUsers({
+    const tempUsers = await accountModel.getAllUsers({
         sortType,
         limit,
         offset,
     });
-
-    users.forEach(user => {
-        user.birthday = new Date(
-            user.birthday,
-        )
-            .toISOString()
-            .split('T')[0];
-    });
-
+    const users = tempUsers.map((el) => ({
+        ...el,
+        birthday: moment(el.birthday).subtract(7, 'hours').format('DD/MM/YYYY'),
+        avatarPath: el.avatarPath || '/assets/img/account_icon.svg',
+    }));
+    user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('account/crud_users_list', {
         title: 'Danh sách tài khoản',
         status: 'success',

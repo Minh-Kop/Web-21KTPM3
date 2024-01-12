@@ -22,8 +22,7 @@
             <div class="container mt-3 border border-success rounded text-start" style="background-color: FFFFFF">
                 <div class="container row position-relative">
                     <h4 class="mt-2 mb-3 col-3">SỔ ĐỊA CHỈ</h4>
-                    <button type="button" class="btn btn-danger w-auto fw-bold mt-2 mb-3 position-absolute top-0 end-0"
-                        data-toggle="modal" data-target="#addModal">
+                    <button type="button" class="add-addr-btn btn btn-danger w-auto fw-bold mt-2 mb-3 position-absolute top-0 end-0 ">
                         Thêm địa chỉ mới
                     </button>
                 </div>
@@ -67,147 +66,90 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- Product Detail/Edit Modal -->
-<div class="modal" id="editModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Sửa địa chỉ</h4>
-                <button type="button" class="close" data-dismiss="modal">
-                    &times;
-                </button>
-            </div>
+<div class='popup-section d-none'>
+    <div class='address-popup'>
+        <h1 class='address-popup__title'>THÊM MỚI ĐỊA CHỈ GIAO HÀNG</h1>
 
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- Add your form fields for product details here -->
-                <form action="/edit" method="post">
-                    <div class="form-group">
-                        <label for="name">Tên đầy đủ:</label>
-                        <input type="text" class="form-control" id="EName" name="name" />
-                    </div>
-                    <div class="form-group">
-                        <label for="tel">Số điện thoại</label>
-                        <input type="text" class="form-control" id="ETel" name="tel" />
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Địa chỉ chi tiết</label>
-                        <input type="text" class="form-control" id="EAdd" name="address" />
-                    </div>
-                    <div class="form-group">
-                        <label for="ward">Phường/Xã</label>
-                        <input type="text" class="form-control" id="EWard" name="ward" />
-                    </div>
-                    <div class="form-group">
-                        <label for="district">Quận/Huyện</label>
-                        <input type="text" class="form-control" id="EDistrict" name="district" />
-                    </div>
-                    <div class="form-group">
-                        <label for="province">Tỉnh/Thành phố</label>
-                        <input type="text" class="form-control" id="EProvince" name="province" />
-                    </div>
-                    <div hidden class="form-group">
-                        <label for="addressID">ID:</label>
-                        <input type="text" class="form-control" id="EAddId" name="addressID" />
-                    </div>
-                    <!-- Add more form fields as needed -->
-                    <button type="submit" class="btn btn-primary mt-2">
-                        Lưu thay đổi
-                    </button>
-                </form>
-            </div>
+        {{! Full name }}
+        <div class='address-popup__line'>
+            <label for='addrFullName' class='address-popup__line__label'>
+                Họ và tên người nhận
+            </label>
+            <input id='addrFullName' type='text' class='address-popup__line__input'
+                placeholder='Nhập họ và tên người nhận' />
+            <p class='form-error d-none'></p>
+        </div>
 
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary m-10" data-dismiss="modal">
-                    Close
-                </button>
-            </div>
+        {{! Phone number }}
+        <div class='address-popup__line'>
+            <label for='addrPhoneNumber' class='address-popup__line__label'>
+                Số điện thoại
+            </label>
+            <input id='addrPhoneNumber' type='text' class='address-popup__line__input'
+                placeholder='Ví dụ: 0979123xxx (10 ký tự số)' />
+            <p class='form-error d-none'></p>
+        </div>
+
+        {{! Province }}
+        <div class='address-popup__line'>
+            <label for='addrProvince' class='address-popup__line__label'>
+                Tỉnh/Thành Phố
+            </label>
+            <select id='addrProvince' class='form-select address-popup__line__select'
+                aria-label='Default select example'>
+                <option disabled selected hidden>Chọn tỉnh/thành phố</option>
+                {{#each provinces}}
+                <option value='{{provId}}'>{{provName}}</option>
+                {{/each}}
+            </select>
+            <p class='form-error d-none'></p>
+        </div>
+
+        {{! District }}
+        <div class='address-popup__line'>
+            <label for='addrDistrict' class='address-popup__line__label'>
+                Quận/Huyện
+            </label>
+            <select id='addrDistrict' class='form-select address-popup__line__select'
+                aria-label='Default select example' disabled>
+                <option disabled selected hidden>Chọn quận/huyện</option>
+            </select>
+            <p class='form-error d-none'></p>
+        </div>
+
+        {{! Ward }}
+        <div class='address-popup__line'>
+            <label for='addrWard' class='address-popup__line__label'>
+                Phường/Xã
+            </label>
+            <select id='addrWard' class='form-select address-popup__line__select' aria-label='Default select example'
+                disabled>
+                <option disabled selected hidden>Chọn phường/xã</option>
+            </select>
+            <p class='form-error d-none'></p>
+        </div>
+
+        {{! Address }}
+        <div class='address-popup__line'>
+            <label for='address' class='address-popup__line__label'>
+                Địa chỉ nhận hàng
+            </label>
+            <input id='address' type='text' class='address-popup__line__input' placeholder='Nhập địa chỉ nhận hàng' />
+            <p class='form-error d-none'></p>
+        </div>
+
+        <div class='address-popup__btn-box'>
+            <button class='address-popup__btn--submit'>Lưu địa chỉ</button>
+            <button class='address-popup__btn--close'>Hủy</button>
         </div>
     </div>
+
+    <div class='background-behind'></div>
 </div>
-
-<div class="modal" id="addModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Thêm địa chỉ</h4>
-                <button type="button" class="close" data-dismiss="modal">
-                    &times;
-                </button>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <!-- Add your form fields for product details here -->
-                <form action="/shippingAddresses/" method="post">
-                    <div class="form-group">
-                        <label for="name">Tên đầy đủ:</label>
-                        <input type="text" class="form-control" id="EName" name="fullName" />
-                    </div>
-                    <div class="form-group">
-                        <label for="tel">Số điện thoại</label>
-                        <input type="text" class="form-control" id="ETel" name="phoneNumber" />
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Địa chỉ chi tiết</label>
-                        <input type="text" class="form-control" id="EAdd" name="address" />
-                    </div>
-                    <div class="form-group">
-                        <label for="ward">Phường/Xã</label>
-                        <input type="text" class="form-control" id="EWard" name="ward" />
-                    </div>
-                    <div class="form-group">
-                        <label for="district">Quận/Huyện</label>
-                        <input type="text" class="form-control" id="EDistrict" name="district" />
-                    </div>
-                    <div class="form-group">
-                        <label for="province">Tỉnh/Thành phố</label>
-                        <input type="text" class="form-control" id="EProvince" name="province" />
-                    </div>
-                    <div hidden class="form-group">
-                        <label for="addressID">ID:</label>
-                        <input type="text" class="form-control" id="EAddId" name="addressID" />
-                    </div>
-                    <!-- Add more form fields as needed -->
-                    <button type="submit" class="btn btn-primary mt-2">
-                        Thêm
-                    </button>
-                    <!-- Add more form fields as needed -->
-                </form>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary m-10" data-dismiss="modal">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<link rel='stylesheet' href='/assets/css/checkout.css' />
+<script src='/assets/js/checkout.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    $('#addModal').on('submit', function () {
-        console.log('1');
-    })
-    $(".update").click(function (e) {
-        const addrId = $(this).data("id");
-        const address = $(this).data("address");
-        const ward = $(this).data("ward");
-        const dist = $(this).data("dist");
-        const prov = $(this).data("prov");
-        const name = $(this).data("name");
-        const phone = $(this).data("phone");
-        $("#EName").val(name);
-        $("#ETel").val(phone);
-        $("#EAdd").val(address);
-        $("#EWard").val(ward);
-        $("#EDistrict").val(dist);
-        $("#EProvince").val(prov);
-        $("#EAddId").val(addrId);
-    });
     $(".del-btn").click(function (e) {
         const addrId = $(this).data("id");
         $("#DproductId").val(productId);
