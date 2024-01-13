@@ -42,7 +42,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
         password,
     });
 
-    res.status(200).json({});
+    res.status(204).json();
 });
 
 const getHomePage = catchAsync(async (req, res, next) => {

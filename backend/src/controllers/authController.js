@@ -140,7 +140,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     const { user } = req;
     const { userId, username, password } = user;
 
-    // 2) Check if POSTed current password is correct
+    // 2) Check if current password is correct
     const { currentPassword, password: rawPassword } = req.body;
     if (!verifyPassword(currentPassword, password)) {
         return next(new AppError('Your current password is wrong!', 401));
@@ -156,27 +156,16 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     // 4) Update password in bank server
     await axios.patch(`${bankUrl}/api/account/password`, {
         username,
-        password,
+        password: newPassword,
     });
 
-    // 5) Create a new session
-    await new Promise((resolve, reject) => {
-        req.session.regenerate((err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve();
-            }
-        });
+    // 5) Login again
+    req.logIn(user, (logInError) => {
+        if (logInError) {
+            return next(new AppError(logInError, 500));
+        }
+        res.status(204).json();
     });
-
-    // 6) Login again
-    await axios.post(`${req.protocol}://${req.get('host')}/api/user/login`, {
-        username,
-        password: rawPassword,
-    });
-
-    res.status(204).json({});
 });
 
 exports.logOut = async (req, res) => {

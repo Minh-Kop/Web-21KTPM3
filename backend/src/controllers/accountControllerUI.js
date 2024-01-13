@@ -4,11 +4,6 @@ const accountModel = require('../models/accountModel');
 const config = require('../config/config');
 const { encryptPassword } = require('../utils/crypto');
 
-exports.getMe = (req, res, next) => {
-    req.params.userId = req.user.userId;
-    next();
-};
-
 exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
@@ -68,32 +63,6 @@ exports.getUser = catchAsync(async (req, res, next) => {
         status: 'success',
         user: detailedUser.recordset[0],
     });
-});
-
-exports.updateUser = catchAsync(async (req, res, next) => {
-    // Create error if user PATCHes password data
-    if (req.body.password) {
-        return next(
-            new AppError(
-                'This route is not for password updates. Please use /updatePassword!',
-                400,
-            ),
-        );
-    }
-
-    const { userId } = req.params;
-    const { fullName, phoneNumber, birthday, gender, role } = req.body;
-
-    await accountModel.updateAccount({
-        userId,
-        fullName,
-        phoneNumber,
-        birthday,
-        gender: +gender,
-        role: +role,
-    });
-
-    res.status(204).json();
 });
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {

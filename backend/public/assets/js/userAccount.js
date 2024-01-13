@@ -1,3 +1,14 @@
+const createLoadingPopup = () => {
+    return Swal.fire({
+        title: 'Đang xử lý...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+};
+
 $('#updateForm').on('submit', function (event) {
     event.preventDefault();
     const swalWithBootstrapButtons = Swal.mixin({
@@ -15,7 +26,7 @@ $('#updateForm').on('submit', function (event) {
 
     $.ajax({
         type: 'PATCH',
-        url: '/user/updateMe',
+        url: '/api/user/updateMe',
         data: user,
         success: function (response) {
             let timerInterval;
@@ -52,66 +63,59 @@ $('#updateForm').on('submit', function (event) {
     });
 });
 
-$('#changePassword').on('submit', function (event) {
+$('#changePassword').on('submit', async function (event) {
     event.preventDefault();
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success ms-3',
-            cancelButton: 'btn btn-danger',
-        },
-        buttonsStyling: false,
-    });
-    var formData = $(this).serializeArray();
+
+    const formData = $(this).serializeArray();
     let password = {};
     formData.forEach(function (item) {
         password[item.name] = item.value;
     });
     if (password.password !== password.reNewPass) {
-        swalWithBootstrapButtons.fire({
-            title: 'Mật khẩu không khớp',
+        return Swal.fire({
+            title: 'Lỗi',
+            text: 'Mật khẩu nhập lại không khớp!',
             icon: 'error',
+            allowOutsideClick: true,
         });
-    } else {
-        $.ajax({
-            type: 'PATCH',
-            url: '/user/updatePassword',
-            data: password,
-            success: function (response) {
-                let timerInterval;
-                swalWithBootstrapButtons
-                    .fire({
-                        title: 'Đã cập nhật!',
-                        text: 'Thay đổi mật khẩu thành công',
-                        icon: 'success',
-                        timer: 1500,
-                        timerProgressBar: true,
-                        didOpen: () => {
-                            Swal.showLoading();
-                            const timer = Swal.getPopup().querySelector('b');
-                            timerInterval = setInterval(() => {
-                                timer.textContent = `${Swal.getTimerLeft()}`;
-                            }, 100);
-                        },
-                        willClose: () => {
-                            clearInterval(timerInterval);
-                        },
-                    })
-                    .then(async (result) => {
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                            await fetch('/logout', {
-                                method: 'delete',
-                            });
-                            window.location.href = '/login';
-                        }
-                    });
-            },
-            error: function (error) {
-                swalWithBootstrapButtons.fire({
-                    title: 'Thay đổi mật khẩu thất bại',
-                    icon: 'error',
-                });
-            },
+    }
+
+    createLoadingPopup();
+
+    const { status } = await fetch('/api/user/updatePassword', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(password),
+    });
+
+    if (status === 204) {
+        await Swal.fire({
+            title: 'Thành công',
+            text: 'Thay đổi password thành công!',
+            icon: 'success',
+            allowOutsideClick: true,
         });
+        return location.reload();
+    }
+    if (status === 401) {
+        await Swal.fire({
+            title: 'Lỗi',
+            text: 'Password cũ không chính xác!',
+            icon: 'error',
+            allowOutsideClick: true,
+        });
+        return;
+    }
+    if (status === 500) {
+        await Swal.fire({
+            title: 'Lỗi',
+            text: 'Đổi password thất bại!',
+            icon: 'error',
+            allowOutsideClick: true,
+        });
+        return;
     }
 });
 
@@ -131,14 +135,7 @@ $('#formFile').fileinput({
 $('#uploadAvatar').on('submit', async function (event) {
     event.preventDefault();
 
-    Swal.fire({
-        title: 'Đang xử lý...',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-            Swal.showLoading();
-        },
-    });
+    createLoadingPopup();
 
     const formData = new FormData(this);
 
