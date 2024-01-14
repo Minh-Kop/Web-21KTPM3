@@ -6,7 +6,7 @@
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.5.0/themes/fa5/theme.min.js"></script>
 <div class="container p-0 mb-3">
     <div class="text-start px-4 row" style="background-color: #eae7dc">
-        <div class="card col-2 mt-3 border border-success rounded h-100">
+        <div class="card col-2 mt-3 border border-success rounded h-100 position-sticky">
             <div class="card-header fw-bold text-danger fs-4">
                 Tài khoản
             </div>
@@ -263,16 +263,10 @@
             buttonsStyling: false,
         });
         const formData = new FormData(this);
-
-        const avatar = {};
-        formData.forEach(function (value, key) {
-            avatar[key] = value;
-        });
-
         $.ajax({
             type: 'PATCH',
             url: '/user/avatar',
-            data: avatar,
+            data: formData,
             processData: false,
             contentType: false,
             success: function (response) {

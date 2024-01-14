@@ -70,15 +70,22 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
         totalQuantity += booksOrdered[i].amount;
     }
     orderInformation.forEach((order) => {
-        order.orderDate = order.orderDate.toISOString().split('T')[0];
+        order.orderDate = moment(order.orderDate)
+            .subtract(7, 'hours')
+            .format('DD/MM/YYYY');
+        order.totalPayment = order.totalPayment || 0;
         order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');
         order.totalQuantity = totalQuantity;
+        order.shippingFee = order.shippingFee || 0;
         order.shippingFeeString = order.shippingFee.toLocaleString('vi-VN');
+        order.merchandiseSubtotal = order.merchandiseSubtotal || 0;
         order.merchandiseSubtotalString =
             order.merchandiseSubtotal.toLocaleString('vi-VN');
     });
     booksOrdered.forEach((book) => {
+        book.unitPrice = book.unitPrice || 0;
         book.unitPriceString = book.unitPrice.toLocaleString('vi-VN');
+        book.itemSubtotal = book.itemSubtotal || 0;
         book.itemSubtotalString = book.itemSubtotal.toLocaleString('vi-VN');
     });
     res.render('account/order_detail', {
@@ -162,45 +169,51 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         limit,
         offset,
     });
-    const orderNumber = await orderModel.countOrders();
-    let total = orderNumber.reduce(
+
+    const tempOrderNumber = await orderModel.countOrders(uid);
+    let total = tempOrderNumber.reduce(
         (accumulator, currentValue) => accumulator + currentValue.totalNumber,
         0,
     );
-    if (!orderNumber.find((order) => order.orderstate == 3)) {
-        orderNumber.push({
-            orderstate: 3,
-            totalNumber: 0,
-        });
-    }
-    if (!orderNumber.find((order) => order.orderstate == -1)) {
-         orderNumber.push({
-             orderstate: -1,
-             totalNumber: 0,
-         });
-    }
-    if (!orderNumber.find((order) => order.orderstate == 2)) {
-        orderNumber.unshift({
-            orderstate: 2,
-            totalNumber: 0,
-        });
-    }
-    if (!orderNumber.find((order) => order.orderstate == 1)) {
-        orderNumber.unshift({
-            orderstate: 1,
-            totalNumber: 0,
-        });
-    }
-    if (!orderNumber.find((order) => order.orderstate == 0)) {
-        orderNumber.unshift({
+    let orderNumber = [
+        {
+            orderstate: 6,
+            totalNumber: total,
+        },
+        {
             orderstate: 0,
             totalNumber: 0,
-        });
-    }
-    orderNumber.unshift({
-        orderstate: 6,
-        totalNumber: total,
+        },
+        {
+            orderstate: 1,
+            totalNumber: 0,
+        },
+        {
+            orderstate: 2,
+            totalNumber: 0,
+        },
+        {
+            orderstate: 3,
+            totalNumber: 0,
+        },
+        {
+            orderstate: -1,
+            totalNumber: 0,
+        },
+    ];
+    const orderStatesDict = new Map(
+        orderNumber.map((item) => [item.orderstate, item]),
+    );
+
+    tempOrderNumber.forEach((order) => {
+        if (orderStatesDict.has(order.orderstate)) {
+            orderStatesDict.get(order.orderstate).totalNumber =
+                order.totalNumber;
+        }
     });
+
+    orderNumber = Array.from(orderStatesDict.values());
+
     const totalPages = Math.ceil(
         parseFloat(
             orderNumber.find((order) => order.orderstate == orderState)
@@ -238,7 +251,7 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         limit,
         totalPages,
         orderNumber,
-        orderState: orderState || 6,
+        orderState: +orderState,
         currentUrl: url,
         categoryTree,
     });
