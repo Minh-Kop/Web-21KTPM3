@@ -116,6 +116,7 @@
 
         <!-- Styles -->
         <link rel='stylesheet' href='/assets/css/styles.css' />
+        <link rel='stylesheet' href='/assets/css/mainAdmin.css' />
 
         <!-- jQuery library -->
         <script
@@ -132,7 +133,7 @@
             src='https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js'
         ></script>
 
-        {{! chartjs}}
+        {{! chart.js}}
         <script
             src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js'
             integrity='sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw=='
@@ -160,24 +161,31 @@
         ></script>
 
         <!-- Script -->
-        <script type='module' defer src='/assets/js/script.js'></script>
+        <script src='/assets/js/bookAdmin.js'></script>
     </head>
 
     <body>
-        {{! Navbar }}
-        {{> (navbar)}}
+        <h1 class='header-name'>{{headerName}}</h1>
 
-        {{! Content }}
-        {{{body}}}
+        <div class='container'>
+            <div class='row gx-3 mb-5'>
+                {{! Sidebar }}
+                <div class='col-md-3'>
+                    {{> adminSidebar}}
+                </div>
+
+                {{! Main content }}
+                <div class='col-md-9'>
+                    {{{body}}}
+                </div>
+            </div>
+        </div>
 
         {{! Loading animation }}
         <div class='waiting d-none'>
             <div class='loading' data-text='Đang xử lý...'></div>
             <div class='background-behind'></div>
         </div>
-
-        {{! Footer }}
-        {{> (footer)}}
     </body>
 
 </html>

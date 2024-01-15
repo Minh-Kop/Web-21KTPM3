@@ -1,36 +1,15 @@
+const moment = require('moment');
+
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
-const { createUploader } = require('../utils/cloudinary');
-const config = require('../config/config');
-const { encryptPassword } = require('../utils/crypto');
-const moment = require('moment');
-
-const createAvatarName = async (req, file) => {
-    if (file.fieldname === 'avatar') {
-        const { userId } = req.user;
-        return `${userId}`;
-    }
-};
-
-const avatarUploader = createUploader(
-    config.CLOUDINARY_AVATAR_PATH,
-    createAvatarName,
-);
-
-exports.uploadAvatar = avatarUploader.fields([{ name: 'avatar', maxCount: 1 }]);
-
-exports.getMe = (req, res, next) => {
-    req.params.userId = req.user.userId;
-    next();
-};
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
-    const { userId } = req.params;
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
 
-    const detailedUser = await accountModel.getDetailedUser(userId);
+    const detailedUser = await accountModel.getDetailedUser(user.userId);
+    const avatarTag = `<img src="${user.avatarPath}" class="kv-preview-data file-preview-image">`;
 
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
@@ -57,12 +36,13 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
         ...cart,
         currentUrl: url,
         categoryTree,
+        avatarTag,
     });
 });
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
-
+    const { user } = req;
     const detailedUser = await accountModel.getDetailedUser(userId);
 
     // Check if this user exists
@@ -81,45 +61,8 @@ exports.getUser = catchAsync(async (req, res, next) => {
         footer: () => 'empty',
         status: 'success',
         user: detailedUser.recordset[0],
+        ...user,
     });
-});
-
-exports.updateUser = catchAsync(async (req, res, next) => {
-    // Create error if user PATCHes password data
-    if (req.body.password) {
-        return next(
-            new AppError(
-                'This route is not for password updates. Please use /updatePassword!',
-                400,
-            ),
-        );
-    }
-
-    const { userId } = req.params;
-    const { fullName, phoneNumber, birthday, gender, role } = req.body;
-
-    await accountModel.updateAccount({
-        userId,
-        fullName,
-        phoneNumber,
-        birthday,
-        gender: +gender,
-        role: +role,
-    });
-
-    res.status(204).json();
-});
-
-exports.updateAvatar = catchAsync(async (req, res, next) => {
-    const { userId } = req.user;
-    const { path: avatarPath } = req.files.avatar[0];
-
-    await accountModel.updateAccount({
-        userId,
-        avatarPath,
-    });
-
-    res.status(204).json();
 });
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
@@ -151,48 +94,10 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.createUser = catchAsync(async (req, res, next) => {
-    const { email, phoneNumber, password, fullName, role } = req.body;
-
-    // Check for email duplicated
-    const emailAccount = await accountModel.getByEmail(email);
-    if (emailAccount) {
-        return next(new AppError('Email already exists.', 400));
-    }
-
-    // Check for phone number duplicated
-    const phoneNumberAccount = await accountModel.getByPhone(phoneNumber);
-    if (phoneNumberAccount) {
-        return next(new AppError('Phone number is already used.', 400));
-    }
-
-    // Encrypt password by salting and hashing
-    const encryptedPassword = encryptPassword(password);
-
-    // Create entity to insert to DB
-    const entity = {
-        email,
-        phoneNumber,
-        fullName,
-        password: encryptedPassword,
-        verified: 1,
-        role: role || config.role.USER,
-    };
-    await accountModel.createAccount(entity);
-
-    res.status(200).json({
-        status: 'success',
-        message: 'Create account successfully',
-    });
-});
-
-exports.deleteUser = catchAsync(async (req, res, next) => {
-    const { userId } = req.params;
-    const result = await accountModel.deleteAccount(userId);
-    if (result <= 0) {
-        return next(new AppError('Account not found.', 404));
-    }
-    res.status(200).json({
-        status: 'success',
+exports.getCreateUserPage = catchAsync(async (req, res, next) => {
+    res.render('account/crud_add_user', {
+        title: 'Thêm user',
+        navbar: () => 'empty',
+        footer: () => 'empty',
     });
 });

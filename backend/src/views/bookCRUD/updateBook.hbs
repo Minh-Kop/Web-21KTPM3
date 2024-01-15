@@ -1,20 +1,25 @@
-<div class="update-book-container">
-    <div id="data-container" data-value1="{{book.PUB_NAME}}" data-value2="{{book.author}}" data-value3="{{authors}}"
-        data-value4="{{publishers}}"></div>
-    <div class="btn-back">
-        <form action="/admin/book" method="get">
-            <button type="submit">
-                <img src="/assets/img/back_icon.svg" alt="Back">
+<div class='container'>
+    {{! Back button }}
+    <div class='btn-back'>
+        <form action='/admin/book' method='get'>
+            <button type='submit'>
+                <img src='/assets/img/back_icon.svg' alt='Back' />
             </button>
         </form>
     </div>
-    <div class="info-input">
-        <form action="/admin/book/update" method="post" enctype="multipart/form-data">
+
+    <h1 class='book-header'>{{book.BOOK_NAME}}</h1>
+
+    <div id='data-container' data-value1='{{book.PUB_NAME}}' data-value2='{{book.author}}' data-value3='{{authors}}'
+        data-value4='{{publishers}}'></div>
+
+    <div class='info-input'>
+        <form id='updateForm' data-book-id='{{book.BOOK_ID}}'>
             <input type="hidden" name="bookId" value="{{book.BOOK_ID}}">
-            <div class="book-info">
-                <div class="father-categories-dropdown">
-                    <div class="label">Danh mục cha:</div>
-                    <select name="father-category" id="fCategory" onchange="renderChild({{cateData}})">
+            <div class='book-info'>
+                <div class='father-categories-dropdown'>
+                    <div class='label'>Danh mục cha:</div>
+                    <select name='father-category' id='fCategory' onchange='renderChild({{cateData}})'>
                         {{#each fCategories}}
                         <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
@@ -28,15 +33,15 @@
                         {{/each}}
                     </select>
                 </div>
-                <div class="book-name">
-                    <div class="label">Tên sách:</div>
-                    <input type="text" name="bookName" value="{{book.BOOK_NAME}}" />
+                <div class='book-name'>
+                    <div class='label'>Tên sách:</div>
+                    <input type='text' name='bookName' value='{{book.BOOK_NAME}}' />
                 </div>
                 <div class="book-author">
                     <div class="label">Tác giả:</div>
                     <select name="authorId" id="author">
                         {{#each authors}}
-                        <option value="{{this.AUTHOR_ID}}">{{this.AUTHOR_NAME}}</option>
+                        <option value='{{this.AUTHOR_ID}}'>{{this.AUTHOR_NAME}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -44,69 +49,73 @@
                     <div class="label">Nhà xuất bản:</div>
                     <select name="publisherId" id="publisher">
                         {{#each publishers}}
-                        <option value="{{this.pubId}}">{{this.pubName}}</option>
+                        <option value='{{this.pubId}}'>{{this.pubName}}</option>
                         {{/each}}
                     </select>
                 </div>
-                <div class="book-publishedYear">
-                    <div class="label">Năm xuất bản:</div>
-                    <input type="text" name="publishedYear" value="{{book.PUBLISHED_YEAR}}" />
+                <div class='book-publishedYear'>
+                    <div class='label'>Năm xuất bản:</div>
+                    <input type='text' name='publishedYear' value='{{book.PUBLISHED_YEAR}}' />
                 </div>
-                <div class="book-weight">
-                    <div class="label">Trọng lượng:</div>
-                    <input type="text" name="weight" value="{{book.BOOK_WEIGHT}}" />
+                <div class='book-weight'>
+                    <div class='label'>Trọng lượng:</div>
+                    <input type='text' name='weight' value='{{book.BOOK_WEIGHT}}' />
                 </div>
-                <div class="book-dimensions">
-                    <div class="label">Kích thước bao bì:</div>
-                    <input type="text" name="dimensions" value="{{book.DIMENSIONS}}" />
+                <div class='book-dimensions'>
+                    <div class='label'>Kích thước bao bì:</div>
+                    <input type='text' name='dimensions' value='{{book.DIMENSIONS}}' />
                 </div>
-                <div class="book-numberPage">
-                    <div class="label">Số trang:</div>
-                    <input type="text" name="numberPage" value="{{book.NUMBER_PAGE}}" />
+                <div class='book-numberPage'>
+                    <div class='label'>Số trang:</div>
+                    <input type='text' name='numberPage' value='{{book.NUMBER_PAGE}}' />
                 </div>
-                <div class="book-Stock">
-                    <div class="label">Số lượng:</div>
-                    <input type="text" name="stock" value="{{book.STOCK}}" />
+                <div class='book-Stock'>
+                    <div class='label'>Số lượng:</div>
+                    <input type='text' name='stock' value='{{book.STOCK}}' />
                 </div>
-                <div class="book-bookFormat">
-                    <div class="label">Hình thức:</div>
-                    <input type="text" name="bookFormat" value="{{book.BOOK_FORMAT}}" />
+                <div class='book-bookFormat'>
+                    <div class='label'>Hình thức:</div>
+                    <input type='text' name='bookFormat' value='{{book.BOOK_FORMAT}}' />
                 </div>
-                <div class="book-discountedNumber">
-                    <div class="label">Giảm giá:</div>
-                    <input type="text" name="discountedNumber" value="{{book.DISCOUNTED_NUMBER}}" />
+                <div class='book-originalPrice'>
+                    <div class='label'>Giá gốc:</div>
+                    <input type='text' name='originalPrice' value='{{book.BOOK_PRICE}}' />
                 </div>
-                <div class="book-originalPrice">
-                    <div class="label">Giá trước giảm:</div>
-                    <input type="text" name="originalPrice" value="{{book.BOOK_PRICE}}" />
+                <div class='book-discountedNumber'>
+                    <div class='label'>Số phần trăm giảm:</div>
+                    <input type='text' name='discountedNumber' value='{{book.DISCOUNTED_NUMBER}}' />
                 </div>
-                <div class="book-discountedPrice">
-                    <div class="label">Giá sau giảm:</div>
-                    <input type="text" name="discountedPrice" value="{{book.BOOK_DISCOUNTED_PRICE}}" />
+                <div class='book-discountedPrice'>
+                    <div class='label'>Giá sau giảm:</div>
+                    <input type='text' name='discountedPrice' value='{{book.BOOK_DISCOUNTED_PRICE}}' />
                 </div>
-                <div class="book-image">
-                    <div class="image-submit">
-                        <div class="label">Ảnh:</div>
-                        <label for="files">Browse</label>
-                        <input type="file" id="files" name="files" multiple="">
-                    </div>
-                    <div class="book-image-display">
-                        {{#each images}}
-                        <div class="image">
-                            <img src="{{this.BOOK_PATH}}" alt="book image">
-                            <button type="button">X</button>
-                        </div>
-                        {{/each}}
-                    </div>
+
+                {{! Cover image }}
+                <div class='book-image'>
+                    <label for='bookCover' class='form-label'>
+                        Cập nhật ảnh bìa
+                    </label>
+                    <input name='coverImage' class='form-control' type='file' id='bookCover' multiple
+                        data-img-tag='{{imgTag}}' />
                 </div>
-                <div class="book-description">
-                    <textarea name="description" id="description" cols="30" rows="10">{{book.BOOK_DESC}}</textarea>
+
+                {{! Images }}
+                <div class='book-image'>
+                    <label for='bookImages' class='form-label'>
+                        Cập nhật ảnh khác
+                    </label>
+                    <input name='images' class='form-control' type='file' id='bookImages' multiple
+                        data-img-tag='{{imgTag}}' />
+                </div>
+
+                <div class='book-description'>
+                    <textarea name='description' id='description' cols='30' rows='10'>{{book.BOOK_DESC}}</textarea>
                 </div>
             </div>
-            <button class="btn-submit-update" type="submit">Cập nhật</button>
+            <button class='btn-submit-update' type='submit'>Cập nhật</button>
         </form>
     </div>
 </div>
 
-<link rel="stylesheet" href="/assets/css/createBook.css">
-<script src="/assets/js/bookAdmin.js"></script>
+<link rel='stylesheet' href='/assets/css/createBook.css' />
+<script src='/assets/js/bookAdmin.js'></script>

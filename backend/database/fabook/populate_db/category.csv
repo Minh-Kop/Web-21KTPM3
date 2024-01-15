@@ -1,0 +1,11 @@
+CATE_ID,PARENT_ID,CATE_NAME
+CA17,,foreign books
+CA18,CA17,children's books
+CA19,CA18,fiction for teen
+CA20,CA18,education
+CA21,CA17,personal development
+CA22,CA21,popular psychology
+CA23,CA21,advice on education
+CA24,CA17,fiction
+CA25,CA24,fantasy
+CA26,CA24,romance

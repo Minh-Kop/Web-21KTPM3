@@ -15,7 +15,7 @@ const { getAll } = require('../models/publisherModel');
 const { getAllCategory } = require('../models/categoryModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const { getAllBooks } = require('./bookControllerUI');
+const { getAllBooks, countBooks } = require('./bookControllerUI');
 
 const fatherCategories = [
     {
@@ -98,22 +98,40 @@ exports.renderAdminPage = catchAsync(async (req, res, next) => {
 });
 
 exports.renderReadBooks = catchAsync(async (req, res, next) => {
+    const { page: chosenPage, limit: chosenLimit } = req.query;
+
+    // Parameters to get books
+    const page = +chosenPage || 1;
+    const limit = +chosenLimit || 24;
+
     const books = await getAllBooks({
-        limit: 50,
+        page,
+        limit,
     });
+
+    // Pagination
+    const totalNumber = await countBooks({});
+    const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
+    // Get URL
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('&page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+
     res.render('bookCRUD/readBooks', {
-        layout: 'mainAdmin',
-        adminSidebar: () => 'adminSidebar',
-        books: books,
+        layout: 'admin',
         headerName: 'Danh sách sản phẩm',
-        book: true,
         title: 'Books management',
+        books: books,
+        book: true,
+        page,
+        totalPages,
+        link: newUrl,
     });
 });
 
 exports.renderCreateBook = catchAsync(async (req, res, next) => {
     const cateData = JSON.stringify(fatherCategories);
-    const authourList = await getAllAuthors();
+    const authorList = await getAllAuthors();
     const publisherList = await getAll();
     const categories = [
         {
@@ -127,22 +145,35 @@ exports.renderCreateBook = catchAsync(async (req, res, next) => {
     ];
 
     res.render('bookCRUD/createBook', {
-        layout: 'mainAdmin',
-        adminSidebar: () => 'empty',
+        title: 'Book creation',
+        navbar: () => 'empty',
+        footer: () => 'empty',
         fCategories: fatherCategories,
         cateData: cateData,
         categories: categories,
-        authors: authourList,
+        authors: authorList,
         publishers: publisherList,
     });
 });
 
 exports.renderUpdateBook = catchAsync(async (req, res, next) => {
-    const book = await getBookById(req.query.book);
-    const bookImg = await getBookImages(req.query.book);
+    const { book: bookId } = req.query;
+
+    const book = await getBookById(bookId);
+    const bookImg = await getBookImages(bookId);
     let cCate = [];
-    const authourList = await getAllAuthors();
+    const authorList = await getAllAuthors();
     const publisherList = await getAll();
+
+    // Create img tags
+    let imgTag = [];
+    bookImg.forEach((el) => {
+        const { BOOK_PATH: bookPath } = el;
+        imgTag.push(
+            `<img src="${bookPath}" class="kv-preview-data file-preview-image"></img>`,
+        );
+    });
+    imgTag = imgTag.join('|');
 
     for (const i of fatherCategories) {
         for (const j of i.children) {
@@ -158,15 +189,16 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
     //console.log(book);
 
     res.render('bookCRUD/updateBook', {
-        layout: 'mainAdmin',
-        book: book,
-        adminSidebar: () => 'empty',
+        title: 'Book detail',
+        navbar: () => 'empty',
+        footer: () => 'empty',
+        book,
         fCategories: fatherCategories,
         cateData: cateData,
         cCategories: cCate,
-        authors: authourList,
+        authors: authorList,
         publishers: publisherList,
-        images: bookImg,
+        imgTag,
     });
 });
 

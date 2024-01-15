@@ -3,9 +3,7 @@
         <p class='fs-2 fw-bold mb-0' style='color: #e85a4f'>Danh sách tài khoản</p>
         <div class="col-3 mt-3 h-100 sticky-top" style="top: 5%">
             <div class="text-center" style="height: 210px; background-color: #d8c3a5">
-                <img class="img-fluid mx-auto d-block p-2"
-                    src="{{avatarPath}}"
-                    alt="" style="
+                <img class="img-fluid mx-auto d-block p-2" src="{{avatarPath}}" alt="" style="
                                     height: 170px;
                                     border-radius: 50%;
                                     aspect-ratio: 1/1;
@@ -35,6 +33,12 @@
         </div>
         <div class='container col-9'>
             <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
+                <div class="container row position-relative">
+                    <h4 class="mt-2 mb-3 col-4">Danh sách người dùng</h4>
+                    <button type="button" class="add-addr-btn btn btn-danger w-auto fw-bold mt-2 mb-3 position-absolute top-0 end-0 ">
+                        <a href="/user/createUser" style="color: white">Thêm người dùng mới</a>
+                    </button>
+                </div>
                 <table class='table table-striped table-hover text-center'>
                     <thead>
                         <tr>
@@ -42,7 +46,7 @@
                             <th scope='col'>Username</th>
                             <th scope='col'>Email</th>
                             <th scope='col'>Họ và tên</th>
-                            <th scope='col'>Số điện thoại</th>
+                            <th scope='col'>SDT</th>
                             <th scope='col'>Giới tính</th>
                             <th scope='col'>Ngày sinh</th>
                             <th scope='col'>Vai trò</th>
@@ -63,9 +67,13 @@
                             <td>{{phoneNumber}}</td>
                             <td>{{#if gender}} Nữ {{else}} Nam {{/if}}</td>
                             <td>{{birthday}}</td>
-                            <td>{{role}}</td>
+                            <td>{{getRole role}}</td>
                             <td>
-                                <i class='fa-solid fa-trash delete' style='cursor: pointer' data-id='{{userId}}'></i>
+                                {{#eq userId ../userId}} 
+                                {{else}}
+                                    <i class='fa-solid fa-trash delete' style='cursor: pointer' data-id='{{userId}}'
+                                        ></i>
+                                {{/eq}}
                             </td>
                             <td>
                                 <a href='/user/{{userId}}' style='color: black'>
@@ -98,9 +106,10 @@
             reverseButtons: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                const
-                    userId = $(this).data("id"); $.ajax({
-                        type: "DELETE", url: `/user/${userId}`,
+                const userId = $(this).data("id");
+                    $.ajax({
+                        type: "DELETE", 
+                        url: `/api/user/${userId}`,
                         success: function (response) {
                             swalWithBootstrapButtons.fire({
                                 title: "Đã xóa!",

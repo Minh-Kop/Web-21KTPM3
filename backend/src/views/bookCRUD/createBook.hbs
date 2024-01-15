@@ -1,104 +1,134 @@
-<div class="update-book-container">
-    <div class="btn-back">
-        <form action="/admin/book" method="get">
-            <button type="submit">
-                <img src="/assets/img/back_icon.svg" alt="Back">
+<div class='container'>
+    <div class='btn-back create'>
+        <form action='/admin/book' method='get'>
+            <button type='submit'>
+                <img src='/assets/img/back_icon.svg' alt='Back' />
             </button>
         </form>
     </div>
-    <div class="info-input">
-        <form action="/admin/book/create" method="post" enctype="multipart/form-data">
-            <div class="book-info">
-                <div class="father-categories-dropdown">
-                    <div class="label">Danh mục cha:</div>
-                    <select name="father-category" id="fCategory" onchange="renderChild({{cateData}})">
+    <div class='info-input'>
+        <form id='createForm'>
+            <div class='book-info'>
+                <div class='father-categories-dropdown'>
+                    <div class='label'>Danh mục cha:</div>
+                    <select
+                        name='father-category'
+                        id='fCategory'
+                        onchange='renderChild({{cateData}})'
+                    >
                         {{#each fCategories}}
-                        <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
+                            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
                     </select>
                 </div>
-                <div class="categories-dropdown">
-                    <div class="label">Danh mục</div>
-                    <select name="categoryId" id="category">
+                <div class='categories-dropdown'>
+                    <div class='label'>Danh mục</div>
+                    <select name='categoryId' id='category'>
                         {{#each categories}}
-                        <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
+                            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
                     </select>
                 </div>
-                <div class="book-name">
-                    <div class="label">Tên sách:</div>
-                    <input type="text" name="bookName" />
+                <div class='book-name'>
+                    <div class='label'>Tên sách:</div>
+                    <input type='text' name='bookName' />
                 </div>
-                <div class="book-author">
-                    <div class="label">Tác giả:</div>
-                    <select name="authorId" id="author">
+                <div class='book-author'>
+                    <div class='label'>Tác giả:</div>
+                    <select name='authorId' id='author'>
                         {{#each authors}}
-                        <option value="{{this.AUTHOR_ID}}">{{this.AUTHOR_NAME}}</option>
+                            <option
+                                value='{{this.AUTHOR_ID}}'
+                            >{{this.AUTHOR_NAME}}</option>
                         {{/each}}
                     </select>
                 </div>
-                <div class="book-publisher">
-                    <div class="label">Nhà xuất bản:</div>
-                    <select name="publisherId" id="publisher">
+                <div class='book-publisher'>
+                    <div class='label'>Nhà xuất bản:</div>
+                    <select name='publisherId' id='publisher'>
                         {{#each publishers}}
-                        <option value="{{this.pubId}}">{{this.pubName}}</option>
+                            <option
+                                value='{{this.pubId}}'
+                            >{{this.pubName}}</option>
                         {{/each}}
                     </select>
                 </div>
-                <div class="book-publishedYear">
-                    <div class="label">Năm xuất bản:</div>
-                    <input type="text" name="publishedYear" />
+                <div class='book-publishedYear'>
+                    <div class='label'>Năm xuất bản:</div>
+                    <input type='text' name='publishedYear' />
                 </div>
-                <div class="book-weight">
-                    <div class="label">Trọng lượng:</div>
-                    <input type="text" name="weight" />
+                <div class='book-weight'>
+                    <div class='label'>Trọng lượng:</div>
+                    <input type='text' name='weight' />
                 </div>
-                <div class="book-dimensions">
-                    <div class="label">Kích thước bao bì:</div>
-                    <input type="text" name="dimensions" />
+                <div class='book-dimensions'>
+                    <div class='label'>Kích thước bao bì:</div>
+                    <input type='text' name='dimensions' />
                 </div>
-                <div class="book-numberPage">
-                    <div class="label">Số trang:</div>
-                    <input type="text" name="numberPage" />
+                <div class='book-numberPage'>
+                    <div class='label'>Số trang:</div>
+                    <input type='text' name='numberPage' />
                 </div>
-                <div class="book-Stock">
-                    <div class="label">Số lượng:</div>
-                    <input type="text" name="stock" />
+                <div class='book-Stock'>
+                    <div class='label'>Số lượng:</div>
+                    <input type='text' name='stock' />
                 </div>
-                <div class="book-bookFormat">
-                    <div class="label">Hình thức:</div>
-                    <input type="text" name="bookFormat" />
+                <div class='book-bookFormat'>
+                    <div class='label'>Hình thức:</div>
+                    <input type='text' name='bookFormat' />
                 </div>
-                <div class="book-discountedNumber">
-                    <div class="label">Giảm giá:</div>
-                    <input type="text" name="discountedNumber" />
+                <div class='book-originalPrice'>
+                    <div class='label'>Giá gốc:</div>
+                    <input type='text' name='originalPrice' />
                 </div>
-                <div class="book-originalPrice">
-                    <div class="label">Giá trước giảm:</div>
-                    <input type="text" name="originalPrice" />
+                <div class='book-discountedNumber'>
+                    <div class='label'>Số phần trăm giảm:</div>
+                    <input type='text' name='discountedNumber' />
                 </div>
-                <div class="book-discountedPrice">
-                    <div class="label">Giá sau giảm:</div>
-                    <input type="text" name="discountedPrice" />
-                </div>
-                <div class="book-image">
-                    <div class="image-submit">
-                        <div class="label">Ảnh:</div>
-                        <label for="files">Browse</label>
-                        <input type="file" id="files" name="files" multiple="">
-                    </div>
-                    <div class="book-image-display">
 
-                    </div>
+                {{! Cover image }}
+                <div class='book-image'>
+                    <label for='bookCover' class='form-label'>
+                        Thêm ảnh bìa
+                    </label>
+                    <input
+                        name='coverImage'
+                        class='form-control'
+                        type='file'
+                        id='bookCover'
+                        multiple
+                        data-img-tag='{{imgTag}}'
+                    />
                 </div>
-                <div class="book-description">
-                    <textarea name="description" id="description" cols="30" rows="10"></textarea>
+
+                {{! Images }}
+                <div class='book-image'>
+                    <label for='bookImages' class='form-label'>
+                        Thêm ảnh khác
+                    </label>
+                    <input
+                        name='images'
+                        class='form-control'
+                        type='file'
+                        id='bookImages'
+                        multiple
+                        data-img-tag='{{imgTag}}'
+                    />
+                </div>
+
+                <div class='book-description'>
+                    <textarea
+                        name='description'
+                        id='description'
+                        cols='30'
+                        rows='10'
+                    ></textarea>
                 </div>
             </div>
-            <button class="btn-submit-create" type="submit">Xác nhận</button>
+            <button class='btn-submit-create' type='submit'>Xác nhận</button>
         </form>
     </div>
 </div>
 
-<link rel="stylesheet" href="/assets/css/createBook.css">
-<script src="/assets/js/bookAdmin.js"></script>
+<link rel='stylesheet' href='/assets/css/createBook.css' />
+<script src='/assets/js/bookAdmin.js'></script>

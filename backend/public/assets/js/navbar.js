@@ -28,7 +28,7 @@ $('.category-menu-dropdown__category').on('mouseenter', (e) => {
 // Log out
 $('#logout').click(async (e) => {
     e.preventDefault();
-    await fetch('/logout', {
+    await fetch('/api/user/logout', {
         method: 'delete',
     });
     location.reload();
