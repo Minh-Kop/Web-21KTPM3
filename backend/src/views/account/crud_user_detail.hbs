@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container main-content" data-avatar-tag="{{avatarTag}}">
     <a href="/user/" class="btn btn-danger mb-3 fw-bold" style="width: 100px">
         < Trở về </a>
             <div class="container">
@@ -115,20 +115,22 @@
                         </div>
                     </form>
                 </div>
-                <div class="border border-success rounded text-start px-4 row p-3" style="background-color: #FFFFFF; margin-top:12px">
+                <div class="border border-success rounded text-start px-4 row p-3 mb-3" style="background-color: #FFFFFF; margin-top:12px">
                     <h5 class="mt-2 mb-3">Thay đổi avatar</h5>
                     <form id="uploadAvatar" enctype="multipart/form-data">
-                        <button type="submit" class="btn btn-danger mb-2">Cập nhật</button>
                         <!-- Add more form fields as needed -->
                         <div class="mb-3">
                             <input type="file" name="avatar" id="formFile" class="form-control" accept="image/*" />
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-danger mb-2">Cập nhật</button>
                         </div>
                     </form>
                 </div>
                 {{/eq}}
             </div>
 </div>
-<script>
+{{!-- <script>
     $("#updateForm").on("submit", function () {
         event.preventDefault();
         var formData = $(this).serializeArray();
@@ -284,4 +286,6 @@
                 }
             });
         });
-</script>
+</script> --}}
+
+<script src='/assets/js/userAccount.js'></script>
