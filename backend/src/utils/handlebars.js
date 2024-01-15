@@ -280,10 +280,14 @@ module.exports = (hbs) => {
                     .join('');
 
                 return new Handlebars.SafeString(`<div id="related" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                ${related}
-            </div>
-        </div>`);
+                                                    <div class="carousel-inner">
+                                                        ${related}
+                                                    </div>
+                                                </div>`);
+            },
+            getRole(a) {
+                if (a == 1) return 'Khách hàng'
+                return 'Admin'
             },
             createCategoryTree,
         },
