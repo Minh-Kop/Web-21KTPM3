@@ -21,30 +21,30 @@ insert into WARD (WARD_ID, DIST_ID, WARD_NAME) values
     ('WD0000005', 'DT00005', N'Phường 5')
 
 -- ========== CATEGORY ==========
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA01', N'Manga - Comic')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA02', N'Comic - Truyện Tranh')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA03', N'Manga')
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA01', N'Manga - Comic', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA02', N'Comic - Truyện Tranh', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA03', N'Manga', 0)
 update CATEGORY set PARENT_ID = 'CA01' where CATE_ID IN ('CA02', 'CA03')
 
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA04', N'Tâm Lý - Kỹ Năng Sống')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA05', N'Kỹ Năng Sống')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA06', N'Sách Cho Tuổi Mới Lớn')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA07', N'Tâm Lý')
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA04', N'Tâm Lý - Kỹ Năng Sống', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA05', N'Kỹ Năng Sống', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA06', N'Sách Cho Tuổi Mới Lớn', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA07', N'Tâm Lý', 0)
 update CATEGORY set PARENT_ID = 'CA04' where CATE_ID IN ('CA05', 'CA06', 'CA07') 
 
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA08', N'Thiếu nhi')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA09', N'Kiến Thức - Kỹ Năng Sống Cho Trẻ')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA10', N'Kiến Thức Bách Khoa')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA11', N'Truyện Thiếu Nhi')
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA08', N'Thiếu nhi', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA09', N'Kiến Thức - Kỹ Năng Sống Cho Trẻ', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA10', N'Kiến Thức Bách Khoa', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA11', N'Truyện Thiếu Nhi', 0)
 update CATEGORY set PARENT_ID = 'CA08' where CATE_ID IN ('CA09', 'CA10', 'CA11') 
 
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA12', N'Văn Học')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA13', N'Light Novel')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA14', N'Tiểu Thuyết')
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA15', N'Truyện Ngắn - Tản Văn')
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA12', N'Văn Học', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA13', N'Light Novel', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA14', N'Tiểu Thuyết', 0)
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA15', N'Truyện Ngắn - Tản Văn', 0)
 update CATEGORY set PARENT_ID = 'CA12' where CATE_ID IN ('CA13', 'CA14', 'CA15')
 
-insert into CATEGORY (CATE_ID, CATE_NAME) values ('CA16', N'Sách Tiếng Việt')
+insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA16', N'Sách Tiếng Việt', 0)
 update CATEGORY set PARENT_ID = 'CA16' where CATE_ID IN ('CA01', 'CA04', 'CA08', 'CA12')
 
 -- ========== AUTHOR ==========

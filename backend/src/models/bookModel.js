@@ -25,6 +25,14 @@ exports.insertImages = async (bookId, images) => {
     await request2.query(sqlString);
 };
 
+exports.updateCoverImage = async (bookId, coverImagePath) => {
+    const sqlString = `update BOOK_IMAGES set BOOK_PATH = '${coverImagePath}' where BOOK_ID = '${bookId}' and IMAGE_ID = 1`;
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(sqlString);
+    return result.rowsAffected[0];
+};
+
 exports.deleteBookImage = async ({ bookId, imageId }) => {
     const sqlString = `delete from BOOK_IMAGES where book_id = '${bookId}' and image_id = ${imageId}`;
     const pool = await database.getConnectionPool();

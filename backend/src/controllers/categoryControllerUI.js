@@ -94,6 +94,8 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
 
     res.render('category/categoryPage', {
         title: 'Category page',
+        navbar: () => 'navbar',
+        footer: () => 'footer',
         categoryTree,
         stringifiedBranch,
         catId,
@@ -110,8 +112,6 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         page,
         totalPages,
         link: newUrl,
-        navbar: () => 'navbar',
-        footer: () => 'footer',
         isLoggedIn,
         ...user,
         ...cart,

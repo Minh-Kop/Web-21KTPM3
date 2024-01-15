@@ -1,11 +1,14 @@
-<div class="book-list-container">
-    <div class="book-list-header">
-        <form class="book-add" action="/admin/book/createBookUI" method="get">
-            <button type="submit">Add</button>
+<div class='book-list-container'>
+    {{! Header }}
+    <div class='book-list-header'>
+        <form class='book-add' action='/admin/book/createBookUI' method='get'>
+            <button type='submit'>Add</button>
         </form>
     </div>
-    <div class="book-list">
-        <table class="book-list-table">
+
+    {{! List }}
+    <div class='book-list'>
+        <table class='book-list-table'>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -17,25 +20,36 @@
             </thead>
             <tbody>
                 {{#each books}}
-                <tr>
-                    <td>{{this.bookId}}</td>
-                    <td class="update-td"><a
-                            href="/admin/book/updateBookUI?book={{this.bookId}}"><span>{{this.bookName}}</span></a>
-                    </td>
-                    <td>{{this.discountedPrice}} VNĐ</td>
-                    <td>{{this.stock}}</td>
-                    <td class="del-td">
-                        <form action="/admin/book/delete" method="get">
-                            <input type="hidden" id="bookId" name="bookId" value="{{this.bookId}}">
-                            <button class="btn-del" type="submit"><img src="/assets/img/red_trash_icon.svg"
-                                    alt="deltete"></button>
-                        </form>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{this.bookId}}</td>
+                        <td class='update-td'><a
+                                href='/admin/book/updateBookUI?book={{this.bookId}}'
+                            ><span>{{this.bookName}}</span></a>
+                        </td>
+                        <td>{{this.discountedPrice}} VNĐ</td>
+                        <td>{{this.stock}}</td>
+                        <td class='del-td'>
+                            <form action='/admin/book/delete' method='get'>
+                                <input
+                                    type='hidden'
+                                    id='bookId'
+                                    name='bookId'
+                                    value='{{this.bookId}}'
+                                />
+                                <button class='btn-del' type='submit'><img
+                                        src='/assets/img/red_trash_icon.svg'
+                                        alt='deltete'
+                                    /></button>
+                            </form>
+                        </td>
+                    </tr>
                 {{/each}}
             </tbody>
         </table>
+
+        {{! Pagination }}
+        {{> pagination}}
     </div>
 </div>
 
-<link rel="stylesheet" href="/assets/css/readBook.css">
+<link rel='stylesheet' href='/assets/css/readBook.css' />

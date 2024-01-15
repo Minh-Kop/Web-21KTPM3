@@ -1,4 +1,6 @@
-* {
+*,
+::before,
+::after {
     box-sizing: border-box;
 }
 
@@ -22,7 +24,9 @@ h2,
 h3,
 h4,
 h5,
-p {
+p,
+ul,
+ol {
     margin: 0;
     padding: 0;
 }
@@ -35,12 +39,6 @@ button {
     border: none;
     outline: none;
     background-color: transparent;
-}
-
-ul,
-ol {
-    margin: 0;
-    padding: 0;
 }
 
 /* Create ... when text overflows */
