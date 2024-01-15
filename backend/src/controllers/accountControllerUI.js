@@ -94,17 +94,6 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.deleteUser = catchAsync(async (req, res, next) => {
-    const { userId } = req.params;
-    const result = await accountModel.deleteAccount(userId);
-    if (result <= 0) {
-        return next(new AppError('Account not found.', 404));
-    }
-    res.status(200).json({
-        status: 'success',
-    });
-});
-
 exports.getCreateUserPage = catchAsync(async (req, res, next) => {
     res.render('account/crud_add_user', {
         title: 'Thêm user',
