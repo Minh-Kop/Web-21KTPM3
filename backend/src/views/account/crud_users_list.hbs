@@ -109,7 +109,7 @@
                 const userId = $(this).data("id");
                     $.ajax({
                         type: "DELETE", 
-                        url: `/user/${userId}`,
+                        url: `/api/user/${userId}`,
                         success: function (response) {
                             swalWithBootstrapButtons.fire({
                                 title: "Đã xóa!",

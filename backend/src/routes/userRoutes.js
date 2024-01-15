@@ -60,7 +60,7 @@ router.get('/login-with-google', (req, res, next) => {
     )(req, res, next);
 });
 
-router.get('/logout', authController.logOut);
+router.delete('/logout', authController.logOut);
 
 // Protect all routes after this middleware
 router.use(authController.protect);
@@ -89,6 +89,7 @@ router
 router
     .route('/:userId')
     .get(accountController.getUser)
-    .patch(accountController.updateUser);
+    .patch(accountController.updateUser)
+    .delete(accountController.deleteUser);
 
 module.exports = router;

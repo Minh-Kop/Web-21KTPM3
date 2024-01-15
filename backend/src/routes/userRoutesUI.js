@@ -18,9 +18,6 @@ router.route('/createUser').get(accountController.getCreateUserPage);
 
 router.route('/').get(accountController.getAllUsers);
 
-router
-    .route('/:userId')
-    .get(accountController.getUser)
-    .delete(accountController.deleteUser);
+router.route('/:userId').get(accountController.getUser);
 
 module.exports = router;

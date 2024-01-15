@@ -159,7 +159,11 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
         password: newPassword,
     });
 
-    // 5) Login again
+    // 5) Log out
+    const webUrl = `${req.protocol}://${req.get('host')}`;
+    await axios.delete(`${webUrl}/api/user/logout`);
+
+    // 6) Log in again
     req.logIn(user, (logInError) => {
         if (logInError) {
             return next(new AppError(logInError, 500));
@@ -170,7 +174,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
 exports.logOut = async (req, res) => {
     await new Promise((resolve, reject) => {
-        req.session.regenerate((err) => {
+        req.logout((err) => {
             if (err) {
                 reject(err);
             } else {
@@ -178,7 +182,7 @@ exports.logOut = async (req, res) => {
             }
         });
     });
-    res.json({ status: 1 });
+    res.status(204).json();
 };
 
 exports.restrictTo = (...roles) => {
@@ -213,6 +217,7 @@ exports.loginSuccess = catchAsync(async (req, res) => {
     }
 });
 
+/* ==================================== UI ==================================== */
 exports.getLoginPage = catchAsync(async (req, res, next) => {
     const { error, nextUrl: url } = req.query;
     const nextUrl = url || '/mainPage';

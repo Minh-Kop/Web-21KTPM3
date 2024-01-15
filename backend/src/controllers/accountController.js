@@ -187,3 +187,14 @@ exports.createUser = catchAsync(async (req, res, next) => {
         message: 'Create account successfully',
     });
 });
+
+exports.deleteUser = catchAsync(async (req, res, next) => {
+    const { userId } = req.params;
+    const result = await accountModel.deleteAccount(userId);
+    if (result <= 0) {
+        return next(new AppError('Account not found.', 404));
+    }
+    res.status(200).json({
+        status: 'success',
+    });
+});

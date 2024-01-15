@@ -213,7 +213,7 @@
                             }
                         }).then(async (result) => {
                             if (result.dismiss === Swal.DismissReason.timer) {
-                                await fetch('/logout', {
+                                await fetch('/api/user/logout', {
                                     method: 'delete',
                                 });
                                 window.location.href = "/login";
