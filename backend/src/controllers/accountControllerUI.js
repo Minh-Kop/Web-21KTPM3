@@ -1,10 +1,31 @@
+const axios = require('axios');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
 const { createUploader } = require('../utils/cloudinary');
 const config = require('../config/config');
-const { encryptPassword } = require('../utils/crypto');
+const bankUrl = config.BANK_URL;
+const {
+    verifyPassword,
+    encryptPassword,
+    generateToken,
+} = require('../utils/crypto');
 const moment = require('moment');
+const { getVerifyEmail, createTransport } = require('../utils/nodemailer');
+
+const createSignUpMail = async (email, webUrl) => {
+    // 256 bits which provides about 1e+77 possible different number
+    // This is enough for preventing brute force
+    const verifyToken = generateToken(config.NUMBER_BYTE_VERIFY_TOKEN);
+
+    // Send each mail with different time to prevent the html being trimmed by Gmail
+    const url = `${webUrl}/api/user`;
+    const mailOption = getVerifyEmail(email, url, verifyToken);
+    const transport = await createTransport();
+    await transport.sendMail(mailOption);
+
+    return verifyToken;
+};
 
 const createAvatarName = async (req, file) => {
     if (file.fieldname === 'avatar') {
@@ -62,7 +83,7 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
-
+    const { user } = req;
     const detailedUser = await accountModel.getDetailedUser(userId);
 
     // Check if this user exists
@@ -81,6 +102,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
         footer: () => 'empty',
         status: 'success',
         user: detailedUser.recordset[0],
+        ...user,
     });
 });
 
@@ -97,7 +119,6 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
     const { userId } = req.params;
     const { fullName, phoneNumber, birthday, gender, role } = req.body;
-
     await accountModel.updateAccount({
         userId,
         fullName,
@@ -152,7 +173,14 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.createUser = catchAsync(async (req, res, next) => {
-    const { email, phoneNumber, password, fullName, role } = req.body;
+    const { email, password, username, role } = req.body;
+    const isOauth2 = false;
+
+    // Check for username duplicated
+    const account = await accountModel.getByUsername(username, true);
+    if (account) {
+        return next(new AppError('Username already exists.', 400));
+    }
 
     // Check for email duplicated
     const emailAccount = await accountModel.getByEmail(email);
@@ -160,25 +188,30 @@ exports.createUser = catchAsync(async (req, res, next) => {
         return next(new AppError('Email already exists.', 400));
     }
 
-    // Check for phone number duplicated
-    const phoneNumberAccount = await accountModel.getByPhone(phoneNumber);
-    if (phoneNumberAccount) {
-        return next(new AppError('Phone number is already used.', 400));
-    }
+    // Send mail
+    const webUrl = `${req.protocol}://${req.get('host')}`;
+    const verifyToken = await createSignUpMail(email, webUrl);
 
     // Encrypt password by salting and hashing
     const encryptedPassword = encryptPassword(password);
 
-    // Create entity to insert to DB
-    const entity = {
+    // Create account
+    await accountModel.createAccount({
+        username,
         email,
-        phoneNumber,
-        fullName,
         password: encryptedPassword,
         verified: 1,
+        token: verifyToken,
         role: role || config.role.USER,
-    };
-    await accountModel.createAccount(entity);
+        isOauth2,
+    });
+
+    // Create bank account in bank server
+    await axios.post(`${bankUrl}/api/account/create-account`, {
+        username,
+        password: encryptedPassword,
+        isOauth2,
+    });
 
     res.status(200).json({
         status: 'success',
@@ -194,5 +227,13 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     }
     res.status(200).json({
         status: 'success',
+    });
+});
+
+exports.getCreateUserPage = catchAsync(async (req, res, next) => {
+    res.render('account/crud_add_user', {
+        title: 'Thêm user',
+        navbar: () => 'empty',
+        footer: () => 'empty',
     });
 });

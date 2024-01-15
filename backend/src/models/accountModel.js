@@ -90,7 +90,7 @@ exports.updateAccount = async ({
     const pool = await database.getConnectionPool();
     const transaction = new sql.Transaction(pool);
     await transaction.begin();
-
+    console.log("model:", role);
     let checkAccount = false;
     let sqlStringAccount = ``;
 
