@@ -307,7 +307,7 @@
     flex-direction: column;
     gap: 8px;
 
-    min-width: 250px;
+    min-width: 280px;
     padding: 16px 12px;
     border-radius: 10px;
     filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));

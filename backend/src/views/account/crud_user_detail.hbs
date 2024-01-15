@@ -147,7 +147,7 @@
         const userId = $(this).data("id");
         $.ajax({
             type: 'PATCH',
-            url: `/user/${userId}`,
+            url: `/api/user/${userId}`,
             data: user,
             success: function (response) {
                 let timerInterval;
@@ -191,7 +191,7 @@
             else {
                 $.ajax({
                     type: 'PATCH',
-                    url: '/user/updatePassword',
+                    url: '/api/user/updatePassword',
                     data: password,
                     success: function (response) {
                         let timerInterval;
@@ -213,7 +213,7 @@
                             }
                         }).then(async (result) => {
                             if (result.dismiss === Swal.DismissReason.timer) {
-                                await fetch('/logout', {
+                                await fetch('/api/user/logout', {
                                     method: 'delete',
                                 });
                                 window.location.href = "/login";
@@ -247,7 +247,7 @@
             const formData = new FormData(this);
             $.ajax({
                 type: 'PATCH',
-                url: '/user/avatar',
+                url: '/api/user/avatar',
                 data: formData,
                 processData: false,
                 contentType: false,

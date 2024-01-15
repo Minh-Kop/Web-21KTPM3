@@ -366,40 +366,64 @@ exports.createBook = catchAsync(async (req, res, next) => {
     });
 });
 
+const deleteAllSubImages = async (subImages, bookId) => {
+    await Promise.all(
+        subImages.map(async (el) => {
+            const { IMAGE_ID: id, BOOK_PATH: path } = el;
+            const publicId = path.match(/fabook\/products\/([^/.]+)/)[0];
+
+            await bookModel.deleteBookImage({ bookId, imageId: id });
+            await deleteCloudinaryImage(publicId);
+            return 1;
+        }),
+    );
+};
+
 exports.updateBookImages = catchAsync(async (req, res, next) => {
     const { bookId } = req.params;
 
     // Get append images
-    let { images: uploadedSubImages } = req.files;
+    let { coverImage, images: uploadedSubImages } = req.files;
 
-    if (uploadedSubImages) {
-        uploadedSubImages = uploadedSubImages.map((item) => ({
-            path: item.path,
-            filename: item.filename,
-        }));
-
-        // Get current sub images
-        let subImages = await bookModel.getBookImages(bookId);
-
-        // If number of uploaded images reaches limit then delete the cloudinary images and cancel transaction
-        if (
-            subImages.length + uploadedSubImages.length >
-            config.PRODUCT_IMAGE_NUMBER_LIMIT
-        ) {
-            await Promise.all(
-                uploadedSubImages.map(
-                    async (el) => await deleteCloudinaryImage(el.filename),
-                ),
-            );
-            return next(
-                new AppError(
-                    `Each product can only have ${config.PRODUCT_IMAGE_NUMBER_LIMIT} images.`,
-                    400,
-                ),
-            );
-        }
-        await bookModel.insertImages(bookId, uploadedSubImages);
+    if (coverImage) {
+        const coverImagePath = coverImage[0].path;
+        await bookModel.updateCoverImage(bookId, coverImagePath);
     }
+
+    if (!uploadedSubImages) {
+        return next();
+    }
+
+    uploadedSubImages = uploadedSubImages.map((item) => ({
+        path: item.path,
+        filename: item.filename,
+    }));
+
+    // Get current sub images
+    let subImages = await bookModel.getBookImages(bookId);
+    subImages = subImages.slice(1);
+
+    // If number of uploaded images reaches limit then delete the cloudinary images and cancel transaction
+    if (
+        subImages.length + uploadedSubImages.length >
+        config.PRODUCT_IMAGE_NUMBER_LIMIT
+    ) {
+        await Promise.all(
+            uploadedSubImages.map(
+                async (el) => await deleteCloudinaryImage(el.filename),
+            ),
+        );
+        return next(
+            new AppError(
+                `Each product can only have ${config.PRODUCT_IMAGE_NUMBER_LIMIT} images.`,
+                400,
+            ),
+        );
+    }
+
+    // Delete old images and insert new ones
+    await deleteAllSubImages(subImages, bookId);
+    await bookModel.insertImages(bookId, uploadedSubImages);
     next();
 });
 

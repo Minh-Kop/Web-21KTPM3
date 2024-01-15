@@ -27,7 +27,7 @@ const protectPage = catchAsync(async (req, res, next) => {
 
 const logOut = async (req, res) => {
     await new Promise((resolve, reject) => {
-        req.session.regenerate((err) => {
+        req.logout((err) => {
             if (err) {
                 reject(err);
             } else {
@@ -35,7 +35,7 @@ const logOut = async (req, res) => {
             }
         });
     });
-    res.json({ status: 1 });
+    res.status(204).json();
 };
 
 const getLoginPage = catchAsync(async (req, res, next) => {

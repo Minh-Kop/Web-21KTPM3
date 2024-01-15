@@ -113,7 +113,13 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
 exports.updateAvatar = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
-    const { path: avatarPath } = req.files.avatar[0];
+    const { avatar } = req.files;
+
+    if (!avatar) {
+        return next(new AppError('No avatar was sent!', 400));
+    }
+
+    const { path: avatarPath } = avatar[0];
 
     await accountModel.updateAccount({
         userId,
@@ -179,5 +185,16 @@ exports.createUser = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         message: 'Create account successfully',
+    });
+});
+
+exports.deleteUser = catchAsync(async (req, res, next) => {
+    const { userId } = req.params;
+    const result = await accountModel.deleteAccount(userId);
+    if (result <= 0) {
+        return next(new AppError('Account not found.', 404));
+    }
+    res.status(200).json({
+        status: 'success',
     });
 });

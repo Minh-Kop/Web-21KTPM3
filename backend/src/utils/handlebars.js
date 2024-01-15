@@ -286,8 +286,8 @@ module.exports = (hbs) => {
                                                 </div>`);
             },
             getRole(a) {
-                if (a == 1) return 'Khách hàng'
-                return 'Admin'
+                if (a == 1) return 'Khách hàng';
+                return 'Admin';
             },
             createCategoryTree,
         },

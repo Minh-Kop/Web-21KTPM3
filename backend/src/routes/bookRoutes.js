@@ -6,15 +6,12 @@ const config = require('../config/config');
 
 const router = express.Router();
 
-router
-    .route('/')
-    .get(bookController.getAllBooks)
-    .post(
-        authController.protect,
-        authController.restrictTo(config.role.ADMIN),
-        bookController.uploadBookImages,
-        bookController.createBook,
-    );
+router.route('/').get(bookController.getAllBooks).post(
+    // authController.protect,
+    // authController.restrictTo(config.role.ADMIN),
+    bookController.uploadBookImages,
+    bookController.createBook,
+);
 
 router.get('/related/:bookId', bookController.getRelatedBooks);
 router.get('/newestArrival', bookController.getNewestArrival);
@@ -37,9 +34,10 @@ router
     .route('/:bookId')
     .get(bookController.getBook)
     .patch(
-        authController.protect,
-        authController.restrictTo(config.role.ADMIN),
+        // authController.protect,
+        // authController.restrictTo(config.role.ADMIN),
         bookController.uploadBookImages,
+        bookController.updateBookImages,
         bookController.updateBook,
     )
     .delete(

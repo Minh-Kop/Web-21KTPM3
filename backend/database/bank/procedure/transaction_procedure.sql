@@ -118,7 +118,7 @@ IF OBJECT_ID('sp_CreatePaymentTransaction') IS NOT NULL
 GO
 CREATE PROCEDURE sp_CreatePaymentTransaction (
     @payerId CHAR(5),
-    @total int,
+    @total bigint,
     @changedReason NVARCHAR(300)
 )
 AS
@@ -146,6 +146,57 @@ BEGIN TRANSACTION
 
         UPDATE ACCOUNT set BALANCE = @payerBalance WHERE ACCOUNTID = @payerId
         UPDATE ACCOUNT set BALANCE = @payeeBalance WHERE ACCOUNTID = @payeeId
+
+        select @transactionId 'transactionId'
+	END TRY
+
+	BEGIN CATCH
+		PRINT N'Bị lỗi'
+		ROLLBACK  
+		RETURN 0
+	END CATCH
+COMMIT
+RETURN 1
+GO
+
+IF OBJECT_ID('sp_CreateRefundTransaction') IS NOT NULL
+	DROP PROC sp_CreateRefundTransaction
+GO
+CREATE PROCEDURE sp_CreateRefundTransaction (
+    @transactionId CHAR(5)
+)
+AS
+BEGIN TRANSACTION
+	BEGIN TRY
+        -- Get refund money
+        declare @refundMoney bigint = (select CHANGED_MONEY from [TRANSACTION] where TRANSACTIONID = @transactionId)
+        if @refundMoney is NULL
+        BEGIN
+            PRINT N'Non-existed transaction'
+            ROLLBACK  
+            RETURN -1
+        END
+
+        -- Get customer info
+        declare @customerId CHAR(5) = (select ACCOUNTID from TRANSFER where TRANSACTIONID = @transactionId and TRANSFER_TYPE = 1)
+        DECLARE @customerBalance bigint = (select BALANCE from ACCOUNT where ACCOUNTID = @customerId)
+
+        -- Shop info
+        declare @shopId char(5) = 'UB000'
+        DECLARE @shopBalance bigint = (select BALANCE from ACCOUNT where ACCOUNTID = @shopId)
+        
+        set @shopBalance = @shopBalance - @refundMoney
+        set @customerBalance = @customerBalance + @refundMoney
+
+        declare @refundTransactionId char(5) = (select dbo.f_CreateTransactionId('TR'))
+        INSERT into [TRANSACTION] (TRANSACTIONID, CHANGED_TIME, CHANGED_MONEY, CHANGED_REASON) VALUES
+            (@refundTransactionId, GETDATE(), @refundMoney, N'Trả lại tiền đã thanh toán do đơn hàng bị hủy vì gặp vấn đề.')
+        INSERT into TRANSFER (ACCOUNTID, TRANSACTIONID, TRANSFER_TYPE, BALANCE) VALUES
+            (@shopId, @refundTransactionId, 1, @shopBalance),
+            (@customerId, @refundTransactionId, 2, @customerBalance)
+
+        UPDATE ACCOUNT set BALANCE = @shopBalance WHERE ACCOUNTID = @shopId
+        UPDATE ACCOUNT set BALANCE = @customerBalance WHERE ACCOUNTID = @customerId
 	END TRY
 
 	BEGIN CATCH
