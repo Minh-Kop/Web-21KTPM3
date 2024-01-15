@@ -219,8 +219,12 @@ thead {
     background-color: var(--secondary-color);
 }
 
-.transaction__link {
+table:not(.balance-table) .transaction__link {
     color: var(--balance-color);
+}
+
+table:not(.balance-table) .transaction__link:hover {
+    color: var(--primary-color);
 }
 
 p.bold {

@@ -24,6 +24,37 @@ $('input[name="addrId"]').change(async (e) => {
 });
 
 // ==================================== Submit button ====================================
+const bankUrl = $('.bottom-sidebar-content').data('bankUrl');
+
+const createTransaction = async (password) => {
+    const element = $('.bottom-sidebar-content');
+    const body = {
+        total: element.data('finalTotal'),
+        username: element.data('username'),
+        password,
+    };
+    // const bankUrl = element.data('bankUrl');
+
+    const res = await fetch(`${bankUrl}/api/transaction/pay-order`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    const { status } = res;
+    if (status === 401) {
+        return -1;
+    }
+    if (status === 400) {
+        return -2;
+    }
+
+    const { transactionId } = await res.json();
+    return transactionId;
+};
+
 $('.confirm-checkout-btn').click(async () => {
     const { value: password } = await Swal.fire({
         title: 'Xác thực thanh toán',
@@ -59,6 +90,7 @@ $('.confirm-checkout-btn').click(async () => {
             icon: 'error',
         });
     }
+    const transactionId = returnedResult;
 
     // Create order
     const body = {
@@ -74,7 +106,16 @@ $('.confirm-checkout-btn').click(async () => {
     });
 
     if (status === 404) {
+        await fetch(`${bankUrl}/api/transaction/refund`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ transactionId }),
+        });
+
         $('.waiting').addClass('d-none');
+
         return Swal.fire({
             title: 'Error',
             text: 'Trong đơn hàng của bạn, có sản phẩm không còn tồn tại trong kho hoặc vượt quá số lượng trong kho!',
@@ -93,32 +134,6 @@ $('.confirm-checkout-btn').click(async () => {
         location.assign('/category');
     });
 });
-
-const createTransaction = async (password) => {
-    const element = $('.bottom-sidebar-content');
-    const body = {
-        total: element.data('finalTotal'),
-        username: element.data('username'),
-        password,
-    };
-    const bankUrl = element.data('bankUrl');
-    console.log(body, bankUrl);
-
-    const { status } = await fetch(`${bankUrl}/api/transaction/pay-order`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-    });
-    if (status === 401) {
-        return -1;
-    }
-    if (status === 400) {
-        return -2;
-    }
-    return 1;
-};
 
 /* ==================================== Add address ==================================== */
 $('.add-addr-btn').click((e) => {
@@ -240,8 +255,6 @@ $('.address-popup__btn--submit').click(async (e) => {
     const nameRegex = /\S+\s+\S+/;
     const phoneNumberRegex = /^0\d{9}$/;
     const addressRegex = /.*/;
-
-    console.log({ province });
 
     // Check full name
     if (

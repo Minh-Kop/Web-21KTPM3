@@ -41,17 +41,34 @@ const payOrder = catchAsync(async (req, res, next) => {
     }
 
     // Create a payment transaction
-    const { returnValue } = await transactionModel.createPaymentTransaction({
-        payerId,
-        total: +total,
-        changedReason: 'Thanh toán cho đơn hàng tại Fabook',
-    });
+    const { returnValue, recordset } =
+        await transactionModel.createPaymentTransaction({
+            payerId,
+            total: +total,
+            changedReason: 'Thanh toán cho đơn hàng tại Fabook',
+        });
 
     if (returnValue === -1) {
         return next(new AppError('Not have enough money', 400));
     }
 
-    res.json({});
+    const { transactionId } = recordset[0];
+    res.json({ transactionId });
+});
+
+const refund = catchAsync(async (req, res, next) => {
+    const { transactionId } = req.body;
+
+    // Create a payment transaction
+    const { returnValue } = await transactionModel.createRefundTransaction(
+        transactionId
+    );
+
+    if (returnValue === -1) {
+        return next(new AppError('Non-existed transaction', 400));
+    }
+
+    res.status(204).json();
 });
 
 const getBalancePage = catchAsync(async (req, res, next) => {
@@ -126,6 +143,7 @@ const getTransactionDetailPage = catchAsync(async (req, res, next) => {
 module.exports = {
     deposit,
     payOrder,
+    refund,
     getBalancePage,
     getTransactionPage,
     getTransactionDetailPage,

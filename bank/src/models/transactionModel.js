@@ -25,6 +25,14 @@ exports.createPaymentTransaction = async ({
     return result;
 };
 
+exports.createRefundTransaction = async (transactionId) => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    request.input('transactionId', sql.Char, transactionId);
+    const result = await request.execute('sp_CreateRefundTransaction');
+    return result;
+};
+
 exports.getTransactions = async (accountId) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
