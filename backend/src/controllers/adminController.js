@@ -99,7 +99,7 @@ exports.renderAdminPage = catchAsync(async (req, res, next) => {
 
 exports.renderReadBooks = catchAsync(async (req, res, next) => {
     const { page: chosenPage, limit: chosenLimit } = req.query;
-
+    const { user } = req;
     // Parameters to get books
     const page = +chosenPage || 1;
     const limit = +chosenLimit || 24;
@@ -126,6 +126,7 @@ exports.renderReadBooks = catchAsync(async (req, res, next) => {
         page,
         totalPages,
         link: newUrl,
+        ...user,
     });
 });
 
@@ -203,16 +204,17 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
 
 exports.renderCategoryPage = catchAsync(async (req, res, next) => {
     const categories = await getAllCategory();
-
+    const { user } = req;
     res.render('categoryCRUD/readCategory', {
-        layout: 'mainAdmin',
+        layout: 'admin',
         adminSidebar: () => 'adminSidebar',
         headerName: 'Danh sách danh mục',
         title: 'Category management',
         category: true,
         categories: categories,
+        ...user,
     });
-});
+}); 
 
 exports.renderUpdateCategory = catchAsync(async (req, res, next) => {
     const cateId = req.query.category;
