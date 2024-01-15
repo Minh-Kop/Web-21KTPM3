@@ -1,8 +1,8 @@
+const moment = require('moment');
+
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
-const config = require('../config/config');
-const { encryptPassword } = require('../utils/crypto');
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { user, cart, categoryTree } = req;
@@ -15,11 +15,11 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
     }
-    detailedUser.recordset[0].birthday = new Date(
+    detailedUser.recordset[0].birthday = moment(
         detailedUser.recordset[0].birthday,
     )
-        .toISOString()
-        .split('T')[0];
+        .subtract(7, 'hours')
+        .format('YYYY-MM-DD');
 
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
@@ -42,7 +42,7 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
-
+    const { user } = req;
     const detailedUser = await accountModel.getDetailedUser(userId);
 
     // Check if this user exists
@@ -50,18 +50,18 @@ exports.getUser = catchAsync(async (req, res, next) => {
         return next(new AppError('The account is no longer exist.', 404));
     }
 
-    detailedUser.recordset[0].birthday = new Date(
+    detailedUser.recordset[0].birthday = moment(
         detailedUser.recordset[0].birthday,
     )
-        .toISOString()
-        .split('T')[0];
-
+        .subtract(7, 'hours')
+        .format('YYYY-MM-DD');
     res.render('account/crud_user_detail', {
         title: 'Chi tiết tài khoản',
         navbar: () => 'empty',
         footer: () => 'empty',
         status: 'success',
         user: detailedUser.recordset[0],
+        ...user,
     });
 });
 
@@ -73,16 +73,17 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     limit = +limit || 12;
     const offset = (page - 1) * limit;
 
-    const users = await accountModel.getAllUsers({
+    const tempUsers = await accountModel.getAllUsers({
         sortType,
         limit,
         offset,
     });
-
-    users.forEach((el) => {
-        el.birthday = new Date(el.birthday).toISOString().split('T')[0];
-    });
-
+    const users = tempUsers.map((el) => ({
+        ...el,
+        birthday: moment(el.birthday).subtract(7, 'hours').format('DD/MM/YYYY'),
+        avatarPath: el.avatarPath || '/assets/img/account_icon.svg',
+    }));
+    user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('account/crud_users_list', {
         title: 'Danh sách tài khoản',
         status: 'success',
@@ -90,41 +91,6 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         footer: () => 'empty',
         ...user,
         users,
-    });
-});
-
-exports.createUser = catchAsync(async (req, res, next) => {
-    const { email, phoneNumber, password, fullName, role } = req.body;
-
-    // Check for email duplicated
-    const emailAccount = await accountModel.getByEmail(email);
-    if (emailAccount) {
-        return next(new AppError('Email already exists.', 400));
-    }
-
-    // Check for phone number duplicated
-    const phoneNumberAccount = await accountModel.getByPhone(phoneNumber);
-    if (phoneNumberAccount) {
-        return next(new AppError('Phone number is already used.', 400));
-    }
-
-    // Encrypt password by salting and hashing
-    const encryptedPassword = encryptPassword(password);
-
-    // Create entity to insert to DB
-    const entity = {
-        email,
-        phoneNumber,
-        fullName,
-        password: encryptedPassword,
-        verified: 1,
-        role: role || config.role.USER,
-    };
-    await accountModel.createAccount(entity);
-
-    res.status(200).json({
-        status: 'success',
-        message: 'Create account successfully',
     });
 });
 
@@ -136,5 +102,13 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     }
     res.status(200).json({
         status: 'success',
+    });
+});
+
+exports.getCreateUserPage = catchAsync(async (req, res, next) => {
+    res.render('account/crud_add_user', {
+        title: 'Thêm user',
+        navbar: () => 'empty',
+        footer: () => 'empty',
     });
 });

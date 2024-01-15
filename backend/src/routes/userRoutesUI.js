@@ -14,10 +14,9 @@ router.get('/me', accountController.getMyAccount);
 // Restrict all routes to only role admin after this middleware
 router.use(authController.restrictTo(config.role.ADMIN));
 
-router
-    .route('/')
-    .get(accountController.getAllUsers)
-    .post(accountController.createUser);
+router.route('/createUser').get(accountController.getCreateUserPage);
+
+router.route('/').get(accountController.getAllUsers);
 
 router
     .route('/:userId')

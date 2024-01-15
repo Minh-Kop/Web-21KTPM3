@@ -2,7 +2,8 @@
     <a href="/user/" class="btn btn-danger mb-3 fw-bold" style="width: 100px">
         < Trở về </a>
             <div class="container">
-                <div class="border border-success rounded text-start px-4 row m-0 p-3" style="background-color: #ffffff">
+                <div class="border border-success rounded text-start px-4 row p-3" style="background-color: #ffffff">
+                    <h5 class="mt-2 mb-3">Thông tin tài khoản</h5>
                     <form id="updateForm" data-id="{{user.userId}}">
                         <div class="mb-3 row">
                             <label for="inputUsername" class="col-sm-2 col-form-label text-muted">Tên tài khoản:</label>
@@ -58,6 +59,25 @@
                                     value="{{user.birthday}}" />
                             </div>
                         </div>
+                        <div class="mb-3 row">
+                            <label for="inputRole" class="col-sm-2 col-form-label text-muted">Vai trò</label>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="role" id="flexRadioCus" value=1 {{#eq
+                                        user.role 1}}checked{{/eq}} />
+                                    <label class="form-check-label" for="flexRadioCus">
+                                        Khách hàng
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="role" id="flexRadioAd" value=2 {{#eq
+                                        user.role 2}}checked{{/eq}} />
+                                    <label class="form-check-label" for="flexRadioAd">
+                                        Admin
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-danger mb-2">
                                 Lưu thay đổi
@@ -65,17 +85,58 @@
                         </div>
                     </form>
                 </div>
+                {{#eq user.userId userId}}
+                <div class="border border-success rounded text-start px-4 row p-3" style="background-color: #ffffff; margin-top:12px">
+                    <h5 class="mt-2 mb-3">Thay đổi mật khẩu</h5>
+                    <form id="changePassword" data-id="{{user.userId}}">
+                        <div class="mb-3 row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label text-muted">Mật khẩu hiện tại*</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" name="currentPassword" id="inputOldPassword" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label  text-muted">Mật khẩu mới*</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" name="password" id="inputNewPassword" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputPassword" class="col-sm-3 col-form-label  text-muted">Nhập lại mật
+                                khẩu*</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" name="reNewPass" id="inputRePassword" required>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-danger mb-2">
+                                Đổi mật khẩu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="border border-success rounded text-start px-4 row p-3" style="background-color: #FFFFFF; margin-top:12px">
+                    <h5 class="mt-2 mb-3">Thay đổi avatar</h5>
+                    <form id="uploadAvatar" enctype="multipart/form-data">
+                        <button type="submit" class="btn btn-danger mb-2">Cập nhật</button>
+                        <!-- Add more form fields as needed -->
+                        <div class="mb-3">
+                            <input type="file" name="avatar" id="formFile" class="form-control" accept="image/*" />
+                        </div>
+                    </form>
+                </div>
+                {{/eq}}
             </div>
 </div>
 <script>
     $("#updateForm").on("submit", function () {
         event.preventDefault();
         var formData = $(this).serializeArray();
+        //const formData = new FormData(this);
         let user = {};
         formData.forEach(function (item) {
             user[item.name] = item.value;
         });
-
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
                 confirmButton: "btn btn-success ms-3",
@@ -85,25 +146,142 @@
         });
         const userId = $(this).data("id");
         $.ajax({
-            type: "PATCH",
-            url: `/user/${userId}`,
+            type: 'PATCH',
+            url: `/api/user/${userId}`,
             data: user,
             success: function (response) {
-                // Handle success, e.g., show a success message
+                let timerInterval;
                 swalWithBootstrapButtons.fire({
-                    title: "Cập nhật thành công!",
-                    text: "Thay đổi thông tin thành công!",
+                    title: "Đã cập nhật!",
+                    text: "Thay đổi thông tin thành công",
                     icon: "success",
+                }).then((result) => {
+                    location.reload();
                 });
             },
             error: function (error) {
-                // Handle error, e.g., show an error message
                 swalWithBootstrapButtons.fire({
-                    title: 'Thay đổi thất bại',
-                    //text: error.responseJSON.message,
+                    title: 'Cập nhật thất bại',
                     icon: "error",
                 });
             }
         });
     });
+
+    $('#changePassword').on('submit', function (event) {
+            event.preventDefault();
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success ms-3",
+                    cancelButton: "btn btn-danger",
+                },
+                buttonsStyling: false,
+            });
+            var formData = $(this).serializeArray();
+            let password = {};
+            formData.forEach(function (item) {
+                password[item.name] = item.value
+            })
+            if (password.password !== password.reNewPass) {
+                swalWithBootstrapButtons.fire({
+                    title: 'Mật khẩu không khớp',
+                    icon: "error",
+                });
+            }
+            else {
+                $.ajax({
+                    type: 'PATCH',
+                    url: '/api/user/updatePassword',
+                    data: password,
+                    success: function (response) {
+                        let timerInterval;
+                        swalWithBootstrapButtons.fire({
+                            title: "Đã cập nhật!",
+                            text: "Thay đổi mật khẩu thành công",
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                const timer = Swal.getPopup().querySelector("b");
+                                timerInterval = setInterval(() => {
+                                    timer.textContent = `${Swal.getTimerLeft()}`;
+                                }, 100);
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            }
+                        }).then(async (result) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                await fetch('/logout', {
+                                    method: 'delete',
+                                });
+                                window.location.href = "/login";
+                            }
+                        });
+                    },
+                    error: function (error) {
+                        swalWithBootstrapButtons.fire({
+                            title: 'Thay đổi mật khẩu thất bại',
+                            icon: "error",
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#formFile").fileinput({
+            theme: 'fa6', showUpload: false,
+            previewFileType: 'any'
+        });
+
+        $('#uploadAvatar').on('submit', function (event) {
+            event.preventDefault();
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success ms-3",
+                    cancelButton: "btn btn-danger",
+                },
+                buttonsStyling: false,
+            });
+            const formData = new FormData(this);
+            $.ajax({
+                type: 'PATCH',
+                url: '/api/user/avatar',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    let timerInterval;
+                    swalWithBootstrapButtons.fire({
+                        title: "Đã cập nhật!",
+                        text: "Thay đổi ảnh đại diện thành công",
+                        icon: "success",
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const timer = Swal.getPopup().querySelector("b");
+                            timerInterval = setInterval(() => {
+                                timer.textContent = `${Swal.getTimerLeft()}`;
+                            }, 100);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    }).then(async (result) => {
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            location.reload();
+                        }
+                    });
+                },
+                error: function (error) {
+                    swalWithBootstrapButtons.fire({
+                        title: 'Thay đổi ảnh đại diện thất bại',
+                        text: error.responseJSON,
+                        icon: "error",
+                    });
+                }
+            });
+        });
 </script>

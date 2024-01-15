@@ -54,172 +54,174 @@
         padding: 10px 0px;
     }
 </style>
-<div class='text-start px-4 row m-0 pb-3' style='background-color: #eae7dc'>
-    <div class='card col-2 mt-3 border -success rounded h-100'>
-        <div class='card-header fw-bold text-danger fs-4'>
-            Tài khoản
+<div class="container p-0 mb-3">
+    <div class='text-start px-4 row' style='background-color: #eae7dc'>
+        <div class='card col-2 mt-3 border border-success rounded h-100'>
+            <div class='card-header fw-bold text-danger fs-4'>
+                Tài khoản
+            </div>
+            <ul class='list-group list-group-flush'>
+                <li class='list-group-item'>
+                    <a href='/user/me' style='text-decoration: none; color: black'>
+                        Thông tin tài khoản
+                    </a>
+                </li>
+                <li class='list-group-item'>
+                    <a href='/shippingAddress' style='text-decoration: none; color: black'>Sổ địa
+                        chỉ</a>
+                </li>
+                <li class='list-group-item'>
+                    <a href='/order/me' style='text-decoration: none; color: #ff550d'>Đơn
+                        hàng của tôi</a>
+                </li>
+            </ul>
         </div>
-        <ul class='list-group list-group-flush'>
-            <li class='list-group-item'>
-                <a href='/user/me' style='text-decoration: none; color: black'>
-                    Thông tin tài khoản
-                </a>
-            </li>
-            <li class='list-group-item'>
-                <a href='/shippingAddress' style='text-decoration: none; color: black'>Sổ địa
-                    chỉ</a>
-            </li>
-            <li class='list-group-item'>
-                <a href='/order/me' style='text-decoration: none; color: #ff550d'>Đơn
-                    hàng của tôi</a>
-            </li>
-        </ul>
-    </div>
-    <div class='container col-9'>
-        <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
-            <h4 class='mt-2 mb-3'>CHI TIẾT ĐƠN HÀNG</h4>
-            {{state data.orderInformation.orderState}}
-            <div class='row'>
-                <dd class='col-2 pe-0'>Mã đơn hàng:</dd>
-                <dt class='col p-0'>{{data.orderInformation.orderId}}</dt>
-            </div>
-            <div class='row'>
-                <dd class='col-2 pe-0'>Ngày mua:</dd>
-                <dt class='col p-0'>{{data.orderInformation.orderDate}}</dt>
-            </div>
-            <div class='row'>
-                <dd class='col-2 pe-0'>Tổng tiền:</dd>
-                <dt class='col p-0'>{{data.orderInformation.totalPaymentString}} VNĐ</dt>
-            </div>
-        </div>
-        <div class='container px-4 text-start mt-3 border border-success rounded' style='background-color: #ffffff'>
-            <div class='row gx-5'>
-                <div class='col d- p-0 ms-3'>
-                    <div class='p-2 border border-dark-subtle m-2 flex-fill'>
-                        <p class='fw-bold fs-6'>THÔNG TIN NGƯỜI NHẬN</p>
-                        <hr />
-                        <p class='m-0'>{{data.deliveryInformation.fullName}}</p>
-                        <p class='m-0'>
-                            {{data.deliveryInformation.detailedAddress}}
-                        </p>
-                        <p>Tel: {{data.deliveryInformation.phoneNumber}}</p>
-                    </div>
+        <div class='col-10'>
+            <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
+                <h4 class='mt-2 mb-3'>CHI TIẾT ĐƠN HÀNG</h4>
+                {{state data.orderInformation.orderState}}
+                <div class='row'>
+                    <dd class='col-2 pe-0'>Mã đơn hàng:</dd>
+                    <dt class='col p-0'>{{data.orderInformation.orderId}}</dt>
                 </div>
-                <div class='col d-flex p-0 me-3'>
-                    <div class='p-2 border border-dark-subtle m-2 flex-fill'>
-                        <p class='fw-bold fs-6'>
-                            PHƯƠNG THỨC THANH TOÁN
-                        </p>
-                        <hr />
-                        <p>Momo</p>
-                    </div>
+                <div class='row'>
+                    <dd class='col-2 pe-0'>Ngày mua:</dd>
+                    <dt class='col p-0'>{{data.orderInformation.orderDate}}</dt>
+                </div>
+                <div class='row'>
+                    <dd class='col-2 pe-0'>Tổng tiền:</dd>
+                    <dt class='col p-0'>{{data.orderInformation.totalPaymentString}} VNĐ</dt>
                 </div>
             </div>
-            <div class='order-view-status-container border border-dark-subtle mb-2'>
-                <div class='order-view-status-new-order'>
-                    <div class='order-view-icon-container'>
-                        <div style='
-                                        height: 60px;
-                                        width: 60px;
-                                        align-self: center;
-                                    '>
-                            <div class='order-view-icon-img' style='
-                                            background: url({{checkState data.orderInformation.orderState 'link' 1}})
-                                                no-repeat center;
-                                            border-color: {{checkState data.orderInformation.orderState 'color' 1}};
-                                        '></div>
+            <div class='container px-4 text-start mt-3 border border-success rounded' style='background-color: #ffffff'>
+                <div class='row gx-5'>
+                    <div class='col d- p-0 ms-3'>
+                        <div class='p-2 border border-dark-subtle m-2 flex-fill'>
+                            <p class='fw-bold fs-6'>THÔNG TIN NGƯỜI NHẬN</p>
+                            <hr />
+                            <p class='m-0'>{{data.deliveryInformation.fullName}}</p>
+                            <p class='m-0'>
+                                {{data.deliveryInformation.detailedAddress}}
+                            </p>
+                            <p>Tel: {{data.deliveryInformation.phoneNumber}}</p>
                         </div>
+                    </div>
+                    <div class='col d-flex p-0 me-3'>
+                        <div class='p-2 border border-dark-subtle m-2 flex-fill'>
+                            <p class='fw-bold fs-6'>
+                                PHƯƠNG THỨC THANH TOÁN
+                            </p>
+                            <hr />
+                            <p>Fabank</p>
+                        </div>
+                    </div>
+                </div>
+                <div class='order-view-status-container border border-dark-subtle mb-2'>
+                    <div class='order-view-status-new-order'>
+                        <div class='order-view-icon-container'>
+                            <div style='
+                                            height: 60px;
+                                            width: 60px;
+                                            align-self: center;
+                                        '>
+                                <div class='order-view-icon-img' style='
+                                                background: url({{checkState data.orderInformation.orderState 'link' 1}})
+                                                    no-repeat center;
+                                                border-color: {{checkState data.orderInformation.orderState 'color' 1}};
+                                            '></div>
+                            </div>
 
-                        <div class='order-view-icon-content'>
-                            {{getOrderStateInfo data.orderStates 1}}
+                            <div class='order-view-icon-content'>
+                                {{getOrderStateInfo data.orderStates 1}}
+                            </div>
                         </div>
+                        <div class='order-view-progress-bar'
+                            style='background: {{checkState data.orderInformation.orderState 'color' 1}}'></div>
                     </div>
-                    <div class='order-view-progress-bar'
-                        style='background: {{checkState data.orderInformation.orderState 'color' 1}}'></div>
-                </div>
-                <div class='order-view-status-new-order'>
-                    <div class='order-view-icon-container'>
-                        <div style='
-                                        height: 60px;
-                                        width: 60px;
-                                        align-self: center;
-                                    '>
-                            <div class='order-view-icon-img' style='
-                                            background: url({{checkState data.orderInformation.orderState 'link' 2}})
-                                                no-repeat center;
-                                            border-color: {{checkState data.orderInformation.orderState 'color' 2}};
-                                        '></div>
+                    <div class='order-view-status-new-order'>
+                        <div class='order-view-icon-container'>
+                            <div style='
+                                            height: 60px;
+                                            width: 60px;
+                                            align-self: center;
+                                        '>
+                                <div class='order-view-icon-img' style='
+                                                background: url({{checkState data.orderInformation.orderState 'link' 2}})
+                                                    no-repeat center;
+                                                border-color: {{checkState data.orderInformation.orderState 'color' 2}};
+                                            '></div>
+                            </div>
+                            <div class='order-view-icon-content'>
+                                {{getOrderStateInfo data.orderStates 2}}
+                            </div>
                         </div>
-                        <div class='order-view-icon-content'>
-                            {{getOrderStateInfo data.orderStates 2}}
-                        </div>
+                        <div class='order-view-progress-bar'
+                            style='background: {{checkState data.orderInformation.orderState 'color' 2}}'></div>
                     </div>
-                    <div class='order-view-progress-bar'
-                        style='background: {{checkState data.orderInformation.orderState 'color' 2}}'></div>
-                </div>
-                <div class='order-view-status-new-order'>
-                    <div class='order-view-icon-container'>
-                        <div style='
-                                        height: 60px;
-                                        width: 60px;
-                                        align-self: center;
-                                    '>
-                            <div class='order-view-icon-img' style='
-                                            background: url({{checkState data.orderInformation.orderState 'link' 3}})
-                                                no-repeat center;
-                                            border-color: {{checkState data.orderInformation.orderState 'color'  3}};
-                                        '></div>
-                        </div>
-                        <div class='order-view-icon-content'>
-                            {{getOrderStateInfo data.orderStates 3}}
+                    <div class='order-view-status-new-order'>
+                        <div class='order-view-icon-container'>
+                            <div style='
+                                            height: 60px;
+                                            width: 60px;
+                                            align-self: center;
+                                        '>
+                                <div class='order-view-icon-img' style='
+                                                background: url({{checkState data.orderInformation.orderState 'link' 3}})
+                                                    no-repeat center;
+                                                border-color: {{checkState data.orderInformation.orderState 'color'  3}};
+                                            '></div>
+                            </div>
+                            <div class='order-view-icon-content'>
+                                {{getOrderStateInfo data.orderStates 3}}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
-            <p class='mt-2'>
-                Đơn hàng:
-                <span class='fw-bold'>{{data.orderInformation.orderId}}</span>
-            </p>
-            {{state data.orderInformation.orderState}}
-            <p class='mt-2'>
-                Tổng tiền:
-                <span class='fw-bold'>{{data.orderInformation.totalPaymentString}} VNĐ</span>
-            </p>
-            <p class='mt-2'>Số lượng: <span class='fw-bold'>{{data.orderInformation.totalQuantity}}</span></p>
-            <table class='table text-start'>
-                <thead>
-                    <tr>
-                        <th scope='col'>Hình ảnh</th>
-                        <th scope='col'>Tên sản phẩm</th>
-                        <th scope='col'>Giá bán</th>
-                        <th scope='col'>Số lượng</th>
-                        <th scope='col'>Thành tiền</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each data.booksOrdered}}
-                    <tr>
-                        <th scope='row'>
-                            <img class='img-fluid'
-                                src='{{bookImage}}'
-                                style='width: 100px; height: 100px' />
-                        </th>
-                        <td class='text-wrap' style='width: 25rem'>
-                            <a href='/book/{{bookId}}' style='text-decoration: none; color: black'>{{bookName}}</a>
-                        </td>
-                        <td>{{unitPriceString}} VNĐ</td>
-                        <td>{{amount}}</td>
-                        <td>{{itemSubtotalString}} VNĐ</td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-            <div class='d-flex flex-column mb-3 fs-6 align-items-end'>
-                <p>Thành tiền: <span class='fw-bold'>{{data.orderInformation.merchandiseSubtotalString}} VNĐ</span></p>
-                <p>Phí vận chuyển: <span class='fw-bold'>{{data.orderInformation.shippingFeeString}} VNĐ</span></p>
-                <p>Tổng số tiền: <span class='fw-bold'>{{data.orderInformation.totalPaymentString}} VNĐ</span></p>
+            <div class='container mt-3 border border-success rounded text-start' style='background-color: FFFFFF'>
+                <p class='mt-2'>
+                    Đơn hàng:
+                    <span class='fw-bold'>{{data.orderInformation.orderId}}</span>
+                </p>
+                {{state data.orderInformation.orderState}}
+                <p class='mt-2'>
+                    Tổng tiền:
+                    <span class='fw-bold'>{{data.orderInformation.totalPaymentString}} VNĐ</span>
+                </p>
+                <p class='mt-2'>Số lượng: <span class='fw-bold'>{{data.orderInformation.totalQuantity}}</span></p>
+                <table class='table text-start'>
+                    <thead>
+                        <tr>
+                            <th scope='col'>Hình ảnh</th>
+                            <th scope='col'>Tên sản phẩm</th>
+                            <th scope='col'>Giá bán</th>
+                            <th scope='col'>Số lượng</th>
+                            <th scope='col'>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each data.booksOrdered}}
+                        <tr>
+                            <th scope='row'>
+                                <img class='img-fluid'
+                                    src='{{bookImage}}'
+                                    style='width: 100px; height: 100px' />
+                            </th>
+                            <td class='text-wrap' style='width: 25rem'>
+                                <a href='/book/{{bookId}}' style='text-decoration: none; color: black'>{{bookName}}</a>
+                            </td>
+                            <td>{{unitPriceString}} VNĐ</td>
+                            <td>{{amount}}</td>
+                            <td>{{itemSubtotalString}} VNĐ</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                <div class='d-flex flex-column mb-3 fs-6 align-items-end'>
+                    <p>Thành tiền: <span class='fw-bold'>{{data.orderInformation.merchandiseSubtotalString}} VNĐ</span></p>
+                    <p>Phí vận chuyển: <span class='fw-bold'>{{data.orderInformation.shippingFeeString}} VNĐ</span></p>
+                    <p>Tổng số tiền: <span class='fw-bold'>{{data.orderInformation.totalPaymentString}} VNĐ</span></p>
+                </div>
             </div>
         </div>
     </div>
