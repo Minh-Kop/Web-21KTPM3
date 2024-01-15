@@ -150,6 +150,7 @@ button {
 }
 
 .custom-pagination ul li.btn {
+    width: auto;
     padding: 0 5px;
     color: var(--secondary-color--lighter);
 }

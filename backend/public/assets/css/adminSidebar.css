@@ -1,63 +1,55 @@
 .sidebar-container {
-  width: 20%;
-  height: fit-content;
+    position: sticky;
+    top: 20px;
 
-  position: sticky;
-  top: 5%;
-
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .profile {
-  height: 200px;
-  padding: 5px;
+    height: 200px;
+    padding: 5px;
 
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  justify-content: center;
-  align-items: center;
-  gap: 5%;
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
 
-  background-color: #d8c3a5;
+    background-color: #d8c3a5;
 
-  color: #c05b5b;
-  font-family: Hahmlet;
-  font-size: 24px;
+    color: #c05b5b;
+    font-size: 24px;
 }
 
 .profile img {
-  aspect-ratio: 1/1;
-  height: 150px;
-  border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .btn {
-  width: 100%;
-  padding: 5px;
+    width: 100%;
+    padding: 5px;
 
-  font-family: Hahmlet;
-  font-size: 24px;
+    font-size: 24px;
 
-  background-color: white;
+    background-color: white;
 
-  border: none;
+    border: none;
 }
 
-.btn:hover {
-  background-color: #e98074;
-  color: white;
-}
-
-.active {
-  background-color: #e98074;
-  color: white;
+.btn:hover,
+.btn.active {
+    background-color: var(--secondary-color--lighter);
+    color: white;
 }

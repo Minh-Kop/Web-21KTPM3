@@ -113,7 +113,13 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
 exports.updateAvatar = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
-    const { path: avatarPath } = req.files.avatar[0];
+    const { avatar } = req.files;
+
+    if (!avatar) {
+        return next(new AppError('No avatar was sent!', 400));
+    }
+
+    const { path: avatarPath } = avatar[0];
 
     await accountModel.updateAccount({
         userId,

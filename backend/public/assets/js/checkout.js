@@ -310,6 +310,15 @@ $('.address-popup__btn--submit').click(async (e) => {
         return;
     }
 
+    Swal.fire({
+        title: 'Đang xử lý...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+
     const { status } = await fetch('api/shippingAddress', {
         method: 'POST',
         headers: {
@@ -334,7 +343,6 @@ $('.address-popup__btn--submit').click(async (e) => {
             allowOutsideClick: true,
         });
     }
-
     await Swal.fire({
         title: 'Thành công',
         text: 'Tạo địa chỉ giao hàng mới thành công!',
