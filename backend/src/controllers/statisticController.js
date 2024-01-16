@@ -29,7 +29,9 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
     });
     const JSONtotalOrderDaily = JSON.stringify(totalOrderDaily);
     const JSONtotalMonthlyRevenue = JSON.stringify(totalMonthlyRevenue);
-    console.log(JSONtotalOrderDaily);
+
+    console.log(user);
+    console.log(cart);
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('statistic/statistic', {
         headerName: 'Thống kê',
@@ -42,6 +44,7 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
         ...cart,
         currentUrl: req.originalUrl,
         isAdmin,
+        isLoggedIn,
         totalSuccessfulOrder: SOrdernRevenue.totalSuccessfulOrder,
         totalRevenue: SOrdernRevenue.totalRevenue,
         totalRevenueString,
