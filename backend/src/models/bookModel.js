@@ -403,39 +403,6 @@ exports.updateBook = async (bookEntity) => {
         const bookDetailRequest = new sql.Request(transaction);
         await bookDetailRequest.query(sqlStringBookDetail);
     }
-
-    if (authorId) {
-        const listAuthorId = authorId.split(',').map((el) => el.trim());
-        for (let i = 0; i < listAuthorId.length; i++) {
-            if (listAuthorId[i][0] === '-') {
-                checkDeleteAuthor = true;
-                sqlStringDeleteAuthor += `AUTHOR_ID = '${listAuthorId[i].slice(
-                    1,
-                )}' `;
-            } else {
-                checkInsertAuthor = true;
-                sqlStringInsertAuthor += `('${bookId}', '${listAuthorId[i]}')`;
-            }
-        }
-        if (checkDeleteAuthor) {
-            sqlStringDeleteAuthor = `delete from WRITTEN_BY where BOOK_ID = '${bookId}' AND (${sqlStringDeleteAuthor})`;
-            sqlStringDeleteAuthor = sqlStringDeleteAuthor.replace(
-                / AU/g,
-                ' or AU',
-            );
-            const deleteAuthorRequest = new sql.Request(transaction);
-            await deleteAuthorRequest.query(sqlStringDeleteAuthor);
-        }
-        if (checkInsertAuthor) {
-            sqlStringInsertAuthor = `insert into WRITTEN_BY (BOOK_ID, AUTHOR_ID) values ${sqlStringInsertAuthor}`;
-            sqlStringInsertAuthor = sqlStringInsertAuthor.replace(
-                /\)\(/g,
-                '),(',
-            );
-            const insertBookRequest = new sql.Request(transaction);
-            await insertBookRequest.query(sqlStringInsertAuthor);
-        }
-    }
     await transaction.commit();
 };
 
