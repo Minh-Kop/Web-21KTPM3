@@ -12,6 +12,10 @@ const getCheckoutPage = catchAsync(async (req, res, next) => {
     const { user, cart, categoryTree } = req;
     const { cartTotalNumber, cartBooks } = cart;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     let shippingFee = 0;
     let finalTotal = cartTotalNumber;
@@ -73,6 +77,7 @@ const getCheckoutPage = catchAsync(async (req, res, next) => {
         cartTotalNumber,
         bankUrl,
         provinces,
+        isAdmin,
     });
 });
 

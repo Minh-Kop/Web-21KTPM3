@@ -26,6 +26,14 @@ $('input[name="addrId"]').change(async (e) => {
 // ==================================== Submit button ====================================
 const bankUrl = $('.bottom-sidebar-content').data('bankUrl');
 
+const paymentErrorSwal = () => {
+    return Swal.fire({
+        title: 'Lỗi hệ thống thanh toán',
+        text: 'Hệ thống thanh toán đang bị lỗi!',
+        icon: 'error',
+    });
+};
+
 const createTransaction = async (password) => {
     const element = $('.bottom-sidebar-content');
     const body = {
@@ -35,24 +43,31 @@ const createTransaction = async (password) => {
     };
     // const bankUrl = element.data('bankUrl');
 
-    const res = await fetch(`${bankUrl}/api/transaction/pay-order`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-    });
+    try {
+        const res = await fetch(`${bankUrl}/api/transaction/pay-order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
 
-    const { status } = res;
-    if (status === 401) {
-        return -1;
+        const { status } = res;
+        if (status === 401) {
+            return -1;
+        }
+        if (status === 400) {
+            return -2;
+        }
+        if (res.ok) {
+            const { transactionId } = await res.json();
+            return transactionId;
+        }
+        return 0;
+    } catch (err) {
+        console.log(err);
+        return 0;
     }
-    if (status === 400) {
-        return -2;
-    }
-
-    const { transactionId } = await res.json();
-    return transactionId;
 };
 
 $('.confirm-checkout-btn').click(async () => {
@@ -74,10 +89,14 @@ $('.confirm-checkout-btn').click(async () => {
 
     // Create transaction
     let returnedResult = await createTransaction(password);
+    if (returnedResult === 0) {
+        $('.waiting').addClass('d-none');
+        return paymentErrorSwal();
+    }
     if (returnedResult === -1) {
         $('.waiting').addClass('d-none');
         return Swal.fire({
-            title: 'Error',
+            title: 'Lỗi xác thực',
             text: 'Mật khẩu xác thực không chính xác!',
             icon: 'error',
         });
@@ -85,7 +104,7 @@ $('.confirm-checkout-btn').click(async () => {
     if (returnedResult === -2) {
         $('.waiting').addClass('d-none');
         return Swal.fire({
-            title: 'Error',
+            title: 'Lỗi',
             text: 'Tiền trong tài khoản không đủ để thanh toán!',
             icon: 'error',
         });
@@ -106,23 +125,27 @@ $('.confirm-checkout-btn').click(async () => {
     });
 
     if (status === 404) {
-        await fetch(`${bankUrl}/api/transaction/refund`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ transactionId }),
-        });
+        try {
+            await fetch(`${bankUrl}/api/transaction/refund`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ transactionId }),
+            });
 
-        $('.waiting').addClass('d-none');
+            $('.waiting').addClass('d-none');
 
-        return Swal.fire({
-            title: 'Error',
-            text: 'Trong đơn hàng của bạn, có sản phẩm không còn tồn tại trong kho hoặc vượt quá số lượng trong kho!',
-            icon: 'error',
-        }).then(async () => {
-            location.assign('/cart');
-        });
+            return Swal.fire({
+                title: 'Vấn đề sản phẩm',
+                text: 'Trong đơn hàng của bạn, có sản phẩm không còn tồn tại trong kho hoặc vượt quá số lượng trong kho!',
+                icon: 'error',
+            }).then(async () => {
+                location.assign('/cart');
+            });
+        } catch (err) {
+            return paymentErrorSwal();
+        }
     }
 
     $('.waiting').addClass('d-none');

@@ -144,7 +144,8 @@ exports.getAllBooks = async ({
 const getBook = async (bookId) => {
     const returnedBook = await bookModel.getBookById(bookId);
     const sBook_Price = returnedBook.BOOK_PRICE.toLocaleString('vi-VN');
-    const sBook_Discounted_Price = returnedBook.BOOK_DISCOUNTED_PRICE.toLocaleString('vi-VN');
+    const sBook_Discounted_Price =
+        returnedBook.BOOK_DISCOUNTED_PRICE.toLocaleString('vi-VN');
     if (!returnedBook) {
         return null;
     }
@@ -265,14 +266,13 @@ const getRelatedBooks = async ({ bookId, limit, page }) => {
             };
         }),
     );
-    books = books.map(book => {
+    books = books.map((book) => {
         return {
             ...book,
             originalPriceString: book.originalPrice.toLocaleString('vi-VN'),
             discountedPriceString: book.discountedPrice.toLocaleString('vi-VN'),
         };
     });
-    console.log(books);
     return books;
 };
 
@@ -432,6 +432,10 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
 
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     res.render('mainPage/mainPage', {
         layout: 'main',
@@ -441,9 +445,11 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
         categoryTree,
         navbar: () => 'navbar',
         footer: () => 'footer',
+        isLoggedIn,
         ...user,
         ...cart,
-        isLoggedIn,
+        currentUrl: req.originalUrl,
+        isAdmin,
     });
 });
 
@@ -452,6 +458,10 @@ exports.getBookDetail = catchAsync(async (req, res, next) => {
     // Information from pre-middleware
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     const book = await getBook(bookId);
     if (!book) {
@@ -472,6 +482,7 @@ exports.getBookDetail = catchAsync(async (req, res, next) => {
         ...user,
         ...cart,
         currentUrl: req.originalUrl,
+        isAdmin,
     });
 });
 

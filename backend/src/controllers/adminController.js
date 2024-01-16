@@ -16,6 +16,7 @@ const { getAllCategory } = require('../models/categoryModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const { getAllBooks, countBooks } = require('./bookControllerUI');
+const config = require('../config/config');
 
 const fatherCategories = [
     {
@@ -99,6 +100,12 @@ exports.renderAdminPage = catchAsync(async (req, res, next) => {
 
 exports.renderReadBooks = catchAsync(async (req, res, next) => {
     const { page: chosenPage, limit: chosenLimit } = req.query;
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     // Parameters to get books
     const page = +chosenPage || 1;
@@ -126,10 +133,23 @@ exports.renderReadBooks = catchAsync(async (req, res, next) => {
         page,
         totalPages,
         link: newUrl,
+        categoryTree,
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: req.originalUrl,
+        isAdmin,
     });
 });
 
 exports.renderCreateBook = catchAsync(async (req, res, next) => {
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
+
     const cateData = JSON.stringify(fatherCategories);
     const authorList = await getAllAuthors();
     const publisherList = await getAll();
@@ -153,11 +173,23 @@ exports.renderCreateBook = catchAsync(async (req, res, next) => {
         categories: categories,
         authors: authorList,
         publishers: publisherList,
+        categoryTree,
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: req.originalUrl,
+        isAdmin,
     });
 });
 
 exports.renderUpdateBook = catchAsync(async (req, res, next) => {
     const { book: bookId } = req.query;
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     const book = await getBookById(bookId);
     const bookImg = await getBookImages(bookId);
@@ -189,7 +221,7 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
 
     res.render('bookCRUD/updateBook', {
         title: 'Book detail',
-        navbar: () => 'empty',
+        navbar: () => 'navbar',
         footer: () => 'empty',
         book,
         fCategories: fatherCategories,
@@ -198,6 +230,12 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
         authors: authorList,
         publishers: publisherList,
         imgTag,
+        categoryTree,
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: req.originalUrl,
+        isAdmin,
     });
 });
 
