@@ -190,7 +190,7 @@ BEGIN TRANSACTION
 
         declare @refundTransactionId char(5) = (select dbo.f_CreateTransactionId('TR'))
         INSERT into [TRANSACTION] (TRANSACTIONID, CHANGED_TIME, CHANGED_MONEY, CHANGED_REASON) VALUES
-            (@refundTransactionId, GETDATE(), @refundMoney, N'Trả lại tiền đã thanh toán do đơn hàng bị hủy vì gặp vấn đề.')
+            (@refundTransactionId, GETDATE(), @refundMoney, N'Trả lại tiền đã thanh toán do đơn hàng bị hủy vì gặp vấn đề')
         INSERT into TRANSFER (ACCOUNTID, TRANSACTIONID, TRANSFER_TYPE, BALANCE) VALUES
             (@shopId, @refundTransactionId, 1, @shopBalance),
             (@customerId, @refundTransactionId, 2, @customerBalance)

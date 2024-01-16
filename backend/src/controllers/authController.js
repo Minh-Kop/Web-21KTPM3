@@ -199,6 +199,16 @@ exports.restrictTo = (...roles) => {
     };
 };
 
+exports.restrictToPage = (...roles) => {
+    return (req, res, next) => {
+        const isLoggedIn = req.isAuthenticated();
+        if (!isLoggedIn || !roles.includes(req.user.role)) {
+            return next(new AppError('Trang này không tồn tại!', 404));
+        }
+        next();
+    };
+};
+
 exports.loginSuccess = catchAsync(async (req, res) => {
     const { id, tokenLogin } = req.body;
     try {

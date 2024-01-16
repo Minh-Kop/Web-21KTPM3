@@ -50,6 +50,10 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
 
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
@@ -105,6 +109,7 @@ exports.getThisOrder = catchAsync(async (req, res, next) => {
         ...cart,
         categoryTree,
         currentUrl: url,
+        isAdmin,
     });
 });
 
@@ -158,6 +163,10 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
 
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
     const uid = user.userId;
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
@@ -171,7 +180,7 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
     });
 
     const tempOrderNumber = await orderModel.countOrders(uid);
-    let total = tempOrderNumber.reduce(
+    const total = tempOrderNumber.reduce(
         (accumulator, currentValue) => accumulator + currentValue.totalNumber,
         0,
     );
@@ -254,6 +263,7 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         orderState: +orderState,
         currentUrl: url,
         categoryTree,
+        isAdmin,
     });
 });
 
