@@ -75,7 +75,14 @@ exports.getUser = catchAsync(async (req, res, next) => {
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
     let { sortType, limit, page } = req.query;
-    const { user } = req;
+    const { user, cart, categoryTree } = req;
+
+    const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
+
     sortType = sortType || 'userid';
     page = +page || 1;
     limit = +limit || 12;
@@ -98,7 +105,9 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         status: 'success',
         navbar: () => 'navbar',
         footer: () => 'empty',
+        categoryTree,
         ...user,
+        ...cart,
         users,
     });
 });

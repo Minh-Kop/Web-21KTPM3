@@ -1,9 +1,16 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const statisticModel = require('../models/statisticModel');
+const config = require('../config/config');
 
 exports.getStatistic = catchAsync(async (req, res, next) => {
-    const { user } = req;
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     const SOrdernRevenue = await statisticModel.getSOrdernRevenue();
     SOrdernRevenue.totalRevenue =
@@ -19,14 +26,18 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
     //         .subtract(7, 'hours')
     //         .format('YYYY-MM-DD');
     // });
-    console.log(totalOrderDaily, totalMonthlyRevenue)
+    user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('statistic/statistic', {
         headerName: 'Thống kê',
         status: 'success',
         layout: 'admin',
         navbar: () => 'navbar',
         footer: () => 'empty',
+        categoryTree,
         ...user,
+        ...cart,
+        currentUrl: req.originalUrl,
+        isAdmin,
         totalSuccessfulOrder: SOrdernRevenue.totalSuccessfulOrder,
         totalRevenue: SOrdernRevenue.totalRevenue,
         totalRevenueString,

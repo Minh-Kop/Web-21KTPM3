@@ -15,6 +15,14 @@ const {
     updateCategory,
 } = require('../controllers/categoryController');
 
+const { getStatistic } = require('../controllers/statisticController');
+
+const {
+    getCreateUserPage,
+    getAllUsers,
+    getUser,
+} = require('../controllers/accountControllerUI');
+
 const router = express.Router();
 
 router.get('/book', renderReadBooks);
@@ -29,4 +37,11 @@ router.get('/category/create', createCategory);
 router.get('/category/update', updateCategory);
 router.get('/category/delete', deleteCategory);
 
+router.get('/statistic', getStatistic);
+
+router.get('/user/createUser', getCreateUserPage);
+
+router.get('/user/', getAllUsers);
+
+router.get('/user/:userId', getUser);
 module.exports = router;

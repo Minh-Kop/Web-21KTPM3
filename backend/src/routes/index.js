@@ -68,6 +68,6 @@ router.use('/order', authController.protectPage, orderRouterUI);
 router.use('/api/search', searchRouter);
 router.use('/search', searchRouterUI);
 
-router.use('/statistic', authController.protect, statisticRouter);
+//router.use('/statistic', authController.protect, statisticRouter);
 
 module.exports = router;
