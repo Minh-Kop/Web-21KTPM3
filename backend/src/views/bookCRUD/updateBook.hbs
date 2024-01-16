@@ -10,8 +10,9 @@
 
     <h1 class='book-header'>{{book.BOOK_NAME}}</h1>
 
-    <div id='data-container' data-value1='{{book.PUB_NAME}}' data-value2='{{book.author}}' data-value3='{{authors}}'
-        data-value4='{{publishers}}'></div>
+    <div id='data-container' data-value1='{{book.PUB_NAME}}' data-value2='{{book.author}}'
+        data-value3="{{book.CATE_ID}}" data-value4="{{parentCate}}">
+    </div>
 
     <div class='info-input'>
         <form id='updateForm' data-book-id='{{book.BOOK_ID}}'>
@@ -21,7 +22,7 @@
                     <div class='label'>Danh mục cha:</div>
                     <select name='father-category' id='fCategory' onchange='renderChild({{cateData}})'>
                         {{#each fCategories}}
-                        <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
+                        <option value="{{this.CATE_ID}}">{{this.CATE_NAME}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -29,7 +30,8 @@
                     <div class="label">Danh mục</div>
                     <select name="categoryId" id="category">
                         {{#each cCategories}}
-                        <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
+                        <option value="{{this.CATE_ID}}" {{#if this.selected}}selected{{/if}}>{{this.CATE_NAME}}
+                        </option>
                         {{/each}}
                     </select>
                 </div>
@@ -39,11 +41,7 @@
                 </div>
                 <div class="book-author">
                     <div class="label">Tác giả:</div>
-                    <select name="authorId" id="author">
-                        {{#each authors}}
-                        <option value='{{this.AUTHOR_ID}}'>{{this.AUTHOR_NAME}}</option>
-                        {{/each}}
-                    </select>
+                    <div class="author">{{book.author}}</div>
                 </div>
                 <div class="book-publisher">
                     <div class="label">Nhà xuất bản:</div>

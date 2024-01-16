@@ -54,3 +54,13 @@ exports.updateCategory = catchAsync(async (req, res, next) => {
 
     res.redirect('/admin/category');
 });
+
+exports.getChild = catchAsync(async (req, res, next) => {
+    const { parentId } = req.body;
+
+    const childCate = await categoryModel.getChildrenCategory(parentId);
+    res.status(200).json({
+        status: 'Success',
+        childCate,
+    });
+});
