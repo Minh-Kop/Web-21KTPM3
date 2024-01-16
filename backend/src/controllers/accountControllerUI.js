@@ -3,10 +3,15 @@ const moment = require('moment');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
+const config = require('../config/config');
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     const detailedUser = await accountModel.getDetailedUser(user.userId);
     const avatarTag = `<img src="${user.avatarPath}" class="kv-preview-data file-preview-image">`;
@@ -37,6 +42,7 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
         currentUrl: url,
         categoryTree,
         avatarTag,
+        isAdmin,
     });
 });
 

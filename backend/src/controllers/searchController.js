@@ -2,7 +2,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const searchModel = require('../models/searchModel');
 const publisherModel = require('../models/publisherModel');
-const { priceRanges, sortList, limitList } = require('../config/config');
+const { priceRanges, sortList, limitList, role } = require('../config/config');
 
 const getBooks = async ({
     keyword,
@@ -139,6 +139,10 @@ const getSearchPage = catchAsync(async (req, res, next) => {
     // Information from pre-middleware
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === role.ADMIN;
+    }
     const {
         keyword,
         priceRange,
@@ -185,6 +189,8 @@ const getSearchPage = catchAsync(async (req, res, next) => {
         navbar: () => 'navbar',
         footer: () => 'footer',
         isLoggedIn,
+        isAdmin,
+        currentUrl: req.originalUrl,
         ...user,
         ...cart,
         categoryTree,

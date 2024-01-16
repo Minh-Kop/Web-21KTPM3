@@ -2,6 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const bookModel = require('../models/bookModel');
 const cartModel = require('../models/cartModel');
 const { separateThousandByDot } = require('../utils/utils');
+const config = require('../config/config');
 
 const getCart = async (userId) => {
     const cartResult = await cartModel.getCartByUserId(userId);
@@ -40,6 +41,10 @@ const getCartPage = catchAsync(async (req, res, next) => {
     // Information from pre-middleware
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
     let isAllClicked = false;
     if (cart.cartBooks.length) {
         isAllClicked = cart.cartBooks.every((el) => {
@@ -57,6 +62,7 @@ const getCartPage = catchAsync(async (req, res, next) => {
         isAllClicked,
         categoryTree,
         currentUrl: req.originalUrl,
+        isAdmin,
     });
 });
 

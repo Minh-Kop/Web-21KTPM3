@@ -28,6 +28,7 @@ const searchRouterUI = require('./searchRoutesUI');
 const statisticRouter = require('./statisticRoutes');
 
 const authRouter2 = require('./authRouter');
+const config = require('../config/config');
 
 const router = express.Router();
 
@@ -42,7 +43,11 @@ router.use('/user', userRouterUI);
 router.use('/api/cart', authController.protect, cartRouter);
 router.use('/cart', authController.protectPage, cartRouterUI);
 router.use('/mainPage', mainPage.renderMainPage);
-router.use('/admin', adminRouter);
+router.use(
+    '/admin',
+    authController.restrictToPage(config.role.ADMIN),
+    adminRouter,
+);
 router.use('/api/location', locationRouter);
 router.use(
     '/api/shippingAddress',
