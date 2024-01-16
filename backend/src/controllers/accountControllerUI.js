@@ -49,8 +49,9 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
 exports.getUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
     const { user } = req;
-    const detailedUser = await accountModel.getDetailedUser(userId);
 
+    const detailedUser = await accountModel.getDetailedUser(userId);
+    const avatarTag = `<img src="${user.avatarPath}" class="kv-preview-data file-preview-image">`;
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
@@ -68,6 +69,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
         status: 'success',
         user: detailedUser.recordset[0],
         ...user,
+        avatarTag
     });
 });
 
@@ -91,9 +93,10 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     }));
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('account/crud_users_list', {
-        title: 'Danh sách tài khoản',
+        headerName: 'Danh sách tài khoản',
+        layout: 'admin',
         status: 'success',
-        navbar: () => 'empty',
+        navbar: () => 'navbar',
         footer: () => 'empty',
         ...user,
         users,

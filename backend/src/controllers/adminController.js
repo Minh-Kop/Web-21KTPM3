@@ -241,16 +241,17 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
 
 exports.renderCategoryPage = catchAsync(async (req, res, next) => {
     const categories = await getAllCategory();
-
+    const { user } = req;
     res.render('categoryCRUD/readCategory', {
-        layout: 'mainAdmin',
+        layout: 'admin',
         adminSidebar: () => 'adminSidebar',
         headerName: 'Danh sách danh mục',
         title: 'Category management',
         category: true,
         categories: categories,
+        ...user,
     });
-});
+}); 
 
 exports.renderUpdateCategory = catchAsync(async (req, res, next) => {
     const cateId = req.query.category;

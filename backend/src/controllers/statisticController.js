@@ -14,16 +14,23 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
         totalOrderDaily,
         totalMonthlyRevenue
     ] = await statisticModel.getStatistic();
+    // totalOrderDaily.forEach(order => {
+    //     order.orderDate = moment(order.orderDate)
+    //         .subtract(7, 'hours')
+    //         .format('YYYY-MM-DD');
+    // });
+    console.log(totalOrderDaily, totalMonthlyRevenue)
     res.render('statistic/statistic', {
-        title: 'Thống kê',
+        headerName: 'Thống kê',
         status: 'success',
-        navbar: () => 'empty',
+        layout: 'admin',
+        navbar: () => 'navbar',
         footer: () => 'empty',
         ...user,
         totalSuccessfulOrder: SOrdernRevenue.totalSuccessfulOrder,
         totalRevenue: SOrdernRevenue.totalRevenue,
         totalRevenueString,
         totalOrderDaily,
-        totalMonthlyRevenue
+        totalMonthlyRevenue,
     });
 });
