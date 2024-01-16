@@ -2,6 +2,7 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const statisticModel = require('../models/statisticModel');
 const config = require('../config/config');
+const moment = require('moment');
 
 exports.getStatistic = catchAsync(async (req, res, next) => {
     const { user, cart, categoryTree } = req;
@@ -21,11 +22,16 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
         totalOrderDaily,
         totalMonthlyRevenue
     ] = await statisticModel.getStatistic();
-    // totalOrderDaily.forEach(order => {
-    //     order.orderDate = moment(order.orderDate)
-    //         .subtract(7, 'hours')
-    //         .format('YYYY-MM-DD');
-    // });
+    totalOrderDaily.forEach(order => {
+        order.orderDate = moment(order.orderDate)
+            .subtract(7, 'hours')
+            .format('YYYY-MM-DD');
+    });
+    const JSONtotalOrderDaily = JSON.stringify(totalOrderDaily);
+    const JSONtotalMonthlyRevenue = JSON.stringify(totalMonthlyRevenue);
+
+    console.log(user);
+    console.log(cart);
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('statistic/statistic', {
         headerName: 'Thống kê',
@@ -38,9 +44,12 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
         ...cart,
         currentUrl: req.originalUrl,
         isAdmin,
+        isLoggedIn,
         totalSuccessfulOrder: SOrdernRevenue.totalSuccessfulOrder,
         totalRevenue: SOrdernRevenue.totalRevenue,
         totalRevenueString,
+        JSONtotalOrderDaily,
+        JSONtotalMonthlyRevenue,
         totalOrderDaily,
         totalMonthlyRevenue,
     });

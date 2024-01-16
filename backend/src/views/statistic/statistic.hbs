@@ -9,6 +9,7 @@
         <div class="fs-2 fw-bold" style="color: #2006BF;"> {{totalSuccessfulOrder}} </div>
     </div>
 </div>
+{{log JSONtotalOrderDaily}}
 <div class="container mt-3 border border-success rounded text-start" style="background-color: #ffffff">
     <h5 class="mt-2 mb-0">Tổng doanh thu</h5>
     <div class="d-flex align-items-center justify-content-center mb-3">
@@ -18,9 +19,11 @@
 <div class="container mt-3 border border-success rounded text-start" style="background-color: #ffffff">
     <h5 class="mt-2 mb-3">Biểu đồ</h5>
     <div class="d-flex align-items-center justify-content-center mb-3 row">
+        <canvas id="myOrderChart" class="mb-4" style="width: 100%; max-width: 700px"
+            data-ordernumber='{{JSONtotalOrderDaily}}'></canvas>
         <canvas id="myRevenueChart" class="mb-4" style="width: 100%; max-width: 700px"
-            data-revenue="{{totalMonthlyRevenue}}"></canvas>
-        <canvas id="myOrderChart" style="width: 100%; max-width: 700px" data-orderNumber="{{totalOrderDaily}}"></canvas>
+            data-revenue='{{JSONtotalMonthlyRevenue}}'></canvas>
+
     </div>
 
 </div>
@@ -33,33 +36,16 @@
     const xDates = [];
 
     const revenue = $('#myRevenueChart').data("revenue");
-    const orderNumber = $('#myOrderChart').data("orderNumber");
-
+    const orderNumber = $('#myOrderChart').data("ordernumber");
+    console.log(orderNumber)
     revenue.forEach((item) => {
         monthlyRevenueData.push(item.monthlyRevenue);
-        xMonths.push(item.orderMonth);
+        xMonths.push(`${item.orderMonth}/${item.orderYear}`);
     });
     orderNumber.forEach((item) => {
-            dailyOrderData.push(item.dailyOrder);
-            xDates.push(item.orderDate);
+        dailyOrderData.push(item.dailyOrder);
+        xDates.push(item.orderDate);
     });
-
-    /*const monthlyRevenueData = [
-        10014, 12995, 13598, 9151, 9733, 11183, 5969, 8813, 8501, 14682, 5043, 13390
-    ];
-
-    const dailyOrderData = [
-        444, 258, 378, 458, 171, 461, 153, 237, 440, 254, 166, 483
-    ];
-
-    const xMonths = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-
-    const xDates = [
-        '2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04', '2024-01-05', '2024-01-06',
-        '2024-02-01', '2024-02-02', '2024-02-03', '2024-02-04', '2024-02-05', '2024-02-06',
-    ];*/
 
     new Chart("myRevenueChart", {
         type: 'line',
