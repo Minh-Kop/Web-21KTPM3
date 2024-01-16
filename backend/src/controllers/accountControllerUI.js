@@ -3,10 +3,15 @@ const moment = require('moment');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const accountModel = require('../models/accountModel');
+const config = require('../config/config');
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     const detailedUser = await accountModel.getDetailedUser(user.userId);
     const avatarTag = `<img src="${user.avatarPath}" class="kv-preview-data file-preview-image">`;
@@ -37,14 +42,16 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
         currentUrl: url,
         categoryTree,
         avatarTag,
+        isAdmin,
     });
 });
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
     const { user } = req;
-    const detailedUser = await accountModel.getDetailedUser(userId);
 
+    const detailedUser = await accountModel.getDetailedUser(userId);
+    const avatarTag = `<img src="${user.avatarPath}" class="kv-preview-data file-preview-image">`;
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
@@ -62,12 +69,20 @@ exports.getUser = catchAsync(async (req, res, next) => {
         status: 'success',
         user: detailedUser.recordset[0],
         ...user,
+        avatarTag
     });
 });
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
     let { sortType, limit, page } = req.query;
-    const { user } = req;
+    const { user, cart, categoryTree } = req;
+
+    const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
+
     sortType = sortType || 'userid';
     page = +page || 1;
     limit = +limit || 12;
@@ -85,11 +100,14 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     }));
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('account/crud_users_list', {
-        title: 'Danh sách tài khoản',
+        headerName: 'Danh sách tài khoản',
+        layout: 'admin',
         status: 'success',
-        navbar: () => 'empty',
+        navbar: () => 'navbar',
         footer: () => 'empty',
+        categoryTree,
         ...user,
+        ...cart,
         users,
     });
 });

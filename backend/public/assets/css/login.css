@@ -83,7 +83,7 @@
 .login-form__btn--other {
     width: 100%;
     padding: 5px 0;
-    margin: 12px 0 8px;
+    margin-top: 12px;
     border-radius: 10px;
 
     font-family: Inika;

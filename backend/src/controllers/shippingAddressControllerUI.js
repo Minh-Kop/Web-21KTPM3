@@ -1,6 +1,7 @@
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const shippingAddressModel = require('../models/shippingAddressModel');
+const config = require('../config/config');
 
 exports.getShippingAddresses = async (userId) => {
     const shippingAddresses =
@@ -12,6 +13,10 @@ exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
@@ -29,6 +34,7 @@ exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
         ...cart,
         currentUrl: url,
         categoryTree,
+        isAdmin,
     });
 });
 

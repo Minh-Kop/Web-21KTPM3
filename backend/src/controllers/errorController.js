@@ -1,4 +1,5 @@
 const AppError = require('../utils/appError');
+const config = require('../config/config');
 
 const handleCastErrorDB = (err) => {
     const message = `Invalid ${err.path}: ${err.value}.`;
@@ -38,6 +39,13 @@ const sendErrorDev = (err, req, res) => {
 
     // B) RENDERED WEBSITE
     console.log('ERROR: ', err);
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
+
     if (!err.isOperational) {
         return res.status(err.statusCode).render('error', {
             title: 'Something went wrong!',
@@ -45,6 +53,12 @@ const sendErrorDev = (err, req, res) => {
             footer: () => 'footer',
             statusCode: err.statusCode,
             description: 'Please try again later!',
+            categoryTree,
+            isLoggedIn,
+            ...user,
+            ...cart,
+            currentUrl: req.originalUrl,
+            isAdmin,
         });
     }
 
@@ -54,6 +68,12 @@ const sendErrorDev = (err, req, res) => {
         footer: () => 'footer',
         statusCode: err.statusCode,
         description: err.message,
+        categoryTree,
+        isLoggedIn,
+        ...user,
+        ...cart,
+        currentUrl: req.originalUrl,
+        isAdmin,
     });
 };
 

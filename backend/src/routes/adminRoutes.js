@@ -1,15 +1,5 @@
 const express = require('express');
-const multer = require('multer');
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/assets/img/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    },
-});
-const upload = multer({ storage: storage });
 const {
     renderReadBooks,
     renderCreateBook,
@@ -18,8 +8,6 @@ const {
     renderUpdateCategory,
     renderCreateCategory,
     deleteBook,
-    createBook,
-    updateBook,
 } = require('../controllers/adminController');
 const {
     createCategory,
@@ -27,14 +15,22 @@ const {
     updateCategory,
 } = require('../controllers/categoryController');
 
+const { getStatistic } = require('../controllers/statisticController');
+
+const {
+    getCreateUserPage,
+    getAllUsers,
+    getUser,
+} = require('../controllers/accountControllerUI');
+
 const router = express.Router();
 
 router.get('/book', renderReadBooks);
 router.get('/book/createBookUI', renderCreateBook);
 router.get('/book/updateBookUI', renderUpdateBook);
-router.post('/book/create', upload.array('files', 3), createBook);
-router.post('/book/update', upload.array('files', 3), updateBook);
 router.get('/book/delete', deleteBook);
+
+router.get('/order');
 
 router.get('/category', renderCategoryPage);
 router.get('/category/createCategoryUI', renderCreateCategory);
@@ -43,4 +39,11 @@ router.get('/category/create', createCategory);
 router.get('/category/update', updateCategory);
 router.get('/category/delete', deleteCategory);
 
+router.get('/statistic', getStatistic);
+
+router.get('/user/createUser', getCreateUserPage);
+
+router.get('/user/', getAllUsers);
+
+router.get('/user/:userId', getUser);
 module.exports = router;

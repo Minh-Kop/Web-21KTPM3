@@ -4,6 +4,7 @@ const bookController = require('./bookControllerUI');
 const { buildCategoryRoot, getCategoryBranch } = require('../utils/utils');
 const { priceRanges, sortList, limitList } = require('../config/config');
 const catchAsync = require('../utils/catchAsync');
+const config = require('../config/config');
 
 const getCategoryTree = async () => {
     const result = await categoryModel.getAllCategory();
@@ -56,6 +57,10 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
     // Information from pre-middleware
     const { user, cart, categoryTree } = req;
     const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
 
     // Parameters to get books
     const page = +chosenPage || 1;
@@ -116,6 +121,7 @@ const getCategoryPage = catchAsync(async (req, res, next) => {
         ...user,
         ...cart,
         currentUrl: url,
+        isAdmin,
     });
 });
 

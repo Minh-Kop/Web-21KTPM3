@@ -1,0 +1,706 @@
+DIST_ID,PROV_ID,DIST_NAME
+DT00001,PR001,Quận Ba Đình
+DT00002,PR001,Quận Hoàn Kiếm
+DT00003,PR001,Quận Tây Hồ
+DT00004,PR001,Quận Long Biên
+DT00005,PR001,Quận Cầu Giấy
+DT00006,PR001,Quận Đống Đa
+DT00007,PR001,Quận Hai Bà Trưng
+DT00008,PR001,Quận Hoàng Mai
+DT00009,PR001,Quận Thanh Xuân
+DT00016,PR001,Huyện Sóc Sơn
+DT00017,PR001,Huyện Đông Anh
+DT00018,PR001,Huyện Gia Lâm
+DT00019,PR001,Quận Nam Từ Liêm
+DT00020,PR001,Huyện Thanh Trì
+DT00021,PR001,Quận Bắc Từ Liêm
+DT00250,PR001,Huyện Mê Linh
+DT00268,PR001,Quận Hà Đông
+DT00269,PR001,Thị xã Sơn Tây
+DT00271,PR001,Huyện Ba Vì
+DT00272,PR001,Huyện Phúc Thọ
+DT00273,PR001,Huyện Đan Phượng
+DT00274,PR001,Huyện Hoài Đức
+DT00275,PR001,Huyện Quốc Oai
+DT00276,PR001,Huyện Thạch Thất
+DT00277,PR001,Huyện Chương Mỹ
+DT00278,PR001,Huyện Thanh Oai
+DT00279,PR001,Huyện Thường Tín
+DT00280,PR001,Huyện Phú Xuyên
+DT00281,PR001,Huyện Ứng Hòa
+DT00282,PR001,Huyện Mỹ Đức
+DT00024,PR002,Thành phố Hà Giang
+DT00026,PR002,Huyện Đồng Văn
+DT00027,PR002,Huyện Mèo Vạc
+DT00028,PR002,Huyện Yên Minh
+DT00029,PR002,Huyện Quản Bạ
+DT00030,PR002,Huyện Vị Xuyên
+DT00031,PR002,Huyện Bắc Mê
+DT00032,PR002,Huyện Hoàng Su Phì
+DT00033,PR002,Huyện Xín Mần
+DT00034,PR002,Huyện Bắc Quang
+DT00035,PR002,Huyện Quang Bình
+DT00040,PR004,Thành phố Cao Bằng
+DT00042,PR004,Huyện Bảo Lâm
+DT00043,PR004,Huyện Bảo Lạc
+DT00045,PR004,Huyện Hà Quảng
+DT00047,PR004,Huyện Trùng Khánh
+DT00048,PR004,Huyện Hạ Lang
+DT00049,PR004,Huyện Quảng Hòa
+DT00051,PR004,Huyện Hoà An
+DT00052,PR004,Huyện Nguyên Bình
+DT00053,PR004,Huyện Thạch An
+DT00058,PR006,Thành Phố Bắc Kạn
+DT00060,PR006,Huyện Pác Nặm
+DT00061,PR006,Huyện Ba Bể
+DT00062,PR006,Huyện Ngân Sơn
+DT00063,PR006,Huyện Bạch Thông
+DT00064,PR006,Huyện Chợ Đồn
+DT00065,PR006,Huyện Chợ Mới
+DT00066,PR006,Huyện Na Rì
+DT00070,PR008,Thành phố Tuyên Quang
+DT00071,PR008,Huyện Lâm Bình
+DT00072,PR008,Huyện Na Hang
+DT00073,PR008,Huyện Chiêm Hóa
+DT00074,PR008,Huyện Hàm Yên
+DT00075,PR008,Huyện Yên Sơn
+DT00076,PR008,Huyện Sơn Dương
+DT00080,PR010,Thành phố Lào Cai
+DT00082,PR010,Huyện Bát Xát
+DT00083,PR010,Huyện Mường Khương
+DT00084,PR010,Huyện Si Ma Cai
+DT00085,PR010,Huyện Bắc Hà
+DT00086,PR010,Huyện Bảo Thắng
+DT00087,PR010,Huyện Bảo Yên
+DT00088,PR010,Thị xã Sa Pa
+DT00089,PR010,Huyện Văn Bàn
+DT00094,PR011,Thành phố Điện Biên Phủ
+DT00095,PR011,Thị Xã Mường Lay
+DT00096,PR011,Huyện Mường Nhé
+DT00097,PR011,Huyện Mường Chà
+DT00098,PR011,Huyện Tủa Chùa
+DT00099,PR011,Huyện Tuần Giáo
+DT00100,PR011,Huyện Điện Biên
+DT00101,PR011,Huyện Điện Biên Đông
+DT00102,PR011,Huyện Mường Ảng
+DT00103,PR011,Huyện Nậm Pồ
+DT00105,PR012,Thành phố Lai Châu
+DT00106,PR012,Huyện Tam Đường
+DT00107,PR012,Huyện Mường Tè
+DT00108,PR012,Huyện Sìn Hồ
+DT00109,PR012,Huyện Phong Thổ
+DT00110,PR012,Huyện Than Uyên
+DT00111,PR012,Huyện Tân Uyên
+DT00112,PR012,Huyện Nậm Nhùn
+DT00116,PR014,Thành phố Sơn La
+DT00118,PR014,Huyện Quỳnh Nhai
+DT00119,PR014,Huyện Thuận Châu
+DT00120,PR014,Huyện Mường La
+DT00121,PR014,Huyện Bắc Yên
+DT00122,PR014,Huyện Phù Yên
+DT00123,PR014,Huyện Mộc Châu
+DT00124,PR014,Huyện Yên Châu
+DT00125,PR014,Huyện Mai Sơn
+DT00126,PR014,Huyện Sông Mã
+DT00127,PR014,Huyện Sốp Cộp
+DT00128,PR014,Huyện Vân Hồ
+DT00132,PR015,Thành phố Yên Bái
+DT00133,PR015,Thị xã Nghĩa Lộ
+DT00135,PR015,Huyện Lục Yên
+DT00136,PR015,Huyện Văn Yên
+DT00137,PR015,Huyện Mù Căng Chải
+DT00138,PR015,Huyện Trấn Yên
+DT00139,PR015,Huyện Trạm Tấu
+DT00140,PR015,Huyện Văn Chấn
+DT00141,PR015,Huyện Yên Bình
+DT00148,PR017,Thành phố Hòa Bình
+DT00150,PR017,Huyện Đà Bắc
+DT00152,PR017,Huyện Lương Sơn
+DT00153,PR017,Huyện Kim Bôi
+DT00154,PR017,Huyện Cao Phong
+DT00155,PR017,Huyện Tân Lạc
+DT00156,PR017,Huyện Mai Châu
+DT00157,PR017,Huyện Lạc Sơn
+DT00158,PR017,Huyện Yên Thủy
+DT00159,PR017,Huyện Lạc Thủy
+DT00164,PR019,Thành phố Thái Nguyên
+DT00165,PR019,Thành phố Sông Công
+DT00167,PR019,Huyện Định Hóa
+DT00168,PR019,Huyện Phú Lương
+DT00169,PR019,Huyện Đồng Hỷ
+DT00170,PR019,Huyện Võ Nhai
+DT00171,PR019,Huyện Đại Từ
+DT00172,PR019,Thành phố Phổ Yên
+DT00173,PR019,Huyện Phú Bình
+DT00178,PR020,Thành phố Lạng Sơn
+DT00180,PR020,Huyện Tràng Định
+DT00181,PR020,Huyện Bình Gia
+DT00182,PR020,Huyện Văn Lãng
+DT00183,PR020,Huyện Cao Lộc
+DT00184,PR020,Huyện Văn Quan
+DT00185,PR020,Huyện Bắc Sơn
+DT00186,PR020,Huyện Hữu Lũng
+DT00187,PR020,Huyện Chi Lăng
+DT00188,PR020,Huyện Lộc Bình
+DT00189,PR020,Huyện Đình Lập
+DT00193,PR022,Thành phố Hạ Long
+DT00194,PR022,Thành phố Móng Cái
+DT00195,PR022,Thành phố Cẩm Phả
+DT00196,PR022,Thành phố Uông Bí
+DT00198,PR022,Huyện Bình Liêu
+DT00199,PR022,Huyện Tiên Yên
+DT00200,PR022,Huyện Đầm Hà
+DT00201,PR022,Huyện Hải Hà
+DT00202,PR022,Huyện Ba Chẽ
+DT00203,PR022,Huyện Vân Đồn
+DT00205,PR022,Thị xã Đông Triều
+DT00206,PR022,Thị xã Quảng Yên
+DT00207,PR022,Huyện Cô Tô
+DT00213,PR024,Thành phố Bắc Giang
+DT00215,PR024,Huyện Yên Thế
+DT00216,PR024,Huyện Tân Yên
+DT00217,PR024,Huyện Lạng Giang
+DT00218,PR024,Huyện Lục Nam
+DT00219,PR024,Huyện Lục Ngạn
+DT00220,PR024,Huyện Sơn Động
+DT00221,PR024,Huyện Yên Dũng
+DT00222,PR024,Huyện Việt Yên
+DT00223,PR024,Huyện Hiệp Hòa
+DT00227,PR025,Thành phố Việt Trì
+DT00228,PR025,Thị xã Phú Thọ
+DT00230,PR025,Huyện Đoan Hùng
+DT00231,PR025,Huyện Hạ Hoà
+DT00232,PR025,Huyện Thanh Ba
+DT00233,PR025,Huyện Phù Ninh
+DT00234,PR025,Huyện Yên Lập
+DT00235,PR025,Huyện Cẩm Khê
+DT00236,PR025,Huyện Tam Nông
+DT00237,PR025,Huyện Lâm Thao
+DT00238,PR025,Huyện Thanh Sơn
+DT00239,PR025,Huyện Thanh Thuỷ
+DT00240,PR025,Huyện Tân Sơn
+DT00243,PR026,Thành phố Vĩnh Yên
+DT00244,PR026,Thành phố Phúc Yên
+DT00246,PR026,Huyện Lập Thạch
+DT00247,PR026,Huyện Tam Dương
+DT00248,PR026,Huyện Tam Đảo
+DT00249,PR026,Huyện Bình Xuyên
+DT00251,PR026,Huyện Yên Lạc
+DT00252,PR026,Huyện Vĩnh Tường
+DT00253,PR026,Huyện Sông Lô
+DT00256,PR027,Thành phố Bắc Ninh
+DT00258,PR027,Huyện Yên Phong
+DT00259,PR027,Thị xã Quế Võ
+DT00260,PR027,Huyện Tiên Du
+DT00261,PR027,Thành phố Từ Sơn
+DT00262,PR027,Thị xã Thuận Thành
+DT00263,PR027,Huyện Gia Bình
+DT00264,PR027,Huyện Lương Tài
+DT00288,PR030,Thành phố Hải Dương
+DT00290,PR030,Thành phố Chí Linh
+DT00291,PR030,Huyện Nam Sách
+DT00292,PR030,Thị xã Kinh Môn
+DT00293,PR030,Huyện Kim Thành
+DT00294,PR030,Huyện Thanh Hà
+DT00295,PR030,Huyện Cẩm Giàng
+DT00296,PR030,Huyện Bình Giang
+DT00297,PR030,Huyện Gia Lộc
+DT00298,PR030,Huyện Tứ Kỳ
+DT00299,PR030,Huyện Ninh Giang
+DT00300,PR030,Huyện Thanh Miện
+DT00303,PR031,Quận Hồng Bàng
+DT00304,PR031,Quận Ngô Quyền
+DT00305,PR031,Quận Lê Chân
+DT00306,PR031,Quận Hải An
+DT00307,PR031,Quận Kiến An
+DT00308,PR031,Quận Đồ Sơn
+DT00309,PR031,Quận Dương Kinh
+DT00311,PR031,Huyện Thuỷ Nguyên
+DT00312,PR031,Huyện An Dương
+DT00313,PR031,Huyện An Lão
+DT00314,PR031,Huyện Kiến Thuỵ
+DT00315,PR031,Huyện Tiên Lãng
+DT00316,PR031,Huyện Vĩnh Bảo
+DT00317,PR031,Huyện Cát Hải
+DT00318,PR031,Huyện Bạch Long Vĩ
+DT00323,PR033,Thành phố Hưng Yên
+DT00325,PR033,Huyện Văn Lâm
+DT00326,PR033,Huyện Văn Giang
+DT00327,PR033,Huyện Yên Mỹ
+DT00328,PR033,Thị xã Mỹ Hào
+DT00329,PR033,Huyện Ân Thi
+DT00330,PR033,Huyện Khoái Châu
+DT00331,PR033,Huyện Kim Động
+DT00332,PR033,Huyện Tiên Lữ
+DT00333,PR033,Huyện Phù Cừ
+DT00336,PR034,Thành phố Thái Bình
+DT00338,PR034,Huyện Quỳnh Phụ
+DT00339,PR034,Huyện Hưng Hà
+DT00340,PR034,Huyện Đông Hưng
+DT00341,PR034,Huyện Thái Thụy
+DT00342,PR034,Huyện Tiền Hải
+DT00343,PR034,Huyện Kiến Xương
+DT00344,PR034,Huyện Vũ Thư
+DT00347,PR035,Thành phố Phủ Lý
+DT00349,PR035,Thị xã Duy Tiên
+DT00350,PR035,Huyện Kim Bảng
+DT00351,PR035,Huyện Thanh Liêm
+DT00352,PR035,Huyện Bình Lục
+DT00353,PR035,Huyện Lý Nhân
+DT00356,PR036,Thành phố Nam Định
+DT00358,PR036,Huyện Mỹ Lộc
+DT00359,PR036,Huyện Vụ Bản
+DT00360,PR036,Huyện Ý Yên
+DT00361,PR036,Huyện Nghĩa Hưng
+DT00362,PR036,Huyện Nam Trực
+DT00363,PR036,Huyện Trực Ninh
+DT00364,PR036,Huyện Xuân Trường
+DT00365,PR036,Huyện Giao Thủy
+DT00366,PR036,Huyện Hải Hậu
+DT00369,PR037,Thành phố Ninh Bình
+DT00370,PR037,Thành phố Tam Điệp
+DT00372,PR037,Huyện Nho Quan
+DT00373,PR037,Huyện Gia Viễn
+DT00374,PR037,Huyện Hoa Lư
+DT00375,PR037,Huyện Yên Khánh
+DT00376,PR037,Huyện Kim Sơn
+DT00377,PR037,Huyện Yên Mô
+DT00380,PR038,Thành phố Thanh Hóa
+DT00381,PR038,Thị xã Bỉm Sơn
+DT00382,PR038,Thành phố Sầm Sơn
+DT00384,PR038,Huyện Mường Lát
+DT00385,PR038,Huyện Quan Hóa
+DT00386,PR038,Huyện Bá Thước
+DT00387,PR038,Huyện Quan Sơn
+DT00388,PR038,Huyện Lang Chánh
+DT00389,PR038,Huyện Ngọc Lặc
+DT00390,PR038,Huyện Cẩm Thủy
+DT00391,PR038,Huyện Thạch Thành
+DT00392,PR038,Huyện Hà Trung
+DT00393,PR038,Huyện Vĩnh Lộc
+DT00394,PR038,Huyện Yên Định
+DT00395,PR038,Huyện Thọ Xuân
+DT00396,PR038,Huyện Thường Xuân
+DT00397,PR038,Huyện Triệu Sơn
+DT00398,PR038,Huyện Thiệu Hóa
+DT00399,PR038,Huyện Hoằng Hóa
+DT00400,PR038,Huyện Hậu Lộc
+DT00401,PR038,Huyện Nga Sơn
+DT00402,PR038,Huyện Như Xuân
+DT00403,PR038,Huyện Như Thanh
+DT00404,PR038,Huyện Nông Cống
+DT00405,PR038,Huyện Đông Sơn
+DT00406,PR038,Huyện Quảng Xương
+DT00407,PR038,Thị xã Nghi Sơn
+DT00412,PR040,Thành phố Vinh
+DT00413,PR040,Thị xã Cửa Lò
+DT00414,PR040,Thị xã Thái Hoà
+DT00415,PR040,Huyện Quế Phong
+DT00416,PR040,Huyện Quỳ Châu
+DT00417,PR040,Huyện Kỳ Sơn
+DT00418,PR040,Huyện Tương Dương
+DT00419,PR040,Huyện Nghĩa Đàn
+DT00420,PR040,Huyện Quỳ Hợp
+DT00421,PR040,Huyện Quỳnh Lưu
+DT00422,PR040,Huyện Con Cuông
+DT00423,PR040,Huyện Tân Kỳ
+DT00424,PR040,Huyện Anh Sơn
+DT00425,PR040,Huyện Diễn Châu
+DT00426,PR040,Huyện Yên Thành
+DT00427,PR040,Huyện Đô Lương
+DT00428,PR040,Huyện Thanh Chương
+DT00429,PR040,Huyện Nghi Lộc
+DT00430,PR040,Huyện Nam Đàn
+DT00431,PR040,Huyện Hưng Nguyên
+DT00432,PR040,Thị xã Hoàng Mai
+DT00436,PR042,Thành phố Hà Tĩnh
+DT00437,PR042,Thị xã Hồng Lĩnh
+DT00439,PR042,Huyện Hương Sơn
+DT00440,PR042,Huyện Đức Thọ
+DT00441,PR042,Huyện Vũ Quang
+DT00442,PR042,Huyện Nghi Xuân
+DT00443,PR042,Huyện Can Lộc
+DT00444,PR042,Huyện Hương Khê
+DT00445,PR042,Huyện Thạch Hà
+DT00446,PR042,Huyện Cẩm Xuyên
+DT00447,PR042,Huyện Kỳ Anh
+DT00448,PR042,Huyện Lộc Hà
+DT00449,PR042,Thị xã Kỳ Anh
+DT00450,PR044,Thành Phố Đồng Hới
+DT00452,PR044,Huyện Minh Hóa
+DT00453,PR044,Huyện Tuyên Hóa
+DT00454,PR044,Huyện Quảng Trạch
+DT00455,PR044,Huyện Bố Trạch
+DT00456,PR044,Huyện Quảng Ninh
+DT00457,PR044,Huyện Lệ Thủy
+DT00458,PR044,Thị xã Ba Đồn
+DT00461,PR045,Thành phố Đông Hà
+DT00462,PR045,Thị xã Quảng Trị
+DT00464,PR045,Huyện Vĩnh Linh
+DT00465,PR045,Huyện Hướng Hóa
+DT00466,PR045,Huyện Gio Linh
+DT00467,PR045,Huyện Đa Krông
+DT00468,PR045,Huyện Cam Lộ
+DT00469,PR045,Huyện Triệu Phong
+DT00470,PR045,Huyện Hải Lăng
+DT00471,PR045,Huyện Cồn Cỏ
+DT00474,PR046,Thành phố Huế
+DT00476,PR046,Huyện Phong Điền
+DT00477,PR046,Huyện Quảng Điền
+DT00478,PR046,Huyện Phú Vang
+DT00479,PR046,Thị xã Hương Thủy
+DT00480,PR046,Thị xã Hương Trà
+DT00481,PR046,Huyện A Lưới
+DT00482,PR046,Huyện Phú Lộc
+DT00483,PR046,Huyện Nam Đông
+DT00490,PR048,Quận Liên Chiểu
+DT00491,PR048,Quận Thanh Khê
+DT00492,PR048,Quận Hải Châu
+DT00493,PR048,Quận Sơn Trà
+DT00494,PR048,Quận Ngũ Hành Sơn
+DT00495,PR048,Quận Cẩm Lệ
+DT00497,PR048,Huyện Hòa Vang
+DT00498,PR048,Huyện Hoàng Sa
+DT00502,PR049,Thành phố Tam Kỳ
+DT00503,PR049,Thành phố Hội An
+DT00504,PR049,Huyện Tây Giang
+DT00505,PR049,Huyện Đông Giang
+DT00506,PR049,Huyện Đại Lộc
+DT00507,PR049,Thị xã Điện Bàn
+DT00508,PR049,Huyện Duy Xuyên
+DT00509,PR049,Huyện Quế Sơn
+DT00510,PR049,Huyện Nam Giang
+DT00511,PR049,Huyện Phước Sơn
+DT00512,PR049,Huyện Hiệp Đức
+DT00513,PR049,Huyện Thăng Bình
+DT00514,PR049,Huyện Tiên Phước
+DT00515,PR049,Huyện Bắc Trà My
+DT00516,PR049,Huyện Nam Trà My
+DT00517,PR049,Huyện Núi Thành
+DT00518,PR049,Huyện Phú Ninh
+DT00519,PR049,Huyện Nông Sơn
+DT00522,PR051,Thành phố Quảng Ngãi
+DT00524,PR051,Huyện Bình Sơn
+DT00525,PR051,Huyện Trà Bồng
+DT00527,PR051,Huyện Sơn Tịnh
+DT00528,PR051,Huyện Tư Nghĩa
+DT00529,PR051,Huyện Sơn Hà
+DT00530,PR051,Huyện Sơn Tây
+DT00531,PR051,Huyện Minh Long
+DT00532,PR051,Huyện Nghĩa Hành
+DT00533,PR051,Huyện Mộ Đức
+DT00534,PR051,Thị xã Đức Phổ
+DT00535,PR051,Huyện Ba Tơ
+DT00536,PR051,Huyện Lý Sơn
+DT00540,PR052,Thành phố Quy Nhơn
+DT00542,PR052,Huyện An Lão
+DT00543,PR052,Thị xã Hoài Nhơn
+DT00544,PR052,Huyện Hoài Ân
+DT00545,PR052,Huyện Phù Mỹ
+DT00546,PR052,Huyện Vĩnh Thạnh
+DT00547,PR052,Huyện Tây Sơn
+DT00548,PR052,Huyện Phù Cát
+DT00549,PR052,Thị xã An Nhơn
+DT00550,PR052,Huyện Tuy Phước
+DT00551,PR052,Huyện Vân Canh
+DT00555,PR054,Thành phố Tuy Hoà
+DT00557,PR054,Thị xã Sông Cầu
+DT00558,PR054,Huyện Đồng Xuân
+DT00559,PR054,Huyện Tuy An
+DT00560,PR054,Huyện Sơn Hòa
+DT00561,PR054,Huyện Sông Hinh
+DT00562,PR054,Huyện Tây Hoà
+DT00563,PR054,Huyện Phú Hoà
+DT00564,PR054,Thị xã Đông Hòa
+DT00568,PR056,Thành phố Nha Trang
+DT00569,PR056,Thành phố Cam Ranh
+DT00570,PR056,Huyện Cam Lâm
+DT00571,PR056,Huyện Vạn Ninh
+DT00572,PR056,Thị xã Ninh Hòa
+DT00573,PR056,Huyện Khánh Vĩnh
+DT00574,PR056,Huyện Diên Khánh
+DT00575,PR056,Huyện Khánh Sơn
+DT00576,PR056,Huyện Trường Sa
+DT00582,PR058,Thành phố Phan Rang-Tháp Chàm
+DT00584,PR058,Huyện Bác Ái
+DT00585,PR058,Huyện Ninh Sơn
+DT00586,PR058,Huyện Ninh Hải
+DT00587,PR058,Huyện Ninh Phước
+DT00588,PR058,Huyện Thuận Bắc
+DT00589,PR058,Huyện Thuận Nam
+DT00593,PR060,Thành phố Phan Thiết
+DT00594,PR060,Thị xã La Gi
+DT00595,PR060,Huyện Tuy Phong
+DT00596,PR060,Huyện Bắc Bình
+DT00597,PR060,Huyện Hàm Thuận Bắc
+DT00598,PR060,Huyện Hàm Thuận Nam
+DT00599,PR060,Huyện Tánh Linh
+DT00600,PR060,Huyện Đức Linh
+DT00601,PR060,Huyện Hàm Tân
+DT00602,PR060,Huyện Phú Quí
+DT00608,PR062,Thành phố Kon Tum
+DT00610,PR062,Huyện Đắk Glei
+DT00611,PR062,Huyện Ngọc Hồi
+DT00612,PR062,Huyện Đắk Tô
+DT00613,PR062,Huyện Kon Plông
+DT00614,PR062,Huyện Kon Rẫy
+DT00615,PR062,Huyện Đắk Hà
+DT00616,PR062,Huyện Sa Thầy
+DT00617,PR062,Huyện Tu Mơ Rông
+DT00618,PR062,Huyện Ia H' Drai
+DT00622,PR064,Thành phố Pleiku
+DT00623,PR064,Thị xã An Khê
+DT00624,PR064,Thị xã Ayun Pa
+DT00625,PR064,Huyện KBang
+DT00626,PR064,Huyện Đăk Đoa
+DT00627,PR064,Huyện Chư Păh
+DT00628,PR064,Huyện Ia Grai
+DT00629,PR064,Huyện Mang Yang
+DT00630,PR064,Huyện Kông Chro
+DT00631,PR064,Huyện Đức Cơ
+DT00632,PR064,Huyện Chư Prông
+DT00633,PR064,Huyện Chư Sê
+DT00634,PR064,Huyện Đăk Pơ
+DT00635,PR064,Huyện Ia Pa
+DT00637,PR064,Huyện Krông Pa
+DT00638,PR064,Huyện Phú Thiện
+DT00639,PR064,Huyện Chư Pưh
+DT00643,PR066,Thành phố Buôn Ma Thuột
+DT00644,PR066,Thị Xã Buôn Hồ
+DT00645,PR066,Huyện Ea H'leo
+DT00646,PR066,Huyện Ea Súp
+DT00647,PR066,Huyện Buôn Đôn
+DT00648,PR066,Huyện Cư M'gar
+DT00649,PR066,Huyện Krông Búk
+DT00650,PR066,Huyện Krông Năng
+DT00651,PR066,Huyện Ea Kar
+DT00652,PR066,Huyện M'Đrắk
+DT00653,PR066,Huyện Krông Bông
+DT00654,PR066,Huyện Krông Pắc
+DT00655,PR066,Huyện Krông A Na
+DT00656,PR066,Huyện Lắk
+DT00657,PR066,Huyện Cư Kuin
+DT00660,PR067,Thành phố Gia Nghĩa
+DT00661,PR067,Huyện Đăk Glong
+DT00662,PR067,Huyện Cư Jút
+DT00663,PR067,Huyện Đắk Mil
+DT00664,PR067,Huyện Krông Nô
+DT00665,PR067,Huyện Đắk Song
+DT00666,PR067,Huyện Đắk R'Lấp
+DT00667,PR067,Huyện Tuy Đức
+DT00672,PR068,Thành phố Đà Lạt
+DT00673,PR068,Thành phố Bảo Lộc
+DT00674,PR068,Huyện Đam Rông
+DT00675,PR068,Huyện Lạc Dương
+DT00676,PR068,Huyện Lâm Hà
+DT00677,PR068,Huyện Đơn Dương
+DT00678,PR068,Huyện Đức Trọng
+DT00679,PR068,Huyện Di Linh
+DT00680,PR068,Huyện Bảo Lâm
+DT00681,PR068,Huyện Đạ Huoai
+DT00682,PR068,Huyện Đạ Tẻh
+DT00683,PR068,Huyện Cát Tiên
+DT00688,PR070,Thị xã Phước Long
+DT00689,PR070,Thành phố Đồng Xoài
+DT00690,PR070,Thị xã Bình Long
+DT00691,PR070,Huyện Bù Gia Mập
+DT00692,PR070,Huyện Lộc Ninh
+DT00693,PR070,Huyện Bù Đốp
+DT00694,PR070,Huyện Hớn Quản
+DT00695,PR070,Huyện Đồng Phú
+DT00696,PR070,Huyện Bù Đăng
+DT00697,PR070,Thị xã Chơn Thành
+DT00698,PR070,Huyện Phú Riềng
+DT00703,PR072,Thành phố Tây Ninh
+DT00705,PR072,Huyện Tân Biên
+DT00706,PR072,Huyện Tân Châu
+DT00707,PR072,Huyện Dương Minh Châu
+DT00708,PR072,Huyện Châu Thành
+DT00709,PR072,Thị xã Hòa Thành
+DT00710,PR072,Huyện Gò Dầu
+DT00711,PR072,Huyện Bến Cầu
+DT00712,PR072,Thị xã Trảng Bàng
+DT00718,PR074,Thành phố Thủ Dầu Một
+DT00719,PR074,Huyện Bàu Bàng
+DT00720,PR074,Huyện Dầu Tiếng
+DT00721,PR074,Thị xã Bến Cát
+DT00722,PR074,Huyện Phú Giáo
+DT00723,PR074,Thành phố Tân Uyên
+DT00724,PR074,Thành phố Dĩ An
+DT00725,PR074,Thành phố Thuận An
+DT00726,PR074,Huyện Bắc Tân Uyên
+DT00731,PR075,Thành phố Biên Hòa
+DT00732,PR075,Thành phố Long Khánh
+DT00734,PR075,Huyện Tân Phú
+DT00735,PR075,Huyện Vĩnh Cửu
+DT00736,PR075,Huyện Định Quán
+DT00737,PR075,Huyện Trảng Bom
+DT00738,PR075,Huyện Thống Nhất
+DT00739,PR075,Huyện Cẩm Mỹ
+DT00740,PR075,Huyện Long Thành
+DT00741,PR075,Huyện Xuân Lộc
+DT00742,PR075,Huyện Nhơn Trạch
+DT00747,PR077,Thành phố Vũng Tàu
+DT00748,PR077,Thành phố Bà Rịa
+DT00750,PR077,Huyện Châu Đức
+DT00751,PR077,Huyện Xuyên Mộc
+DT00752,PR077,Huyện Long Điền
+DT00753,PR077,Huyện Đất Đỏ
+DT00754,PR077,Thị xã Phú Mỹ
+DT00755,PR077,Huyện Côn Đảo
+DT00760,PR079,Quận 1
+DT00761,PR079,Quận 12
+DT00764,PR079,Quận Gò Vấp
+DT00765,PR079,Quận Bình Thạnh
+DT00766,PR079,Quận Tân Bình
+DT00767,PR079,Quận Tân Phú
+DT00768,PR079,Quận Phú Nhuận
+DT00769,PR079,Thành phố Thủ Đức
+DT00770,PR079,Quận 3
+DT00771,PR079,Quận 10
+DT00772,PR079,Quận 11
+DT00773,PR079,Quận 4
+DT00774,PR079,Quận 5
+DT00775,PR079,Quận 6
+DT00776,PR079,Quận 8
+DT00777,PR079,Quận Bình Tân
+DT00778,PR079,Quận 7
+DT00783,PR079,Huyện Củ Chi
+DT00784,PR079,Huyện Hóc Môn
+DT00785,PR079,Huyện Bình Chánh
+DT00786,PR079,Huyện Nhà Bè
+DT00787,PR079,Huyện Cần Giờ
+DT00794,PR080,Thành phố Tân An
+DT00795,PR080,Thị xã Kiến Tường
+DT00796,PR080,Huyện Tân Hưng
+DT00797,PR080,Huyện Vĩnh Hưng
+DT00798,PR080,Huyện Mộc Hóa
+DT00799,PR080,Huyện Tân Thạnh
+DT00800,PR080,Huyện Thạnh Hóa
+DT00801,PR080,Huyện Đức Huệ
+DT00802,PR080,Huyện Đức Hòa
+DT00803,PR080,Huyện Bến Lức
+DT00804,PR080,Huyện Thủ Thừa
+DT00805,PR080,Huyện Tân Trụ
+DT00806,PR080,Huyện Cần Đước
+DT00807,PR080,Huyện Cần Giuộc
+DT00808,PR080,Huyện Châu Thành
+DT00815,PR082,Thành phố Mỹ Tho
+DT00816,PR082,Thị xã Gò Công
+DT00817,PR082,Thị xã Cai Lậy
+DT00818,PR082,Huyện Tân Phước
+DT00819,PR082,Huyện Cái Bè
+DT00820,PR082,Huyện Cai Lậy
+DT00821,PR082,Huyện Châu Thành
+DT00822,PR082,Huyện Chợ Gạo
+DT00823,PR082,Huyện Gò Công Tây
+DT00824,PR082,Huyện Gò Công Đông
+DT00825,PR082,Huyện Tân Phú Đông
+DT00829,PR083,Thành phố Bến Tre
+DT00831,PR083,Huyện Châu Thành
+DT00832,PR083,Huyện Chợ Lách
+DT00833,PR083,Huyện Mỏ Cày Nam
+DT00834,PR083,Huyện Giồng Trôm
+DT00835,PR083,Huyện Bình Đại
+DT00836,PR083,Huyện Ba Tri
+DT00837,PR083,Huyện Thạnh Phú
+DT00838,PR083,Huyện Mỏ Cày Bắc
+DT00842,PR084,Thành phố Trà Vinh
+DT00844,PR084,Huyện Càng Long
+DT00845,PR084,Huyện Cầu Kè
+DT00846,PR084,Huyện Tiểu Cần
+DT00847,PR084,Huyện Châu Thành
+DT00848,PR084,Huyện Cầu Ngang
+DT00849,PR084,Huyện Trà Cú
+DT00850,PR084,Huyện Duyên Hải
+DT00851,PR084,Thị xã Duyên Hải
+DT00855,PR086,Thành phố Vĩnh Long
+DT00857,PR086,Huyện Long Hồ
+DT00858,PR086,Huyện Mang Thít
+DT00859,PR086,Huyện  Vũng Liêm
+DT00860,PR086,Huyện Tam Bình
+DT00861,PR086,Thị xã Bình Minh
+DT00862,PR086,Huyện Trà Ôn
+DT00863,PR086,Huyện Bình Tân
+DT00866,PR087,Thành phố Cao Lãnh
+DT00867,PR087,Thành phố Sa Đéc
+DT00868,PR087,Thành phố Hồng Ngự
+DT00869,PR087,Huyện Tân Hồng
+DT00870,PR087,Huyện Hồng Ngự
+DT00871,PR087,Huyện Tam Nông
+DT00872,PR087,Huyện Tháp Mười
+DT00873,PR087,Huyện Cao Lãnh
+DT00874,PR087,Huyện Thanh Bình
+DT00875,PR087,Huyện Lấp Vò
+DT00876,PR087,Huyện Lai Vung
+DT00877,PR087,Huyện Châu Thành
+DT00883,PR089,Thành phố Long Xuyên
+DT00884,PR089,Thành phố Châu Đốc
+DT00886,PR089,Huyện An Phú
+DT00887,PR089,Thị xã Tân Châu
+DT00888,PR089,Huyện Phú Tân
+DT00889,PR089,Huyện Châu Phú
+DT00890,PR089,Thị xã Tịnh Biên
+DT00891,PR089,Huyện Tri Tôn
+DT00892,PR089,Huyện Châu Thành
+DT00893,PR089,Huyện Chợ Mới
+DT00894,PR089,Huyện Thoại Sơn
+DT00899,PR091,Thành phố Rạch Giá
+DT00900,PR091,Thành phố Hà Tiên
+DT00902,PR091,Huyện Kiên Lương
+DT00903,PR091,Huyện Hòn Đất
+DT00904,PR091,Huyện Tân Hiệp
+DT00905,PR091,Huyện Châu Thành
+DT00906,PR091,Huyện Giồng Riềng
+DT00907,PR091,Huyện Gò Quao
+DT00908,PR091,Huyện An Biên
+DT00909,PR091,Huyện An Minh
+DT00910,PR091,Huyện Vĩnh Thuận
+DT00911,PR091,Thành phố Phú Quốc
+DT00912,PR091,Huyện Kiên Hải
+DT00913,PR091,Huyện U Minh Thượng
+DT00914,PR091,Huyện Giang Thành
+DT00916,PR092,Quận Ninh Kiều
+DT00917,PR092,Quận Ô Môn
+DT00918,PR092,Quận Bình Thuỷ
+DT00919,PR092,Quận Cái Răng
+DT00923,PR092,Quận Thốt Nốt
+DT00924,PR092,Huyện Vĩnh Thạnh
+DT00925,PR092,Huyện Cờ Đỏ
+DT00926,PR092,Huyện Phong Điền
+DT00927,PR092,Huyện Thới Lai
+DT00930,PR093,Thành phố Vị Thanh
+DT00931,PR093,Thành phố Ngã Bảy
+DT00932,PR093,Huyện Châu Thành A
+DT00933,PR093,Huyện Châu Thành
+DT00934,PR093,Huyện Phụng Hiệp
+DT00935,PR093,Huyện Vị Thuỷ
+DT00936,PR093,Huyện Long Mỹ
+DT00937,PR093,Thị xã Long Mỹ
+DT00941,PR094,Thành phố Sóc Trăng
+DT00942,PR094,Huyện Châu Thành
+DT00943,PR094,Huyện Kế Sách
+DT00944,PR094,Huyện Mỹ Tú
+DT00945,PR094,Huyện Cù Lao Dung
+DT00946,PR094,Huyện Long Phú
+DT00947,PR094,Huyện Mỹ Xuyên
+DT00948,PR094,Thị xã Ngã Năm
+DT00949,PR094,Huyện Thạnh Trị
+DT00950,PR094,Thị xã Vĩnh Châu
+DT00951,PR094,Huyện Trần Đề
+DT00954,PR095,Thành phố Bạc Liêu
+DT00956,PR095,Huyện Hồng Dân
+DT00957,PR095,Huyện Phước Long
+DT00958,PR095,Huyện Vĩnh Lợi
+DT00959,PR095,Thị xã Giá Rai
+DT00960,PR095,Huyện Đông Hải
+DT00961,PR095,Huyện Hoà Bình
+DT00964,PR096,Thành phố Cà Mau
+DT00966,PR096,Huyện U Minh
+DT00967,PR096,Huyện Thới Bình
+DT00968,PR096,Huyện Trần Văn Thời
+DT00969,PR096,Huyện Cái Nước
+DT00970,PR096,Huyện Đầm Dơi
+DT00971,PR096,Huyện Năm Căn
+DT00972,PR096,Huyện Phú Tân
+DT00973,PR096,Huyện Ngọc Hiển

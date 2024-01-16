@@ -1,4 +1,4 @@
-<div class='login-page' data-next-url='{{nextUrl}}' data-error="{{error}}">
+<div class='login-page' data-next-url='{{nextUrl}}' data-error='{{error}}'>
     <h1 class='login__heading'>
         FABOOK - ONLINE BOOKSTORE
     </h1>
@@ -43,12 +43,6 @@
                 Login
             </button>
 
-            {{! Register section }}
-            <div class='d-flex justify-content-between'>
-                <p class='register-info my-0'>Not a member yet?</p>
-                <a class='register-link' href='/signup'>Register now</a>
-            </div>
-
             {{! Border }}
             <div class='custom-border'>
                 <hr class='custom-border__line' />
@@ -77,6 +71,12 @@
                     Continue with Facebook
                 </button>
             </section>
+
+            {{! Register section }}
+            <div class='mt-3 d-flex justify-content-between'>
+                <p class='register-info my-0'>Not a member yet?</p>
+                <a class='register-link' href='/signup'>Register now</a>
+            </div>
         </form>
     </div>
 </div>
