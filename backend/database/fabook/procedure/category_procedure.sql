@@ -34,7 +34,7 @@ BEGIN TRANSACTION
             SET @id = 'CA0' + CAST(@int AS NVARCHAR(1))
         END
 
-        INSERT INTO category (CATE_ID, PARENT_ID, CATE_NAME, SOFT_DELETE) VALUES (@id, @nparent, @curr, NULL)
+        INSERT INTO category (CATE_ID, PARENT_ID, CATE_NAME, SOFT_DELETE) VALUES (@id, @nparent, @curr, 0)
 
     END TRY
 

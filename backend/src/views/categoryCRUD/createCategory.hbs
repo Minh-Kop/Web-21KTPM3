@@ -14,7 +14,7 @@
                     <select name="fatherCategory" id="fCategory" onchange="renderChild({{cateData}})">
                         <option value="null">None</option>
                         {{#each fCategories}}
-                        <option value="{{this.CATE_ID}}" {{#if this.selected}}selected{{/if}}>{{this.CATE_NAME}}
+                        <option value="{{this.CATE_ID}}">{{this.CATE_NAME}}
                         </option>
                         {{/each}}
                     </select>
