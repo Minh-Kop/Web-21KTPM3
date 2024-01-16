@@ -123,7 +123,7 @@ exports.renderReadBooks = catchAsync(async (req, res, next) => {
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
-
+    user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('bookCRUD/readBooks', {
         layout: 'admin',
         headerName: 'Danh sách sản phẩm',
@@ -242,6 +242,7 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
 exports.renderCategoryPage = catchAsync(async (req, res, next) => {
     const categories = await getAllCategory();
     const { user } = req;
+    user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('categoryCRUD/readCategory', {
         layout: 'admin',
         adminSidebar: () => 'adminSidebar',
