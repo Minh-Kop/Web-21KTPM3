@@ -90,6 +90,18 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(hpp());
 
+// Redirect url that has only 1 '&' but doesn't have '?'
+app.use((req, res, next) => {
+    let url = req.originalUrl;
+    const regex = /&/g;
+    const numberOfAnd = (url.match(regex) || []).length;
+    if (numberOfAnd === 1 && !url.includes('?')) {
+        url = url.replace('&', '?');
+        return res.redirect(url);
+    }
+    next();
+});
+
 // Create category tree
 app.use(async (req, res, next) => {
     const categoryTree = await categoryController.getCategoryTree();

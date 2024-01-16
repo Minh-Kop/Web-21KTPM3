@@ -121,7 +121,7 @@ exports.renderReadBooks = catchAsync(async (req, res, next) => {
     const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
     // Get URL
     const url = req.originalUrl;
-    const indexOfPage = url.lastIndexOf('&page');
+    const indexOfPage = url.lastIndexOf('?page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
 
     res.render('bookCRUD/readBooks', {
@@ -137,7 +137,7 @@ exports.renderReadBooks = catchAsync(async (req, res, next) => {
         isLoggedIn,
         ...user,
         ...cart,
-        currentUrl: req.originalUrl,
+        currentUrl: url,
         isAdmin,
     });
 });
@@ -251,7 +251,7 @@ exports.renderCategoryPage = catchAsync(async (req, res, next) => {
         categories: categories,
         ...user,
     });
-}); 
+});
 
 exports.renderUpdateCategory = catchAsync(async (req, res, next) => {
     const cateId = req.query.category;

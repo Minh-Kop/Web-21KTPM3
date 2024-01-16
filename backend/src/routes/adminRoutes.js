@@ -22,6 +22,8 @@ router.get('/book/createBookUI', renderCreateBook);
 router.get('/book/updateBookUI', renderUpdateBook);
 router.get('/book/delete', deleteBook);
 
+router.get('/order');
+
 router.get('/category', renderCategoryPage);
 router.get('/category/createCategoryUI', renderCreateCategory);
 router.get('/category/updateCategoryUI', renderUpdateCategory);
