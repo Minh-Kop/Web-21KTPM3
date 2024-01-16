@@ -134,22 +134,33 @@ exports.updateAccount = async ({
     await transaction.commit();
 };
 
+exports.countUser = async () => {
+    const sqlString = `select count(userID) totalNumber from ACCOUNT where SOFT_DELETE = 0`;
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(sqlString);
+    const { totalNumber } = result.recordset[0];
+    return totalNumber;
+};
+
 exports.getAllUsers = async (userEntity) => {
-    const { limit, offset } = userEntity;
-    let { sortType } = userEntity;
+    const { limit, page } = userEntity;
+
+    const offset = (page - 1) * limit;
+    //let { sortType } = userEntity;
     let sqlString = '';
 
-    const check = sortType[0] === '-';
-    if (check) {
-        sortType = sortType.substring(1);
-    }
-    sqlString += ` order by ${sortType} ${check ? 'desc' : 'asc'}`;
+    // const check = sortType[0] === '-';
+    // if (check) {
+    //     sortType = sortType.substring(1);
+    // }
+    // sqlString += ` order by ${sortType} ${check ? 'desc' : 'asc'}`;
     sqlString += ` OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`;
 
     sqlString = `
         select a.USERID userId, [a].USERNAME as username, [a].[EMAIL] as email, [a].[FULLNAME] as fullName, [a].[PHONE_NUMBER] as phoneNumber, [a].[AVATAR_PATH] as avatarPath, [a].[HROLE] as role, a.GENDER as gender, a.BIRTHDAY as birthday
-        from ACCOUNT a where SOFT_DELETE = 0 ${sqlString}`;
-
+        from ACCOUNT a where SOFT_DELETE = 0 ORDER BY a.USERID ${sqlString}`;
+    
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);

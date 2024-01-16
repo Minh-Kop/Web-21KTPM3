@@ -74,7 +74,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-    let { sortType, limit, page } = req.query;
+    const { page: chosenPage, limit: chosenLimit } = req.query;
     const { user, cart, categoryTree } = req;
 
     const isLoggedIn = req.isAuthenticated();
@@ -83,16 +83,21 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         isAdmin = user.role === config.role.ADMIN;
     }
 
-    sortType = sortType || 'userid';
-    page = +page || 1;
-    limit = +limit || 12;
-    const offset = (page - 1) * limit;
+    const page = +chosenPage || 1;
+    const limit = +chosenLimit || 4;
 
     const tempUsers = await accountModel.getAllUsers({
-        sortType,
+        page,
         limit,
-        offset,
     });
+    const totalNumber = await accountModel.countUser();
+    console.log(totalNumber);
+    const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
+
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('?page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+
     const users = tempUsers.map((el) => ({
         ...el,
         birthday: moment(el.birthday).subtract(7, 'hours').format('DD/MM/YYYY'),
@@ -105,9 +110,15 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         status: 'success',
         navbar: () => 'navbar',
         footer: () => 'empty',
+        page,
+        totalPages,
+        link: newUrl,
         categoryTree,
         ...user,
         ...cart,
+        isLoggedIn,
+        isAdmin,
+        currentUrl: url,
         users,
     });
 });
