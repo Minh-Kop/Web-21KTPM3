@@ -35,6 +35,7 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('statistic/statistic', {
         headerName: 'Thống kê',
+        title:'Statistic',
         status: 'success',
         layout: 'admin',
         navbar: () => 'navbar',
