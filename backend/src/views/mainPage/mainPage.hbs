@@ -8,11 +8,11 @@
             <div class='category-header'>Danh mục</div>
             <div class='categories-list'>
                 {{#each categories}}
-                    <a href='/category?catId={{this.id}}'>
-                        <div class='category'>
-                            {{this.categoryName}}
-                        </div>
-                    </a>
+                <a href='/category?catId={{this.id}}'>
+                    <div class='category'>
+                        {{this.categoryName}}
+                    </div>
+                </a>
                 {{/each}}
             </div>
         </div>
@@ -21,58 +21,44 @@
             <div class='category-name'>Sách mới về</div>
             <div class='books-list'>
                 {{#each newBooks}}
-                    <div class='book'>
-                        {{#if this.discountedNumber}}
-                            <div class='book-section__discounted-cell'>
-                                <span class='book-section__discounted-number'>
-                                    -{{this.discountedNumber}}%
-                                </span>
-                            </div>
-                        {{/if}}
-                        <a href='/book/{{this.bookId}}' class='bName'><img
-                                src='{{this.image}}'
-                                alt='book_image'
-                            /></a>
-                        <a
-                            href='/book/{{this.bookId}}'
-                            class='bName'
-                        >{{this.bookName}}</a>
-                        <p class='orgPrice'>{{this.originalPrice}} VND</p>
-                        <p class='disPrice'>{{this.discountedPrice}} VND</p>
+                <div class='book'>
+                    {{#if this.discountedNumber}}
+                    <div class='book-section__discounted-cell'>
+                        <span class='book-section__discounted-number'>
+                            -{{this.discountedNumber}}%
+                        </span>
                     </div>
+                    {{/if}}
+                    <a href='/book/{{this.bookId}}' class='bName'><img src='{{this.image}}' alt='book_image' /></a>
+                    <a href='/book/{{this.bookId}}' class='bName'>{{this.bookName}}</a>
+                    <p class='orgPrice'>{{this.originalPrice}} VNĐ</p>
+                    <p class='disPrice'>{{this.discountedPrice}} VNĐ</p>
+                </div>
                 {{/each}}
             </div>
         </div>
 
         {{#each cateBooks}}
-            <div class='books-by-category-container'>
-                <div class='category-name'>{{this.catName}}</div>
-                <div class='books-list'>
-                    {{#each this.booksList}}
-                        <div class='book'>
-                            {{#if this.discountedNumber}}
-                                <div class='book-section__discounted-cell'>
-                                    <span
-                                        class='book-section__discounted-number'
-                                    >
-                                        -{{this.discountedNumber}}%
-                                    </span>
-                                </div>
-                            {{/if}}
-                            <a href='/book/{{this.bookId}}' class='bName'><img
-                                    src='{{this.image}}'
-                                    alt='book_image'
-                                /></a>
-                            <a
-                                href='/book/{{this.bookId}}'
-                                class='bName'
-                            >{{this.bookName}}</a>
-                            <p class='orgPrice'>{{this.originalPrice}} VND</p>
-                            <p class='disPrice'>{{this.discountedPrice}} VND</p>
-                        </div>
-                    {{/each}}
+        <div class='books-by-category-container'>
+            <div class='category-name'>{{this.catName}}</div>
+            <div class='books-list'>
+                {{#each this.booksList}}
+                <div class='book'>
+                    {{#if this.discountedNumber}}
+                    <div class='book-section__discounted-cell'>
+                        <span class='book-section__discounted-number'>
+                            -{{this.discountedNumber}}%
+                        </span>
+                    </div>
+                    {{/if}}
+                    <a href='/book/{{this.bookId}}' class='bName'><img src='{{this.image}}' alt='book_image' /></a>
+                    <a href='/book/{{this.bookId}}' class='bName'>{{this.bookName}}</a>
+                    <p class='orgPrice'>{{this.originalPrice}} VNĐ</p>
+                    <p class='disPrice'>{{this.discountedPrice}} VNĐ</p>
                 </div>
+                {{/each}}
             </div>
+        </div>
         {{/each}}
     </div>
 </div>
