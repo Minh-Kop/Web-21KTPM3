@@ -1,169 +1,169 @@
 BOOK_ID,CATE_ID,BOOK_NAME,BOOK_PRICE,DISCOUNTED_NUMBER,BOOK_DISCOUNTED_PRICE,AVG_RATING,COUNT_RATINGS,STOCK,ADDED_TIME,SOFT_DELETE
-BK034,CA19,Anne of Green Gables (Vintage Classics),128.000,10,128.000,1,1,50,2023-12-28 17:05:16.303,0
-BK035,CA19,Harry Potter and the Philosopher's Stone,198.000,10,188.100,2,8,50,2023-12-28 17:05:16.303,0
-BK036,CA19,Charlotte's Web,205.000,10,194.750,2,0,50,2023-12-28 17:05:16.303,0
-BK037,CA19,The Secret Garden (Vintage Classics),129.000,10,129.000,0,7,50,2023-12-28 17:05:16.303,0
-BK038,CA19,Harry Potter And The Prisoner Of Azkaban,198.000,10,188.100,3,1,50,2023-12-28 17:05:16.303,0
-BK039,CA19,Diary Of A Wimpy Kid - Book 1 (Penguin Books UK),135.000,10,128.250,5,9,50,2023-12-28 17:05:16.303,0
-BK040,CA19,Charlie And The Great Glass Elevator,184.000,10,174.800,1,8,50,2023-12-28 17:05:16.303,0
-BK041,CA19,Diary Of A Wimpy Kid: Do-It-Yourself,135.000,10,128.250,3,6,50,2023-12-28 17:05:16.303,0
-BK042,CA19,Diary Of A Wimpy Kid: Dog Days - Book 4 (Penguin Books UK),135.000,10,128.250,3,4,50,2023-12-28 17:05:16.303,0
-BK043,CA19,The Little Prince,224.000,10,212.800,1,8,50,2023-12-28 17:05:16.303,0
-BK044,CA19,Alice's Adventures in Wonderland,118.000,10,112.100,1,5,50,2023-12-28 17:05:16.303,0
-BK045,CA19,The Diary Of A Young Girl: The Definitive Edition,144.000,10,136.800,5,8,50,2023-12-28 17:05:16.303,0
-BK046,CA19,Harry Potter and the Goblet of Fire (2014),223.000,10,211.850,1,0,50,2023-12-28 17:05:16.303,0
-BK047,CA19,Harry Potter And The Order Of The Phoenix - Ravenclaw Edition,178.000,10,169.100,5,4,50,2023-12-28 17:05:16.303,0
-BK048,CA19,Hildafolk 1: Hilda And The Troll,201.000,10,190.950,1,5,50,2023-12-28 17:05:16.303,0
-BK049,CA19,The Cat Who Saved Books,214.000,10,203.300,0,6,50,2023-12-28 17:05:16.303,0
-BK050,CA19,James And The Giant Peach,163.000,10,154.850,4,3,50,2023-12-28 17:05:16.303,0
-BK051,CA19,Harry Potter and the Goblet of Fire,199.000,10,189.050,5,6,50,2023-12-28 17:05:16.303,0
-BK052,CA19,The Giggling Tree (Hatchimals),139.000,10,132.050,2,5,50,2023-12-28 17:05:16.303,0
-BK053,CA19,Disney Frozen 2: Forest Of Shadows,116.000,10,110.200,5,5,50,2023-12-28 17:05:16.303,0
-BK054,CA19,Disney Frozen: Let It Go (Twisted Tales),154.000,10,146.300,5,9,50,2023-12-28 17:05:16.303,0
-BK055,CA19,Hilo Book 1: The Boy Who Crashed To Earth,201.000,10,190.950,3,5,50,2023-12-28 17:05:16.303,0
-BK056,CA19,The BFG,184.000,10,174.800,0,2,50,2023-12-28 17:05:16.303,0
-BK057,CA19,The Absolutely True Diary of a Part-time Indian,355.000,10,337.250,0,3,50,2023-12-28 17:05:16.303,0
-BK058,CA19,Diary Of A Wimpy Kid Book 5: The Ugly Truth,135.000,10,128.250,0,4,50,2023-12-28 17:05:16.303,0
-BK059,CA19,Harry Potter And The Chamber Of Secrets – Hufflepuff Edition (Paperback),173.000,10,164.350,1,1,50,2023-12-28 17:05:16.303,0
-BK060,CA19,Diary Of A Wimpy Kid Book 6: Cabin Fever,135.000,10,128.250,4,5,50,2023-12-28 17:05:16.303,0
-BK061,CA19,The Witches,173.000,10,164.350,1,10,50,2023-12-28 17:05:16.303,0
-BK062,CA19,Pride and Prejudice (Puffin Classics),205.000,10,194.750,4,4,50,2023-12-28 17:05:16.303,0
-BK063,CA19,The Minpins,238.000,10,226.100,5,3,50,2023-12-28 17:05:16.303,0
-BK064,CA19,Diary Of A Wimpy Kid: The Last Straw - Book 3 (Penguin Books UK),135.000,10,128.250,1,0,50,2023-12-28 17:05:16.303,0
-BK065,CA19,The Spooky Tales Of Captain Underpants: The Horrifyingly Haunted Hack-A-Ween,109.000,10,103.550,0,1,50,2023-12-28 17:05:16.303,0
-BK066,CA19,Dracula Graphic Novel,233.000,10,221.350,2,2,50,2023-12-28 17:05:16.303,0
-BK067,CA19,Fantastic Mr Fox,173.000,10,164.350,3,2,50,2023-12-28 17:05:16.303,0
-BK068,CA19,George's Marvellous Medicine,184.000,10,174.800,1,5,50,2023-12-28 17:05:16.303,0
-BK069,CA19,Diary Of A Wimpy Kid: Diper Överlöde (Book 17),295.000,10,280.250,0,9,50,2023-12-28 17:05:16.303,0
-BK070,CA19,The Hound Of The Baskervilles Graphic Novels,232.000,10,220.400,2,0,50,2023-12-28 17:05:16.303,0
-BK071,CA19,Dust & Grim,153.000,10,137.700,4,9,50,2023-12-28 17:05:16.303,0
-BK072,CA19,Diary Of A Cricket (Tái Bản 2019),100.000,10,95.000,2,9,50,2023-12-28 17:05:16.303,0
-BK073,CA19,Diary Of A Wimpy Kid Book 7: The Third Wheel,135.000,10,128.250,5,7,50,2023-12-28 17:05:16.303,0
-BK074,CA19,Diary Of A Wimpy Kid 13: The Meltdown Paperback,153.000,10,145.350,1,6,50,2023-12-28 17:05:16.303,0
-BK075,CA19,Best Friends,227.000,10,215.650,0,10,50,2023-12-28 17:05:16.303,0
-BK076,CA19,The Boy in the Striped Pyjamas,196.000,10,176.400,2,7,50,2023-12-28 17:05:16.303,0
-BK077,CA19,365 Days of Wonder (PB),173.000,10,164.350,0,2,50,2023-12-28 17:05:16.303,0
-BK078,CA20,Learning How to Learn,279.000,10,265.050,0,5,50,2023-12-28 17:05:16.303,0
-BK079,CA20,Disney Kids Readers Level 3: Frozen 2,115.000,10,109.250,5,8,50,2023-12-28 17:05:16.303,0
-BK080,CA20,I Can Read (Large Print),120.000,10,114.000,3,0,50,2023-12-28 17:05:16.303,0
-BK081,CA20,First Readers Beauty And The Beast,62.000,10,58.900,2,9,50,2023-12-28 17:05:16.303,0
-BK082,CA20,Little Mermaid,62.000,10,58.900,3,8,50,2023-12-28 17:05:16.303,0
-BK083,CA20,1000 Words: STEM,256.000,10,243.200,3,4,50,2023-12-28 17:05:16.303,0
-BK084,CA20,Dr. Seuss Wipe-Clean Workbook: Letters And Numbers: Activity Workbook For Ages 3-5,218.000,10,207.100,4,4,50,2023-12-28 17:05:16.303,0
-BK085,CA20,Disney Kids Readers Level 2 Pack Of 6,536.000,10,509.200,1,4,50,2023-12-28 17:05:16.303,0
-BK086,CA20,100 Things To Know About Music,233.000,10,221.350,3,4,50,2023-12-28 17:05:16.303,0
-BK087,CA20,How We Got To Now,236.000,10,224.200,3,6,50,2023-12-28 17:05:16.303,0
-BK088,CA20,Penguin Readers Level 1: Taylor Swift,163.000,10,154.850,5,6,50,2023-12-28 17:05:16.303,0
-BK089,CA20,Disney Kids Readers Level 2: Monsters University,94.000,10,89.300,1,1,50,2023-12-28 17:05:16.303,0
-BK090,CA20,The Emperor’S New Clothes,62.000,10,58.900,5,7,50,2023-12-28 17:05:16.303,0
-BK091,CA20,Disney Kids Readers Level 3: 101 Dalmatians,115.000,10,109.250,1,4,50,2023-12-28 17:05:16.303,0
-BK092,CA20,Roald Dahl Creative Writing With Fantastic Mr Fox: How To Write A Marvellous Plot,118.000,10,112.100,1,7,50,2023-12-28 17:05:16.303,0
-BK093,CA20,10 Minutes A Day Problem Solving Ages 7-9 Key Stage 2 (Made Easy Workbooks),149.000,10,141.550,1,9,50,2023-12-28 17:05:16.303,0
-BK094,CA20,"All Aboard Reading: In A Dark, Dark House",75.000,10,71.250,1,7,50,2023-12-28 17:05:16.303,0
-BK095,CA20,Disney Kids Readers Level 4: The Lion King,115.000,10,109.250,2,1,50,2023-12-28 17:05:16.303,0
-BK096,CA20,National Geographic Kids Little Kids First Big Book Of Reptiles And Amphibians,282.000,10,267.900,2,8,50,2023-12-28 17:05:16.303,0
-BK097,CA20,Computer Coding Python Games for Kids,384.000,10,364.800,1,0,50,2023-12-28 17:05:16.303,0
-BK098,CA20,Disney Kids Readers Level 4: Moana,115.000,10,109.250,0,4,50,2023-12-28 17:05:16.303,0
-BK099,CA20,Kay’s Anatomy: A Complete (And Completely Disgusting) Guide To The Human Body,230.000,10,218.500,3,9,50,2023-12-28 17:05:16.303,0
-BK100,CA20,GSG: LEARN TO READ: SLEEPING BEAUTY,58.000,10,55.100,3,9,50,2023-12-28 17:05:16.303,0
-BK101,CA20,"Lists For Curious Kids: Animals: 206 Fun, Fascinating And Fact-Filled Lists",183.000,10,173.850,3,0,50,2023-12-28 17:05:16.303,0
-BK102,CA20,Who Cloned President?,105.000,10,99.750,1,10,50,2023-12-28 17:05:16.303,0
-BK103,CA20,Gold Stars Magnetic Board And Magnets: Times Table,97.000,10,92.150,5,1,50,2023-12-28 17:05:16.303,0
-BK104,CA20,"How To Be Good At Science, Technology & Engineering Workbook 2, Ages 11-14 (Key Stage 3): The Simplest-ever Visual Workbook",205.000,10,194.750,5,1,50,2023-12-28 17:05:16.303,0
-BK105,CA20,PYP Readers. 5-09/Color This,47.000,10,44.650,5,6,50,2023-12-28 17:05:16.303,0
-BK106,CA20,Life On Earth (Infographics: How It Works),211.000,10,200.450,2,10,50,2023-12-28 17:05:16.303,0
-BK107,CA20,Disney Kids Readers Level 5: Big Hero 6,135.000,10,128.250,2,4,50,2023-12-28 17:05:16.303,0
-BK108,CA20,STEAM Through The Seasons: Winter,304.000,10,288.800,0,8,50,2023-12-28 17:05:16.303,0
-BK109,CA20,I Can Read - Large Print Reading Scheme (Pink Cover),96.000,10,91.200,1,6,50,2023-12-28 17:05:16.303,0
-BK110,CA20,World Of Discovery: Space,217.000,10,206.150,4,3,50,2023-12-28 17:05:16.303,0
-BK111,CA20,GSG: LEARN TO READ: SNOW WHITE,58.000,10,55.100,4,0,50,2023-12-28 17:05:16.303,0
-BK112,CA20,My Encyclopedia of Very Important Things,372.000,10,353.400,2,8,50,2023-12-28 17:05:16.303,0
-BK113,CA20,"How To Be Good At Science, Technology And Engineering Workbook 1, Ages 7-11 (Key Stage 2)",205.000,10,194.750,0,0,50,2023-12-28 17:05:16.303,0
-BK114,CA20,PYP Readers. 6-02/Ropes,47.000,10,44.650,4,2,50,2023-12-28 17:05:16.303,0
-BK115,CA20,Wipe-Clean Taking Away,128.000,10,121.600,3,5,50,2023-12-28 17:05:16.303,0
-BK116,CA20,Disney Kids Readers Level 5: Toy Story 4,135.000,10,128.250,0,9,50,2023-12-28 17:05:16.303,0
-BK117,CA20,Wonder Of Learning - Biology - Educational Tin Set,192.000,10,182.400,2,10,50,2023-12-28 17:05:16.303,0
-BK118,CA22,Quiet: The Power of Introverts in a World That Can't Stop Talking,273.000,10,259.350,2,0,50,2023-12-28 17:05:16.303,0
-BK119,CA22,The Good Life: Lessons From The World's Longest Study On Happiness,325.000,10,308.750,4,0,50,2023-12-28 17:05:16.303,0
-BK120,CA22,How To Begin: Start Doing Something That Matters,292.000,10,277.400,5,0,50,2023-12-28 17:05:16.303,0
-BK121,CA22,1000+ Little Things Happy Successful People Do Differently,319.000,10,303.050,2,9,50,2023-12-28 17:05:16.303,0
-BK122,CA22,Surrounded By Bad Bosses And Lazy Employees,282.000,10,267.900,1,10,50,2023-12-28 17:05:16.303,0
-BK123,CA22,Build: An Unorthodox Guide To Making Things Worth Making,336.000,10,319.200,4,7,50,2023-12-28 17:05:16.303,0
-BK124,CA22,"Search Inside Yourself: The Unexpected Path to Achieving Success, Happiness (and World Peace)",270.000,10,256.500,1,4,50,2023-12-28 17:05:16.303,0
-BK125,CA22,6 Most Important Decisions You'll Ever Make,360.000,10,342.000,0,4,50,2023-12-28 17:05:16.303,0
-BK126,CA22,How Psychology Works,486.000,10,461.700,5,4,50,2023-12-28 17:05:16.303,0
-BK127,CA22,The Power Of Habit,260.000,10,247.000,0,0,50,2023-12-28 17:05:16.303,0
-BK128,CA22,Chicken Soup For The Soul: The Power Of Positive: 101 Inspirational Stories About Changing Your Life Through Positive Thinking,297.000,10,282.150,1,4,50,2023-12-28 17:05:16.303,0
-BK129,CA22,The Present: The Gift That Makes You Happy and Successful at Work and in Life,173.000,10,173.000,2,2,50,2023-12-28 17:05:16.303,0
-BK130,CA22,No Limits: Blow The Cap Off Your Capacity,346.000,10,328.700,5,1,50,2023-12-28 17:05:16.303,0
-BK131,CA22,Switch: How to Change Things When Change is Hard,238.000,10,226.100,3,6,50,2023-12-28 17:05:16.303,0
-BK132,CA22,Six Thinking Hats,273.000,10,243.200,1,5,50,2023-12-28 17:05:16.303,0
-BK133,CA22,"Keep Moving: Notes On Loss, Creativity, And Change",359.000,10,341.050,4,0,50,2023-12-28 17:05:16.303,0
-BK134,CA22,Atomic Habits: An Easy & Proven Way To Build Good Habits & Break Bad Ones,336.000,10,336.000,3,5,50,2023-12-28 17:05:16.303,0
-BK135,CA22,Be The Hands And Feet: Living Out God's Love For All His Children,252.000,10,239.400,4,7,50,2023-12-28 17:05:16.303,0
-BK136,CA22,A Little Bit Of Mindfulness: An Introduction To Being Present,223.000,10,211.850,3,0,50,2023-12-28 17:05:16.303,0
-BK137,CA22,How to Talk so Little Kids Will Listen: A Survival Guide to Life with Children Ages 2-7,313.000,10,297.350,5,0,50,2023-12-28 17:05:16.303,0
-BK138,CA22,Stolen Focus: Why You Can't Pay Attention,470.000,10,470.000,5,3,50,2023-12-28 17:05:16.303,0
-BK139,CA22,The Status Game: On Human Life And How To Play It,169.000,10,169.000,3,8,50,2023-12-28 17:05:16.303,0
-BK140,CA22,The Art of Loving,227.000,10,215.650,4,4,50,2023-12-28 17:05:16.303,0
-BK141,CA22,The Power Of Regret: How Looking Backward Moves Us Forward,302.000,10,286.900,2,6,50,2023-12-28 17:05:16.303,0
-BK142,CA22,"The Money Mentor: How To Manage Debt, Reach Your Goals, And Achieve Financial Wellness",296.000,10,281.200,3,6,50,2023-12-28 17:05:16.303,0
-BK143,CA22,You Are Here (For Now): A Guide To Finding Your Way,269.000,10,255.550,2,1,50,2023-12-28 17:05:16.303,0
-BK144,CA22,Worry Proofing Your Anxious Child,169.000,10,160.550,2,3,50,2023-12-28 17:05:16.303,0
-BK145,CA22,Love Unfu*ked: Getting Your Relationship Sh!t Together,366.000,10,347.700,2,2,50,2023-12-28 17:05:16.303,0
-BK146,CA22,"Better Sleep, Better You",169.000,10,160.550,1,7,50,2023-12-28 17:05:16.303,0
-BK147,CA22,On Quality: An Inquiry Into Excellence: Unpublished And Selected Writings,412.000,10,391.400,3,0,50,2023-12-28 17:05:16.303,0
-BK148,CA22,Confident And Killing It,256.000,10,243.200,0,1,50,2023-12-28 17:05:16.303,0
-BK149,CA22,Keep Sharp: Build A Better Brain At Any Age,381.000,10,361.950,1,9,50,2023-12-28 17:05:16.303,0
-BK150,CA22,Approach With(out) Caution: The 5-Step Plan To Take Control Of Your Life,296.000,10,281.200,3,1,50,2023-12-28 17:05:16.303,0
-BK151,CA22,Our Iceberg is Melting: Changing and Succeeding Under Any Conditions,303.000,10,287.850,3,1,50,2023-12-28 17:05:16.303,0
-BK152,CA22,Presence,346.000,10,328.700,3,6,50,2023-12-28 17:05:16.303,0
-BK153,CA22,Upshift: Turning Pressure Into Performance And Crisis Into Creativity,335.000,10,318.250,4,9,50,2023-12-28 17:05:16.303,0
-BK154,CA22,The Art of Sleeping,183.000,10,173.850,4,9,50,2023-12-28 17:05:16.303,0
-BK155,CA22,"Big Money Energy: How To Rule At Work, Dominate At Life, And Make Millions",346.000,10,328.700,1,5,50,2023-12-28 17:05:16.303,0
-BK156,CA22,Freedom From Anxiety,325.000,10,308.750,2,7,50,2023-12-28 17:05:16.303,0
-BK157,CA22,"Sustain Your Game: High Performance Keys To Manage Stress, Avoid Stagnation, And Beat Burnout",557.000,10,529.150,1,9,50,2023-12-28 17:05:16.303,0
-BK158,CA22,Start At The End: How Reverse-Engineering Can Lead To Success,195.000,10,185.250,0,9,50,2023-12-28 17:05:16.303,0
-BK159,CA22,"Go F*ck, I Mean, Find Yourself.",261.000,10,247.950,4,9,50,2023-12-28 17:05:16.303,0
-BK160,CA22,Joy At Work: Organizing Your Professional Life,461.000,10,437.950,5,6,50,2023-12-28 17:05:16.303,0
-BK161,CA22,Time Wise: Productivity Secrets Of The World's Most Successful People,369.000,10,350.550,3,6,50,2023-12-28 17:05:16.303,0
-BK162,CA23,Help Your Kids With Science,382.000,10,362.900,2,9,50,2023-12-28 17:05:16.303,0
-BK163,CA23,How To Master The BMAT: Unbeatable Preparation For Success In The Biomedical Admissions Test,384.000,10,364.800,4,8,50,2023-12-28 17:05:16.303,0
-BK164,CA25,Fourth Wing - The Empyrean Series,496.000,10,446.400,4,0,50,2023-12-28 17:05:16.303,0
-BK165,CA25,Dune,192.000,10,182.400,0,0,50,2023-12-28 17:05:16.303,0
-BK166,CA25,Percy Jackson And The Olympians 5: The Last Olympian,163.000,10,154.850,2,10,50,2023-12-28 17:05:16.303,0
-BK167,CA25,Iron Flame - The Empyrean Series,546.000,10,491.400,2,10,50,2023-12-28 17:05:16.303,0
-BK168,CA25,The Priory Of The Orange Tree,255.000,10,242.250,5,2,50,2023-12-28 17:05:16.303,0
-BK169,CA25,The Lord Of The Rings: The Return Of The King,157.000,10,149.150,4,7,50,2023-12-28 17:05:16.303,0
-BK170,CA25,The Hobbit / The Lord of the Rings Box Set (4 bks),713.000,10,677.350,2,2,50,2023-12-28 17:05:16.303,0
-BK171,CA25,Ninth House,157.000,10,149.150,2,10,50,2023-12-28 17:05:16.303,0
-BK172,CA25,The Book Of Tea 1: A Magic Steeped In Poison,192.000,10,192.000,2,0,50,2023-12-28 17:05:16.303,0
-BK173,CA25,"The Fork, The Witch, And The Worm: Tales From Alagaësia Volume 1: Eragon (The Inheritance Cycle)",195.000,10,185.250,0,9,50,2023-12-28 17:05:16.303,0
-BK174,CA25,Sorcery Of Thorns,226.000,10,214.700,0,5,50,2023-12-28 17:05:16.303,0
-BK175,CA25,Coraline,143.000,10,135.850,1,7,50,2023-12-28 17:05:16.303,0
-BK176,CA25,The Bridge Kingdom 1,248.000,10,235.600,0,6,50,2023-12-28 17:05:16.303,0
-BK177,CA25,The Sandman Book Of Dreams,270.000,10,256.500,5,4,50,2023-12-28 17:05:16.303,0
-BK178,CA25,Six Of Crows Book 2: Crooked Kingdom,230.000,10,218.500,0,0,50,2023-12-28 17:05:16.303,0
-BK179,CA25,American Gods,230.000,10,218.500,4,1,50,2023-12-28 17:05:16.303,0
-BK180,CA25,The Hobbit,335.000,10,318.250,4,6,50,2023-12-28 17:05:16.303,0
-BK181,CA25,Legend. by Marie Lu,223.000,10,211.850,3,5,50,2023-12-28 17:05:16.303,0
-BK182,CA25,Delivery To The Lost City,186.000,10,176.700,4,6,50,2023-12-28 17:05:16.303,0
-BK183,CA25,The Hobbit,509.000,10,483.550,2,3,50,2023-12-28 17:05:16.303,0
-BK184,CA25,Chosen Ones,230.000,10,218.500,4,0,50,2023-12-28 17:05:16.303,0
-BK185,CA25,The Fellowship Of The Ring,395.000,10,375.250,0,7,50,2023-12-28 17:05:16.303,0
-BK186,CA25,A Middle-earth Traveller: Sketches From Bag End To Mordor,395.000,10,375.250,0,9,50,2023-12-28 17:05:16.303,0
-BK187,CA25,"The Two Towers (The Lord of the Rings, Book 2)",163.000,10,154.850,1,3,50,2023-12-28 17:05:16.303,0
-BK188,CA25,Ruthless Gods,209.000,10,198.550,0,8,50,2023-12-28 17:05:16.303,0
-BK189,CA25,The Lord Of The Rings: The Two Towers,493.000,10,468.350,1,10,50,2023-12-28 17:05:16.303,0
-BK190,CA25,Artemis Fowl and the Time Paradox,179.000,10,170.050,4,9,50,2023-12-28 17:05:16.303,0
-BK191,CA25,The Fall Of Arthur,349.000,10,331.550,1,4,50,2023-12-28 17:05:16.303,0
-BK192,CA25,Lies Sleeping,342.000,10,324.900,1,7,50,2023-12-28 17:05:16.303,0
-BK193,CA25,The Silvered Serpents,192.000,10,182.400,2,5,50,2023-12-28 17:05:16.303,0
-BK194,CA25,Descendant Of The Crane,209.000,10,198.550,3,0,50,2023-12-28 17:05:16.303,0
-BK195,CA25,Farmer Giles Of Ham,192.000,10,182.400,1,8,50,2023-12-28 17:05:16.303,0
-BK196,CA25,Artemis Fowl and the Lost Colony,179.000,10,170.050,4,4,50,2023-12-28 17:05:16.303,0
-BK197,CA25,Sir Gawain And The Green Knight: With Pearl And Sir Orfeo,157.000,10,149.150,4,1,50,2023-12-28 17:05:16.303,0
-BK198,CA25,Throne of Glass (Miniature Character Collection) (Throne of Glass Mini Character Collection),169.000,10,160.550,0,8,50,2023-12-28 17:05:16.303,0
-BK199,CA25,The Mirror Chronicles 3: The Last Night,174.000,10,165.300,0,10,50,2023-12-28 17:05:16.303,0
-BK200,CA25,The Serpent Gates 1: The Unspoken Name,297.000,10,282.150,4,9,50,2023-12-28 17:05:16.303,0
-BK201,CA25,Kingdom Of Three 1: Strike The Zither,331.000,10,314.450,0,10,50,2023-12-28 17:05:16.303,0
+BK034,CA19,Anne of Green Gables (Vintage Classics),128000.0,10,128000.0,1,1,50,2023-12-28 17:05:16.303,0
+BK035,CA19,Harry Potter and the Philosopher's Stone,198000.0,10,188100.0,2,8,50,2023-12-28 17:05:16.303,0
+BK036,CA19,Charlotte's Web,205000.0,10,194750.0,2,0,50,2023-12-28 17:05:16.303,0
+BK037,CA19,The Secret Garden (Vintage Classics),129000.0,10,129000.0,0,7,50,2023-12-28 17:05:16.303,0
+BK038,CA19,Harry Potter And The Prisoner Of Azkaban,198000.0,10,188100.0,3,1,50,2023-12-28 17:05:16.303,0
+BK039,CA19,Diary Of A Wimpy Kid - Book 1 (Penguin Books UK),135000.0,10,128250.0,5,9,50,2023-12-28 17:05:16.303,0
+BK040,CA19,Charlie And The Great Glass Elevator,184000.0,10,174800.0,1,8,50,2023-12-28 17:05:16.303,0
+BK041,CA19,Diary Of A Wimpy Kid: Do-It-Yourself,135000.0,10,128250.0,3,6,50,2023-12-28 17:05:16.303,0
+BK042,CA19,Diary Of A Wimpy Kid: Dog Days - Book 4 (Penguin Books UK),135000.0,10,128250.0,3,4,50,2023-12-28 17:05:16.303,0
+BK043,CA19,The Little Prince,224000.0,10,212800.0,1,8,50,2023-12-28 17:05:16.303,0
+BK044,CA19,Alice's Adventures in Wonderland,118000.0,10,112100.0,1,5,50,2023-12-28 17:05:16.303,0
+BK045,CA19,The Diary Of A Young Girl: The Definitive Edition,144000.0,10,136800.0,5,8,50,2023-12-28 17:05:16.303,0
+BK046,CA19,Harry Potter and the Goblet of Fire (2014),223000.0,10,211850.0,1,0,50,2023-12-28 17:05:16.303,0
+BK047,CA19,Harry Potter And The Order Of The Phoenix - Ravenclaw Edition,178000.0,10,169100.0,5,4,50,2023-12-28 17:05:16.303,0
+BK048,CA19,Hildafolk 1: Hilda And The Troll,201000.0,10,190950.0,1,5,50,2023-12-28 17:05:16.303,0
+BK049,CA19,The Cat Who Saved Books,214000.0,10,203300.0,0,6,50,2023-12-28 17:05:16.303,0
+BK050,CA19,James And The Giant Peach,163000.0,10,154850.0,4,3,50,2023-12-28 17:05:16.303,0
+BK051,CA19,Harry Potter and the Goblet of Fire,199000.0,10,189050.0,5,6,50,2023-12-28 17:05:16.303,0
+BK052,CA19,The Giggling Tree (Hatchimals),139000.0,10,132050.0,2,5,50,2023-12-28 17:05:16.303,0
+BK053,CA19,Disney Frozen 2: Forest Of Shadows,116000.0,10,110200.0,5,5,50,2023-12-28 17:05:16.303,0
+BK054,CA19,Disney Frozen: Let It Go (Twisted Tales),154000.0,10,146300.0,5,9,50,2023-12-28 17:05:16.303,0
+BK055,CA19,Hilo Book 1: The Boy Who Crashed To Earth,201000.0,10,190950.0,3,5,50,2023-12-28 17:05:16.303,0
+BK056,CA19,The BFG,184000.0,10,174800.0,0,2,50,2023-12-28 17:05:16.303,0
+BK057,CA19,The Absolutely True Diary of a Part-time Indian,355000.0,10,337250.0,0,3,50,2023-12-28 17:05:16.303,0
+BK058,CA19,Diary Of A Wimpy Kid Book 5: The Ugly Truth,135000.0,10,128250.0,0,4,50,2023-12-28 17:05:16.303,0
+BK059,CA19,Harry Potter And The Chamber Of Secrets – Hufflepuff Edition (Paperback),173000.0,10,164350.0,1,1,50,2023-12-28 17:05:16.303,0
+BK060,CA19,Diary Of A Wimpy Kid Book 6: Cabin Fever,135000.0,10,128250.0,4,5,50,2023-12-28 17:05:16.303,0
+BK061,CA19,The Witches,173000.0,10,164350.0,1,10,50,2023-12-28 17:05:16.303,0
+BK062,CA19,Pride and Prejudice (Puffin Classics),205000.0,10,194750.0,4,4,50,2023-12-28 17:05:16.303,0
+BK063,CA19,The Minpins,238000.0,10,226100.0,5,3,50,2023-12-28 17:05:16.303,0
+BK064,CA19,Diary Of A Wimpy Kid: The Last Straw - Book 3 (Penguin Books UK),135000.0,10,128250.0,1,0,50,2023-12-28 17:05:16.303,0
+BK065,CA19,The Spooky Tales Of Captain Underpants: The Horrifyingly Haunted Hack-A-Ween,109000.0,10,103550.0,0,1,50,2023-12-28 17:05:16.303,0
+BK066,CA19,Dracula Graphic Novel,233000.0,10,221350.0,2,2,50,2023-12-28 17:05:16.303,0
+BK067,CA19,Fantastic Mr Fox,173000.0,10,164350.0,3,2,50,2023-12-28 17:05:16.303,0
+BK068,CA19,George's Marvellous Medicine,184000.0,10,174800.0,1,5,50,2023-12-28 17:05:16.303,0
+BK069,CA19,Diary Of A Wimpy Kid: Diper Överlöde (Book 17),295000.0,10,280250.0,0,9,50,2023-12-28 17:05:16.303,0
+BK070,CA19,The Hound Of The Baskervilles Graphic Novels,232000.0,10,220400.0,2,0,50,2023-12-28 17:05:16.303,0
+BK071,CA19,Dust & Grim,153000.0,10,137700.0,4,9,50,2023-12-28 17:05:16.303,0
+BK072,CA19,Diary Of A Cricket (Tái Bản 2019),100000.0,10,95000.0,2,9,50,2023-12-28 17:05:16.303,0
+BK073,CA19,Diary Of A Wimpy Kid Book 7: The Third Wheel,135000.0,10,128250.0,5,7,50,2023-12-28 17:05:16.303,0
+BK074,CA19,Diary Of A Wimpy Kid 13: The Meltdown Paperback,153000.0,10,145350.0,1,6,50,2023-12-28 17:05:16.303,0
+BK075,CA19,Best Friends,227000.0,10,215650.0,0,10,50,2023-12-28 17:05:16.303,0
+BK076,CA19,The Boy in the Striped Pyjamas,196000.0,10,176400.0,2,7,50,2023-12-28 17:05:16.303,0
+BK077,CA19,365 Days of Wonder (PB),173000.0,10,164350.0,0,2,50,2023-12-28 17:05:16.303,0
+BK078,CA20,Learning How to Learn,279000.0,10,265050.0,0,5,50,2023-12-28 17:05:16.303,0
+BK079,CA20,Disney Kids Readers Level 3: Frozen 2,115000.0,10,109250.0,5,8,50,2023-12-28 17:05:16.303,0
+BK080,CA20,I Can Read (Large Print),120000.0,10,114000.0,3,0,50,2023-12-28 17:05:16.303,0
+BK081,CA20,First Readers Beauty And The Beast,62000.0,10,58900.0,2,9,50,2023-12-28 17:05:16.303,0
+BK082,CA20,Little Mermaid,62000.0,10,58900.0,3,8,50,2023-12-28 17:05:16.303,0
+BK083,CA20,1000 Words: STEM,256000.0,10,243200.0,3,4,50,2023-12-28 17:05:16.303,0
+BK084,CA20,Dr. Seuss Wipe-Clean Workbook: Letters And Numbers: Activity Workbook For Ages 3-5,218000.0,10,207100.0,4,4,50,2023-12-28 17:05:16.303,0
+BK085,CA20,Disney Kids Readers Level 2 Pack Of 6,536000.0,10,509200.0,1,4,50,2023-12-28 17:05:16.303,0
+BK086,CA20,100 Things To Know About Music,233000.0,10,221350.0,3,4,50,2023-12-28 17:05:16.303,0
+BK087,CA20,How We Got To Now,236000.0,10,224200.0,3,6,50,2023-12-28 17:05:16.303,0
+BK088,CA20,Penguin Readers Level 1: Taylor Swift,163000.0,10,154850.0,5,6,50,2023-12-28 17:05:16.303,0
+BK089,CA20,Disney Kids Readers Level 2: Monsters University,94000.0,10,89300.0,1,1,50,2023-12-28 17:05:16.303,0
+BK090,CA20,The Emperor’S New Clothes,62000.0,10,58900.0,5,7,50,2023-12-28 17:05:16.303,0
+BK091,CA20,Disney Kids Readers Level 3: 101 Dalmatians,115000.0,10,109250.0,1,4,50,2023-12-28 17:05:16.303,0
+BK092,CA20,Roald Dahl Creative Writing With Fantastic Mr Fox: How To Write A Marvellous Plot,118000.0,10,112100.0,1,7,50,2023-12-28 17:05:16.303,0
+BK093,CA20,10 Minutes A Day Problem Solving Ages 7-9 Key Stage 2 (Made Easy Workbooks),149000.0,10,141550.0,1,9,50,2023-12-28 17:05:16.303,0
+BK094,CA20,"All Aboard Reading: In A Dark, Dark House",75000.0,10,71250.0,1,7,50,2023-12-28 17:05:16.303,0
+BK095,CA20,Disney Kids Readers Level 4: The Lion King,115000.0,10,109250.0,2,1,50,2023-12-28 17:05:16.303,0
+BK096,CA20,National Geographic Kids Little Kids First Big Book Of Reptiles And Amphibians,282000.0,10,267900.0,2,8,50,2023-12-28 17:05:16.303,0
+BK097,CA20,Computer Coding Python Games for Kids,384000.0,10,364800.0,1,0,50,2023-12-28 17:05:16.303,0
+BK098,CA20,Disney Kids Readers Level 4: Moana,115000.0,10,109250.0,0,4,50,2023-12-28 17:05:16.303,0
+BK099,CA20,Kay’s Anatomy: A Complete (And Completely Disgusting) Guide To The Human Body,230000.0,10,218500.0,3,9,50,2023-12-28 17:05:16.303,0
+BK100,CA20,GSG: LEARN TO READ: SLEEPING BEAUTY,58000.0,10,55100.0,3,9,50,2023-12-28 17:05:16.303,0
+BK101,CA20,"Lists For Curious Kids: Animals: 206 Fun, Fascinating And Fact-Filled Lists",183000.0,10,173850.0,3,0,50,2023-12-28 17:05:16.303,0
+BK102,CA20,Who Cloned President?,105000.0,10,99750.0,1,10,50,2023-12-28 17:05:16.303,0
+BK103,CA20,Gold Stars Magnetic Board And Magnets: Times Table,97000.0,10,92150.0,5,1,50,2023-12-28 17:05:16.303,0
+BK104,CA20,"How To Be Good At Science, Technology & Engineering Workbook 2, Ages 11-14 (Key Stage 3): The Simplest-ever Visual Workbook",205000.0,10,194750.0,5,1,50,2023-12-28 17:05:16.303,0
+BK105,CA20,PYP Readers. 5-09/Color This,47000.0,10,44650.0,5,6,50,2023-12-28 17:05:16.303,0
+BK106,CA20,Life On Earth (Infographics: How It Works),211000.0,10,200450.0,2,10,50,2023-12-28 17:05:16.303,0
+BK107,CA20,Disney Kids Readers Level 5: Big Hero 6,135000.0,10,128250.0,2,4,50,2023-12-28 17:05:16.303,0
+BK108,CA20,STEAM Through The Seasons: Winter,304000.0,10,288800.0,0,8,50,2023-12-28 17:05:16.303,0
+BK109,CA20,I Can Read - Large Print Reading Scheme (Pink Cover),96000.0,10,91200.0,1,6,50,2023-12-28 17:05:16.303,0
+BK110,CA20,World Of Discovery: Space,217000.0,10,206150.0,4,3,50,2023-12-28 17:05:16.303,0
+BK111,CA20,GSG: LEARN TO READ: SNOW WHITE,58000.0,10,55100.0,4,0,50,2023-12-28 17:05:16.303,0
+BK112,CA20,My Encyclopedia of Very Important Things,372000.0,10,353400.0,2,8,50,2023-12-28 17:05:16.303,0
+BK113,CA20,"How To Be Good At Science, Technology And Engineering Workbook 1, Ages 7-11 (Key Stage 2)",205000.0,10,194750.0,0,0,50,2023-12-28 17:05:16.303,0
+BK114,CA20,PYP Readers. 6-02/Ropes,47000.0,10,44650.0,4,2,50,2023-12-28 17:05:16.303,0
+BK115,CA20,Wipe-Clean Taking Away,128000.0,10,121600.0,3,5,50,2023-12-28 17:05:16.303,0
+BK116,CA20,Disney Kids Readers Level 5: Toy Story 4,135000.0,10,128250.0,0,9,50,2023-12-28 17:05:16.303,0
+BK117,CA20,Wonder Of Learning - Biology - Educational Tin Set,192000.0,10,182400.0,2,10,50,2023-12-28 17:05:16.303,0
+BK118,CA22,Quiet: The Power of Introverts in a World That Can't Stop Talking,273000.0,10,259350.00000000003,2,0,50,2023-12-28 17:05:16.303,0
+BK119,CA22,The Good Life: Lessons From The World's Longest Study On Happiness,325000.0,10,308750.0,4,0,50,2023-12-28 17:05:16.303,0
+BK120,CA22,How To Begin: Start Doing Something That Matters,292000.0,10,277400.0,5,0,50,2023-12-28 17:05:16.303,0
+BK121,CA22,1000+ Little Things Happy Successful People Do Differently,319000.0,10,303050.0,2,9,50,2023-12-28 17:05:16.303,0
+BK122,CA22,Surrounded By Bad Bosses And Lazy Employees,282000.0,10,267900.0,1,10,50,2023-12-28 17:05:16.303,0
+BK123,CA22,Build: An Unorthodox Guide To Making Things Worth Making,336000.0,10,319200.0,4,7,50,2023-12-28 17:05:16.303,0
+BK124,CA22,"Search Inside Yourself: The Unexpected Path to Achieving Success, Happiness (and World Peace)",270000.0,10,256500.0,1,4,50,2023-12-28 17:05:16.303,0
+BK125,CA22,6 Most Important Decisions You'll Ever Make,360000.0,10,342000.0,0,4,50,2023-12-28 17:05:16.303,0
+BK126,CA22,How Psychology Works,486000.0,10,461700.0,5,4,50,2023-12-28 17:05:16.303,0
+BK127,CA22,The Power Of Habit,260000.0,10,247000.0,0,0,50,2023-12-28 17:05:16.303,0
+BK128,CA22,Chicken Soup For The Soul: The Power Of Positive: 101 Inspirational Stories About Changing Your Life Through Positive Thinking,297000.0,10,282150.0,1,4,50,2023-12-28 17:05:16.303,0
+BK129,CA22,The Present: The Gift That Makes You Happy and Successful at Work and in Life,173000.0,10,173000.0,2,2,50,2023-12-28 17:05:16.303,0
+BK130,CA22,No Limits: Blow The Cap Off Your Capacity,346000.0,10,328700.0,5,1,50,2023-12-28 17:05:16.303,0
+BK131,CA22,Switch: How to Change Things When Change is Hard,238000.0,10,226100.0,3,6,50,2023-12-28 17:05:16.303,0
+BK132,CA22,Six Thinking Hats,273000.0,10,243200.0,1,5,50,2023-12-28 17:05:16.303,0
+BK133,CA22,"Keep Moving: Notes On Loss, Creativity, And Change",359000.0,10,341050.0,4,0,50,2023-12-28 17:05:16.303,0
+BK134,CA22,Atomic Habits: An Easy & Proven Way To Build Good Habits & Break Bad Ones,336000.0,10,336000.0,3,5,50,2023-12-28 17:05:16.303,0
+BK135,CA22,Be The Hands And Feet: Living Out God's Love For All His Children,252000.0,10,239400.0,4,7,50,2023-12-28 17:05:16.303,0
+BK136,CA22,A Little Bit Of Mindfulness: An Introduction To Being Present,223000.0,10,211850.0,3,0,50,2023-12-28 17:05:16.303,0
+BK137,CA22,How to Talk so Little Kids Will Listen: A Survival Guide to Life with Children Ages 2-7,313000.0,10,297350.0,5,0,50,2023-12-28 17:05:16.303,0
+BK138,CA22,Stolen Focus: Why You Can't Pay Attention,470000.0,10,470000.0,5,3,50,2023-12-28 17:05:16.303,0
+BK139,CA22,The Status Game: On Human Life And How To Play It,169000.0,10,169000.0,3,8,50,2023-12-28 17:05:16.303,0
+BK140,CA22,The Art of Loving,227000.0,10,215650.0,4,4,50,2023-12-28 17:05:16.303,0
+BK141,CA22,The Power Of Regret: How Looking Backward Moves Us Forward,302000.0,10,286900.0,2,6,50,2023-12-28 17:05:16.303,0
+BK142,CA22,"The Money Mentor: How To Manage Debt, Reach Your Goals, And Achieve Financial Wellness",296000.0,10,281200.0,3,6,50,2023-12-28 17:05:16.303,0
+BK143,CA22,You Are Here (For Now): A Guide To Finding Your Way,269000.0,10,255550.0,2,1,50,2023-12-28 17:05:16.303,0
+BK144,CA22,Worry Proofing Your Anxious Child,169000.0,10,160550.0,2,3,50,2023-12-28 17:05:16.303,0
+BK145,CA22,Love Unfu*ked: Getting Your Relationship Sh!t Together,366000.0,10,347700.0,2,2,50,2023-12-28 17:05:16.303,0
+BK146,CA22,"Better Sleep, Better You",169000.0,10,160550.0,1,7,50,2023-12-28 17:05:16.303,0
+BK147,CA22,On Quality: An Inquiry Into Excellence: Unpublished And Selected Writings,412000.0,10,391400.0,3,0,50,2023-12-28 17:05:16.303,0
+BK148,CA22,Confident And Killing It,256000.0,10,243200.0,0,1,50,2023-12-28 17:05:16.303,0
+BK149,CA22,Keep Sharp: Build A Better Brain At Any Age,381000.0,10,361950.0,1,9,50,2023-12-28 17:05:16.303,0
+BK150,CA22,Approach With(out) Caution: The 5-Step Plan To Take Control Of Your Life,296000.0,10,281200.0,3,1,50,2023-12-28 17:05:16.303,0
+BK151,CA22,Our Iceberg is Melting: Changing and Succeeding Under Any Conditions,303000.0,10,287850.0,3,1,50,2023-12-28 17:05:16.303,0
+BK152,CA22,Presence,346000.0,10,328700.0,3,6,50,2023-12-28 17:05:16.303,0
+BK153,CA22,Upshift: Turning Pressure Into Performance And Crisis Into Creativity,335000.0,10,318250.0,4,9,50,2023-12-28 17:05:16.303,0
+BK154,CA22,The Art of Sleeping,183000.0,10,173850.0,4,9,50,2023-12-28 17:05:16.303,0
+BK155,CA22,"Big Money Energy: How To Rule At Work, Dominate At Life, And Make Millions",346000.0,10,328700.0,1,5,50,2023-12-28 17:05:16.303,0
+BK156,CA22,Freedom From Anxiety,325000.0,10,308750.0,2,7,50,2023-12-28 17:05:16.303,0
+BK157,CA22,"Sustain Your Game: High Performance Keys To Manage Stress, Avoid Stagnation, And Beat Burnout",557000.0,10,529150.0,1,9,50,2023-12-28 17:05:16.303,0
+BK158,CA22,Start At The End: How Reverse-Engineering Can Lead To Success,195000.0,10,185250.0,0,9,50,2023-12-28 17:05:16.303,0
+BK159,CA22,"Go F*ck, I Mean, Find Yourself.",261000.0,10,247950.0,4,9,50,2023-12-28 17:05:16.303,0
+BK160,CA22,Joy At Work: Organizing Your Professional Life,461000.0,10,437950.0,5,6,50,2023-12-28 17:05:16.303,0
+BK161,CA22,Time Wise: Productivity Secrets Of The World's Most Successful People,369000.0,10,350550.0,3,6,50,2023-12-28 17:05:16.303,0
+BK162,CA23,Help Your Kids With Science,382000.0,10,362900.0,2,9,50,2023-12-28 17:05:16.303,0
+BK163,CA23,How To Master The BMAT: Unbeatable Preparation For Success In The Biomedical Admissions Test,384000.0,10,364800.0,4,8,50,2023-12-28 17:05:16.303,0
+BK164,CA25,Fourth Wing - The Empyrean Series,496000.0,10,446400.0,4,0,50,2023-12-28 17:05:16.303,0
+BK165,CA25,Dune,192000.0,10,182400.0,0,0,50,2023-12-28 17:05:16.303,0
+BK166,CA25,Percy Jackson And The Olympians 5: The Last Olympian,163000.0,10,154850.0,2,10,50,2023-12-28 17:05:16.303,0
+BK167,CA25,Iron Flame - The Empyrean Series,546000.0,10,491400.0,2,10,50,2023-12-28 17:05:16.303,0
+BK168,CA25,The Priory Of The Orange Tree,255000.0,10,242250.0,5,2,50,2023-12-28 17:05:16.303,0
+BK169,CA25,The Lord Of The Rings: The Return Of The King,157000.0,10,149150.0,4,7,50,2023-12-28 17:05:16.303,0
+BK170,CA25,The Hobbit / The Lord of the Rings Box Set (4 bks),713000.0,10,677350.0,2,2,50,2023-12-28 17:05:16.303,0
+BK171,CA25,Ninth House,157000.0,10,149150.0,2,10,50,2023-12-28 17:05:16.303,0
+BK172,CA25,The Book Of Tea 1: A Magic Steeped In Poison,192000.0,10,192000.0,2,0,50,2023-12-28 17:05:16.303,0
+BK173,CA25,"The Fork, The Witch, And The Worm: Tales From Alagaësia Volume 1: Eragon (The Inheritance Cycle)",195000.0,10,185250.0,0,9,50,2023-12-28 17:05:16.303,0
+BK174,CA25,Sorcery Of Thorns,226000.0,10,214700.0,0,5,50,2023-12-28 17:05:16.303,0
+BK175,CA25,Coraline,143000.0,10,135850.0,1,7,50,2023-12-28 17:05:16.303,0
+BK176,CA25,The Bridge Kingdom 1,248000.0,10,235600.0,0,6,50,2023-12-28 17:05:16.303,0
+BK177,CA25,The Sandman Book Of Dreams,270000.0,10,256500.0,5,4,50,2023-12-28 17:05:16.303,0
+BK178,CA25,Six Of Crows Book 2: Crooked Kingdom,230000.0,10,218500.0,0,0,50,2023-12-28 17:05:16.303,0
+BK179,CA25,American Gods,230000.0,10,218500.0,4,1,50,2023-12-28 17:05:16.303,0
+BK180,CA25,The Hobbit,335000.0,10,318250.0,4,6,50,2023-12-28 17:05:16.303,0
+BK181,CA25,Legend. by Marie Lu,223000.0,10,211850.0,3,5,50,2023-12-28 17:05:16.303,0
+BK182,CA25,Delivery To The Lost City,186000.0,10,176700.0,4,6,50,2023-12-28 17:05:16.303,0
+BK183,CA25,The Hobbit,509000.0,10,483550.0,2,3,50,2023-12-28 17:05:16.303,0
+BK184,CA25,Chosen Ones,230000.0,10,218500.0,4,0,50,2023-12-28 17:05:16.303,0
+BK185,CA25,The Fellowship Of The Ring,395000.0,10,375250.0,0,7,50,2023-12-28 17:05:16.303,0
+BK186,CA25,A Middle-earth Traveller: Sketches From Bag End To Mordor,395000.0,10,375250.0,0,9,50,2023-12-28 17:05:16.303,0
+BK187,CA25,"The Two Towers (The Lord of the Rings, Book 2)",163000.0,10,154850.0,1,3,50,2023-12-28 17:05:16.303,0
+BK188,CA25,Ruthless Gods,209000.0,10,198550.0,0,8,50,2023-12-28 17:05:16.303,0
+BK189,CA25,The Lord Of The Rings: The Two Towers,493000.0,10,468350.0,1,10,50,2023-12-28 17:05:16.303,0
+BK190,CA25,Artemis Fowl and the Time Paradox,179000.0,10,170050.0,4,9,50,2023-12-28 17:05:16.303,0
+BK191,CA25,The Fall Of Arthur,349000.0,10,331550.0,1,4,50,2023-12-28 17:05:16.303,0
+BK192,CA25,Lies Sleeping,342000.0,10,324900.0,1,7,50,2023-12-28 17:05:16.303,0
+BK193,CA25,The Silvered Serpents,192000.0,10,182400.0,2,5,50,2023-12-28 17:05:16.303,0
+BK194,CA25,Descendant Of The Crane,209000.0,10,198550.0,3,0,50,2023-12-28 17:05:16.303,0
+BK195,CA25,Farmer Giles Of Ham,192000.0,10,182400.0,1,8,50,2023-12-28 17:05:16.303,0
+BK196,CA25,Artemis Fowl and the Lost Colony,179000.0,10,170050.0,4,4,50,2023-12-28 17:05:16.303,0
+BK197,CA25,Sir Gawain And The Green Knight: With Pearl And Sir Orfeo,157000.0,10,149150.0,4,1,50,2023-12-28 17:05:16.303,0
+BK198,CA25,Throne of Glass (Miniature Character Collection) (Throne of Glass Mini Character Collection),169000.0,10,160550.0,0,8,50,2023-12-28 17:05:16.303,0
+BK199,CA25,The Mirror Chronicles 3: The Last Night,174000.0,10,165300.0,0,10,50,2023-12-28 17:05:16.303,0
+BK200,CA25,The Serpent Gates 1: The Unspoken Name,297000.0,10,282150.0,4,9,50,2023-12-28 17:05:16.303,0
+BK201,CA25,Kingdom Of Three 1: Strike The Zither,331000.0,10,314450.0,0,10,50,2023-12-28 17:05:16.303,0
