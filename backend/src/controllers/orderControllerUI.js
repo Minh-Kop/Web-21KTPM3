@@ -151,7 +151,12 @@ exports.getUserOrders = catchAsync(async (req, res, next) => {
 });
 
 exports.getMyOrders = catchAsync(async (req, res, next) => {
-    const { userId, orderState, limit: strLimit, page: strPage } = req.query;
+    const {
+        orderState: strOrderState,
+        limit: strLimit,
+        page: strPage,
+    } = req.query;
+    const orderState = +strOrderState;
 
     if (!orderState) {
         return res.redirect('/order/me?orderState=6');
@@ -167,19 +172,19 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
     if (isLoggedIn) {
         isAdmin = user.role === config.role.ADMIN;
     }
-    const uid = user.userId;
+    const { userId } = user;
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
 
     const returnedOrders = await orderModel.getUserOrders({
-        uid,
+        userId,
         orderState,
         limit,
         offset,
     });
 
-    const tempOrderNumber = await orderModel.countOrders(uid);
+    const tempOrderNumber = await orderModel.countOrders(userId);
     const total = tempOrderNumber.reduce(
         (accumulator, currentValue) => accumulator + currentValue.totalNumber,
         0,
@@ -215,20 +220,19 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
     );
 
     tempOrderNumber.forEach((order) => {
-        if (orderStatesDict.has(order.orderstate)) {
-            orderStatesDict.get(order.orderstate).totalNumber =
+        if (orderStatesDict.has(order.orderState)) {
+            orderStatesDict.get(order.orderState).totalNumber =
                 order.totalNumber;
         }
     });
 
     orderNumber = Array.from(orderStatesDict.values());
 
-    const totalPages = Math.ceil(
-        parseFloat(
-            orderNumber.find((order) => order.orderstate == orderState)
-                .totalNumber,
-        ) / limit,
+    const { totalNumber } = orderNumber.find(
+        (order) => order.orderstate === orderState,
     );
+
+    const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
     returnedOrders.forEach((order) => {
         order.orderDate = order.orderDate.toISOString().split('T')[0];
         order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');
@@ -267,35 +271,110 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
     });
 });
 
+const createOrderStateList = (total) => {
+    const orderStates = [];
+    for (let i = 1; i <= 3; i++) {
+        orderStates.push({
+            orderState: i,
+            totalNumber: i === 0 ? total : 0,
+        });
+    }
+    orderStates.push({
+        orderState: -1,
+        totalNumber: 0,
+    });
+    return orderStates;
+};
+
 exports.getAllOrders = catchAsync(async (req, res, next) => {
-    const { orderState, limit: strLimit, page: strPage } = req.query;
+    const {
+        orderState: strOrderState,
+        limit: strLimit,
+        page: strPage,
+    } = req.query;
+    const orderState = +strOrderState;
+
+    if (!orderState) {
+        return res.redirect('/admin/order?orderState=1');
+    }
 
     const page = +strPage || 1;
     const limit = +strLimit || 10;
     const offset = (page - 1) * limit;
+
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
+
+    const url = req.originalUrl;
+    const indexOfPage = url.lastIndexOf('&page');
+    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
 
     const returnedOrders = await orderModel.getAllOrders({
         orderState,
         limit,
         offset,
     });
+    const total = returnedOrders.length;
+
+    const orderStatesDB = await orderModel.countOrders();
+    let orderStates = createOrderStateList(total);
+
+    const orderStatesMap = new Map(
+        orderStates.map((item) => [item.orderState, item]),
+    );
+    orderStatesDB.forEach((el) => {
+        if (orderStatesMap.has(el.orderState)) {
+            orderStatesMap.get(el.orderState).totalNumber = el.totalNumber;
+        }
+    });
+    orderStates = Array.from(orderStatesMap.values());
+
+    const { totalNumber } = orderStates.find(
+        (el) => el.orderState === orderState,
+    );
+    const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
+    returnedOrders.forEach((order) => {
+        order.orderDate = moment(order.orderDate)
+            .subtract(7, 'hours')
+            .format('DD/MM/YYYY HH:mm');
+        order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');
+        order.shippingFeeString = order.shippingFee.toLocaleString('vi-VN');
+    });
     const orders = await Promise.all(
         returnedOrders.map(async (order) => {
             const books = await bookModel.getBooksByOrderId(order.orderId);
+            books.forEach((book) => {
+                book.unitPrice = book.unitPrice.toLocaleString('vi-VN');
+            });
             return {
-                orderId: order.orderId,
-                orderState: order.orderState,
-                booksLength: books.length,
-                books,
                 ...order,
+                books,
             };
         }),
     );
-
-    res.status(200).json({
-        status: 'success',
+    res.render('orderCRUD/order', {
+        layout: 'admin',
+        headerName: 'Danh sách đơn hàng',
+        title: 'Order management',
+        order: true,
         ordersLength: orders.length,
         orders,
+        link: newUrl,
+        isLoggedIn,
+        ...user,
+        ...cart,
+        page,
+        limit,
+        totalPages,
+        orderStates,
+        orderState: +orderState,
+        currentUrl: url,
+        categoryTree,
+        isAdmin,
     });
 });
 

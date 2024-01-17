@@ -96,7 +96,6 @@ const config = {
     },
 
     orderState: {
-        INIT: 0,
         PENDING: 1,
         CANCEL: -1,
         SHIPPING: 2,
