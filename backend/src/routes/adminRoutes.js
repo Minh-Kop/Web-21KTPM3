@@ -14,14 +14,13 @@ const {
     deleteCategory,
     updateCategory,
 } = require('../controllers/categoryController');
-
 const { getStatistic } = require('../controllers/statisticController');
-
 const {
     getCreateUserPage,
     getAllUsers,
     getUser,
 } = require('../controllers/accountControllerUI');
+const orderControllerUI = require('../controllers/orderControllerUI');
 
 const router = express.Router();
 
@@ -42,8 +41,9 @@ router.get('/category/delete', deleteCategory);
 router.get('/statistic', getStatistic);
 
 router.get('/user/createUser', getCreateUserPage);
-
 router.get('/user/', getAllUsers);
-
 router.get('/user/:userId', getUser);
+
+router.get('/order', orderControllerUI.getAllOrders);
+
 module.exports = router;
