@@ -33,6 +33,15 @@ exports.createRefundTransaction = async (transactionId) => {
     return result;
 };
 
+exports.createRefundOrderTransaction = async (customerId, total) => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    request.input('customerId', sql.Char, customerId);
+    request.input('refundMoney', sql.BigInt, total);
+    const result = await request.execute('sp_CreateRefundOrderTransaction');
+    return result;
+};
+
 exports.getTransactions = async (accountId) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);

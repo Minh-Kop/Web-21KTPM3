@@ -175,12 +175,14 @@ BEGIN TRANSACTION
         select o.ORDER_ID orderId, o.USERID userId,
             [MERCHANDISE_SUBTOTAL] merchandiseSubtotal, [SHIPPING_FEE] shippingFee, 
             [SHIPPING_DISCOUNT_SUBTOTAL] shippingDiscountSubtotal, [HACHIKO_VOUCHER_APPLIED] hachikoVoucherApplied, 
-            o.HPOINTS_REDEEMED hPointsRedeemed, [TOTAL_PAYMENT] totalPayment, os.ORDER_STATE orderState,o.ORDER_DATE orderDate
-        from H_ORDER o JOIN (
+            o.HPOINTS_REDEEMED hPointsRedeemed, [TOTAL_PAYMENT] totalPayment, os.ORDER_STATE orderState,o.ORDER_DATE orderDate, a.EMAIL email
+        from H_ORDER o 
+            JOIN (
                 SELECT ORDER_ID, ORDER_STATE,
                     ROW_NUMBER() OVER (PARTITION BY ORDER_ID ORDER BY CREATED_TIME DESC) AS rn
                 FROM ORDER_STATE
             ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
+            join ACCOUNT a on a.USERID = o.USERID
         where o.ORDER_ID = @orderId
 	END TRY
 
@@ -208,7 +210,8 @@ BEGIN TRANSACTION
 	BEGIN TRY
         if @orderState IS NULL
         BEGIN
-            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment, o.ORDER_DATE orderDate, FULLNAME fullName
+            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment, o.ORDER_DATE orderDate, FULLNAME fullName, A.USERNAME username, o.SHIPPING_FEE shippingFee, 
+                sa.RECEIVER_NAME receiverName, sa.RECEIVER_PHONE receiverPhone
             FROM H_ORDER o
             JOIN (
                 SELECT ORDER_ID, ORDER_STATE,
@@ -216,13 +219,15 @@ BEGIN TRANSACTION
                 FROM ORDER_STATE
             ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
             JOIN ACCOUNT A ON A.USERID = O.USERID
+                join SHIPPING_ADDRESS sa on sa.ADDR_ID = o.ADDR_ID
             WHERE o.USERID = @userId
             ORDER BY o.ORDER_DATE DESC, o.ORDER_ID DESC
             OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         END
         ELSE
         BEGIN
-            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment, o.ORDER_DATE orderDate, FULLNAME fullName
+            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment, o.ORDER_DATE orderDate, FULLNAME fullName, A.USERNAME username, o.SHIPPING_FEE shippingFee, 
+                sa.RECEIVER_NAME receiverName, sa.RECEIVER_PHONE receiverPhone
             FROM H_ORDER o
             JOIN (
                 SELECT ORDER_ID, ORDER_STATE,
@@ -230,6 +235,7 @@ BEGIN TRANSACTION
                 FROM ORDER_STATE
             ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
             JOIN ACCOUNT A ON A.USERID = O.USERID
+                join SHIPPING_ADDRESS sa on sa.ADDR_ID = o.ADDR_ID
             WHERE o.USERID = @userId and os.ORDER_STATE = @orderState
             ORDER BY o.ORDER_DATE DESC, o.ORDER_ID DESC
             OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
@@ -259,7 +265,7 @@ BEGIN TRANSACTION
 	BEGIN TRY
         if @orderState IS NULL
         BEGIN
-            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.ORDER_DATE orderDate, o.SHIPPING_FEE shippingFee, o.TOTAL_PAYMENT totalPayment, sa.RECEIVER_NAME receiverName, sa.RECEIVER_PHONE receiverPhone
+            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.ORDER_DATE orderDate, o.SHIPPING_FEE shippingFee, o.TOTAL_PAYMENT totalPayment, sa.RECEIVER_NAME receiverName, sa.RECEIVER_PHONE receiverPhone, a.USERNAME username
             FROM H_ORDER o
                 JOIN (
                     SELECT ORDER_ID, ORDER_STATE,
@@ -267,12 +273,13 @@ BEGIN TRANSACTION
                     FROM ORDER_STATE
                 ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
                 join SHIPPING_ADDRESS sa on sa.ADDR_ID = o.ADDR_ID
+                join ACCOUNT a on a.USERID = o.USERID
             ORDER BY o.ORDER_DATE DESC, o.ORDER_ID DESC
             OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         END
         ELSE
         BEGIN
-            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.ORDER_DATE orderDate, o.SHIPPING_FEE shippingFee, o.TOTAL_PAYMENT totalPayment, sa.RECEIVER_NAME receiverName, sa.RECEIVER_PHONE receiverPhone
+            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.ORDER_DATE orderDate, o.SHIPPING_FEE shippingFee, o.TOTAL_PAYMENT totalPayment, sa.RECEIVER_NAME receiverName, sa.RECEIVER_PHONE receiverPhone, a.USERNAME username
             FROM H_ORDER o
                 JOIN (
                     SELECT ORDER_ID, ORDER_STATE,
@@ -280,6 +287,7 @@ BEGIN TRANSACTION
                     FROM ORDER_STATE
                 ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
                 join SHIPPING_ADDRESS sa on sa.ADDR_ID = o.ADDR_ID
+                join ACCOUNT a on a.USERID = o.USERID
             WHERE os.ORDER_STATE = @orderState
             ORDER BY o.ORDER_DATE DESC, o.ORDER_ID DESC
             OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
