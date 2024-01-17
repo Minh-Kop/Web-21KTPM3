@@ -1,7 +1,29 @@
+IF OBJECT_ID('f_CreateCategoryId') IS NOT NULL
+	DROP FUNCTION f_CreateCategoryId
+GO
+CREATE FUNCTION f_CreateCategoryId()
+returns CHAR(5)
+    BEGIN
+        DECLARE @i INT = 1
+        DECLARE @id char(4) = 'CA' + '01'
+        WHILE(EXISTS(SELECT 1
+                    FROM CATEGORY
+                    WHERE CATE_ID = @id))
+        BEGIN
+            SET @i += 1
+            SET @id = 'CA' + REPLICATE('0', 2 - LEN(@i)) + CAST(@i AS CHAR(2))
+        END
+        return @id
+    END
+GO
+
 IF OBJECT_ID('sp_createCategory') IS NOT NULL
 	DROP PROC sp_createCategory
 GO
-CREATE PROCEDURE sp_createCategory(@curr NVARCHAR(50), @parent CHAR(4))
+CREATE PROCEDURE sp_createCategory(
+    @curr NVARCHAR(50), 
+    @parent CHAR(4)
+)
 AS
 BEGIN TRANSACTION
     BEGIN TRY
@@ -12,8 +34,7 @@ BEGIN TRANSACTION
 			RETURN -1
 		END
         
-        DECLARE @int INT = (SELECT COUNT(C.CATE_ID) FROM CATEGORY C) + 1
-        DECLARE @id char(4)
+        DECLARE @id char(4) = dbo.f_CreateCategoryId()
         DECLARE @nparent CHAR(4)
         
         IF (@parent = 'null')
@@ -23,15 +44,6 @@ BEGIN TRANSACTION
         ELSE
         BEGIN
             SET @nparent = @parent
-        END
-        
-        IF (@int >= 10)
-        BEGIN
-            SET @id  = 'CA'+ CAST(@int AS NVARCHAR(2))
-        END
-        ELSE
-        BEGIN
-            SET @id = 'CA0' + CAST(@int AS NVARCHAR(1))
         END
 
         INSERT INTO category (CATE_ID, PARENT_ID, CATE_NAME, SOFT_DELETE) VALUES (@id, @nparent, @curr, 0)

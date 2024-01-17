@@ -9,7 +9,7 @@
         <div class="fs-2 fw-bold" style="color: #2006BF;"> {{totalSuccessfulOrder}} </div>
     </div>
 </div>
-{{log JSONtotalOrderDaily}}
+
 <div class="container mt-3 border border-success rounded text-start" style="background-color: #ffffff">
     <h5 class="mt-2 mb-0">Tổng doanh thu</h5>
     <div class="d-flex align-items-center justify-content-center mb-3">
@@ -37,7 +37,6 @@
 
     const revenue = $('#myRevenueChart').data("revenue");
     const orderNumber = $('#myOrderChart').data("ordernumber");
-    console.log(orderNumber)
     revenue.forEach((item) => {
         monthlyRevenueData.push(item.monthlyRevenue);
         xMonths.push(`${item.orderMonth}/${item.orderYear}`);
@@ -46,6 +45,7 @@
         dailyOrderData.push(item.dailyOrder);
         xDates.push(item.orderDate);
     });
+    console.log(xMonths)
 
     new Chart("myRevenueChart", {
         type: 'line',

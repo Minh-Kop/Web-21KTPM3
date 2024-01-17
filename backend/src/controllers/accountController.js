@@ -1,4 +1,4 @@
-// const moment = require('moment');
+const axios = require('axios');
 
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
@@ -154,7 +154,14 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.createUser = catchAsync(async (req, res, next) => {
-    const { email, phoneNumber, password, fullName, role } = req.body;
+    const { email, password, username, role } = req.body;
+    const isOauth2 = false;
+
+    // Check for username duplicated
+    const account = await accountModel.getByUsername(username, true);
+    if (account) {
+        return next(new AppError('Username already exists.', 400));
+    }
 
     // Check for email duplicated
     const emailAccount = await accountModel.getByEmail(email);
@@ -162,25 +169,25 @@ exports.createUser = catchAsync(async (req, res, next) => {
         return next(new AppError('Email already exists.', 400));
     }
 
-    // Check for phone number duplicated
-    const phoneNumberAccount = await accountModel.getByPhone(phoneNumber);
-    if (phoneNumberAccount) {
-        return next(new AppError('Phone number is already used.', 400));
-    }
-
     // Encrypt password by salting and hashing
     const encryptedPassword = encryptPassword(password);
 
-    // Create entity to insert to DB
-    const entity = {
+    // Create account
+    await accountModel.createAccount({
+        username,
         email,
-        phoneNumber,
-        fullName,
         password: encryptedPassword,
         verified: 1,
         role: role || config.role.USER,
-    };
-    await accountModel.createAccount(entity);
+        isOauth2,
+    });
+
+    // Create bank account in bank server
+    await axios.post(`${config.BANK_URL}/api/account/create-account`, {
+        username,
+        password: encryptedPassword,
+        isOauth2,
+    });
 
     res.status(200).json({
         status: 'success',
