@@ -15,7 +15,7 @@ li {
 
 /* ==================================== Breadcrumb ==================================== */
 .category-page__breadcrumb {
-    text-decoration: none;
+    text-transform: capitalize;
     color: #2f2e2e;
 }
 
@@ -69,7 +69,6 @@ li {
     display: block;
     margin-bottom: 7px;
 
-    text-decoration: none;
     text-transform: capitalize;
 }
 
@@ -164,6 +163,7 @@ li:not(.active):not(.child-active) > .category-section__list__link:hover,
 
 .book-content__heading-link {
     font-size: 15px;
+    line-height: 1.5;
     color: #333;
     font-weight: 500;
 }

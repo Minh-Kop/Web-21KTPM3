@@ -25,15 +25,11 @@ const orderRouterUI = require('./orderRoutesUI');
 const searchRouter = require('./searchRoutes');
 const searchRouterUI = require('./searchRoutesUI');
 
-const statisticRouter = require('./statisticRoutes');
-
-const authRouter2 = require('./authRouter');
 const config = require('../config/config');
 
 const router = express.Router();
 
 router.use('/', authRouter);
-router.use('/api/auth', authRouter2);
 router.use('/api/category', categoryRouter);
 router.use('/category', categoryRouterUI);
 router.use('/api/book', bookRouter);
@@ -67,7 +63,5 @@ router.use('/order', authController.protectPage, orderRouterUI);
 // router.use('/api/review', reviewRouter);
 router.use('/api/search', searchRouter);
 router.use('/search', searchRouterUI);
-
-//router.use('/statistic', authController.protect, statisticRouter);
 
 module.exports = router;

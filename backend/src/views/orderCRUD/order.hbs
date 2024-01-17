@@ -91,7 +91,7 @@
                 </div>
 
                 {{#eq orderState 1}}
-                    <div class='order-item__button-section'>
+                    <div class='order-item__button-section' data-username="{{username}}" data-total-payment="{{totalPayment}}" data-bank-url="{{../bankUrl}}">
                         <button class='order-item__button--accept'>Xác nhận</button>
                         <button class='order-item__button--cancel'>Hủy</button>
                     </div>

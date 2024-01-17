@@ -8,10 +8,9 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-require('./passport');
 const session = require('express-session');
 
-const { JWT_SECRET: secret } = require('./config/config');
+const { JWT_SECRET: secret, ...config } = require('./config/config');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const categoryController = require('./controllers/categoryControllerUI');
@@ -30,7 +29,7 @@ app.set('trust proxy', true);
 // 1) GLOBAL MIDDLEWARES
 // Implement CORS
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://group-6-e-commerce.vercel.app'],
+    origin: [config.BANK_URL],
     credentials: true,
 };
 app.use(cors(corsOptions));

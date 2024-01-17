@@ -29,6 +29,7 @@
                 </ul>
             </div>
         </div>
+
         <div class='col-9'>
             <div
                 class='px-3 mt-3 border border-success rounded text-start'
@@ -57,50 +58,111 @@
                 </div>
             </div>
 
-            <div
-                class='px-3 border border-success rounded text-start mb-3'
-                style='background-color: FFFFFF; margin-top:12px'
-            >
-                <table class='table table-striped table-hover text-center'>
-                    <thead>
-                        <tr>
-                            <th scope='col'>Mã đơn hàng</th>
-                            <th scope='col'>Ngày mua</th>
-                            <th scope='col'>Người nhận</th>
-                            <th scope='col'>Tổng Tiền</th>
-                            <th scope='col'>Trạng thái</th>
-                            <th scope='col'></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each orders}}
-                            <tr>
-                                <th scope='row'>{{orderId}}</th>
-                                <td>{{orderDate}}</td>
-                                <td>
-                                    {{fullName}}
-                                </td>
-                                <td>{{totalPaymentString}} VNĐ</td>
-                                <td>{{orderState orderState}}</td>
-                                <td>
-                                    <a
-                                        href='/order/{{orderId}}'
-                                        style='color: black'
-                                    >
-                                        <i
-                                            class='fa-solid fa-circle-info'
-                                            style='cursor: pointer'
-                                        ></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+            <div class='order-section'>
+                <div class='order-list'>
+                    {{#each orders}}
+                        <div class='order-item'>
+                            <div>{{orderDate}}</div>
+                            <div class='order-item__state'>
+                                {{createOrderStateLabel orderState}}
+                            </div>
+
+                            <div class='order-item__info'>
+                                <div>
+                                    <strong>Mã đơn hàng:</strong>
+                                    <a href='/order/{{orderId}}'>{{orderId}}</a>
+                                </div>
+                                <div>
+                                    <strong>Tên người nhận:</strong>
+                                    {{receiverName}}
+                                </div>
+                                <div>
+                                    <strong>Hình thức thanh toán:</strong>
+                                    Thanh toán bằng Fabank
+                                </div>
+                                <div>
+                                    <strong>Số điện thoại:</strong>
+                                    {{receiverPhone}}
+                                </div>
+                            </div>
+
+                            <div class='order-item__book-section'>
+                                {{#each books}}
+                                    <div class='order-item__book'>
+                                        <img
+                                            class='order-item__book__img'
+                                            src='{{img}}'
+                                            alt='{{bookId}}'
+                                        />
+                                        <div class='order-item__book__info'>
+                                            <h2>{{bookName}}</h2>
+                                            <span>
+                                                <svg
+                                                    xmlns='http://www.w3.org/2000/svg'
+                                                    height='16'
+                                                    width='12'
+                                                    viewBox='0 0 384 512'
+                                                >
+                                                    <path
+                                                        opacity='1'
+                                                        fill='currentColor'
+                                                        d='M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z'
+                                                    />
+                                                </svg>
+                                                {{amount}}
+                                            </span>
+                                        </div>
+                                        <div
+                                            class='d-flex align-items-center justify-content-end'
+                                        >
+                                            <div
+                                                class='order-item__book__price'
+                                            >
+                                                {{unitPrice}}
+                                                VNĐ
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </div>
+
+                            <div class='order-item__price-section'>
+                                <div>Phí vận chuyển (Giao hàng tiêu chuẩn)</div>
+                                <div>{{shippingFeeString}} VNĐ</div>
+                                <div>Tổng Số Tiền (gồm VAT)</div>
+                                <div>{{totalPaymentString}} VNĐ</div>
+                            </div>
+
+                            {{#if ../showButton}}
+                                <div
+                                    class='order-item__button-section'
+                                    data-username='{{username}}'
+                                    data-total-payment='{{totalPayment}}'
+                                    data-bank-url="{{../bankUrl}}"
+                                >  
+                                    {{#eq ../orderState 1}}
+                                        <button
+                                            class='order-item__button--cancel'
+                                        >Hủy đơn hàng</button>
+                                    {{/eq}}
+                                    
+                                    {{#eq ../orderState 2}}
+                                        <button
+                                            class='order-item__button--accept'
+                                        >
+                                            Đã nhận hàng
+                                        </button>
+                                    {{/eq}}
+                                </div>
+                            {{/if}}
+                        </div>
+                    {{/each}}
+                </div>
+                {{> pagination}}
             </div>
-            {{> pagination}}
         </div>
     </div>
 </div>
-<script>
-</script>
+
+<link rel='stylesheet' href='/assets/css/orderAdmin.css' />
+<script src='/assets/js/orderUser.js'></script>
