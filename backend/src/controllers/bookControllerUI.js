@@ -397,8 +397,15 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
                     return {
                         bookId,
                         bookName: item.BOOK_NAME,
-                        originalPrice: item.BOOK_PRICE,
-                        discountedPrice: item.BOOK_DISCOUNTED_PRICE,
+                        originalPrice: item.BOOK_PRICE.toLocaleString().replace(
+                            /,/g,
+                            '.',
+                        ),
+                        discountedPrice:
+                            item.BOOK_DISCOUNTED_PRICE.toLocaleString().replace(
+                                /,/g,
+                                '.',
+                            ),
                         discountedNumber: item.DISCOUNTED_NUMBER,
                         avgRating: item.AVG_RATING,
                         countRating: item.COUNT_RATING,
@@ -421,10 +428,16 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
     });
     nBooks = await Promise.all(
         nBooks.map(async (book) => {
-            const { bookId: id } = book;
+            const {
+                bookId: id,
+                originalPrice: org,
+                discountedPrice: dis,
+            } = book;
             const { image } = await bookModel.getCoverImage(id);
             return {
                 ...book,
+                originalPrice: org.toLocaleString().replace(/,/g, '.'),
+                discountedPrice: dis.toLocaleString().replace(/,/g, '.'),
                 image,
             };
         }),
