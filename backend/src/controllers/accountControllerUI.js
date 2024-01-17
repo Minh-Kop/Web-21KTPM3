@@ -69,7 +69,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
         status: 'success',
         user: detailedUser.recordset[0],
         ...user,
-        avatarTag
+        avatarTag,
     });
 });
 
@@ -120,6 +120,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         isAdmin,
         currentUrl: url,
         users,
+        isAdmin,
     });
 });
 

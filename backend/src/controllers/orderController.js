@@ -99,7 +99,7 @@ exports.getUserOrders = catchAsync(async (req, res, next) => {
 
     const returnedOrders = await orderModel.getUserOrders({
         userId,
-        orderState,
+        orderState: +orderState,
         limit,
         offset,
     });
@@ -119,54 +119,6 @@ exports.getUserOrders = catchAsync(async (req, res, next) => {
         status: 'success',
         ordersLength: orders.length,
         orders,
-    });
-});
-
-exports.getMyOrders = catchAsync(async (req, res, next) => {
-    const { userId, orderState, limit: strLimit, page: strPage } = req.query;
-
-    const page = +strPage || 1;
-    const limit = +strLimit || 10;
-    const offset = (page - 1) * limit;
-
-    const { user, cart } = req;
-    const isLoggedIn = req.isAuthenticated();
-
-    const url = req.originalUrl;
-    const indexOfPage = url.lastIndexOf('&page');
-    const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
-
-    const returnedOrders = await orderModel.getUserOrders({
-        userId,
-        orderState,
-        limit,
-        offset,
-    });
-    const orders = await Promise.all(
-        returnedOrders.map(async (order) => {
-            const books = await bookModel.getBooksByOrderId(order.orderId);
-            return {
-                orderId: order.orderId,
-                orderState: order.orderState,
-                booksLength: books.length,
-                books,
-                ...order,
-            };
-        }),
-    );
-    console.log(orders);
-    res.render('account/order_list', {
-        title: 'Đơn hàng của tôi',
-        status: 'success',
-        ordersLength: orders.length,
-        orders,
-        link: newUrl,
-        navbar: () => 'navbar',
-        footer: () => 'footer',
-        isLoggedIn,
-        ...user,
-        ...cart,
-        currentUrl: url,
     });
 });
 

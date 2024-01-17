@@ -122,6 +122,13 @@ module.exports = (hbs) => {
                 else if (obj == 3) return 'Thành công';
                 else if (obj == 6) return 'Tất cả';
             },
+            createOrderStateLabel(obj) {
+                if (obj === 0) return 'Tất cả';
+                if (obj === 1) return 'Đang xử lý';
+                if (obj === -1) return 'Bị hủy';
+                if (obj === 2) return 'Đang giao hàng';
+                if (obj === 3) return 'Thành công';
+            },
             state(obj) {
                 if (obj == -1)
                     return new Handlebars.SafeString(
