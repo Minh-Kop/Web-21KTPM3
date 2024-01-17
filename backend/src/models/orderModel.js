@@ -3,21 +3,27 @@ const sql = require('mssql');
 
 const database = require('../utils/database');
 
-exports.countOrders = async (uid) => {
-    const sqlString = `SELECT os.ORDER_STATE orderstate, count(os.ORDER_STATE) totalNumber 
-            FROM H_ORDER o
-            JOIN (
-                SELECT ORDER_ID, ORDER_STATE,
-                    ROW_NUMBER() OVER (PARTITION BY ORDER_ID ORDER BY CREATED_TIME DESC) AS rn
-                FROM ORDER_STATE
-            ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
-            WHERE o.USERID = '${uid}'
-            group BY os.ORDER_STATE`;
+exports.countOrders = async (userId) => {
+    let whereClause = '';
+    if (userId) {
+        whereClause = ` WHERE o.USERID = '${userId}'`;
+    }
+    const sqlString = `
+        SELECT os.ORDER_STATE orderState, count(os.ORDER_STATE) totalNumber 
+        FROM H_ORDER o
+        JOIN (
+            SELECT ORDER_ID, ORDER_STATE,
+                ROW_NUMBER() OVER (PARTITION BY ORDER_ID ORDER BY CREATED_TIME DESC) AS rn
+            FROM ORDER_STATE
+        ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
+        ${whereClause}
+        group BY os.ORDER_STATE
+    `;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(sqlString);
     return result.recordset;
-}
+};
 
 exports.createOrder = async ({
     userId,
@@ -58,11 +64,11 @@ exports.getDetailedOrder = async (orderId) => {
 };
 
 exports.getUserOrders = async (entity) => {
-    const { uid, orderState, limit, offset } = entity;
-    let state = orderState == 6 ? null : orderState;
+    const { userId, orderState, limit, offset } = entity;
+    const state = orderState === 6 ? null : orderState;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
-    request.input('USERID', sql.Char, uid);
+    request.input('userId', sql.Char, userId);
     request.input('orderState', sql.Int, state);
     request.input('limit', sql.Int, limit);
     request.input('offset', sql.Int, offset);
@@ -74,7 +80,7 @@ exports.getAllOrders = async (entity) => {
     const { orderState, limit, offset } = entity;
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
-    request.input('orderState', sql.Int, +orderState);
+    request.input('orderState', sql.Int, orderState);
     request.input('limit', sql.Int, limit);
     request.input('offset', sql.Int, offset);
     const result = await request.execute('sp_GetAllOrders');
