@@ -21,6 +21,8 @@ insert into WARD (WARD_ID, DIST_ID, WARD_NAME) values
     ('WD0000005', 'DT00005', N'Phường 5')
 
 -- ========== CATEGORY ==========
+insert into CATEGORY (CATE_ID, PARENT_ID, CATE_NAME, SOFT_DELETE) VALUES ('CA17', null, 'foreign books', 0)
+
 insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA01', N'Manga - Comic', 0)
 insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA02', N'Comic - Truyện Tranh', 0)
 insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA03', N'Manga', 0)
