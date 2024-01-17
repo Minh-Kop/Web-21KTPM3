@@ -11,13 +11,9 @@
             <div class='book-info'>
                 <div class='father-categories-dropdown'>
                     <div class='label'>Danh mục cha:</div>
-                    <select
-                        name='father-category'
-                        id='fCategory'
-                        onchange='renderChild({{cateData}})'
-                    >
+                    <select name='father-category' id='fCategory' onchange='renderChild({{cateData}})'>
                         {{#each fCategories}}
-                            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
+                        <option value="{{this.CATE_ID}}">{{this.CATE_NAME}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -25,7 +21,7 @@
                     <div class='label'>Danh mục</div>
                     <select name='categoryId' id='category'>
                         {{#each categories}}
-                            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
+                        <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.categoryName}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -37,9 +33,7 @@
                     <div class='label'>Tác giả:</div>
                     <select name='authorId' id='author'>
                         {{#each authors}}
-                            <option
-                                value='{{this.AUTHOR_ID}}'
-                            >{{this.AUTHOR_NAME}}</option>
+                        <option value='{{this.AUTHOR_ID}}'>{{this.AUTHOR_NAME}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -47,9 +41,7 @@
                     <div class='label'>Nhà xuất bản:</div>
                     <select name='publisherId' id='publisher'>
                         {{#each publishers}}
-                            <option
-                                value='{{this.pubId}}'
-                            >{{this.pubName}}</option>
+                        <option value='{{this.pubId}}'>{{this.pubName}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -91,14 +83,8 @@
                     <label for='bookCover' class='form-label'>
                         Thêm ảnh bìa
                     </label>
-                    <input
-                        name='coverImage'
-                        class='form-control'
-                        type='file'
-                        id='bookCover'
-                        multiple
-                        data-img-tag='{{imgTag}}'
-                    />
+                    <input name='coverImage' class='form-control' type='file' id='bookCover' multiple
+                        data-img-tag='{{imgTag}}' />
                 </div>
 
                 {{! Images }}
@@ -106,23 +92,12 @@
                     <label for='bookImages' class='form-label'>
                         Thêm ảnh khác
                     </label>
-                    <input
-                        name='images'
-                        class='form-control'
-                        type='file'
-                        id='bookImages'
-                        multiple
-                        data-img-tag='{{imgTag}}'
-                    />
+                    <input name='images' class='form-control' type='file' id='bookImages' multiple
+                        data-img-tag='{{imgTag}}' />
                 </div>
 
                 <div class='book-description'>
-                    <textarea
-                        name='description'
-                        id='description'
-                        cols='30'
-                        rows='10'
-                    ></textarea>
+                    <textarea name='description' id='description' cols='30' rows='10'></textarea>
                 </div>
             </div>
             <button class='btn-submit-create' type='submit'>Xác nhận</button>

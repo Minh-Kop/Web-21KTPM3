@@ -245,9 +245,10 @@ BEGIN TRANSACTION
         END
 		
 		SELECT od.BOOK_ID bookId, b.BOOK_NAME bookName, b.BOOK_PRICE originalPrice,
-			b.BOOK_DISCOUNTED_PRICE unitPrice, od.ORDER_QUANTITY amount
+			b.BOOK_DISCOUNTED_PRICE unitPrice, od.ORDER_QUANTITY amount, img.BOOK_PATH img
         from ORDER_DETAIL od join BOOK b on od.BOOK_ID = b.BOOK_ID
-        where od.ORDER_ID = @orderId 
+			join BOOK_IMAGES img on img.BOOK_ID = b.BOOK_ID
+        where od.ORDER_ID = @orderId and img.IMAGE_ID = 1
 	END TRY
 
 	BEGIN CATCH

@@ -7,6 +7,7 @@
         </form>
     </div>
     <div class="info-input">
+        <div id="data-container" data-value="{{parent}}"></div>
         <form action="/admin/category/update" method="get">
             <div class="category-info">
                 <div class="father-categories-dropdown">
@@ -31,3 +32,10 @@
 </div>
 
 <link rel="stylesheet" href="/assets/css/createCategory.css">
+
+<script>
+    $(() => {
+        const parent = $("#data-container").attr("data-value");
+        $(`#fCategory option[value=${parent}]`).prop("selected", true);
+    })
+</script>

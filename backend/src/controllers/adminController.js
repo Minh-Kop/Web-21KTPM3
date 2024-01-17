@@ -12,82 +12,19 @@ const {
 } = require('../utils/cloudinary');
 const { getAllAuthors } = require('../models/authorModel');
 const { getAll } = require('../models/publisherModel');
-const { getAllCategory } = require('../models/categoryModel');
+const {
+    getAllCategory,
+    getAllParentCategory,
+    getChildrenCategory,
+    getParent,
+    getCategory,
+    getAllCategoryWithParent,
+} = require('../models/categoryModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const { getAllBooks, countBooks } = require('./bookControllerUI');
 const config = require('../config/config');
-
-const fatherCategories = [
-    {
-        id: 'CA01',
-        categoryName: 'Manga - Comic',
-        children: [
-            {
-                id: 'CA02',
-                categoryName: 'Comic - Truyện Tranh',
-            },
-            {
-                id: 'CA03',
-                categoryName: 'Manga',
-            },
-        ],
-    },
-    {
-        id: 'CA04',
-        categoryName: 'Tâm Lý - Kỹ Năng Sống',
-        children: [
-            {
-                id: 'CA05',
-                categoryName: 'Kỹ Năng Sống',
-            },
-            {
-                id: 'CA06',
-                categoryName: 'Sách Cho Tuổi Mới Lớn',
-            },
-            {
-                id: 'CA07',
-                categoryName: 'Tâm Lý',
-            },
-        ],
-    },
-    {
-        id: 'CA08',
-        categoryName: 'Thiếu nhi',
-        children: [
-            {
-                id: 'CA09',
-                categoryName: 'Kiến Thức - Kỹ Năng Sống Cho Trẻ',
-            },
-            {
-                id: 'CA10',
-                categoryName: 'Kiến Thức Bách Khoa',
-            },
-            {
-                id: 'CA11',
-                categoryName: 'Truyện Thiếu Nhi',
-            },
-        ],
-    },
-    {
-        id: 'CA12',
-        categoryName: 'Văn Học',
-        children: [
-            {
-                id: 'CA13',
-                categoryName: 'Light Novel',
-            },
-            {
-                id: 'CA14',
-                categoryName: 'Tiểu Thuyết',
-            },
-            {
-                id: 'CA15',
-                categoryName: 'Truyện Ngắn - Tản Văn',
-            },
-        ],
-    },
-];
+const { buildCategoryRoot } = require('../utils/utils');
 
 exports.renderAdminPage = catchAsync(async (req, res, next) => {
     const books = await getAllBooks({});
@@ -150,7 +87,11 @@ exports.renderCreateBook = catchAsync(async (req, res, next) => {
         isAdmin = user.role === config.role.ADMIN;
     }
 
-    const cateData = JSON.stringify(fatherCategories);
+    const fatherCategories = await getAllParentCategory();
+    const allCategories = await getAllCategory();
+    const cateTree = buildCategoryRoot(allCategories);
+    const cateData = JSON.stringify(cateTree);
+
     const authorList = await getAllAuthors();
     const publisherList = await getAll();
     const categories = [
@@ -193,7 +134,6 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
 
     const book = await getBookById(bookId);
     const bookImg = await getBookImages(bookId);
-    let cCate = [];
     const authorList = await getAllAuthors();
     const publisherList = await getAll();
 
@@ -207,26 +147,23 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
     });
     imgTag = imgTag.join('|');
 
-    for (const i of fatherCategories) {
-        for (const j of i.children) {
-            if (j.id === book.CATE_ID) {
-                i.selected = true;
-                j.selected = true;
-                cCate = i.children;
-                break;
-            }
-        }
-    }
-    const cateData = JSON.stringify(fatherCategories);
+    const fatherCategories = await getAllParentCategory();
+    const parent = await getParent(book.CATE_ID);
+    const allCategories = await getAllCategory();
+    const child = await getChildrenCategory(parent[0].CATE_ID);
+
+    const cateTree = buildCategoryRoot(allCategories);
+    const cateData = JSON.stringify(cateTree);
 
     res.render('bookCRUD/updateBook', {
         title: 'Book detail',
         navbar: () => 'navbar',
         footer: () => 'empty',
         book,
+        parentCate: parent[0].CATE_ID,
         fCategories: fatherCategories,
+        cCategories: child,
         cateData: cateData,
-        cCategories: cCate,
         authors: authorList,
         publishers: publisherList,
         imgTag,
@@ -240,7 +177,7 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
 });
 
 exports.renderCategoryPage = catchAsync(async (req, res, next) => {
-    const categories = await getAllCategory();
+    const categories = await getAllCategoryWithParent();
     const { user } = req;
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('categoryCRUD/readCategory', {
@@ -256,39 +193,27 @@ exports.renderCategoryPage = catchAsync(async (req, res, next) => {
 
 exports.renderUpdateCategory = catchAsync(async (req, res, next) => {
     const cateId = req.query.category;
-    let cCate = [];
-    const fCate = await getAllCategory();
 
-    for (const i of fCate) {
-        if (i.CATE_ID === cateId) {
-            cCate = i;
-            if (i.PARENT_ID) {
-                for (const j of fCate) {
-                    if (j.CATE_ID == i.PARENT_ID) {
-                        j.selected = true;
-                    }
-                }
-            }
-        }
-    }
-
-    const cateData = JSON.stringify(fatherCategories);
+    const fatherCategories = await getAllParentCategory();
+    const child = await getCategory(cateId);
+    const parent = await getParent(cateId);
 
     res.render('categoryCRUD/updateCategory', {
         layout: 'mainAdmin',
         adminSidebar: () => 'empty',
-        fCategories: fCate,
-        cCategories: cCate,
-        cateData: cateData,
+        parent: parent[0].CATE_ID,
+        fCategories: fatherCategories,
+        cCategories: child[0],
     });
 });
 
 exports.renderCreateCategory = catchAsync(async (req, res, next) => {
-    const fCate = await getAllCategory();
+    const fatherCategories = await getAllParentCategory();
+
     res.render('categoryCRUD/createCategory', {
         layout: 'mainAdmin',
         adminSidebar: () => 'empty',
-        fCategories: fCate,
+        fCategories: fatherCategories,
     });
 });
 
@@ -415,10 +340,8 @@ exports.createBook = catchAsync(async (req, res, next) => {
 });
 
 exports.updateBook = catchAsync(async (req, res, next) => {
-    const { bookId } = req.params;
-    console.log(req.params, req.body);
-
     let {
+        bookId,
         bookName,
         categoryId,
         originalPrice,
@@ -433,6 +356,7 @@ exports.updateBook = catchAsync(async (req, res, next) => {
         bookFormat,
         description,
     } = req.body;
+    console.log(req.body);
 
     // Update to db
     await updateBook({

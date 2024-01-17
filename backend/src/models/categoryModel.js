@@ -12,6 +12,24 @@ exports.getAllCategory = async () => {
     return result.recordset;
 };
 
+exports.getAllCategoryWithParent = async () => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(
+        `select c1.CATE_ID, c1.PARENT_ID, c1.CATE_NAME, c2.CATE_NAME as 'PARENT_NAME' , c1.SOFT_DELETE from CATEGORY c1 join CATEGORY c2 on c1.PARENT_ID = c2.CATE_ID where c1.SOFT_DELETE <> 1`,
+    );
+    return result.recordset;
+};
+
+exports.getCategory = async (cateId) => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(
+        `select * from CATEGORY where SOFT_DELETE <> 1 and CATE_ID = '${cateId}'`,
+    );
+    return result.recordset;
+};
+
 exports.createCategory = async ({ cateName, parentID }) => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
@@ -37,4 +55,31 @@ exports.updateCategory = async ({ cateId, cateName, parentId }) => {
     request.input('parent', sql.Char, parentId);
     const result = await request.execute('sp_updateCategory');
     return result;
+};
+
+exports.getAllParentCategory = async () => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(
+        'select distinct c1.CATE_ID, c1.PARENT_ID, c1.CATE_NAME, c1.SOFT_DELETE from CATEGORY c1 join CATEGORY c2 on c1.CATE_ID = c2.PARENT_ID where c1.SOFT_DELETE <> 1',
+    );
+    return result.recordset;
+};
+
+exports.getChildrenCategory = async (cateId) => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(
+        `select * from CATEGORY WHERE PARENT_ID = '${cateId}' and SOFT_DELETE <> 1`,
+    );
+    return result.recordset;
+};
+
+exports.getParent = async (cateId) => {
+    const pool = await database.getConnectionPool();
+    const request = new sql.Request(pool);
+    const result = await request.query(
+        `select distinct c1.CATE_ID, c1.PARENT_ID, c1.CATE_NAME, c1.SOFT_DELETE from CATEGORY c1 join CATEGORY c2 on c1.CATE_ID = c2.PARENT_ID where c1.SOFT_DELETE <> 1 and c2.CATE_ID = '${cateId}'`,
+    );
+    return result.recordset;
 };

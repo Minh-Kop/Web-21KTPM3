@@ -113,47 +113,6 @@ COMMIT
 RETURN 1
 GO
 
-GO
-IF OBJECT_ID('sp_GetInitialOrder') IS NOT NULL
-	DROP PROC sp_GetInitialOrder
-GO
-CREATE PROCEDURE sp_GetInitialOrder (
-    @orderId CHAR(7)
-)
-AS
-BEGIN TRANSACTION
-	BEGIN TRY
-        select sa.ADDR_ID addrId, sa.RECEIVER_NAME fullName, sa.RECEIVER_PHONE phoneNumber, 
-            sa.DETAILED_ADDR + ', ' + w.WARD_NAME + ', ' + d.DIST_NAME + ', ' + p.PROV_NAME detailedAddress
-        from SHIPPING_ADDRESS sa join WARD w on w.WARD_ID = sa.WARD_ID
-            join DISTRICT d on d.DIST_ID = sa.DIST_ID
-            join PROVINCE p on p.PROV_ID = sa.PROV_ID
-        where sa.ADDR_ID = (select ADDR_ID from H_ORDER where ORDER_ID = @orderId)
-
-        SELECT od.BOOK_ID bookId, b.BOOK_NAME bookName, bi.BOOK_PATH bookImage, b.BOOK_DISCOUNTED_PRICE unitPrice,
-            od.ORDER_QUANTITY amount, od.ORDER_PRICE itemSubtotal
-        from ORDER_DETAIL od join BOOK b on od.BOOK_ID = b.BOOK_ID join BOOK_IMAGES bi on b.BOOK_ID = bi.BOOK_ID
-        where od.ORDER_ID = @orderId 
-        
-        select [ORDER_ID] orderId,
-            [MERCHANDISE_SUBTOTAL] merchandiseSubtotal, [SHIPPING_FEE] shippingFee, 
-            [SHIPPING_DISCOUNT_SUBTOTAL] shippingDiscountSubtotal, [HACHIKO_VOUCHER_APPLIED] hachikoVoucherApplied, 
-            o.HPOINTS_REDEEMED hPointsRedeemed, [TOTAL_PAYMENT] totalPayment
-        from H_ORDER o
-            JOIN ACCOUNT ad on ad.USERID = o.USERID
-        where ORDER_ID = @orderId
-	END TRY
-
-	BEGIN CATCH
-		PRINT N'Bị lỗi'
-		ROLLBACK 
-		RETURN 0
-	END CATCH
-COMMIT
-RETURN 1
-GO
-
-GO
 IF OBJECT_ID('sp_GetPrice') IS NOT NULL
 	DROP PROC sp_GetPrice
 GO
@@ -180,7 +139,6 @@ COMMIT
 RETURN 1
 GO
 
-GO
 IF OBJECT_ID('sp_GetDetailedOrder') IS NOT NULL
 	DROP PROC sp_GetDetailedOrder
 GO
@@ -301,27 +259,28 @@ BEGIN TRANSACTION
 	BEGIN TRY
         if @orderState IS NULL
         BEGIN
-            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment
+            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.ORDER_DATE orderDate, o.SHIPPING_FEE shippingFee, o.TOTAL_PAYMENT totalPayment, sa.RECEIVER_NAME receiverName, sa.RECEIVER_PHONE receiverPhone
             FROM H_ORDER o
-            JOIN (
-                SELECT ORDER_ID, ORDER_STATE,
-                    ROW_NUMBER() OVER (PARTITION BY ORDER_ID ORDER BY CREATED_TIME DESC) AS rn
-                FROM ORDER_STATE
-            ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
-            WHERE os.ORDER_STATE <> 0
+                JOIN (
+                    SELECT ORDER_ID, ORDER_STATE,
+                        ROW_NUMBER() OVER (PARTITION BY ORDER_ID ORDER BY CREATED_TIME DESC) AS rn
+                    FROM ORDER_STATE
+                ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
+                join SHIPPING_ADDRESS sa on sa.ADDR_ID = o.ADDR_ID
             ORDER BY o.ORDER_DATE DESC, o.ORDER_ID DESC
             OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         END
         ELSE
         BEGIN
-            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.TOTAL_PAYMENT totalPayment
+            SELECT o.ORDER_ID orderId, os.ORDER_STATE orderState, o.ORDER_DATE orderDate, o.SHIPPING_FEE shippingFee, o.TOTAL_PAYMENT totalPayment, sa.RECEIVER_NAME receiverName, sa.RECEIVER_PHONE receiverPhone
             FROM H_ORDER o
-            JOIN (
-                SELECT ORDER_ID, ORDER_STATE,
-                    ROW_NUMBER() OVER (PARTITION BY ORDER_ID ORDER BY CREATED_TIME DESC) AS rn
-                FROM ORDER_STATE
-            ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
-            WHERE os.ORDER_STATE = @orderState and os.ORDER_STATE <> 0
+                JOIN (
+                    SELECT ORDER_ID, ORDER_STATE,
+                        ROW_NUMBER() OVER (PARTITION BY ORDER_ID ORDER BY CREATED_TIME DESC) AS rn
+                    FROM ORDER_STATE
+                ) os ON os.ORDER_ID = o.ORDER_ID AND os.rn = 1
+                join SHIPPING_ADDRESS sa on sa.ADDR_ID = o.ADDR_ID
+            WHERE os.ORDER_STATE = @orderState
             ORDER BY o.ORDER_DATE DESC, o.ORDER_ID DESC
             OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
         END
@@ -520,7 +479,6 @@ COMMIT
 RETURN 1
 GO
 
-GO
 IF OBJECT_ID('sp_IsPlacedOrder') IS NOT NULL
 	DROP PROC sp_IsPlacedOrder
 GO
