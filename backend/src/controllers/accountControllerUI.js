@@ -7,6 +7,7 @@ const config = require('../config/config');
 
 exports.getMyAccount = catchAsync(async (req, res, next) => {
     const { user, cart, categoryTree } = req;
+    const { avatarPath } = user;
     const isLoggedIn = req.isAuthenticated();
     let isAdmin = false;
     if (isLoggedIn) {
@@ -14,7 +15,10 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
     }
 
     const detailedUser = await accountModel.getDetailedUser(user.userId);
-    const avatarTag = `<img src="${user.avatarPath}" class="kv-preview-data file-preview-image">`;
+    let avatarTag;
+    if (avatarPath) {
+        avatarTag = `<img src="${avatarPath}" class="kv-preview-data file-preview-image">`;
+    }
 
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
@@ -49,9 +53,13 @@ exports.getMyAccount = catchAsync(async (req, res, next) => {
 exports.getUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
     const { user } = req;
+    const { avatarPath } = user;
 
     const detailedUser = await accountModel.getDetailedUser(userId);
-    const avatarTag = `<img src="${user.avatarPath}" class="kv-preview-data file-preview-image">`;
+    let avatarTag;
+    if (avatarPath) {
+        avatarTag = `<img src="${avatarPath}" class="kv-preview-data file-preview-image">`;
+    }
     // Check if this user exists
     if (detailedUser.returnValue === -1) {
         return next(new AppError('The account is no longer exist.', 404));
