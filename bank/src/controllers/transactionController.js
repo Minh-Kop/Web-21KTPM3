@@ -71,6 +71,26 @@ const refund = catchAsync(async (req, res, next) => {
     res.status(204).json();
 });
 
+const refundOrder = catchAsync(async (req, res, next) => {
+    const { total: strTotal, username } = req.body;
+    const total = +strTotal;
+
+    const { ACCOUNTID: customerId } = await accountModel.getByUsername(
+        username
+    );
+    if (!customerId) {
+        return next(new AppError('Invalid account', 401));
+    }
+
+    // Create a payment transaction
+    const { returnValue } = await transactionModel.createRefundOrderTransaction(
+        customerId,
+        total
+    );
+
+    res.status(204).json();
+});
+
 const getBalancePage = catchAsync(async (req, res, next) => {
     const { user } = req;
 
@@ -144,6 +164,7 @@ module.exports = {
     deposit,
     payOrder,
     refund,
+    refundOrder,
     getBalancePage,
     getTransactionPage,
     getTransactionDetailPage,

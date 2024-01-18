@@ -2,14 +2,8 @@ const {
     getBookById,
     getBookImages,
     deleteBook,
-    insertImages,
-    createBook,
-    updateBook,
 } = require('../models/bookModel');
-const {
-    createUploader,
-    deleteCloudinaryImage,
-} = require('../utils/cloudinary');
+
 const { getAllAuthors } = require('../models/authorModel');
 const { getAll } = require('../models/publisherModel');
 const {
@@ -60,7 +54,9 @@ exports.renderReadBooks = catchAsync(async (req, res, next) => {
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('?page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
+
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
+
     res.render('bookCRUD/readBooks', {
         layout: 'admin',
         headerName: 'Danh sách sản phẩm',
@@ -167,18 +163,23 @@ exports.renderUpdateBook = catchAsync(async (req, res, next) => {
         authors: authorList,
         publishers: publisherList,
         imgTag,
-        categoryTree,
         isLoggedIn,
         ...user,
         ...cart,
         currentUrl: req.originalUrl,
+        categoryTree,
         isAdmin,
     });
 });
 
 exports.renderCategoryPage = catchAsync(async (req, res, next) => {
     const categories = await getAllCategoryWithParent();
-    const { user } = req;
+    const { user, cart, categoryTree } = req;
+    const isLoggedIn = req.isAuthenticated();
+    let isAdmin = false;
+    if (isLoggedIn) {
+        isAdmin = user.role === config.role.ADMIN;
+    }
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('categoryCRUD/readCategory', {
         layout: 'admin',
@@ -187,7 +188,13 @@ exports.renderCategoryPage = catchAsync(async (req, res, next) => {
         title: 'Category management',
         category: true,
         categories: categories,
+
+        isLoggedIn,
         ...user,
+        ...cart,
+        currentUrl: req.originalUrl,
+        categoryTree,
+        isAdmin,
     });
 });
 
@@ -224,157 +231,5 @@ exports.deleteBook = catchAsync(async (req, res, next) => {
     if (!result) {
         return next(new AppError('No book found with that ID!', 404));
     }
-    res.redirect('/admin/book');
-});
-
-exports.createBook = catchAsync(async (req, res, next) => {
-    let {
-        bookName,
-        categoryId,
-        originalPrice,
-        discountedNumber,
-        stock,
-        authorId,
-        publisherId,
-        publishedYear,
-        weight,
-        dimensions,
-        numberPage,
-        bookFormat,
-        description,
-    } = req.body;
-
-    const coverImage = req.files[0];
-    let images = req.files.slice(0);
-
-    // Miss cover image
-    if (!coverImage) {
-        await Promise.all(
-            images.map(async (el) => {
-                await deleteCloudinaryImage(el.filename);
-            }),
-        );
-        return next(new AppError("Missing book's cover image!", 400));
-    }
-    // Miss sub image
-    if (!images) {
-        await deleteCloudinaryImage(coverImage[0].filename);
-        return next(new AppError("Missing book's sub image!", 400));
-    }
-
-    // Miss parameter
-    if (
-        !bookName ||
-        !categoryId ||
-        !originalPrice ||
-        !discountedNumber ||
-        !stock ||
-        !authorId ||
-        !publisherId ||
-        !weight ||
-        !dimensions ||
-        !numberPage ||
-        !bookFormat ||
-        !description ||
-        !publishedYear
-    ) {
-        await deleteCloudinaryImage(coverImage.filename);
-        await Promise.all(
-            images.map(async (el) => {
-                await deleteCloudinaryImage(el.filename);
-            }),
-        );
-        return next(
-            new AppError('Not enough information to create a book!', 400),
-        );
-    }
-
-    originalPrice = +originalPrice;
-    discountedNumber = +discountedNumber;
-    stock = +stock;
-    weight = +weight;
-    numberPage = +numberPage;
-    authorId = authorId.split(',').map((el) => el.trim());
-
-    // Number < 0
-    if (originalPrice < 0 || discountedNumber < 0 || stock < 0 || weight < 0) {
-        await deleteCloudinaryImage(coverImage.filename);
-        await Promise.all(
-            images.map(async (el) => {
-                await deleteCloudinaryImage(el.filename);
-            }),
-        );
-        return next(new AppError('Number must be greater than 0.', 400));
-    }
-
-    // Limit some image properties
-    images = images.map((item) => ({
-        path: item.path,
-    }));
-    images.unshift({
-        path: coverImage.path,
-    });
-
-    // Create entity to insert to database
-    const bookId = await createBook({
-        categoryId,
-        bookName,
-        originalPrice,
-        coverImage,
-        stock,
-        discountedNumber,
-        authorId,
-        publisherId,
-        publishedYear,
-        weight,
-        dimensions,
-        numberPage,
-        bookFormat,
-        description,
-    });
-
-    // Insert images
-    await insertImages(bookId, images);
-
-    res.redirect('/admin/book');
-});
-
-exports.updateBook = catchAsync(async (req, res, next) => {
-    let {
-        bookId,
-        bookName,
-        categoryId,
-        originalPrice,
-        discountedNumber,
-        stock,
-        authorId,
-        publisherId,
-        publishedYear,
-        weight,
-        dimensions,
-        numberPage,
-        bookFormat,
-        description,
-    } = req.body;
-    console.log(req.body);
-
-    // Update to db
-    await updateBook({
-        bookId,
-        categoryId,
-        bookName,
-        originalPrice,
-        stock,
-        discountedNumber,
-        authorId,
-        publisherId,
-        publishedYear,
-        weight,
-        dimensions,
-        numberPage,
-        bookFormat,
-        description,
-    });
-
     res.redirect('/admin/book');
 });

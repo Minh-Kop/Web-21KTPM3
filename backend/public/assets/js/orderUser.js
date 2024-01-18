@@ -38,7 +38,7 @@ $('.order-item__button-section').click(async (e) => {
     loadingCircle.removeClass('d-none');
 
     if (target.closest('.order-item__button--accept').length) {
-        orderState = 2;
+        orderState = 3;
         res = await updateOrderState(orderId, orderState);
     } else if (target.closest('.order-item__button--cancel').length) {
         orderState = -1;
@@ -55,13 +55,14 @@ $('.order-item__button-section').click(async (e) => {
     loadingCircle.addClass('d-none');
 
     const result = await res.json();
+    console.log(result);
     if (res.ok) {
         await Swal.fire({
             title: 'Thành công',
             text: 'Cập nhật trạng thái đơn hàng thành công!',
             icon: 'success',
         });
-        return location.assign(`/admin/order?orderState=${orderState}`);
+        return location.assign(`/order/me?orderState=${orderState}`);
     }
     return await Swal.fire({
         title: 'Lỗi',

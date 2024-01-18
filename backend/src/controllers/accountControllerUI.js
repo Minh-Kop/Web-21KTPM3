@@ -91,7 +91,6 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         limit,
     });
     const totalNumber = await accountModel.countUser();
-    console.log(totalNumber);
     const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
 
     const url = req.originalUrl;
@@ -106,6 +105,8 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('account/crud_users_list', {
         headerName: 'Danh sách tài khoản',
+        account: true,
+        title: 'User management',
         layout: 'admin',
         status: 'success',
         navbar: () => 'navbar',
@@ -120,7 +121,6 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         isAdmin,
         currentUrl: url,
         users,
-        isAdmin,
     });
 });
 

@@ -1,26 +1,6 @@
--- ========== PROVINCE ==========
-INSERT into Province (PROV_ID, PROV_NAME) values ('PR001', N'Thành phố Hồ Chí Minh')
-INSERT into Province (PROV_ID, PROV_NAME) values ('PR002', N'Hà Nội')
-INSERT into Province (PROV_ID, PROV_NAME) values ('PR003', N'Đà Nẵng')
-INSERT into Province (PROV_ID, PROV_NAME) values ('PR004', N'Cần Thơ')
-INSERT into Province (PROV_ID, PROV_NAME) values ('PR005', N'Lâm Đồng')
-
--- ========== DISTRICT ==========
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00001', 'PR001', N'Quận 1')
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00002', 'PR001', N'Quận 2')
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00003', 'PR001', N'Quận 3')
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00004', 'PR001', N'Quận 4')
-insert into DISTRICT (DIST_ID, PROV_ID, DIST_NAME) values ('DT00005', 'PR001', N'Quận 5')
-
--- ========== WARD ==========
-insert into WARD (WARD_ID, DIST_ID, WARD_NAME) values
-    ('WD0000001', 'DT00005', N'Phường 1'),
-    ('WD0000002', 'DT00005', N'Phường 2'),
-    ('WD0000003', 'DT00005', N'Phường 3'),
-    ('WD0000004', 'DT00005', N'Phường 4'),
-    ('WD0000005', 'DT00005', N'Phường 5')
-
 -- ========== CATEGORY ==========
+insert into CATEGORY (CATE_ID, PARENT_ID, CATE_NAME, SOFT_DELETE) VALUES ('CA17', null, 'foreign books', 0)
+
 insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA01', N'Manga - Comic', 0)
 insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA02', N'Comic - Truyện Tranh', 0)
 insert into CATEGORY (CATE_ID, CATE_NAME, SOFT_DELETE) values ('CA03', N'Manga', 0)

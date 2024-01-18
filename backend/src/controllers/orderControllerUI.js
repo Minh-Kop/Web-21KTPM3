@@ -8,6 +8,8 @@ const bookModel = require('../models/bookModel');
 const accountModel = require('../models/accountModel');
 const cartModel = require('../models/cartModel');
 
+const bankUrl = config.BANK_URL;
+
 exports.getOrder = catchAsync(async (req, res, next) => {
     const { orderId } = req.params;
     const [
@@ -167,12 +169,13 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
     const offset = (page - 1) * limit;
 
     const { user, cart, categoryTree } = req;
+    const { userId } = user;
     const isLoggedIn = req.isAuthenticated();
     let isAdmin = false;
     if (isLoggedIn) {
         isAdmin = user.role === config.role.ADMIN;
     }
-    const { userId } = user;
+
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
@@ -193,10 +196,6 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         {
             orderstate: 6,
             totalNumber: total,
-        },
-        {
-            orderstate: 0,
-            totalNumber: 0,
         },
         {
             orderstate: 1,
@@ -234,26 +233,34 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
 
     const totalPages = Math.ceil(parseFloat(totalNumber) / limit);
     returnedOrders.forEach((order) => {
-        order.orderDate = order.orderDate.toISOString().split('T')[0];
+        order.orderDate = moment(order.orderDate)
+            .subtract(7, 'hours')
+            .format('DD/MM/YYYY HH:mm');
         order.totalPaymentString = order.totalPayment.toLocaleString('vi-VN');
+        order.shippingFeeString = order.shippingFee.toLocaleString('vi-VN');
     });
     const orders = await Promise.all(
         returnedOrders.map(async (order) => {
             const books = await bookModel.getBooksByOrderId(order.orderId);
+            books.forEach((book) => {
+                book.unitPrice = book.unitPrice.toLocaleString('vi-VN');
+            });
             return {
-                orderId: order.orderId,
-                orderState: order.orderState,
-                booksLength: books.length,
-                books,
                 ...order,
+                books,
             };
         }),
     );
+
+    const showButton = !!(orderState === 1 || orderState === 2);
+
     res.render('account/order_list', {
         title: 'Đơn hàng của tôi',
         status: 'success',
         ordersLength: orders.length,
         orders,
+        showButton,
+        bankUrl,
         link: newUrl,
         navbar: () => 'navbar',
         footer: () => 'footer',
@@ -264,7 +271,7 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
         limit,
         totalPages,
         orderNumber,
-        orderState: +orderState,
+        orderState,
         currentUrl: url,
         categoryTree,
         isAdmin,
@@ -308,6 +315,7 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
     if (isLoggedIn) {
         isAdmin = user.role === config.role.ADMIN;
     }
+    user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
 
     const url = req.originalUrl;
     const indexOfPage = url.lastIndexOf('&page');
@@ -356,6 +364,7 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
             };
         }),
     );
+
     res.render('orderCRUD/order', {
         layout: 'admin',
         headerName: 'Danh sách đơn hàng',
@@ -363,6 +372,7 @@ exports.getAllOrders = catchAsync(async (req, res, next) => {
         order: true,
         ordersLength: orders.length,
         orders,
+        bankUrl,
         link: newUrl,
         isLoggedIn,
         ...user,

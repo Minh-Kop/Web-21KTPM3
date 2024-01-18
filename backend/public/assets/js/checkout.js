@@ -154,7 +154,7 @@ $('.confirm-checkout-btn').click(async () => {
         text: 'Đặt hàng thành công!',
         icon: 'success',
     }).then(async () => {
-        location.assign('/category');
+        location.assign('/order/me?orderState=1');
     });
 });
 

@@ -7,7 +7,7 @@ exports.getAllCategory = async () => {
     const pool = await database.getConnectionPool();
     const request = new sql.Request(pool);
     const result = await request.query(
-        'select * from CATEGORY where SOFT_DELETE <> 1',
+        'select * from CATEGORY where SOFT_DELETE <> 1 ORDER by CATE_ID',
     );
     return result.recordset;
 };
