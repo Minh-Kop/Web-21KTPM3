@@ -21,16 +21,10 @@ exports.getStatistic = catchAsync(async (req, res, next) => {
         SOrdernRevenue.totalRevenue.toLocaleString('vi-VN');
     const [totalOrderDaily, totalMonthlyRevenue] =
         await statisticModel.getStatistic();
-    totalOrderDaily.forEach((order) => {
-        order.orderDate = moment(order.orderDate)
-            .subtract(7, 'hours')
-            .format('YYYY-MM-DD');
-    });
+
     const JSONtotalOrderDaily = JSON.stringify(totalOrderDaily);
     const JSONtotalMonthlyRevenue = JSON.stringify(totalMonthlyRevenue);
 
-    console.log(user);
-    console.log(cart);
     user.avatarPath = user.avatarPath || '/assets/img/account_icon.svg';
     res.render('statistic/statistic', {
         headerName: 'Thống kê',
