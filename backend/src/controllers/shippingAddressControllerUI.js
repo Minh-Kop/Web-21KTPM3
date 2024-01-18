@@ -2,6 +2,8 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const shippingAddressModel = require('../models/shippingAddressModel');
 const config = require('../config/config');
+const locationController = require('./locationController');
+const locationModel = require('../models/locationModel');
 
 exports.getShippingAddresses = async (userId) => {
     const shippingAddresses =
@@ -22,6 +24,8 @@ exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
     const newUrl = indexOfPage !== -1 ? url.substring(0, indexOfPage) : url;
     const shippingAddresses =
         await shippingAddressModel.getAllShippingAddressesByUserId(userId);
+    
+    const provinces = await locationModel.getProvinces();
     res.render('account/address_list', {
         length: shippingAddresses.length,
         title: 'Sổ địa chỉ',
@@ -35,6 +39,7 @@ exports.getMyShippingAddresses = catchAsync(async (req, res, next) => {
         currentUrl: url,
         categoryTree,
         isAdmin,
+        provinces
     });
 });
 
