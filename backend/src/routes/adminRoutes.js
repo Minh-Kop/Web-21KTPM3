@@ -45,5 +45,6 @@ router.get('/user/', getAllUsers);
 router.get('/user/:userId', getUser);
 
 router.get('/order', orderControllerUI.getAllOrders);
+router.get('/order/:orderId', orderControllerUI.getDetailOrderForAdmin);
 
 module.exports = router;

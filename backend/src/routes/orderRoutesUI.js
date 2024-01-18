@@ -13,10 +13,6 @@ router.get(
 );
 
 router.get('/me', orderController.getMyOrders);
-router.post('/buyAgain', orderController.buyAgain);
-router
-    .route('/:orderId')
-    .get(orderController.getThisOrder)
-    .patch(orderController.updateState);
+router.route('/:orderId').get(orderController.getThisOrder);
 
 module.exports = router;
