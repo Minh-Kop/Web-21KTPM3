@@ -2,7 +2,6 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const shippingAddressModel = require('../models/shippingAddressModel');
 const config = require('../config/config');
-const locationController = require('./locationController');
 const locationModel = require('../models/locationModel');
 
 exports.getShippingAddresses = async (userId) => {
