@@ -43,9 +43,8 @@
     });
     orderNumber.forEach((item) => {
         dailyOrderData.push(item.dailyOrder);
-        xDates.push(item.orderDate);
+        xDates.push(`${item.orderDate}/${item.orderMonth}/${item.orderYear}`);
     });
-    console.log(xMonths)
 
     new Chart("myRevenueChart", {
         type: 'line',
