@@ -63,6 +63,13 @@ button {
 }
 
 /* ==================================== Footer ==================================== */
+/* footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+} */
+
 .footer {
     padding: 14px 0px;
 }
@@ -72,8 +79,8 @@ button {
 }
 
 .footer__desc {
+    margin-top: 10px;
     color: #fff;
-    /* font-size: 24px; */
     font-weight: 400;
 }
 

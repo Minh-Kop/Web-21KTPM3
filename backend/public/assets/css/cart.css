@@ -4,6 +4,10 @@
     border-bottom: 1px solid var(--border-bottom-color);
 }
 
+.cart {
+    min-height: 330px;
+}
+
 .cart-title {
     display: flex;
     align-items: center;

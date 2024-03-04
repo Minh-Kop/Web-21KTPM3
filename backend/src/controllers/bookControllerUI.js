@@ -452,6 +452,7 @@ exports.renderMainPage = catchAsync(async (req, res, next) => {
 
     res.render('mainPage/mainPage', {
         layout: 'main',
+        title: 'Homepage',
         categories: cateLists,
         cateBooks: cateBooks,
         newBooks: nBooks,
